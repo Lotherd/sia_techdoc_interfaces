@@ -202,7 +202,8 @@ import javax.xml.bind.annotation.XmlType;
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "OUTPUT", propOrder = {
     "model",
-    "filename"
+    "filename",
+    "attachment"
 })
 @XmlRootElement(name = "OUTPUT")
 public class OUTPUT {

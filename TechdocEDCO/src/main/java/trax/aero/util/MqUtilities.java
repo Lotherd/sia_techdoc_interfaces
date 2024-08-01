@@ -1,5 +1,8 @@
 package trax.aero.util;
 
+import java.io.FileInputStream;
+import java.security.KeyStore;
+
 import javax.jms.DeliveryMode;
 import javax.jms.JMSException;
 import javax.jms.Message;
@@ -10,35 +13,90 @@ import javax.jms.QueueSender;
 import javax.jms.QueueSession;
 import javax.jms.Session;
 import javax.jms.TextMessage;
+import javax.net.ssl.KeyManagerFactory;
+import javax.net.ssl.SSLContext;
+import javax.net.ssl.SSLSocketFactory;
+import javax.net.ssl.TrustManagerFactory;
+
+import org.apache.commons.lang3.exception.ExceptionUtils;
 
 import com.ibm.mq.jms.MQQueueConnectionFactory;
 import com.ibm.msg.client.wmq.WMQConstants;
 import com.ibm.msg.client.wmq.compat.jms.internal.JMSC;
 
+import trax.aero.controller.ModelController;
+
 public class MqUtilities {
 
-	private static final String HOST = System.getProperty("TechdocEDCO_host"); // Host name or IP address
-    private static final int PORT = Integer.valueOf(System.getProperty("TechdocEDCO_port")).intValue(); // Listener port for your queue manager
-    private static final String CHANNEL = System.getProperty("TechdocEDCO_channel"); // Channel name
-    private static final String QMGR = System.getProperty("TechdocEDCO_qmgr"); // Queue manager name
-    private static final String APP_USER = System.getProperty("TechdocEDCO_user"); // User name that application uses to connect to MQ
-    private static final String APP_PASSWORD = System.getProperty("TechdocEDCO_password"); // Password that the application uses to connect to MQ
-    private static final String QUEUE_NAME_SENDER = System.getProperty("TechdocEDCO_send"); // Queue that the application uses to put and get messages to and from
-    private static final String QUEUE_NAME_RECEIVE = System.getProperty("TechdocEDCO_receive"); // Queue that the application uses to put and get messages to and from
+	private static final String HOST = System.getProperty("Techdoc_host"); // Host name or IP address
+    private static final int PORT = Integer.valueOf(System.getProperty("Techdoc_port")).intValue(); // Listener port for your queue manager
+    private static final String CHANNEL = System.getProperty("Techdoc_channel"); // Channel name
+    private static final String QMGR = System.getProperty("Techdoc_qmgr"); // Queue manager name
+    private static final String APP_USER = System.getProperty("Techdoc_user"); // User name that application uses to connect to MQ
+    private static final String APP_PASSWORD = System.getProperty("Techdoc_password"); // Password that the application uses to connect to MQ
+    private static final String QUEUE_NAME_SENDER = System.getProperty("Techdoc_send"); // Queue that the application uses to put and get messages to and from
+    private static final String QUEUE_NAME_RECEIVE = System.getProperty("Techdoc_receive"); // Queue that the application uses to put and get messages to and from
     
-    public static MQQueueConnectionFactory createMQQueueConnectionFactory() throws JMSException {
+    private static final String JKS_LOCATION = System.getProperty("JKS_LOCATION"); // Queue that the application uses to put and get messages to and from
+    private static final String JKS_PWD = System.getProperty("JKS_PWD"); // Queue that the application uses to put and get messages to and from
+    private static final String CIPHER  = System.getProperty("CIPHER"); // Queue that the application uses to put and get messages to and from
+
+    
+    
+    public static MQQueueConnectionFactory createMQQueueConnectionFactory() throws JMSException,Exception {
 	    /*MQ Configuration*/
 	    MQQueueConnectionFactory mqQueueConnectionFactory = new MQQueueConnectionFactory();
+	    
+	    SSLSocketFactory sslSocketFactory = createSSLSocketFactory();
+	    
 	    mqQueueConnectionFactory.setHostName(HOST);
 	    mqQueueConnectionFactory.setChannel(CHANNEL);//communications link
 	    mqQueueConnectionFactory.setPort(PORT);
 	    mqQueueConnectionFactory.setQueueManager(QMGR);//service provider 
-        mqQueueConnectionFactory.setTransportType(JMSC.MQJMS_TP_CLIENT_MQ_TCPIP);
-       
+        
+	    
+	    mqQueueConnectionFactory.setSSLFipsRequired(false);
+	    mqQueueConnectionFactory.setTransportType(JMSC.MQJMS_TP_CLIENT_MQ_TCPIP);
+        mqQueueConnectionFactory.setSSLCipherSuite(CIPHER);
+        mqQueueConnectionFactory.setSSLSocketFactory(sslSocketFactory);
+
         mqQueueConnectionFactory.setStringProperty(WMQConstants.USERID, APP_USER); 
         mqQueueConnectionFactory.setStringProperty(WMQConstants.PASSWORD,APP_PASSWORD );
 	    return mqQueueConnectionFactory;
     }
+    
+    public static SSLSocketFactory  createSSLSocketFactory () throws Exception {
+    	
+    	char[] KSPW =  JKS_PWD.toCharArray();
+
+        KeyStore ks = KeyStore.getInstance("JKS");
+       
+        ks.load(new FileInputStream(JKS_LOCATION), KSPW);
+       // System.out.println("Number of keys on JKS: "  + Integer.toString(ks.size()));
+
+        KeyManagerFactory keyManagerFactory =  KeyManagerFactory.getInstance(KeyManagerFactory.getDefaultAlgorithm());
+
+        // Initialise the managers
+        keyManagerFactory.init(ks,KSPW);
+
+        // Accessing available algorithm/protocol in the SunJSSE provider
+        // see http://java.sun.com/javase/6/docs/technotes/guides/security/SunProviders.html
+        SSLContext sslContext = SSLContext.getInstance("SSLv3");
+
+        // Acessing available algorithm/protocol in the IBMJSSE2 provider
+        // see http://www.ibm.com/developerworks/java/jdk/security/142/secguides/jsse2docs/JSSE2RefGuide.html
+        // SSLContext sslContext = SSLContext.getInstance("SSL_TLS");
+      //   System.out.println("SSLContext provider: " +       sslContext.getProvider().toString());
+
+        // Initialise our SSL context from the key/trust managers
+        sslContext.init(keyManagerFactory.getKeyManagers(), null, null);
+
+        // Get an SSLSocketFactory to pass to WMQ
+        SSLSocketFactory sslSocketFactory = sslContext.getSocketFactory();
+        
+        return sslSocketFactory;
+    }
+    
 	
     public static Boolean sendMqText(String text) throws JMSException {
     	
@@ -115,9 +173,8 @@ public class MqUtilities {
             
             
 
-        } catch (JMSException e) {
-            e.printStackTrace();
         } catch (Exception e) {
+        	ModelController.sendEmailMQ(ExceptionUtils.getStackTrace ( e ));
             e.printStackTrace();
         }finally {
              queueReceiver.close();

@@ -18,7 +18,7 @@ public class SqsUtilities {
 		
 		Gson gson = new Gson();
 		String json;
-		String queueUrlTo = System.getProperty("TechdocEDCO_ToSQS");
+		String queueUrlTo = System.getProperty("Techdoc_ToSQS");
 
 		logger.info("Sending JSON To EDCO");
 

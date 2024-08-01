@@ -1,11 +1,13 @@
 package trax.aero.util;
 
 import java.io.StringReader;
+import java.io.StringWriter;
 import java.util.List;
 import java.util.logging.Logger;
 
 import javax.ejb.EJB;
 import javax.xml.bind.JAXBContext;
+import javax.xml.bind.Marshaller;
 import javax.xml.bind.Unmarshaller;
 
 import trax.aero.interfaces.IModelData;
@@ -50,21 +52,14 @@ public class RunAble implements Runnable {
 				
 				for(MODEL model : root.getMODELS()) {
 					printer = data.filterADDATTR(model.getEFFECTIVITY().getJOBCARD().getJOBI().getPLI().getADDATTR(), "PRINTER-NAME");
+					jc = JAXBContext.newInstance(MODEL.class);
+					Marshaller marshaller = jc.createMarshaller();
+					marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, Boolean.TRUE);
+					StringWriter sw = new StringWriter();
+					marshaller.marshal(model, sw);
 					
-					switch(printer){
-						case "ECXX": 
-							logger.info("Issue To EDCO");
-							data.issueToEDCO(model,message );
-							break;
-						case "TRAX":
-							logger.info("Issue To TRAX");
-							data.issueToTRAX(model ,message);
-							break;
-						default:
-							logger.info("Issue To Printer " + printer );
-							data.issueToPrinter(model,message);
-							break;	
-					}
+					String xml = sw.toString();
+					data.issueTo(model,xml );
 				}
 			}catch (Exception e) {
 				e.printStackTrace();

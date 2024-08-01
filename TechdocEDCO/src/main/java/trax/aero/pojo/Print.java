@@ -16,7 +16,7 @@ public class Print{
     
     private String form_Line;
 
-    
+    private String path;
 
     @Override
     public String toString()
@@ -106,6 +106,18 @@ public class Print{
 
 	public void setForm_Line(String form_Line) {
 		this.form_Line = form_Line;
+	}
+
+
+
+	public String getPath() {
+		return path;
+	}
+
+
+
+	public void setPath(String path) {
+		this.path = path;
 	}
 	
 	

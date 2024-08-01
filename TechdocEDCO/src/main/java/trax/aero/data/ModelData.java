@@ -1,33 +1,37 @@
 package trax.aero.data;
 
+import java.io.StringReader;
 import java.io.StringWriter;
 import java.math.BigDecimal;
+import java.nio.charset.StandardCharsets;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import java.util.logging.Logger;
 
 import javax.ejb.Stateless;
-
-import org.apache.commons.lang3.RandomStringUtils;
-
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.Marshaller;
+import javax.xml.bind.Unmarshaller;
 
+import org.apache.commons.lang3.RandomStringUtils;
+
+import trax.aero.controller.ModelController;
 import trax.aero.interfaces.IModelData;
 import trax.aero.logger.LogManager;
 import trax.aero.model.BlobTable;
 import trax.aero.model.BlobTablePK;
 import trax.aero.model.Wo;
 import trax.aero.model.WoTaskCard;
-
 import trax.aero.model.WoTaskCardPK;
 import trax.aero.pojo.Dw_Wo_Pack_Print;
 import trax.aero.pojo.Print;
 import trax.aero.pojo.Row;
+import trax.aero.pojo.acknowledgement.PrintAck;
 import trax.aero.pojo.json.EFFECTIVITY;
 import trax.aero.pojo.json.JOBI;
 import trax.aero.pojo.json.PANEL;
@@ -36,9 +40,10 @@ import trax.aero.pojo.json.SIMPLEREFERENCE;
 import trax.aero.pojo.xml.ADDATTR;
 import trax.aero.pojo.xml.JOBCARD;
 import trax.aero.pojo.xml.MODEL;
+import trax.aero.pojo.xml.OUTPUT;
 import trax.aero.util.MqUtilities;
 import trax.aero.util.PrinterUtilities;
-import trax.aero.util.SftpUtilities;
+import trax.aero.util.S3Utilities;
 import trax.aero.util.SqsUtilities;
 
 @Stateless(name="ModelData" , mappedName="ModelData")
@@ -48,7 +53,9 @@ public class ModelData implements IModelData {
 	@PersistenceContext(unitName = "TechdocDS") private EntityManager em;
 		
 	Logger logger = LogManager.getLogger("TechdocEDCO");
-		
+	ArrayList<String> scoot = new ArrayList<>(Arrays.asList("300275","300276","101821")); 
+	ArrayList<String> siaec = new ArrayList<>(Arrays.asList("319","320")); 
+
 	
 	public String filterADDATTR(List<ADDATTR> attributes, String filter)
 	{
@@ -61,61 +68,124 @@ public class ModelData implements IModelData {
 			return temp.getATTRVALUE();
 	}
 	
-				
-	//MOD 22
-	public void issueToTRAX(MODEL input, String xml) throws Exception {
-		// TODO Auto-generated method stub
-		
-	}
-
-
-
-
-
-	@Override
-	public void issueToPrinter(MODEL input, String xml) throws Exception {
-		// TODO Auto-generated method stub
-		
-	}
-			
-
-	//MOD 16
-	public void issueToEDCO(MODEL input, String xml) throws Exception {
-		
-		trax.aero.pojo.json.OUTPUT json = convertXmlToJson(input); 
 	
+
+	//MOD 16 //MOD 22
+	public void issueTo (MODEL input, String xml) throws Exception {
+		
+		
 		
 		//creates temp wo with attached xml
-		Wo w = createTempWo(xml, filterADDATTR(input.getEFFECTIVITY().getJOBCARD().getJOBI().getPLI().getADDATTR(), "COMP"));
-		BlobTable blob = createTempBlob(xml, w);
+		String company = "SIA", ac, location , site, type ;
+		ac = input.getEFFECTIVITY().getREGNBR();
+		location = "SIN";
+		site = "";
+		type = input.getEFFECTIVITY().getJOBCARD().getTYPE();
+		if(siaec.contains(input.getMODELNBR())) {
+			company = "SIAEC";
+		}else if(scoot.contains(filterADDATTR(input.getEFFECTIVITY().getJOBCARD().getJOBI().getPLI().getADDATTR(), "BUSR06"))) {
+			company = "SCOOT";
+		}
+		
+		
 		//creates temp wo task card 
-		ArrayList<WoTaskCard> taskCards = createTempWoTaskCard(input, w); 
+		Wo w = createTempWo(type,company,location,site,ac,
+				(filterADDATTR(input.getEFFECTIVITY().getJOBCARD().getJOBI().getPLI().getADDATTR(), "PRINTER-NAME")));
+		createTempBlob(xml, w);
+		createTempWoTaskCard(input, w); 
 		
-		//call wo pack print with flag
-		//int status = sendWorkPackPrintJob(w );
+		//call wo pack print with flag TODO
+		sendWorkPackPrintJob(w );
 		
-		//gets pdfs path with wo id
-		
-		
-		// creates zip file with pdf and txt file
-		String pdfName = genratePdfName(input);	
-		ArrayList<String> txt =	genrateTxt(input);
-		String txtName = genrateTxtName(input);	
-
-		//json = SftpUtilities.sendPdf(json, pdfName,txt,txtName );
-
-		
-		
-		SqsUtilities.sendResend(json, pdfName);
-		
-		
-		
-		// deletes wo and wo task card
-		//deleteTempWoTaskCardBlob(w,taskCards,blob );
-		
-
 		sendPrintStatusAcknowledgement(input, "P", "SUCESS");
 		
+	}
+	
+	@Override
+	public void print(Print print) {
+		
+		String printer = "", date, time, revision;
+		ArrayList<PrintAck> ack = null;
+		MODEL input = null;
+		//TODO
+		try {
+			input = getXml(print.getWo());
+			// creates zip file with pdf and txt file
+			
+			if(input == null) {
+				return ;
+			}
+			String pdfName = genratePdfName(input);	
+			ArrayList<String> txt =	genrateTxt(input);
+			String txtName = genrateTxtName(input);	
+			 printer = (filterADDATTR(input.getEFFECTIVITY().getJOBCARD().getJOBI().getPLI().getADDATTR(), "PRINTER-NAME"));
+			
+			 ack = new ArrayList<PrintAck>();
+			ack.add(new PrintAck());
+			
+			
+			if(printer.equalsIgnoreCase("ECXX") || printer.equalsIgnoreCase("ECXY")) {
+				trax.aero.pojo.json.OUTPUT	json = convertXmlToJson(input);
+				
+				
+				//gets pdfs path with wo id
+				json = S3Utilities.sendEDCO(json, pdfName,txt,txtName, print.getPath(),printer );
+				
+				SqsUtilities.sendResend(json, pdfName);
+					
+				//send to physical printer TODO
+				
+			}else if (printer.equalsIgnoreCase("TRAX")){
+				OUTPUT	xml = new OUTPUT();
+				xml.setMODEL(input);
+				xml.setFILENAME(pdfName);
+				
+				//gets pdfs path with wo id
+				xml = S3Utilities.sendTrax(xml, pdfName,txt,txtName, print.getPath(),"" );
+						
+
+			}else if (printer.equalsIgnoreCase("EDXX") || printer.equalsIgnoreCase("ECXZ")){
+			
+				//send to virtual printer TODO
+				//VIA S3 just PDF
+				S3Utilities.sendVirtualPrint( print.getPath(),printer );
+			}else {
+				PrinterUtilities.sendPrint(printer, print.getPath());
+			}
+			// deletes wo and wo task card TODO
+			deleteTempWoTaskCardBlob(print.getWo() );
+			 
+		} catch (Exception e) {
+			
+			date =filterADDATTR( input.getEFFECTIVITY().getJOBCARD().getJOBI().getPLI().getADDATTR(), "IDOC-DATE");
+			revision = filterADDATTR( input.getEFFECTIVITY().getJOBCARD().getJOBI().getPLI().getADDATTR(), "LATEST-REVISION");
+			time = filterADDATTR( input.getEFFECTIVITY().getJOBCARD().getJOBI().getPLI().getADDATTR(), "IDOC-TIME") ;
+			switch(printer) {
+			
+			 
+				case "ECXX":
+				case "ECXY":
+					ModelController.sendEmailEDCO( input.getEFFECTIVITY().getJOBCARD().getWPNBR()
+							, revision, date, time, ack);
+					break;
+				case "TRAX":	
+					ModelController.sendEmailTrax(input.getEFFECTIVITY().getJOBCARD().getWPNBR()
+							, revision, date, time, ack);
+					break;
+
+				case "EDXX":
+				case "ECXZ":	
+					ModelController.sendEmailPrint(input.getEFFECTIVITY().getJOBCARD().getWPNBR()
+							, revision, date, time, ack);
+					break;
+				default:
+					break;
+			}
+			
+			
+			
+			e.printStackTrace();
+		} 
 	}
 	
 	private int sendWorkPackPrintJob(Wo w) {
@@ -224,7 +294,7 @@ public class ModelData implements IModelData {
 		woCard.getId().setWo(w.getWo());
 
 		
-		woCard.setCreatedBy("TRAXIFACE");
+		woCard.setCreatedBy("IFACE-SIA");
 		woCard.setCreatedDate(new Date());
 		woCard.setStatus("OPEN");
 		woCard.setNdt("N");
@@ -236,7 +306,7 @@ public class ModelData implements IModelData {
 		woCard.setSellOtherAmount(new BigDecimal(0));
 		
 		woCard.setAuthorization("AUTHORIZED");
-		woCard.setAuthorizationBy("TRAX_IFACE");
+		woCard.setAuthorizationBy("IFACE-SIA");
 		woCard.setAuthorizationDate(new Date());
 		woCard.setWeightOn(new BigDecimal(0));
 		woCard.setWeightOff(new BigDecimal(0));
@@ -273,7 +343,7 @@ public class ModelData implements IModelData {
 		BlobTablePK pk = new BlobTablePK();
 		blob = new BlobTable();
 		blob.setCreatedDate(new Date());
-		blob.setCreatedBy("TRAX_IFACE");
+		blob.setCreatedBy("IFACE-SIA");
 		blob.setId(pk);
 			
 		blob.setPrintFlag("YES");
@@ -281,11 +351,11 @@ public class ModelData implements IModelData {
 		blob.getId().setBlobLine(1);
 		
 		
-		blob.setModifiedBy("TRAX_IFACE");
+		blob.setModifiedBy("IFACE-SIA");
 		blob.setModifiedDate(new Date());
 		blob.setBlobItem(xml.getBytes());
-		blob.setBlobDescription("temp.xml");
-		blob.setCustomDescription("temp.xml");
+		blob.setBlobDescription("MODEL");
+		blob.setCustomDescription("MODEL");
 		
 	
 		blob.getId().setBlobNo(((getTransactionNo("BLOB").longValue())));
@@ -300,17 +370,21 @@ public class ModelData implements IModelData {
 	}
 	
 
-	private Wo createTempWo(String xml, String comapny) {
+	private Wo createTempWo(String type, String comapny, String location, String site,String ac, String print) {
 		
 			Wo wo = null;
 
 			wo = new Wo();
 			wo.setCreatedDate(new Date());
-			wo.setCreatedBy("TRAX_IFACE");
+			wo.setCreatedBy("IFACE-SIA");
 			
 			//EMRO fields to create basic object
-
-			wo.setGlCompany("TRAX");
+			wo.setWoDescription(print);
+			wo.setWoCategory(type);
+			wo.setLocation(location);
+			wo.setSite(site);
+			wo.setAc(ac);
+			wo.setGlCompany(comapny);
 			wo.setOrderType("W/O");
 			wo.setModule("PRODUCTION");
 			wo.setPaperChecked("NO");
@@ -320,7 +394,7 @@ public class ModelData implements IModelData {
 			wo.setNrAllow("YES");
 			wo.setExcludeMhPlanner("N");
 			wo.setThirdPartyWo("Y");
-			wo.setModifiedBy("TRAX_IFACE");
+			wo.setModifiedBy("IFACE-SIA");
 			wo.setModifiedDate(new Date());
 			wo.setExpenditure(("General"));
 			wo.setWo(getTransactionNo("WOSEQ").longValue());
@@ -507,7 +581,7 @@ public class ModelData implements IModelData {
 		JOBCARD card = input.getEFFECTIVITY().getJOBCARD();
 	    String random = RandomStringUtils.random(19, false, true);
 
-		pdfName = "wo_"+ card.getWPNBR() + "_" + card.getSEQNBR() + "_" + card.getWONBR() +random ;
+		pdfName = "wo_"+ card.getWPNBR() + "_" + card.getSEQNBR() + "_" + card.getWONBR() +random + ".pdf" ;
 		
 		return pdfName;
 	}
@@ -630,10 +704,71 @@ public class ModelData implements IModelData {
 		}
 
 
-		@Override
-		public void print(Print input) {
-			// TODO Auto-generated method stub
+		
+
+
+		private void deleteTempWoTaskCardBlob(String wo) {
+
+			Wo w = getTempWo(wo);
+			BlobTable blob = getTempBlob(w.getBlobNo());
+			//creates temp wo task card 
+			ArrayList<WoTaskCard> taskCards =new ArrayList<WoTaskCard>(w.getWoTaskCards())  ; 
+
 			
+			deleteTempWoTaskCardBlob(w, taskCards, blob);
+		}
+
+
+		private Wo getTempWo(String wo) {
+			try {
+				Wo w = em.createQuery("Select w From Wo w where w.id.wo =:work", Wo.class)
+						.setParameter("work", Long.parseLong(wo))
+						.getSingleResult();
+				return w;	
+			}catch (Exception e) {
+				e.printStackTrace();
+				return null;
+			}	
+		}
+
+
+		private BlobTable getTempBlob(BigDecimal blobNo) {
+			try {
+				BlobTable blob = em.createQuery("SELECT b FROM BlobTable b where b.id.blobNo = :bl and b.blobDescription = :des", BlobTable.class)
+						.setParameter("bl", blobNo.longValue())
+						.setParameter("des","MODEL" )
+						.getSingleResult();
+				return blob;	
+			}catch (Exception e) {
+				e.printStackTrace();
+				return null;
+			}	
+		}
+
+
+		private MODEL getXml(String wo) {
+			try {
+				Wo w = em.createQuery("Select w From Wo w where w.id.wo =:work", Wo.class)
+						.setParameter("work", Long.parseLong(wo))
+						.getSingleResult();
+				BlobTable blob = em.createQuery("SELECT b FROM BlobTable b where b.id.blobNo = :bl and b.blobDescription = :des", BlobTable.class)
+						.setParameter("bl", w.getBlobNo().longValue())
+						.setParameter("des","MODEL" )
+						.getSingleResult();
+				
+				;
+				String xml = new String(blob.getBlobItem(), StandardCharsets.UTF_8); 
+				System.out.println(xml);
+				
+				JAXBContext jc = JAXBContext.newInstance(MODEL.class);
+				Unmarshaller unmarshaller = jc.createUnmarshaller();
+				StringReader sr = new StringReader(xml);
+				
+				return (MODEL) unmarshaller.unmarshal(sr);
+			}catch (Exception e) {
+				e.printStackTrace();
+				return null;
+			}		
 		}
 		
 }
