@@ -73,10 +73,10 @@ public class ModelData implements IModelData {
 	//MOD 16 //MOD 22
 	public void issueTo (MODEL input, String xml) throws Exception {
 		
-		
-		
 		//creates temp wo with attached xml
 		String company = "SIA", ac, location , site, type ;
+		String printer = "", date, time, revision;
+		ArrayList<PrintAck> ack = null;
 		ac = input.getEFFECTIVITY().getREGNBR();
 		location = "SIN";
 		site = "";
@@ -87,18 +87,52 @@ public class ModelData implements IModelData {
 			company = "SCOOT";
 		}
 		
-		
+		 int status = 0;
+		 Wo w = null;
 		//creates temp wo task card 
-		Wo w = createTempWo(type,company,location,site,ac,
-				(filterADDATTR(input.getEFFECTIVITY().getJOBCARD().getJOBI().getPLI().getADDATTR(), "PRINTER-NAME")));
-		createTempBlob(xml, w);
-		createTempWoTaskCard(input, w); 
+		try {
+			w = createTempWo(type,company,location,site,ac,
+					(filterADDATTR(input.getEFFECTIVITY().getJOBCARD().getJOBI().getPLI().getADDATTR(), "PRINTER-NAME")));
+			createTempBlob(xml, w);
+			createTempWoTaskCard(input, w); 
+			
+			//call wo pack print with flag TODO
+			status = sendWorkPackPrintJob(w );
+		}catch (Exception e) {
+			status = 0;
+		}
 		
-		//call wo pack print with flag TODO
-		sendWorkPackPrintJob(w );
-		
-		sendPrintStatusAcknowledgement(input, "P", "SUCESS");
-		
+		if(status == 1) {
+			sendPrintStatusAcknowledgement(input, "P", "SUCESS");
+		}else {
+			sendPrintStatusAcknowledgement(input, "E", "ERROR");
+			date =filterADDATTR( input.getEFFECTIVITY().getJOBCARD().getJOBI().getPLI().getADDATTR(), "IDOC-DATE");
+			revision = filterADDATTR( input.getEFFECTIVITY().getJOBCARD().getJOBI().getPLI().getADDATTR(), "LATEST-REVISION");
+			time = filterADDATTR( input.getEFFECTIVITY().getJOBCARD().getJOBI().getPLI().getADDATTR(), "IDOC-TIME") ;
+			printer = (filterADDATTR(input.getEFFECTIVITY().getJOBCARD().getJOBI().getPLI().getADDATTR(), "PRINTER-NAME"));
+			ack = new ArrayList<PrintAck>();
+			ack.add(new PrintAck());	
+			
+			switch(printer) {
+				case "ECXX":
+				case "ECXY":
+					ModelController.sendEmailEDCO( input.getEFFECTIVITY().getJOBCARD().getWPNBR()
+							, revision, date, time, ack);
+					break;
+				case "TRAX":	
+					ModelController.sendEmailTrax(input.getEFFECTIVITY().getJOBCARD().getWPNBR()
+							, revision, date, time, ack);
+					break;
+	
+				case "EDXX":
+				case "ECXZ":	
+					ModelController.sendEmailPrint(input.getEFFECTIVITY().getJOBCARD().getWPNBR()
+							, revision, date, time, ack);
+					break;
+				default:
+					break;
+		}
+		}
 	}
 	
 	@Override

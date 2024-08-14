@@ -47,16 +47,16 @@ public class S3Utilities {
         try {
         	
         	
-        	Files.move(file.toPath(), new File(key+File.separator+file.getName()).toPath(), StandardCopyOption.REPLACE_EXISTING);
+        	//Files.move(file.toPath(), new File(key+File.separator+file.getName()).toPath(), StandardCopyOption.REPLACE_EXISTING);
 
-        	/* TODO
+        	
 	        	S3Client s3 = S3Client.builder().build();       
 	            PutObjectRequest request = PutObjectRequest.builder()
 	                .bucket(bucketName)
 	                .key(key+file.getName())
 	                .build();
 	            s3.putObject(request, RequestBody.fromFile(file));
-	            */
+	            
 	            System.out.println("Successfully placed " + key+file.getName() + " into bucket " + bucketName);
         } catch (S3Exception e) {
             e.printStackTrace();

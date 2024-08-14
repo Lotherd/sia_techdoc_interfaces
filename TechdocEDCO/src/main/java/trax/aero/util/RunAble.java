@@ -59,6 +59,11 @@ public class RunAble implements Runnable {
 					marshaller.marshal(model, sw);
 					
 					String xml = sw.toString();
+					xml=xml.replaceAll("&amp;apos;", 	"&apos;");
+					xml=xml.replaceAll("&amp;gt;", 		"&gt;");
+					xml=xml.replaceAll("&amp;lt;", 		"&lt;");
+					xml=xml.replaceAll("&amp;quot;", 	"&quot;");
+					xml=xml.replaceAll("&amp;re;", 		"&re;");
 					data.issueTo(model,xml );
 				}
 			}catch (Exception e) {
