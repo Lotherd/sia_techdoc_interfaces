@@ -1,5 +1,6 @@
 package trax.aero.interfaces;
 
+import java.sql.Connection;
 import java.util.List;
 
 import trax.aero.pojo.Print;
@@ -14,6 +15,8 @@ public interface IModelData {
 
 	
 	public void print(Print input);
+
+	public Connection getCon();
 
 	
 }

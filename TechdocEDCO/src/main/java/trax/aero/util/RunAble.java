@@ -2,6 +2,7 @@ package trax.aero.util;
 
 import java.io.StringReader;
 import java.io.StringWriter;
+import java.sql.SQLException;
 import java.util.List;
 import java.util.logging.Logger;
 
@@ -63,8 +64,14 @@ public class RunAble implements Runnable {
 					xml=xml.replaceAll("&amp;gt;", 		"&gt;");
 					xml=xml.replaceAll("&amp;lt;", 		"&lt;");
 					xml=xml.replaceAll("&amp;quot;", 	"&quot;");
-					xml=xml.replaceAll("&amp;re;", 		"&re;");
+					xml=xml.replaceAll("&amp;re;", 		"");
 					data.issueTo(model,xml );
+					 try{
+						if(data.getCon() != null && !data.getCon().isClosed())
+							data.getCon().close();
+					}catch (SQLException e) { 
+						e.printStackTrace();
+					}
 				}
 			}catch (Exception e) {
 				e.printStackTrace();
