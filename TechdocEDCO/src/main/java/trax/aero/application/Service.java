@@ -55,6 +55,7 @@ public class Service {
 	{
 		try 
         {    
+			System.out.println("Print WO:" +input.getWo() + ", PATH:" +input.getPath());
 			data.print(input);
 		}
 		catch(Exception e)

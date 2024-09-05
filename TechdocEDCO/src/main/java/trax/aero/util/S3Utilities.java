@@ -41,7 +41,7 @@ public class S3Utilities {
 	
 	private static String pathS3EDCO =  System.getProperty("Techdoc_pathS3EDCO") + File.separator;;
 
-	private static String fileLocOut =  System.getProperty("TECH_fileLocOut") + File.separator;;
+	private static String fileLocOut =  System.getProperty("TECH_fileLocOut") ;;
 
 
 	
@@ -64,13 +64,15 @@ public class S3Utilities {
 	            System.out.println("Successfully placed " + key+file.getName() + " into bucket " + bucketName);
         } catch (S3Exception e) {
             e.printStackTrace();
+            throw e;
         }catch (Exception e) {
         	 e.printStackTrace();
+        	 throw e;
 		}
     }
 
 	public static OUTPUT sendEDCO(OUTPUT json, String pdfName, ArrayList<String> txt, String txtName, String path, String printer,
-			String header, String footer, ArrayList<String> headerTxt, ArrayList<String> footerTxt) {
+			String header, String footer, ArrayList<String> headerTxt, ArrayList<String> footerTxt) throws Exception {
 		
 		
 		//ArrayList<File> pdfs = new ArrayList<File>();
@@ -168,6 +170,7 @@ public class S3Utilities {
 			
 		} catch (Exception e) {
 			e.printStackTrace();
+			throw e;
 		}	
 		
 		return json;
@@ -175,7 +178,7 @@ public class S3Utilities {
 
 	public static trax.aero.pojo.xml.OUTPUT sendTrax(trax.aero.pojo.xml.OUTPUT xml, String pdfName,
 			ArrayList<String> txt, String txtName, String path, String folder, String header, String footer,
-			ArrayList<String> headerTxt, ArrayList<String> footerTxt) {
+			ArrayList<String> headerTxt, ArrayList<String> footerTxt) throws Exception {
 	
 		//ArrayList<File> pdfs = new ArrayList<File>();
 		
@@ -187,7 +190,8 @@ public class S3Utilities {
 			if (!theDir.exists()){
 			    theDir.mkdirs();
 			}
-			
+			System.out.println("MOVE " +print.toPath() + " TO " 
+			+fileLocOut+File.separator+FilenameUtils.removeExtension(print.getName())+File.separator +pdfName);
 			Files.move(print.toPath(), new File(fileLocOut+File.separator+FilenameUtils.removeExtension(print.getName())
 			+File.separator +pdfName).toPath(), StandardCopyOption.REPLACE_EXISTING);
 
@@ -270,11 +274,12 @@ public class S3Utilities {
 			{
 				//FOUND PDFS
 				for(File p : prints){	
-					putS3Object(p,pathS3Trax,bucketNameTrax);	
+					putS3Object(p,pathS3Trax+folder+ File.separator,bucketNameTrax);	
 				}
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
+			throw e;
 		}		
 		return xml;
 	}
@@ -287,6 +292,7 @@ public class S3Utilities {
 			
 		} catch (Exception e) {
 			e.printStackTrace();
+			throw e;
 		}	
 	}
 	

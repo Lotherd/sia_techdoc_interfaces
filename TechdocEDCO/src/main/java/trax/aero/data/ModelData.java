@@ -1,5 +1,6 @@
 package trax.aero.data;
 
+import java.io.File;
 import java.io.StringReader;
 import java.io.StringWriter;
 import java.math.BigDecimal;
@@ -42,6 +43,7 @@ import trax.aero.pojo.json.PANEL;
 import trax.aero.pojo.json.PLI;
 import trax.aero.pojo.json.SIMPLEREFERENCE;
 import trax.aero.pojo.xml.ADDATTR;
+import trax.aero.pojo.xml.ATTACHMENT;
 import trax.aero.pojo.xml.JOBCARD;
 import trax.aero.pojo.xml.MODEL;
 import trax.aero.pojo.xml.OUTPUT;
@@ -102,7 +104,8 @@ public class ModelData implements IModelData {
 		try {
 			w = createTempWo(type,company,location,site,ac,
 					(filterADDATTR(input.getEFFECTIVITY().getJOBCARD().getJOBI().getPLI().getADDATTR(), "PRINTER-NAME")),
-					filterADDATTR(input.getEFFECTIVITY().getJOBCARD().getJOBI().getPLI().getADDATTR(), "BUSR04"));
+					filterADDATTR(input.getEFFECTIVITY().getJOBCARD().getJOBI().getPLI().getADDATTR(), "BUSR04"),
+					input);
 			createTempBlob(xml, w);
 			createTempWoTaskCard(input, w); 
 			
@@ -149,7 +152,7 @@ public class ModelData implements IModelData {
 	@Override
 	public void print(Print print) {
 		
-		String printer = "", date, time, revision;
+		String printer = "", date, time, revision, folder = "";
 		ArrayList<PrintAck> ack = null;
 		MODEL input = null;
 		//TODO
@@ -170,7 +173,10 @@ public class ModelData implements IModelData {
 			ArrayList<String> headerTxt = genrateHeaderTxt(input);	
 			ArrayList<String> footerTxt = genrateFooterTxt(input);	
 			
-			
+			folder = input.getEFFECTIVITY().getJOBCARD().getWPNBR() +"_"+
+			filterADDATTR( input.getEFFECTIVITY().getJOBCARD().getJOBI().getPLI().getADDATTR(), "IDOC-DATE")
+			+ filterADDATTR( input.getEFFECTIVITY().getJOBCARD().getJOBI().getPLI().getADDATTR(), "IDOC-TIME") ;
+
 			ack = new ArrayList<PrintAck>();
 			ack.add(new PrintAck());
 			
@@ -195,7 +201,7 @@ public class ModelData implements IModelData {
 				xml.setFILENAME(pdfName);
 				
 				//gets pdfs path with wo id
-				xml = S3Utilities.sendTrax(xml, pdfName,txt,txtName, print.getPath(),"" ,
+				xml = S3Utilities.sendTrax(xml, pdfName,txt,txtName, print.getPath(), folder,
 						header,footer,
 						headerTxt, footerTxt);
 						
@@ -204,12 +210,11 @@ public class ModelData implements IModelData {
 			
 				//send to virtual printer TODO
 				//VIA S3 just PDF
-				S3Utilities.sendVirtualPrint( print.getPath(),printer );
+				S3Utilities.sendVirtualPrint( print.getPath(),printer +File.separator+ folder );
 			}else {
 				PrinterUtilities.sendPrint(printer, print.getPath());
 			}
-			// deletes wo and wo task card TODO
-			deleteTempWoTaskCardBlob(print.getWo() );
+			
 			 
 		} catch (Exception e) {
 			
@@ -241,7 +246,14 @@ public class ModelData implements IModelData {
 			
 			
 			e.printStackTrace();
-		} 
+		}finally {
+			// deletes wo and wo task card TODO
+			if(System.getProperty("Techdoc_DELETE") != null 
+				&& !System.getProperty("Techdoc_DELETE").isEmpty()
+				&& System.getProperty("Techdoc_DELETE").equalsIgnoreCase("YES")) {
+				deleteTempWoTaskCardBlob(print.getWo() );
+			}
+		}
 	}
 	
 	private ArrayList<String> genrateFooterTxt(MODEL input) {
@@ -404,12 +416,21 @@ public class ModelData implements IModelData {
 
 	private void createTempWoTaskCard(MODEL input, Wo w) throws Exception {
 
-		String task_card = filterADDATTR(input.getEFFECTIVITY().getJOBCARD().getJOBI().getPLI().getADDATTR(), "TASK-NBR"); 
+		ArrayList<String> taskIds = new ArrayList<String>();
+		
+		if( input.getEFFECTIVITY().getJOBCARD().getJOBI().getPLI().getATTACHMENT() != null
+			&&  !input.getEFFECTIVITY().getJOBCARD().getJOBI().getPLI().getATTACHMENT().isEmpty()) {
+			for(ATTACHMENT at : input.getEFFECTIVITY().getJOBCARD().getJOBI().getPLI().getATTACHMENT()) {
+				taskIds.add(at.getID());
+			}
+		}else {
+			taskIds.add( filterADDATTR(input.getEFFECTIVITY().getJOBCARD().getJOBI().getPLI().getADDATTR(), "TASK-NBR")); 
+		}
 		CallableStatement cstmt = null;
 
 		final String sql = "{ call pkg_wo_task_card_functions.add_wo_task_card(?, ?, ?, ?, ?, ?, ?, ?)}";
 		
-		ArrayList<String> taskCards = getTaskCards(task_card);
+		ArrayList<String> taskCards = getTaskCards(taskIds);
 		logger.info("ENG TASK CARD size: " + taskCards.size());
 
 		if(this.con == null || this.con.isClosed())
@@ -442,20 +463,26 @@ public class ModelData implements IModelData {
 		}	
 	}
 
-	private ArrayList<String> getTaskCards(String subTaskCard) {
+	private ArrayList<String> getTaskCards(ArrayList<String> taskIds) {
 		try {
 			
 			ArrayList<String> taskCardStrings = new ArrayList<String>();
-			logger.info("SUB TASK CARD: " + subTaskCard);
-			//get all tcs from tc sub fields
-			List<TaskCard> cards = em.createQuery("Select t From TaskCard t where t.tcSub =:sub", TaskCard.class)
-					.setParameter("sub", subTaskCard)
-					.getResultList();
-			for(TaskCard tc: cards) {
-				logger.info("ENG TASK CARD: " + tc.getTaskCard());
-
-				taskCardStrings.add( tc.getTaskCard());
-			}			
+			for(String subTaskId  : taskIds) {
+				logger.info("SUB TASK CARD: " + subTaskId);
+				//get all tcs from tc sub fields
+				try {
+					List<TaskCard> cards = em.createQuery("Select t From TaskCard t where t.tcSub =:sub", TaskCard.class)
+							.setParameter("sub", subTaskId)
+							.getResultList();
+					for(TaskCard tc: cards) {
+						logger.info("ENG TASK CARD: " + tc.getTaskCard());
+		
+						taskCardStrings.add( tc.getTaskCard());
+					}
+				}catch (Exception e) {
+					logger.info("NO ENG TASK CARD FOUND FOR " + subTaskId);
+				}
+			}
 			return taskCardStrings;	
 		}catch (Exception e) {
 			e.printStackTrace();
@@ -499,8 +526,10 @@ public class ModelData implements IModelData {
 	}
 	
 
-	private Wo createTempWo(String type, String comapny, String location, String site,String ac, String print, String acType) {
+	private Wo createTempWo(String type, String comapny, String location, 
+			String site,String ac, String print, String acType, MODEL input ) {
 		
+			JOBCARD jc = input.getEFFECTIVITY().getJOBCARD();
 			Wo wo = null;
 
 			wo = new Wo();
@@ -515,6 +544,18 @@ public class ModelData implements IModelData {
 			wo.setAc(ac);
 			wo.setAcSn(acType);
 			wo.setGlCompany(comapny);
+			
+			wo.setPnDescription(input.getEFFECTIVITY().getJOBCARD().getWPTITLE());
+			
+			wo.setAmpRevision( filterADDATTR(jc.getJOBI().getPLI().getADDATTR(), "LATEST-REVISION-DATE"));
+			wo.setExternalReference(jc.getJOBI().getZONE() +"/" +jc.getPOS()
+			);
+			wo.setAmpTempRev(jc.getWPNBR());
+			wo.setCosl(jc.getJCNBR());
+			wo.setFlight(jc.getMANHRS());
+			wo.setAmpMs(filterADDATTR(jc.getJOBI().getPLI().getADDATTR(), "BUSR12"));
+			wo.setAuthorizationDate(convertStringToDate(jc.getWPDATE()));
+			
 			wo.setOrderType("W/O");
 			wo.setModule("PRODUCTION");
 			wo.setPaperChecked("NO");
@@ -900,5 +941,14 @@ public class ModelData implements IModelData {
 				return null;
 			}		
 		}
+		
+		private Date convertStringToDate( String string) {
+			try {
+				return new SimpleDateFormat("yyyyMMdd").parse(string); 
+			}catch(Exception e) {
+				e.printStackTrace();
+				return null;
+			}
+		}	
 		
 }
