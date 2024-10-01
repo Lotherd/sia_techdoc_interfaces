@@ -82,7 +82,7 @@ public class ModelData implements IModelData {
 	
 
 	//MOD 16 //MOD 22
-	public void issueTo (MODEL input, String xml) throws Exception {
+	public Wo issueTo (MODEL input, String xml) throws Exception {
 		
 		//creates temp wo with attached xml
 		String company = "SIA", ac, location , site, type ;
@@ -107,10 +107,8 @@ public class ModelData implements IModelData {
 					filterADDATTR(input.getEFFECTIVITY().getJOBCARD().getJOBI().getPLI().getADDATTR(), "BUSR04"),
 					input);
 			createTempBlob(xml, w);
-			createTempWoTaskCard(input, w); 
 			
-			//call wo pack print with flag TODO
-			status = sendWorkPackPrintJob(w );
+			return w;
 		}catch (Exception e) {
 			e.printStackTrace();
 			status = 1;
@@ -145,8 +143,10 @@ public class ModelData implements IModelData {
 					break;
 				default:
 					break;
+			}
+			
 		}
-		}
+		return null;
 	}
 	
 	@Override
@@ -188,7 +188,7 @@ public class ModelData implements IModelData {
 				//gets pdfs path with wo id
 				json = S3Utilities.sendEDCO(json, pdfName,txt,txtName, print.getPath(),printer,
 						header,footer,
-						headerTxt, footerTxt						
+						headerTxt, footerTxt,folder						
 						);
 				
 				SqsUtilities.sendResend(json, pdfName);
@@ -210,7 +210,7 @@ public class ModelData implements IModelData {
 			
 				//send to virtual printer TODO
 				//VIA S3 just PDF
-				S3Utilities.sendVirtualPrint( print.getPath(),printer +File.separator+ folder );
+				S3Utilities.sendVirtualPrint( print.getPath(),printer +File.separator+ folder,pdfName );
 			}else {
 				PrinterUtilities.sendPrint(printer, print.getPath());
 			}
@@ -546,16 +546,16 @@ public class ModelData implements IModelData {
 			wo.setGlCompany(comapny);
 			
 			wo.setPnDescription(input.getEFFECTIVITY().getJOBCARD().getWPTITLE());
-			
+			wo.setTaskCardNumberingSystem(new BigDecimal(0));
 			wo.setAmpRevision( filterADDATTR(jc.getJOBI().getPLI().getADDATTR(), "LATEST-REVISION-DATE"));
 			wo.setExternalReference(jc.getJOBI().getZONE() +"/" +jc.getPOS()
 			);
 			wo.setAmpTempRev(jc.getWPNBR());
 			wo.setCosl(jc.getJCNBR());
-			wo.setFlight(jc.getMANHRS());
+			wo.setFlight(jc.getMANHRS().substring(0, 9));
 			wo.setAmpMs(filterADDATTR(jc.getJOBI().getPLI().getADDATTR(), "BUSR12"));
 			wo.setAuthorizationDate(convertStringToDate(jc.getWPDATE()));
-			
+			wo.setStatus("OPEN");
 			wo.setOrderType("W/O");
 			wo.setModule("PRODUCTION");
 			wo.setPaperChecked("NO");
@@ -834,7 +834,7 @@ public class ModelData implements IModelData {
 	}	
 	
 	//insert generic data from model objects
-		private <T> void insertData( T data) 
+		public <T> void insertData( T data) 
 		{
 			try {	
 				em.merge(data);
@@ -949,6 +949,76 @@ public class ModelData implements IModelData {
 				e.printStackTrace();
 				return null;
 			}
+		}
+
+
+
+		
+
+
+
+		@Override
+		public void sendPrint(MODEL input, String xml, Wo w) {
+			//creates temp wo with attached xml
+			String company = "SIA", ac, location , site, type ;
+			String printer = "", date, time, revision;
+			ArrayList<PrintAck> ack = null;
+			ac = input.getEFFECTIVITY().getREGNBR();
+			location = "SIN";
+			site = input.getEFFECTIVITY().getJOBCARD().getCENTER();
+			type = input.getEFFECTIVITY().getJOBCARD().getTYPE();
+			if(siaec.contains(input.getMODELNBR())) {
+				company = "SIAEC";
+			}else if(scoot.contains(filterADDATTR(input.getEFFECTIVITY().getJOBCARD().getJOBI().getPLI().getADDATTR(), "BUSR06"))) {
+				company = "SCOOT";
+			}
+			
+			 int status = 0;
+			
+			//creates temp wo task card 
+			try {
+				
+				createTempWoTaskCard(input, w); 
+				
+				//call wo pack print with flag TODO
+				status = sendWorkPackPrintJob(w );
+			}catch (Exception e) {
+				e.printStackTrace();
+				status = 1;
+			}
+			
+			if(status == 0) {
+				sendPrintStatusAcknowledgement(input, "P", "SUCESS");
+			}else {
+				sendPrintStatusAcknowledgement(input, "E", "ERROR");
+				date =filterADDATTR( input.getEFFECTIVITY().getJOBCARD().getJOBI().getPLI().getADDATTR(), "IDOC-DATE");
+				revision = filterADDATTR( input.getEFFECTIVITY().getJOBCARD().getJOBI().getPLI().getADDATTR(), "LATEST-REVISION");
+				time = filterADDATTR( input.getEFFECTIVITY().getJOBCARD().getJOBI().getPLI().getADDATTR(), "IDOC-TIME") ;
+				printer = (filterADDATTR(input.getEFFECTIVITY().getJOBCARD().getJOBI().getPLI().getADDATTR(), "PRINTER-NAME"));
+				ack = new ArrayList<PrintAck>();
+				ack.add(new PrintAck());	
+				
+				switch(printer) {
+					case "ECXX":
+					case "ECXY":
+						ModelController.sendEmailEDCO( input.getEFFECTIVITY().getJOBCARD().getWPNBR()
+								, revision, date, time, ack);
+						break;
+					case "TRAX":	
+						ModelController.sendEmailTrax(input.getEFFECTIVITY().getJOBCARD().getWPNBR()
+								, revision, date, time, ack);
+						break;
+		
+					case "EDXX":
+					case "ECXZ":	
+						ModelController.sendEmailPrint(input.getEFFECTIVITY().getJOBCARD().getWPNBR()
+								, revision, date, time, ack);
+						break;
+					default:
+						break;
+			}
+			}
+			
 		}	
 		
 }

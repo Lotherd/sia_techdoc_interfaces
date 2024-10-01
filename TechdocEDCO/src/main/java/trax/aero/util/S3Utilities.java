@@ -71,8 +71,34 @@ public class S3Utilities {
 		}
     }
 
+	// ---------------------------------------------------------------------------- Send Folder
+	
+	private static void putS3Object( String key, String bucketName) {
+	        try {
+	        	
+	        	
+	        	//Files.move(file.toPath(), new File(key+File.separator+file.getName()).toPath(), StandardCopyOption.REPLACE_EXISTING);
+
+	        	
+		        	S3Client s3 = S3Client.builder().build();       
+		            PutObjectRequest request = PutObjectRequest.builder()
+		                .bucket(bucketName)
+		                .key(key)
+		                .build();
+		            s3.putObject(request, RequestBody.empty());
+		            
+		            System.out.println("Successfully placed " + key + " into bucket " + bucketName);
+	        } catch (S3Exception e) {
+	            e.printStackTrace();
+	            throw e;
+	        }catch (Exception e) {
+	        	 e.printStackTrace();
+	        	 throw e;
+			}
+	    }
+	
 	public static OUTPUT sendEDCO(OUTPUT json, String pdfName, ArrayList<String> txt, String txtName, String path, String printer,
-			String header, String footer, ArrayList<String> headerTxt, ArrayList<String> footerTxt) throws Exception {
+			String header, String footer, ArrayList<String> headerTxt, ArrayList<String> footerTxt, String folder) throws Exception {
 		
 		
 		//ArrayList<File> pdfs = new ArrayList<File>();
@@ -86,7 +112,7 @@ public class S3Utilities {
 			}
 			
 			Files.move(print.toPath(), new File(fileLocOut+File.separator+FilenameUtils.removeExtension(print.getName())
-			+File.separator +print.getName()).toPath(), StandardCopyOption.REPLACE_EXISTING);
+			+File.separator +pdfName).toPath(), StandardCopyOption.REPLACE_EXISTING);
 
 			
 			Path file = Paths.get(fileLocOut+File.separator+FilenameUtils.removeExtension(print.getName())
@@ -160,8 +186,8 @@ public class S3Utilities {
 				
 				//FOUND PDFS
 				for(File p : prints){						
-					putS3Object(p,pathS3EDCO ,bucketNameEDCO);	
-					PrinterUtilities.sendPrint(printer, path);
+					putS3Object(p,pathS3EDCO +folder+ File.separator ,bucketNameEDCO);	
+					PrinterUtilities.sendPrint(printer, p.getPath());
 				}
 			}
 			
@@ -272,6 +298,7 @@ public class S3Utilities {
 			//Print server folder logic
 			if(prints != null)
 			{
+				//putS3Object(pathS3Trax+folder+ File.separator, bucketNameTrax);
 				//FOUND PDFS
 				for(File p : prints){	
 					putS3Object(p,pathS3Trax+folder+ File.separator,bucketNameTrax);	
@@ -284,11 +311,34 @@ public class S3Utilities {
 		return xml;
 	}
 
-	public static void sendVirtualPrint(String path, String folder) {
+	public static void sendVirtualPrint(String path, String folder, String pdfName) throws Exception {
 		
 		try {
-			File print = new File(path);	
-			putS3Object(print,pathS3Print +folder +File.separator,bucketNamePrint);	
+			File print = new File(path);
+			File theDir = new File(fileLocOut+File.separator+FilenameUtils.removeExtension(print.getName()));
+			if (!theDir.exists()){
+			    theDir.mkdirs();
+			}
+			System.out.println("MOVE " +print.toPath() + " TO " 
+			+fileLocOut+File.separator+FilenameUtils.removeExtension(print.getName())+File.separator +pdfName);
+			Files.move(print.toPath(), new File(fileLocOut+File.separator+FilenameUtils.removeExtension(print.getName())
+			+File.separator +pdfName).toPath(), StandardCopyOption.REPLACE_EXISTING);
+
+			//putS3Object(pathS3Print +folder +File.separator,bucketNamePrint);	
+			//putS3Object(print,pathS3Print +folder +File.separator,bucketNamePrint);
+			File folderPrint = new File(fileLocOut+File.separator+FilenameUtils.removeExtension(print.getName()));
+
+			File[] prints = folderPrint.listFiles();
+			
+			//Print server folder logic
+			if(prints != null)
+			{
+				//putS3Object(pathS3Trax+folder+ File.separator, bucketNameTrax);
+				//FOUND PDFS
+				for(File p : prints){	
+					putS3Object(p,pathS3Print+folder+ File.separator,bucketNamePrint);	
+				}
+			}
 			
 		} catch (Exception e) {
 			e.printStackTrace();

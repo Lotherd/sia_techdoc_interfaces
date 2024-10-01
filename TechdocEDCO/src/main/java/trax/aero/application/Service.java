@@ -17,6 +17,7 @@ import javax.xml.bind.Marshaller;
 import javax.xml.bind.Unmarshaller;
 
 import trax.aero.interfaces.IModelData;
+import trax.aero.model.Wo;
 import trax.aero.pojo.Print;
 import trax.aero.pojo.xml.MODEL;
 import trax.aero.pojo.xml.ROOT;
@@ -108,7 +109,8 @@ public class Service {
 				xml=xml.replaceAll("&amp;lt;", 		"&lt;");
 				xml=xml.replaceAll("&amp;quot;", 	"&quot;");
 				xml=xml.replaceAll("&amp;re;", 		"");
-				data.issueTo(model,xml );
+				Wo w= data.issueTo(model,xml );
+				data.sendPrint(model, xml, w);
 				 try{
 					if(data.getCon() != null && !data.getCon().isClosed())
 						data.getCon().close();
