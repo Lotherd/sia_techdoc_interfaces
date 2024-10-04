@@ -186,7 +186,7 @@ public class S3Utilities {
 				
 				//FOUND PDFS
 				for(File p : prints){						
-					putS3Object(p,pathS3EDCO +folder+ File.separator ,bucketNameEDCO);	
+					putS3Object(p,pathS3EDCO ,bucketNameEDCO);	
 					PrinterUtilities.sendPrint(printer, p.getPath());
 				}
 			}

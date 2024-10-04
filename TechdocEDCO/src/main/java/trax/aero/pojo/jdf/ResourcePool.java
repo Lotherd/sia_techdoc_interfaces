@@ -5,20 +5,34 @@ import java.util.ArrayList;
 public class ResourcePool {
 
 	CustomerInfo CustomerInfoObject;
-	 RunList RunListObject;
-	 LayoutElement LayoutElementObject;
-	 LayoutPreparationParams LayoutPreparationParamsObject;
-	 InterpretingParams InterpretingParamsObject;
-	 RenderingParams RenderingParamsObject;
-	 ScreeningParams ScreeningParamsObject;
-	 DigitalPrintingParams DigitalPrintingParamsObject;
-	 ArrayList < Component > Component = new ArrayList < Component > ();
-	 MailboxDetails MailboxDetailsObject;
-	 HoleMakingParams HoleMakingParamsObject;
-	 FoldingParams FoldingParamsObject;
-	 StitchingParams StitchingParamsObject;
-	 Media MediaObject;
-	 Contact ContactObject;
+	
+	RunList RunListObject;
+	
+	LayoutElement LayoutElementObject;
+	
+	LayoutPreparationParams LayoutPreparationParamsObject;
+	
+	InterpretingParams InterpretingParamsObject;
+	
+	RenderingParams RenderingParamsObject;
+	
+	ScreeningParams ScreeningParamsObject;
+	
+	DigitalPrintingParams DigitalPrintingParamsObject;
+	
+	ArrayList < Component > Component = new ArrayList < Component > ();
+	
+	MailboxDetails MailboxDetailsObject;
+	
+	HoleMakingParams HoleMakingParamsObject;
+	
+	FoldingParams FoldingParamsObject;
+	
+	StitchingParams StitchingParamsObject;
+	
+	Media MediaObject;
+	
+	Contact ContactObject;
 
 
 	 // Getter Methods 

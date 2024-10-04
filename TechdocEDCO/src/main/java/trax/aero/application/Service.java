@@ -65,12 +65,13 @@ public class Service {
        }finally {
 	    	   try 
 	   		{
-	   			if(data.getCon() != null && !data.getCon().isClosed())
+	   			if(data.getCon() != null && !data.getCon().isClosed()) {
 	   				data.getCon().close();
+	   			}	
 	   		} 
 	   		catch (SQLException e) 
 	   		{ 
-	   			e.printStackTrace();
+	   			//e.printStackTrace();
 	   		}
        }
 	   return Response.ok().build();

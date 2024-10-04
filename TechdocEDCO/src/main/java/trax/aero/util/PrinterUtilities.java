@@ -389,36 +389,61 @@ public class PrinterUtilities {
 		jdf.getComment().set_Name("oce:TicketVersion");
 		jdf.getComment().set__text("4.00");
 		
+		//TODO
 		jdf.getResourcePool().setContact(new Contact());
+		
 		jdf.getResourcePool().setCustomerInfo(new CustomerInfo());
+		
 		jdf.getResourcePool().setDigitalPrintingParams(new DigitalPrintingParams());
+		
 		jdf.getResourcePool().setFoldingParams(new FoldingParams());
+		
 		jdf.getResourcePool().setHoleMakingParams(new HoleMakingParams());
+		
 		jdf.getResourcePool().setInterpretingParams(new InterpretingParams());
+		
 		jdf.getResourcePool().setLayoutElement(new LayoutElement());
+		
 		jdf.getResourcePool().setLayoutPreparationParams(new LayoutPreparationParams());
+		
 		jdf.getResourcePool().setMailboxDetails(new MailboxDetails());
+		
 		jdf.getResourcePool().setMedia(new Media());
+		
 		jdf.getResourcePool().setRenderingParams(new RenderingParams());
+		
 		jdf.getResourcePool().setRunList(new RunList());
+		
 		jdf.getResourcePool().setScreeningParams(new ScreeningParams());
+		
 		jdf.getResourcePool().setStitchingParams(new StitchingParams());
 		
 		
 		
 		
-		
+		//TODO
 		jdf.getResourceLinkPool().setCustomerInfoLink(new CustomerInfoLink());
+		
 		jdf.getResourceLinkPool().setDigitalPrintingParamsLink(new DigitalPrintingParamsLink());
+		
 		jdf.getResourceLinkPool().setFoldingParamsLink(new FoldingParamsLink());
+		
 		jdf.getResourceLinkPool().setHoleMakingParamsLink(new HoleMakingParamsLink());
+		
 		jdf.getResourceLinkPool().setInterpretingParamsLink(new InterpretingParamsLink());
+		
 		jdf.getResourceLinkPool().setLayoutPreparationParamsLink(new LayoutPreparationParamsLink());
+		
 		jdf.getResourceLinkPool().setMailboxDetailsLink(new MailboxDetailsLink());
+		
 		jdf.getResourceLinkPool().setMediaLink(new MediaLink());
+		
 		jdf.getResourceLinkPool().setRenderingParamsLink(new RenderingParamsLink());
+		
 		jdf.getResourceLinkPool().setRunListLink(new RunListLink());
+		
 		jdf.getResourceLinkPool().setScreeningParamsLink(new ScreeningParamsLink());
+		
 		jdf.getResourceLinkPool().setStitchingParamsLink(new StitchingParamsLink());
 		
 		//DONE

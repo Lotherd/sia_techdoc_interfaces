@@ -1,11 +1,23 @@
 package trax.aero.pojo.jdf;
 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlAttribute;
+
+@XmlAccessorType(XmlAccessType.FIELD)
 public class Created {
 
+	@XmlAttribute(name = "ID")
 	private String _ID;
-	 private String _AgentName;
-	 private String _AgentVersion;
-	 private String _TimeStamp;
+	
+	@XmlAttribute(name = "AgentName")
+	private String _AgentName;
+	
+	@XmlAttribute(name = "AgentVersion")
+	private String _AgentVersion;
+
+	@XmlAttribute(name = "TimeStamp")
+	private String _TimeStamp;
 
 
 	 // Getter Methods 
