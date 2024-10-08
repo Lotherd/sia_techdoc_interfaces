@@ -69,6 +69,9 @@
 	<class>trax.aero.model.AcMaster</class>
 	<class>trax.aero.model.AcTypeSeriesMaster</class>
 	<class>trax.aero.model.AcTypeSeriesMasterPK</class>
+	<class>trax.aero.model.InterfaceAudit</class>
+	<class>trax.aero.model.InterfaceData</class>
+	<class>trax.aero.model.InterfaceDataPK</class>
         <shared-cache-mode>NONE</shared-cache-mode>
 		<properties>
 			<property name="hibernate.dialect"

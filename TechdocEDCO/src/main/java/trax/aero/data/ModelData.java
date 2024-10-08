@@ -29,6 +29,8 @@ import trax.aero.interfaces.IModelData;
 import trax.aero.logger.LogManager;
 import trax.aero.model.BlobTable;
 import trax.aero.model.BlobTablePK;
+import trax.aero.model.InterfaceAudit;
+import trax.aero.model.InterfaceData;
 import trax.aero.model.TaskCard;
 import trax.aero.model.Wo;
 import trax.aero.model.WoTaskCard;
@@ -167,7 +169,6 @@ public class ModelData implements IModelData {
 			ArrayList<String> txt =	genrateTxt(input);
 			String txtName = genrateTxtName(input);	
 			printer = (filterADDATTR(input.getEFFECTIVITY().getJOBCARD().getJOBI().getPLI().getADDATTR(), "PRINTER-NAME"));
-			
 			String header = genrateHeaderName(input);	
 			String footer = genrateFooterName(input);	
 			ArrayList<String> headerTxt = genrateHeaderTxt(input);	
@@ -212,7 +213,37 @@ public class ModelData implements IModelData {
 				//VIA S3 just PDF
 				S3Utilities.sendVirtualPrint( print.getPath(),printer +File.separator+ folder,pdfName );
 			}else {
-				PrinterUtilities.sendPrint(printer, print.getPath());
+				String side = (filterADDATTR(input.getEFFECTIVITY().getJOBCARD().getJOBI().getPLI().getADDATTR(), "ORDER-TYPE"))
+				,tray = "4"; 
+				
+				
+				if(side.equalsIgnoreCase("MCS")) {
+					switch(input.getEFFECTIVITY().getJOBCARD().getJOBNBR()) {
+						case"A":
+						case"1":
+							tray = "2";	
+						case"2":
+						case"3":
+						case"4":
+						case"B":
+							tray = "3";
+						default:tray = "1";
+					}
+				}else if(side.equalsIgnoreCase("SI")){
+					switch(input.getEFFECTIVITY().getJOBCARD().getJOBNBR()) {
+						case"1":tray = "2";					
+						case"2":tray = "3";
+						default:tray = "1";
+					}
+				}
+				
+				if(side.equalsIgnoreCase("MCS") 
+						|| side.equalsIgnoreCase("SI") 
+						|| side.equalsIgnoreCase("AMM/BTC")) {
+					side = "DUPLEX";
+				}
+							
+				PrinterUtilities.sendPrint(printer, print.getPath(),side,tray);
 			}
 			
 			 
@@ -1020,5 +1051,41 @@ public class ModelData implements IModelData {
 			}
 			
 		}	
+		
+		public void processBatFile() {
+			
+			try
+			{	
+				List<InterfaceAudit> interfaceAudits = em.createQuery("SELECT p FROM InterfaceAudit p WHERE p.transactionObject = :obj "
+						+ "and p.messageNeedsToBeSent = :tas ")
+						.setParameter("obj", "SAP_TC")
+						.setParameter("tas", "Y")
+						.getResultList();
+				if(interfaceAudits != null && !interfaceAudits.isEmpty()) {
+					logger.info("Interface Audit SIZE " +interfaceAudits.size());
+					for(InterfaceAudit i : interfaceAudits) {
+						try 
+						{
+							logger.info("Interface Audit PROCESSING " +i.getTransaction());
+							for (InterfaceData id : i.getInterfaceData()) {
+								S3Utilities.setBatFile(id.getClobDocument(),id.getFileName(),String.valueOf( i.getTransaction()));
+							}					
+							
+							em.refresh(i);
+							i.setMessageNeedsToBeSent("N");
+							insertData(i);
+						}
+						catch (Exception e) 
+				        {
+							
+						}
+					}
+				}
+			}
+			catch (Exception e)
+			{	
+				e.printStackTrace();
+			}
+		}
 		
 }

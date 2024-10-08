@@ -21,5 +21,7 @@ public interface IModelData {
 
 	public void sendPrint(MODEL model, String xml, Wo w);
 
+	public void processBatFile();
+
 	
 }

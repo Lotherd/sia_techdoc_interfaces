@@ -3,13 +3,12 @@ package trax.aero.util;
 import java.awt.print.PrinterJob;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.StringWriter;
 import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
-import java.nio.file.StandardOpenOption;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.logging.Logger;
@@ -23,6 +22,7 @@ import javax.print.SimpleDoc;
 import javax.print.attribute.HashPrintRequestAttributeSet;
 import javax.print.attribute.PrintRequestAttributeSet;
 import javax.print.attribute.standard.Copies;
+import javax.print.attribute.standard.Media;
 import javax.print.attribute.standard.MediaTray;
 import javax.print.attribute.standard.OrientationRequested;
 import javax.print.attribute.standard.Sides;
@@ -32,8 +32,6 @@ import javax.ws.rs.client.Entity;
 import javax.ws.rs.core.MediaType;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.Marshaller;
-import javax.xml.bind.PropertyException;
-import javax.xml.bind.Unmarshaller;
 
 import org.apache.commons.io.FilenameUtils;
 import org.apache.pdfbox.pdmodel.PDDocument;
@@ -42,40 +40,38 @@ import org.apache.pdfbox.printing.Scaling;
 
 import trax.aero.logger.LogManager;
 import trax.aero.pojo.Dw_Wo_Pack_Print;
-import trax.aero.pojo.jdf.AuditPool;
-import trax.aero.pojo.jdf.Comment;
-import trax.aero.pojo.jdf.Contact;
-import trax.aero.pojo.jdf.Created;
-import trax.aero.pojo.jdf.CustomerInfo;
-import trax.aero.pojo.jdf.CustomerInfoLink;
-import trax.aero.pojo.jdf.DigitalPrintingParams;
-import trax.aero.pojo.jdf.DigitalPrintingParamsLink;
-import trax.aero.pojo.jdf.FoldingParams;
-import trax.aero.pojo.jdf.FoldingParamsLink;
-import trax.aero.pojo.jdf.HoleMakingParams;
-import trax.aero.pojo.jdf.HoleMakingParamsLink;
-import trax.aero.pojo.jdf.InterpretingParams;
-import trax.aero.pojo.jdf.InterpretingParamsLink;
-import trax.aero.pojo.jdf.JDF;
-import trax.aero.pojo.jdf.LayoutElement;
-import trax.aero.pojo.jdf.LayoutPreparationParams;
-import trax.aero.pojo.jdf.LayoutPreparationParamsLink;
-import trax.aero.pojo.jdf.MailboxDetails;
-import trax.aero.pojo.jdf.MailboxDetailsLink;
-import trax.aero.pojo.jdf.Media;
-import trax.aero.pojo.jdf.MediaLink;
-import trax.aero.pojo.jdf.RenderingParams;
-import trax.aero.pojo.jdf.RenderingParamsLink;
-import trax.aero.pojo.jdf.ResourceLinkPool;
-import trax.aero.pojo.jdf.ResourcePool;
-import trax.aero.pojo.jdf.RunList;
-import trax.aero.pojo.jdf.RunListLink;
-import trax.aero.pojo.jdf.ScreeningParams;
-import trax.aero.pojo.jdf.ScreeningParamsLink;
-import trax.aero.pojo.jdf.StitchingParams;
-import trax.aero.pojo.jdf.StitchingParamsLink;
-import trax.aero.pojo.xml.MODEL;
-import trax.aero.pojo.xml.ROOT;
+import trax.aero.pojo.jdf.AuditPoolBean;
+import trax.aero.pojo.jdf.CommentBean;
+import trax.aero.pojo.jdf.ContactBean;
+import trax.aero.pojo.jdf.CreatedBean;
+import trax.aero.pojo.jdf.CustomerInfoBean;
+import trax.aero.pojo.jdf.CustomerInfoLinkBean;
+import trax.aero.pojo.jdf.DigitalPrintingParamsBean;
+import trax.aero.pojo.jdf.DigitalPrintingParamsLinkBean;
+import trax.aero.pojo.jdf.FoldingParamsBean;
+import trax.aero.pojo.jdf.FoldingParamsLinkBean;
+import trax.aero.pojo.jdf.HoleMakingParamsBean;
+import trax.aero.pojo.jdf.HoleMakingParamsLinkBean;
+import trax.aero.pojo.jdf.InterpretingParamsBean;
+import trax.aero.pojo.jdf.InterpretingParamsLinkBean;
+import trax.aero.pojo.jdf.JDFBean;
+import trax.aero.pojo.jdf.LayoutElementBean;
+import trax.aero.pojo.jdf.LayoutPreparationParamsBean;
+import trax.aero.pojo.jdf.LayoutPreparationParamsLinkBean;
+import trax.aero.pojo.jdf.MailboxDetailsBean;
+import trax.aero.pojo.jdf.MailboxDetailsLinkBean;
+import trax.aero.pojo.jdf.MediaBean;
+import trax.aero.pojo.jdf.MediaLinkBean;
+import trax.aero.pojo.jdf.RenderingParamsBean;
+import trax.aero.pojo.jdf.RenderingParamsLinkBean;
+import trax.aero.pojo.jdf.ResourceLinkPoolBean;
+import trax.aero.pojo.jdf.ResourcePoolBean;
+import trax.aero.pojo.jdf.RunListBean;
+import trax.aero.pojo.jdf.RunListLinkBean;
+import trax.aero.pojo.jdf.ScreeningParamsBean;
+import trax.aero.pojo.jdf.ScreeningParamsLinkBean;
+import trax.aero.pojo.jdf.StitchingParamsBean;
+import trax.aero.pojo.jdf.StitchingParamsLinkBean;
 import trax.types.PrintQueueJob;
 
 public class PrinterUtilities {
@@ -211,7 +207,7 @@ public class PrinterUtilities {
 	}
 	
 	
-	public static void sendToPrinterHeavy(String printService, File file) {
+	public static void sendToPrinterHeavy(String printService, File file, String side, String tray) {
 
 		if (file != null && printService != null && file.exists() && file.isFile()) {
 			System.out.println("Job received for printer: " + printService);
@@ -254,10 +250,28 @@ public class PrinterUtilities {
 		            // Set print attributes (like orientation, number of copies, etc.)
 		            PrintRequestAttributeSet attributes = new HashPrintRequestAttributeSet();
 		            // Set tray selection to Tray 2
-		            attributes.add(MediaTray.BOTTOM);
+		            switch(tray){
+		            	case "1": attributes.add(MediaTray.TOP);
+		            		
+		            	case "2": attributes.add(MediaTray.MIDDLE);
+		            	
+		            	case "3": attributes.add(MediaTray.BOTTOM);
+		            	
+		            	case "4": attributes.add(MediaTray.ENVELOPE);
+		            		
+		            	default: attributes.add(MediaTray.TOP);	
+		       
+		            }
+		            
+		            
+		           
 
-		            // Enable duplex printing (double-sided)
-		            attributes.add(Sides.DUPLEX);  // Sides.DUPLEX is for double-sided, Sides.ONE_SIDED for single-sided
+		            
+		            if(side.equalsIgnoreCase("DUPLEX")) {
+		            	attributes.add(Sides.DUPLEX);  
+		            }else {
+		            	attributes.add(Sides.ONE_SIDED);  		            	
+		            }
 
 		            // Set other optional attributes (e.g., number of copies, orientation)
 		            attributes.add(new Copies(1));  // Set the number of copies to 1
@@ -292,7 +306,7 @@ public class PrinterUtilities {
 	
 	
 	
-	public static void  sendPrint(String printer, String path) {
+	public static void  sendPrint(String printer, String path, String side, String tray) {
 		
 		//ArrayList<File> pdfs = new ArrayList<File>();
 		String fileLocOut =  System.getProperty("TECH_fileLocOut") ;
@@ -315,7 +329,7 @@ public class PrinterUtilities {
 			File localPrint = new File(fileLocOut+File.separator+FilenameUtils.removeExtension(print.getName())+File.separator +print.getName());
 			//sendToPrinter(printer, print);
 			if(heavyPrinters.contains(printer)) {
-				sendToPrinterHeavy(printer, localPrint);
+				sendToPrinterHeavy(printer, localPrint,side,tray);
 			}else {
 				sendToPrinterLP(printer, localPrint);
 			}
@@ -351,110 +365,136 @@ public class PrinterUtilities {
 	
 	private static void addJdfToPdf(String printer, File print) throws Exception {
 		
-		 JDF jdf = initJDF(print.getName());
+		 JDFBean jdf = initJDF(print.getName());
 		
 		
-		JAXBContext jc = JAXBContext.newInstance(JDF.class);
-		jc = JAXBContext.newInstance(MODEL.class);
+		JAXBContext jc = JAXBContext.newInstance(JDFBean.class);
 		Marshaller marshaller = jc.createMarshaller();
 		marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, Boolean.TRUE);
 		StringWriter sw = new StringWriter();
 		marshaller.marshal(jdf, sw);
 		
 		String xml = sw.toString();
-		Files.write(Paths.get(print.getPath()), xml.getBytes(), StandardOpenOption.APPEND);
-		 
+		logger.info(xml);
+		logger.info(print.getPath());
+	 	//Files.write(Paths.get(print.getPath()), xml.getBytes(), StandardOpenOption.);
+		prependPrefix(print, xml);
 		 
 		 
 	}
 	
-	private static JDF initJDF(String fileName) {
+	public static JDFBean initJDF(String fileName) {
 		
-		JDF jdf = new JDF();
+		JDFBean jdf = new JDFBean();
 		//DONE
 		jdf.setActivation("Active");
-		jdf.setAuditPool(new AuditPool());
+		jdf.setAuditPoolBean(new AuditPoolBean());
 		jdf.setCategory("DigitalPrinting");
-		jdf.setComment(new Comment());
+		jdf.setCommentBean(new CommentBean());
 		jdf.setDescriptiveName(fileName);
 		jdf.setID("jdf_1");
-		jdf.setResourceLinkPool(new ResourceLinkPool());
-		jdf.setResourcePool(new ResourcePool());
+		jdf.setResourceLinkPoolBean(new ResourceLinkPoolBean());
+		jdf.setResourcePoolBean(new ResourcePoolBean());
 		jdf.setStatus("Waiting");
 		jdf.setType("Combined");
 		jdf.setTypes("LayoutPreparation Imposition Interpreting Rendering Screening DigitalPrinting oce:Mailbox HoleMaking Folding Stitching");
 		jdf.setVersion("1.3");
 		
 		//DONE
-		jdf.getComment().set_Name("oce:TicketVersion");
-		jdf.getComment().set__text("4.00");
+		jdf.getCommentBean().setName("oce:TicketVersion");
+		jdf.getCommentBean().setComment("4.00");
 		
 		//TODO
-		jdf.getResourcePool().setContact(new Contact());
+		jdf.getResourcePoolBean().setContactBean(new ContactBean());
+		//jdf.getResourcePoolBean().getContact().set
 		
-		jdf.getResourcePool().setCustomerInfo(new CustomerInfo());
+		jdf.getResourcePoolBean().setCustomerInfoBean(new CustomerInfoBean());
+		//jdf.getResourcePoolBean().getCustomerInfo().set
 		
-		jdf.getResourcePool().setDigitalPrintingParams(new DigitalPrintingParams());
+		jdf.getResourcePoolBean().setDigitalPrintingParamsBean(new DigitalPrintingParamsBean());
 		
-		jdf.getResourcePool().setFoldingParams(new FoldingParams());
+		jdf.getResourcePoolBean().setFoldingParamsBean(new FoldingParamsBean());
 		
-		jdf.getResourcePool().setHoleMakingParams(new HoleMakingParams());
+		jdf.getResourcePoolBean().setHoleMakingParamsBean(new HoleMakingParamsBean());
 		
-		jdf.getResourcePool().setInterpretingParams(new InterpretingParams());
+		jdf.getResourcePoolBean().setInterpretingParamsBean(new InterpretingParamsBean());
 		
-		jdf.getResourcePool().setLayoutElement(new LayoutElement());
+		jdf.getResourcePoolBean().setLayoutElementBean(new LayoutElementBean());
 		
-		jdf.getResourcePool().setLayoutPreparationParams(new LayoutPreparationParams());
+		jdf.getResourcePoolBean().setLayoutPreparationParamsBean(new LayoutPreparationParamsBean());
 		
-		jdf.getResourcePool().setMailboxDetails(new MailboxDetails());
+		jdf.getResourcePoolBean().setMailboxDetailsBean(new MailboxDetailsBean());
 		
-		jdf.getResourcePool().setMedia(new Media());
+		jdf.getResourcePoolBean().setMediaBean(new MediaBean());
 		
-		jdf.getResourcePool().setRenderingParams(new RenderingParams());
+		jdf.getResourcePoolBean().setRenderingParamsBean(new RenderingParamsBean());
 		
-		jdf.getResourcePool().setRunList(new RunList());
+		jdf.getResourcePoolBean().setRunListBean(new RunListBean());
 		
-		jdf.getResourcePool().setScreeningParams(new ScreeningParams());
+		jdf.getResourcePoolBean().setScreeningParamsBean(new ScreeningParamsBean());
 		
-		jdf.getResourcePool().setStitchingParams(new StitchingParams());
+		jdf.getResourcePoolBean().setStitchingParamsBean(new StitchingParamsBean());
 		
 		
 		
 		
 		//TODO
-		jdf.getResourceLinkPool().setCustomerInfoLink(new CustomerInfoLink());
+		jdf.getResourceLinkPoolBean().setCustomerInfoLinkBean(new CustomerInfoLinkBean());
 		
-		jdf.getResourceLinkPool().setDigitalPrintingParamsLink(new DigitalPrintingParamsLink());
+		jdf.getResourceLinkPoolBean().setDigitalPrintingParamsLinkBean(new DigitalPrintingParamsLinkBean());
 		
-		jdf.getResourceLinkPool().setFoldingParamsLink(new FoldingParamsLink());
+		jdf.getResourceLinkPoolBean().setFoldingParamsLinkBean(new FoldingParamsLinkBean());
 		
-		jdf.getResourceLinkPool().setHoleMakingParamsLink(new HoleMakingParamsLink());
+		jdf.getResourceLinkPoolBean().setHoleMakingParamsLinkBean(new HoleMakingParamsLinkBean());
 		
-		jdf.getResourceLinkPool().setInterpretingParamsLink(new InterpretingParamsLink());
+		jdf.getResourceLinkPoolBean().setInterpretingParamsLinkBean(new InterpretingParamsLinkBean());
 		
-		jdf.getResourceLinkPool().setLayoutPreparationParamsLink(new LayoutPreparationParamsLink());
+		jdf.getResourceLinkPoolBean().setLayoutPreparationParamsLinkBean(new LayoutPreparationParamsLinkBean());
 		
-		jdf.getResourceLinkPool().setMailboxDetailsLink(new MailboxDetailsLink());
+		jdf.getResourceLinkPoolBean().setMailboxDetailsLinkBean(new MailboxDetailsLinkBean());
 		
-		jdf.getResourceLinkPool().setMediaLink(new MediaLink());
+		jdf.getResourceLinkPoolBean().setMediaLinkBean(new MediaLinkBean());
 		
-		jdf.getResourceLinkPool().setRenderingParamsLink(new RenderingParamsLink());
+		jdf.getResourceLinkPoolBean().setRenderingParamsLinkBean(new RenderingParamsLinkBean());
 		
-		jdf.getResourceLinkPool().setRunListLink(new RunListLink());
+		jdf.getResourceLinkPoolBean().setRunListLinkBean(new RunListLinkBean());
 		
-		jdf.getResourceLinkPool().setScreeningParamsLink(new ScreeningParamsLink());
+		jdf.getResourceLinkPoolBean().setScreeningParamsLinkBean(new ScreeningParamsLinkBean());
 		
-		jdf.getResourceLinkPool().setStitchingParamsLink(new StitchingParamsLink());
+		jdf.getResourceLinkPoolBean().setStitchingParamsLinkBean(new StitchingParamsLinkBean());
 		
 		//DONE
-		jdf.getAuditPool().setCreated(new Created());
-		jdf.getAuditPool().getCreated().set_AgentName("varioPRINT 135 PS3 GB ");
-		jdf.getAuditPool().getCreated().set_AgentVersion("15.2.96.66 cmrepro@RD-AS65");
-		jdf.getAuditPool().getCreated().set_ID("audit_1");
-		jdf.getAuditPool().getCreated().set_TimeStamp("2014-09-19T06:54:18Z");
+		jdf.getAuditPoolBean().setCreatedBean(new CreatedBean());
+		jdf.getAuditPoolBean().getCreatedBean().setAgentName("varioPRINT 135 PS3 GB ");
+		jdf.getAuditPoolBean().getCreatedBean().setAgentVersion("15.2.96.66 cmrepro@RD-AS65");
+		jdf.getAuditPoolBean().getCreatedBean().setID("audit_1");
+		jdf.getAuditPoolBean().getCreatedBean().setTimeStamp("2014-09-19T06:54:18Z");
 		
 		return jdf;
 	}
 	
+	public static void prependPrefix(File input, String prefix) throws IOException {
+
+		FileInputStream fis = new FileInputStream(input);
+        byte[] originalBytes = new byte[(int) input.length()];
+        fis.read(originalBytes);
+        fis.close();
+
+        // Convert the string to bytes
+        byte[] stringBytes = prefix.getBytes();
+
+        // Create a new byte array for the new PDF
+        byte[] newBytes = new byte[stringBytes.length + originalBytes.length];
+        
+        // Copy the string bytes to the new array
+        System.arraycopy(stringBytes, 0, newBytes, 0, stringBytes.length);
+        // Copy the original PDF bytes to the new array
+        System.arraycopy(originalBytes, 0, newBytes, stringBytes.length, originalBytes.length);
+
+        // Write the new PDF to a file
+        FileOutputStream fos = new FileOutputStream(input);
+        fos.write(newBytes);
+        fos.close();
+	}
 	
 }

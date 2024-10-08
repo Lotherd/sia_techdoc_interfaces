@@ -86,7 +86,8 @@ public class RunAble implements Runnable {
 	public void run() 
 	{
 		try {
-			process();
+			//process();
+			data.processBatFile();
 		}catch(Exception e) {
 			e.printStackTrace();
 		}		

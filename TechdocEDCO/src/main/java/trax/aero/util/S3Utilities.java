@@ -187,7 +187,7 @@ public class S3Utilities {
 				//FOUND PDFS
 				for(File p : prints){						
 					putS3Object(p,pathS3EDCO ,bucketNameEDCO);	
-					PrinterUtilities.sendPrint(printer, p.getPath());
+					PrinterUtilities.sendPrint(printer, p.getPath(),null,null);
 				}
 			}
 			
@@ -344,6 +344,20 @@ public class S3Utilities {
 			e.printStackTrace();
 			throw e;
 		}	
+	}
+
+	public static void setBatFile(String document, String fileName, String transaction) throws IOException {
+		File theDir = new File(fileLocOut+File.separator+(transaction));
+		if (!theDir.exists()){
+		    theDir.mkdirs();
+		}
+		
+		Path bat = Paths.get(fileLocOut+File.separator+(transaction)+File.separator+ fileName+".bat");
+		Files.write(bat, document.getBytes());
+		
+		File batFile = new File(fileLocOut+File.separator+(transaction)+File.separator+ fileName+".bat");
+		//TODO
+		//putS3Object(batFile, pathS3Print,bucketNamePrint );
 	}
 	
 	
