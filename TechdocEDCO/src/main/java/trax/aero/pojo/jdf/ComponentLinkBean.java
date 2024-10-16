@@ -28,10 +28,11 @@ import com.fasterxml.jackson.annotation.*;
 
 public class ComponentLinkBean {
     String combinedProcessIndex="";
+    String amount="";
     String orientation="";
     String usage="";
     String rRef="";
-    String textContent="";
+    String textContent;
   public void setCombinedProcessIndex(String combinedProcessIndex) { 
 		this.combinedProcessIndex=combinedProcessIndex;
 	} 
@@ -66,6 +67,13 @@ public class ComponentLinkBean {
     @XmlAttribute(name = "TextContent")
     public String getTextContent() { 
 		return textContent;
+	}
+    @XmlAttribute(name = "Amount")
+	public String getAmount() {
+		return amount;
+	}
+	public void setAmount(String amount) {
+		this.amount = amount;
 	} 
 
 }

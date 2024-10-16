@@ -31,7 +31,7 @@ public class CustomerInfoBean {
     String customerJobName="";
     String iD="";
     String status="";
-    String textContent="";
+    String textContent;
     ContactRefBean contactRefBean ;
   public void setClass(String Class) { 
 		this.Class=Class;

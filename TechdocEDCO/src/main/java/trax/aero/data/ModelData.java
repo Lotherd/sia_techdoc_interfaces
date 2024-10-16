@@ -783,7 +783,7 @@ public class ModelData implements IModelData {
 		JOBCARD card = input.getEFFECTIVITY().getJOBCARD();
 	    String random = RandomStringUtils.random(19, false, true);
 
-		pdfName = "wo_"+ card.getWPNBR() + "_" + card.getSEQNBR() + "_" + card.getWONBR() +random + ".pdf" ;
+		pdfName = "wo_"+ card.getWPNBR() + "_" + card.getSEQNBR() + "_" + card.getWONBR() + "_" +random + ".pdf" ;
 		
 		return pdfName;
 	}
@@ -1068,9 +1068,11 @@ public class ModelData implements IModelData {
 						{
 							logger.info("Interface Audit PROCESSING " +i.getTransaction());
 							for (InterfaceData id : i.getInterfaceData()) {
-								S3Utilities.setBatFile(id.getClobDocument(),id.getFileName(),String.valueOf( i.getTransaction()));
-							}					
-							
+								S3Utilities.setDatFile(id.getClobDocument(),id.getFileName(),String.valueOf( i.getTransaction()));
+							}
+							if(i.getInterfaceData() != null && !i.getInterfaceData().isEmpty()) {
+								ModelController.sendEmailDat(i.getInterfaceData());
+							}
 							em.refresh(i);
 							i.setMessageNeedsToBeSent("N");
 							insertData(i);

@@ -7,7 +7,7 @@ import javax.xml.bind.annotation.XmlAttribute;
 public class ComChannelBean {
     String channelType="";
     String locator="";
-    String textContent="";
+    String textContent;
   public void setChannelType(String channelType) { 
 		this.channelType=channelType;
 	} 

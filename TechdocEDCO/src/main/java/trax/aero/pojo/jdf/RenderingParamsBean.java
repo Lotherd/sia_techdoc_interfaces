@@ -30,7 +30,7 @@ public class RenderingParamsBean {
     String Class="";
     String iD="";
     String status="";
-    String textContent="";
+    String textContent;
     ObjectResolutionBean objectResolutionBean ;
   public void setClass(String Class) { 
 		this.Class=Class;

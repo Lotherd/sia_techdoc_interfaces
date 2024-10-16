@@ -27,7 +27,7 @@ import com.fasterxml.jackson.annotation.*;
 
 
 public class PageCellBean {
-    String textContent="";
+    String textContent;
     ImageShiftBean imageShiftBean ;
   public void setTextContent(String textContent) { 
 		this.textContent=textContent;

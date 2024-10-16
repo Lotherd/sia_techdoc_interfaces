@@ -29,7 +29,7 @@ import com.fasterxml.jackson.annotation.*;
 public class FileSpecBean {
     String mimeType="";
     String uRL="";
-    String textContent="";
+    String textContent;
   public void setMimeType(String mimeType) { 
 		this.mimeType=mimeType;
 	} 

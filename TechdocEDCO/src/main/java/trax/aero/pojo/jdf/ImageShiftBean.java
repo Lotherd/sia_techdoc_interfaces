@@ -29,7 +29,7 @@ import com.fasterxml.jackson.annotation.*;
 public class ImageShiftBean {
     String positionX="";
     String positionY="";
-    String textContent="";
+    String textContent;
   public void setPositionX(String positionX) { 
 		this.positionX=positionX;
 	} 

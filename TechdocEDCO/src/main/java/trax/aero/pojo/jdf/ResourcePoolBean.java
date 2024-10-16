@@ -27,8 +27,8 @@ import com.fasterxml.jackson.annotation.*;
 
 
 public class ResourcePoolBean {
-    String textContent="";
-    ComponentBean componentBean ;
+    String textContent;
+    ArrayList< ComponentBean> componentBean ;
     ContactBean contactBean ;
     CustomerInfoBean customerInfoBean ;
     DigitalPrintingParamsBean digitalPrintingParamsBean ;
@@ -51,11 +51,11 @@ public class ResourcePoolBean {
 		return textContent;
 	} 
     @XmlElement(name = "Component")
-    public ComponentBean getComponentBean() { 
-		if(componentBean==null) componentBean=new ComponentBean(); 
+    public List<ComponentBean> getComponentBean() { 
+		 
 		return componentBean;
 	} 
-  public void setComponentBean( ComponentBean componentBean ) { 
+  public void setComponentBean( ArrayList<ComponentBean> componentBean ) { 
 		this.componentBean=componentBean;
 	} 
     @XmlElement(name = "Contact")

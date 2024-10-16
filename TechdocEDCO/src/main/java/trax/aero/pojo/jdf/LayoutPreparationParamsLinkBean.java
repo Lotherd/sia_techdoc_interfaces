@@ -29,7 +29,7 @@ import com.fasterxml.jackson.annotation.*;
 public class LayoutPreparationParamsLinkBean {
     String usage="";
     String rRef="";
-    String textContent="";
+    String textContent;
   public void setUsage(String usage) { 
 		this.usage=usage;
 	} 

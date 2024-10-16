@@ -31,7 +31,7 @@ public class CreatedBean {
     String agentVersion="";
     String iD="";
     String timeStamp="";
-    String textContent="";
+    String textContent;
   public void setAgentName(String agentName) { 
 		this.agentName=agentName;
 	} 

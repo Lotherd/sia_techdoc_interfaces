@@ -31,7 +31,7 @@ public class FoldingParamsBean {
     String iD="";
     String noOp="";
     String status="";
-    String textContent="";
+    String textContent;
   public void setClass(String Class) { 
 		this.Class=Class;
 	} 

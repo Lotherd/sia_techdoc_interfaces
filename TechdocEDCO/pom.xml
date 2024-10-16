@@ -45,7 +45,11 @@
 	    <artifactId>commons-email</artifactId>
 	    <version>1.2</version>
 	</dependency>
-	
+	<dependency>
+		    <groupId>com.jcraft</groupId>
+		    <artifactId>jsch</artifactId>
+		    <version>0.1.55</version>
+		</dependency>
 	<!-- https://mvnrepository.com/artifact/javax.ejb/ejb-api -->
 
 	<!-- https://mvnrepository.com/artifact/org.glassfish/javax.ejb -->

@@ -6,7 +6,7 @@ import javax.xml.bind.annotation.XmlElement;
 
 
 public class AuditPoolBean {
-    String textContent="";
+    String textContent;
     CreatedBean createdBean ;
   public void setTextContent(String textContent) { 
 		this.textContent=textContent;

@@ -37,7 +37,7 @@ public class MediaBean {
     String mediaSetCount="";
     String status="";
     String weight="";
-    String textContent="";
+    String textContent;
   public void setClass(String Class) { 
 		this.Class=Class;
 	} 

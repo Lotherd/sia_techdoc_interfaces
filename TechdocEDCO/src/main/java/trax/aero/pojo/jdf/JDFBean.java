@@ -35,7 +35,7 @@ public class JDFBean {
     String type="";
     String types="";
     String version="";
-    String textContent="";
+    String textContent;
     AuditPoolBean auditPoolBean ;
     CommentBean commentBean ;
     ResourceLinkPoolBean resourceLinkPoolBean ;

@@ -30,7 +30,7 @@ public class ScreeningParamsBean {
     String Class="";
     String iD="";
     String status="";
-    String textContent="";
+    String textContent;
     ScreenSelectorBean screenSelectorBean ;
   public void setClass(String Class) { 
 		this.Class=Class;

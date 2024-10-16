@@ -30,7 +30,7 @@ public class ScreenSelectorBean {
     String frequency="";
     String screeningType="";
     String spotFunction="";
-    String textContent="";
+    String textContent;
   public void setFrequency(String frequency) { 
 		this.frequency=frequency;
 	} 

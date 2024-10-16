@@ -28,7 +28,7 @@ import com.fasterxml.jackson.annotation.*;
 
 public class DigitalPrintingParamsBean {
     String runIndex="";
-    String textContent="";
+    String textContent;
     MediaRefBean mediaRefBean ;
   public void setRunIndex(String runIndex) { 
 		this.runIndex=runIndex;

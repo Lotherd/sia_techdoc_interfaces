@@ -31,7 +31,7 @@ public class MailboxDetailsBean {
     String iD="";
     String status="";
     String useMailbox="";
-    String textContent="";
+    String textContent;
   public void setClass(String Class) { 
 		this.Class=Class;
 	} 

@@ -28,7 +28,7 @@ import com.fasterxml.jackson.annotation.*;
 
 public class ObjectResolutionBean {
     String resolution="";
-    String textContent="";
+    String textContent;
   public void setResolution(String resolution) { 
 		this.resolution=resolution;
 	} 

@@ -30,7 +30,7 @@ public class LayoutElementBean {
     String Class="";
     String iD="";
     String status="";
-    String textContent="";
+    String textContent;
     FileSpecBean fileSpecBean ;
   public void setClass(String Class) { 
 		this.Class=Class;

@@ -1,6 +1,7 @@
 package trax.aero.util;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
@@ -346,17 +347,21 @@ public class S3Utilities {
 		}	
 	}
 
-	public static void setBatFile(String document, String fileName, String transaction) throws IOException {
+	public static void setDatFile(String document, String fileName, String transaction) throws Exception {
 		File theDir = new File(fileLocOut+File.separator+(transaction));
 		if (!theDir.exists()){
 		    theDir.mkdirs();
 		}
 		
-		Path bat = Paths.get(fileLocOut+File.separator+(transaction)+File.separator+ fileName+".bat");
-		Files.write(bat, document.getBytes());
+		Path dat = Paths.get(fileLocOut+File.separator+(transaction)+File.separator+ fileName+".dat");
+		Files.write(dat, document.getBytes());
 		
-		File batFile = new File(fileLocOut+File.separator+(transaction)+File.separator+ fileName+".bat");
+		File datFile = new File(fileLocOut+File.separator+(transaction)+File.separator+ fileName+".dat");
 		//TODO
+		SftpUtilities sftp = new SftpUtilities();
+		
+		sftp.sendSftpFile(new FileInputStream(datFile), fileName+".dat");
+		
 		//putS3Object(batFile, pathS3Print,bucketNamePrint );
 	}
 	

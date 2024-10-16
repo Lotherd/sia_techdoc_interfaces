@@ -19,9 +19,11 @@ import javax.xml.bind.Unmarshaller;
 import trax.aero.interfaces.IModelData;
 import trax.aero.model.Wo;
 import trax.aero.pojo.Print;
+import trax.aero.pojo.jdf.JDFBean;
 import trax.aero.pojo.xml.MODEL;
 import trax.aero.pojo.xml.ROOT;
 import trax.aero.util.MqUtilities;
+import trax.aero.util.PrinterUtilities;
 
 
 
@@ -109,7 +111,7 @@ public class Service {
 				xml=xml.replaceAll("&amp;gt;", 		"&gt;");
 				xml=xml.replaceAll("&amp;lt;", 		"&lt;");
 				xml=xml.replaceAll("&amp;quot;", 	"&quot;");
-				xml=xml.replaceAll("&amp;re;", 		"");
+				xml=xml.replaceAll("&amp;re;", 		"&#xA;");
 				Wo w= data.issueTo(model,xml );
 				data.sendPrint(model, xml, w);
 				 try{
@@ -131,6 +133,34 @@ public class Service {
 	   		{ 
 	   			e.printStackTrace();
 	   		}
+       }
+	   return Response.ok().build();
+	}
+	
+	@POST
+	@Path("/initJDF")
+	@Consumes(MediaType.TEXT_PLAIN)
+	@Produces(MediaType.TEXT_PLAIN )
+	public Response initJDF(String input)
+	{
+		try 
+        {    
+			JDFBean jdf = PrinterUtilities.initJDF(input);
+				
+				
+				JAXBContext jc = JAXBContext.newInstance(JDFBean.class);
+				Marshaller marshaller = jc.createMarshaller();
+				marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, Boolean.TRUE);
+				StringWriter sw = new StringWriter();
+				marshaller.marshal(jdf, sw);
+				
+				String xml = sw.toString();
+				return Response.ok(xml).build();
+
+		}
+		catch(Exception e)
+		{
+			e.printStackTrace();
        }
 	   return Response.ok().build();
 	}

@@ -28,7 +28,7 @@ import com.fasterxml.jackson.annotation.*;
 
 public class DisjointingBean {
     String offsetDirection="";
-    String textContent="";
+    String textContent;
   public void setOffsetDirection(String offsetDirection) { 
 		this.offsetDirection=offsetDirection;
 	} 

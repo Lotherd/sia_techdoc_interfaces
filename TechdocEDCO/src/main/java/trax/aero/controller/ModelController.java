@@ -2,12 +2,17 @@ package trax.aero.controller;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 import java.util.logging.Logger;
 
+import org.apache.commons.mail.ByteArrayDataSource;
 import org.apache.commons.mail.Email;
+import org.apache.commons.mail.HtmlEmail ;
+import org.apache.commons.mail.EmailAttachment;
 import org.apache.commons.mail.SimpleEmail;
 
 import trax.aero.logger.LogManager;
+import trax.aero.model.InterfaceData;
 import trax.aero.pojo.acknowledgement.PrintAck;
 
 public class ModelController {
@@ -271,5 +276,61 @@ public class ModelController {
 			}
 		}
 		
+		
+		public static void sendEmailDat(List<InterfaceData> ids)
+		{
+			try
+			{
+				
+				ArrayList<String>  fileName = new ArrayList<String> (Arrays.asList(ids.get(0).getFileName().split("_")));
+				String fleet = fileName.get(1);
+				String fromEmail = System.getProperty("fromEmail");
+				String host = System.getProperty("fromHost");
+				String port = System.getProperty("fromPort");
+				String toEmail = System.getProperty("fleet");
+				
+				ArrayList<String>  emailsList = new ArrayList<String> (Arrays.asList(toEmail.split(",")));
+				
+				
+				
+				HtmlEmail  email = new HtmlEmail ();
+				email.setHostName(host);
+				email.setSmtpPort(Integer.valueOf(port));
+				email.setFrom(fromEmail);
+				email.setSubject("New "+fleet+" Attachments Loaded in CDM. Requires Follow-up action.");
+				for(String emails: emailsList)
+		        {
+					email.addTo(emails);
+		        }
+				
+				for (InterfaceData id :ids) {
+					
+					email.attach(new ByteArrayDataSource(id.getClobDocument().getBytes(), "text/plain"),
+							id.getFileName()+".dat", "Document description",
+						       EmailAttachment.ATTACHMENT);
+				}
+				
+				
+				
+				
+				email.setMsg("The latest copy of attachment has been loaded into CDM." +System.lineSeparator()
+				+" Attached are the new tasks, deleted tasks and current tasks generated as attachment for your review and necessary action.");
+				
+				email.send();
+				logger.info("SUCCESS");
+			}
+			catch(Exception e)
+			{
+				
+				logger.severe(e.getMessage());
+				logger.severe(e.toString());
+				logger.severe("Email not found");
+				
+			}
+			finally
+			{
+				errors = "";
+			}
+		}
 		
 }

@@ -31,7 +31,7 @@ public class ComponentBean {
     String componentType="";
     String iD="";
     String status="";
-    String textContent="";
+    String textContent;
   public void setClass(String Class) { 
 		this.Class=Class;
 	} 

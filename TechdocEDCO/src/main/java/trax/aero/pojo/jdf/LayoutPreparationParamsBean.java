@@ -29,7 +29,7 @@ import com.fasterxml.jackson.annotation.*;
 public class LayoutPreparationParamsBean {
     String runIndex="";
     String sides="";
-    String textContent="";
+    String textContent;
   public void setRunIndex(String runIndex) { 
 		this.runIndex=runIndex;
 	} 

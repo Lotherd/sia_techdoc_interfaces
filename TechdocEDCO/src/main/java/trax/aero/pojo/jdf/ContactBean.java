@@ -32,7 +32,7 @@ public class ContactBean {
     String iD="";
     String status="";
     String userID="";
-    String textContent="";
+    String textContent;
     ComChannelBean comChannelBean ;
   public void setClass(String Class) { 
 		this.Class=Class;

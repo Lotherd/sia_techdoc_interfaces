@@ -32,7 +32,7 @@ public class StitchingParamsBean {
     String numberOfStitches="";
     String status="";
     String stitchType="";
-    String textContent="";
+    String textContent;
   public void setClass(String Class) { 
 		this.Class=Class;
 	} 

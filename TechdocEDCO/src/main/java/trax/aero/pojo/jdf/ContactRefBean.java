@@ -28,7 +28,7 @@ import com.fasterxml.jackson.annotation.*;
 
 public class ContactRefBean {
     String rRef="";
-    String textContent="";
+    String textContent;
   public void setRRef(String rRef) { 
 		this.rRef=rRef;
 	} 
