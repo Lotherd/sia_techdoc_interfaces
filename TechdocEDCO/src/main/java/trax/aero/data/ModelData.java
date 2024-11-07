@@ -597,6 +597,7 @@ public class ModelData implements IModelData {
 			wo.setExcludeMhPlanner("N");
 			wo.setThirdPartyWo("Y");
 			wo.setModifiedBy("IFACE-SIA");
+			wo.setLongTermEvent("YES");
 			wo.setModifiedDate(new Date());
 			wo.setExpenditure(("General"));
 			wo.setWo(getTransactionNo("WOSEQ").longValue());

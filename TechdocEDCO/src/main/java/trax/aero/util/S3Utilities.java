@@ -115,7 +115,7 @@ public class S3Utilities {
 			Files.move(print.toPath(), new File(fileLocOut+File.separator+FilenameUtils.removeExtension(print.getName())
 			+File.separator +pdfName).toPath(), StandardCopyOption.REPLACE_EXISTING);
 
-			
+			/*
 			Path file = Paths.get(fileLocOut+File.separator+FilenameUtils.removeExtension(print.getName())
 					+File.separator+ txtName+".txt");
 			List<String> lines = txt;
@@ -172,7 +172,7 @@ public class S3Utilities {
 			documentFooter.save(fileLocOut+File.separator+FilenameUtils.removeExtension(print.getName())
 			+File.separator+ footer);
 			documentFooter.close();
-			
+			*/
 			
 			
 			
