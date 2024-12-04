@@ -10,16 +10,16 @@ import trax.aero.pojo.xml.MODEL;
 
 public interface IModelData {
 
-	public Wo issueTo(MODEL input, String xml) throws Exception;
+	public Wo issueToTechDocRequest(MODEL input, String xml) throws Exception;
 
 	public String filterADDATTR(List<ADDATTR> attributes, String filter);
 
 	
-	public void print(Print input);
+	public void sendPrintToOutBound(Print input);
 
 	public Connection getCon();
 
-	public void sendPrint(MODEL model, String xml, Wo w);
+	public void sendRequestToPrintServer(MODEL model, String xml, Wo w);
 
 	public void processBatFile();
 

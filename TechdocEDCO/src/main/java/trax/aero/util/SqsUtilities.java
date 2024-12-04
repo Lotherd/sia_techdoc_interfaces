@@ -1,43 +1,48 @@
 package trax.aero.util;
 
-import java.util.logging.Logger;
+import java.util.UUID;
 
+import com.amazonaws.regions.Regions;
+import com.amazonaws.services.sqs.AmazonSQS;
+import com.amazonaws.services.sqs.AmazonSQSClientBuilder;
+import com.amazonaws.services.sqs.model.SendMessageRequest;
+import com.amazonaws.services.sqs.model.SendMessageResult;
 import com.google.gson.Gson;
 
-import software.amazon.awssdk.services.sqs.SqsClient;
-import software.amazon.awssdk.services.sqs.model.SendMessageBatchRequest;
-import software.amazon.awssdk.services.sqs.model.SendMessageBatchRequestEntry;
-import trax.aero.logger.LogManager;
 import trax.aero.pojo.json.OUTPUT;
 
 public class SqsUtilities {
-
-	static Logger logger = LogManager.getLogger("TechdocEDCO");
 	
-	public static Boolean sendResend(OUTPUT resend, String id ) {
+	public static Boolean sendResend(OUTPUT resend, String id ) throws Exception{
 		
 		Gson gson = new Gson();
 		String json;
 		String queueUrlTo = System.getProperty("Techdoc_ToSQS");
 
-		logger.info("Sending JSON To EDCO");
+		 System.out.println("Sending JSON To EDCO");
 
 		try {
 			json = gson.toJson(resend);
-			logger.info("Request Body: " + json);
 			
-			SqsClient sqsClient = SqsClient.builder().build();
+			System.out.println("Request Body: " + json);
+			AmazonSQS sqs = AmazonSQSClientBuilder.standard()
+	                .withRegion(Regions.AP_SOUTHEAST_1)  // Specify the region here
+	                .build(); 
+
+			 String queueUrl = sqs.getQueueUrl(queueUrlTo).getQueueUrl();
+			 
+			SendMessageRequest send_msg_request = new SendMessageRequest()
+			        .withQueueUrl(queueUrl)
+			        .withMessageBody(json)
+			        .withMessageGroupId(UUID.randomUUID().toString())
+			        .withMessageDeduplicationId(UUID.randomUUID().toString());
+			SendMessageResult result =  sqs.sendMessage(send_msg_request);
+			System.out.println("after sending a message we get message id "+ result.getMessageId() );
 			
-			SendMessageBatchRequest sendMessageBatchRequest = SendMessageBatchRequest.builder().queueUrl(queueUrlTo)
-					.entries(SendMessageBatchRequestEntry.builder().id(id).messageBody(json).build())
-		            .build();
-		    sqsClient.sendMessageBatch(sendMessageBatchRequest);
-		     
 		    return true;
 		}catch(Exception e){
-			logger.info(e.toString());
-			e.printStackTrace();
-			return false;
+			System.err.println(e.toString());
+			throw e;
 		}
 	}
 	

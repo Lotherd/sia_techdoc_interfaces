@@ -13,10 +13,10 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
-import java.util.logging.Logger;
 
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
+import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.Marshaller;
@@ -26,15 +26,15 @@ import org.apache.commons.lang3.RandomStringUtils;
 
 import trax.aero.controller.ModelController;
 import trax.aero.interfaces.IModelData;
-import trax.aero.logger.LogManager;
 import trax.aero.model.BlobTable;
 import trax.aero.model.BlobTablePK;
 import trax.aero.model.InterfaceAudit;
 import trax.aero.model.InterfaceData;
+import trax.aero.model.JournalEntriesExpenditure;
+import trax.aero.model.JournalEntriesExpenditurePK;
 import trax.aero.model.TaskCard;
 import trax.aero.model.Wo;
 import trax.aero.model.WoTaskCard;
-import trax.aero.model.WoTaskCardPK;
 import trax.aero.pojo.Dw_Wo_Pack_Print;
 import trax.aero.pojo.Print;
 import trax.aero.pojo.Row;
@@ -65,7 +65,6 @@ public class ModelData implements IModelData {
 		return con;
 	}
 	
-	Logger logger = LogManager.getLogger("TechdocEDCO");
 	ArrayList<String> scoot = new ArrayList<>(Arrays.asList("300275","300276","101821")); 
 	ArrayList<String> siaec = new ArrayList<>(Arrays.asList("319","320")); 
 
@@ -84,7 +83,7 @@ public class ModelData implements IModelData {
 	
 
 	//MOD 16 //MOD 22
-	public Wo issueTo (MODEL input, String xml) throws Exception {
+	public Wo issueToTechDocRequest (MODEL input, String xml) throws Exception {
 		
 		//creates temp wo with attached xml
 		String company = "SIA", ac, location , site, type ;
@@ -144,6 +143,8 @@ public class ModelData implements IModelData {
 							, revision, date, time, ack);
 					break;
 				default:
+					ModelController.sendEmailPrint(input.getEFFECTIVITY().getJOBCARD().getWPNBR()
+							, revision, date, time, ack);
 					break;
 			}
 			
@@ -152,12 +153,11 @@ public class ModelData implements IModelData {
 	}
 	
 	@Override
-	public void print(Print print) {
+	public void sendPrintToOutBound(Print print) {
 		
 		String printer = "", date, time, revision, folder = "";
 		ArrayList<PrintAck> ack = null;
 		MODEL input = null;
-		//TODO
 		try {
 			input = getXml(print.getWo());
 			// creates zip file with pdf and txt file
@@ -191,10 +191,10 @@ public class ModelData implements IModelData {
 						header,footer,
 						headerTxt, footerTxt,folder						
 						);
-				
+				 
 				SqsUtilities.sendResend(json, pdfName);
 					
-				//send to physical printer TODO
+				//send to physical printer 
 				
 			}else if (printer.equalsIgnoreCase("TRAX")){
 				OUTPUT	xml = new OUTPUT();
@@ -209,7 +209,7 @@ public class ModelData implements IModelData {
 
 			}else if (printer.equalsIgnoreCase("EDXX") || printer.equalsIgnoreCase("ECXZ")){
 			
-				//send to virtual printer TODO
+				//send to virtual printer 
 				//VIA S3 just PDF
 				S3Utilities.sendVirtualPrint( print.getPath(),printer +File.separator+ folder,pdfName );
 			}else {
@@ -271,6 +271,8 @@ public class ModelData implements IModelData {
 							, revision, date, time, ack);
 					break;
 				default:
+					ModelController.sendEmailPrint(input.getEFFECTIVITY().getJOBCARD().getWPNBR()
+							, revision, date, time, ack);
 					break;
 			}
 			
@@ -278,7 +280,7 @@ public class ModelData implements IModelData {
 			
 			e.printStackTrace();
 		}finally {
-			// deletes wo and wo task card TODO
+			// deletes wo and wo task card 
 			if(System.getProperty("Techdoc_DELETE") != null 
 				&& !System.getProperty("Techdoc_DELETE").isEmpty()
 				&& System.getProperty("Techdoc_DELETE").equalsIgnoreCase("YES")) {
@@ -286,6 +288,8 @@ public class ModelData implements IModelData {
 			}
 		}
 	}
+	
+	
 	
 	private ArrayList<String> genrateFooterTxt(MODEL input) {
 		ArrayList<String> txt = new ArrayList<String>();
@@ -428,14 +432,14 @@ public class ModelData implements IModelData {
 	private void deleteTempWoTaskCardBlob(Wo w, ArrayList<WoTaskCard> taskCards, BlobTable blob) {
 		
 		for(WoTaskCard t : taskCards) {
-			logger.info("DELETING TEMP Task Card: " + t.getId().getTaskCard());
+			 System.out.println("DELETING TEMP Task Card: " + t.getId().getTaskCard());
 			deleteData(em.find(WoTaskCard.class, t.getId()));
 		}	
 		
-		logger.info("DELETING TEMP BLOB: " + blob.getId().getBlobNo());
+		 System.out.println("DELETING TEMP BLOB: " + blob.getId().getBlobNo());
 		deleteData(em.find(BlobTable.class, blob.getId()));
 		
-		logger.info("DELETING TEMP WO: " + w.getWo());
+		 System.out.println("DELETING TEMP WO: " + w.getWo());
 		deleteData(em.find(Wo.class, w.getWo()));
 
 		
@@ -462,12 +466,12 @@ public class ModelData implements IModelData {
 		final String sql = "{ call pkg_wo_task_card_functions.add_wo_task_card(?, ?, ?, ?, ?, ?, ?, ?)}";
 		
 		ArrayList<String> taskCards = getTaskCards(taskIds);
-		logger.info("ENG TASK CARD size: " + taskCards.size());
+		 System.out.println("ENG TASK CARD size: " + taskCards.size());
 
 		if(this.con == null || this.con.isClosed())
 		{
 			this.con = trax.aero.util.DataSourceClient.getConnection();
-			logger.info("The connection was stablished successfully with status: " + String.valueOf(!this.con.isClosed()));
+			 System.out.println("The connection was stablished successfully with status: " + String.valueOf(!this.con.isClosed()));
 		}
 		
 		try {
@@ -499,19 +503,19 @@ public class ModelData implements IModelData {
 			
 			ArrayList<String> taskCardStrings = new ArrayList<String>();
 			for(String subTaskId  : taskIds) {
-				logger.info("SUB TASK CARD: " + subTaskId);
+				 System.out.println("SUB TASK CARD: " + subTaskId);
 				//get all tcs from tc sub fields
 				try {
 					List<TaskCard> cards = em.createQuery("Select t From TaskCard t where t.tcSub =:sub", TaskCard.class)
 							.setParameter("sub", subTaskId)
 							.getResultList();
 					for(TaskCard tc: cards) {
-						logger.info("ENG TASK CARD: " + tc.getTaskCard());
+						 System.out.println("ENG TASK CARD: " + tc.getTaskCard());
 		
 						taskCardStrings.add( tc.getTaskCard());
 					}
 				}catch (Exception e) {
-					logger.info("NO ENG TASK CARD FOUND FOR " + subTaskId);
+					 System.out.println("NO ENG TASK CARD FOUND FOR " + subTaskId);
 				}
 			}
 			return taskCardStrings;	
@@ -548,7 +552,7 @@ public class ModelData implements IModelData {
 		blob.getId().setBlobNo(((getTransactionNo("BLOB").longValue())));
 		w.setBlobNo(new BigDecimal(blob.getId().getBlobNo()));
 			
-		logger.info("INSERTING TEMP Blob : " +blob.getId().getBlobNo() );
+		 System.out.println("INSERTING TEMP Blob : " +blob.getId().getBlobNo() );
 		
 		insertData(blob);
 		insertData(w);
@@ -568,6 +572,13 @@ public class ModelData implements IModelData {
 			wo.setCreatedBy("IFACE-SIA");
 			
 			//EMRO fields to create basic object
+			wo.setManufactureOrder("N");
+			wo.setAuthorization("Y");
+			wo.setAuthorizationBy("TRAX_IFACE");
+			wo.setGlCompany("SIAEC");				
+			wo.setExpenditure(setExpenditure("General"));
+			wo.setPriority("NORMAL");
+			
 			wo.setWoDescription(print);
 			wo.setWoCategory(type);
 			wo.setLocation(location);
@@ -601,7 +612,30 @@ public class ModelData implements IModelData {
 			wo.setModifiedDate(new Date());
 			wo.setExpenditure(("General"));
 			wo.setWo(getTransactionNo("WOSEQ").longValue());
-			logger.info("INSERTING TEMP WO: " + wo.getWo());
+			
+			wo.setExpenditure(setExpenditure("General"));
+			wo.setPriority("NORMAL");
+						
+			wo.setScheduleStartHour(new BigDecimal(0));
+			wo.setScheduleStartMinute(new BigDecimal(0));
+			wo.setScheduleCompletionHour(new BigDecimal(0));
+			wo.setScheduleCompletionMinute(new BigDecimal(0));
+			
+			wo.setScheduleStartDate(new Date());
+			wo.setScheduleCompletionDate(new Date());
+			wo.setActualStartDate(new Date());
+			wo.setScheduleOrgCompletionDate(new Date());	
+			
+			wo.setActualStartHour(new BigDecimal(0));
+			wo.setActualStartMinute(new BigDecimal(0));
+			wo.setScheduleOrgCompletionHour(new BigDecimal(0));
+			wo.setScheduleOrgCompletionMinute(new BigDecimal(0));
+			
+			
+			
+			
+			
+			 System.out.println("INSERTING TEMP WO: " + wo.getWo());
 			
 			insertData(wo);
 		
@@ -614,7 +648,7 @@ public class ModelData implements IModelData {
 
 	private trax.aero.pojo.json.OUTPUT convertXmlToJson(MODEL input) throws Exception
 	{
-		logger.info("Converting XML to JSON");
+		 System.out.println("Converting XML to JSON");
 		
 		trax.aero.pojo.json.OUTPUT json = new trax.aero.pojo.json.OUTPUT();
 		json.setMODEL(new trax.aero.pojo.json.MODEL());
@@ -801,7 +835,6 @@ public class ModelData implements IModelData {
 	}
 
 
-	//TODO
 	private ArrayList<String> genrateTxt(MODEL input) {
 		
 		ArrayList<String> txt = new ArrayList<String>();
@@ -853,7 +886,7 @@ public class ModelData implements IModelData {
 			StringWriter sw = new StringWriter();
 			marshaller.marshal(ack, sw);
 			
-			logger.info("Input: " + sw.toString());
+			 System.out.println("Input: " + sw.toString());
 			String text = sw.toString();
 			
 			
@@ -872,7 +905,7 @@ public class ModelData implements IModelData {
 				em.merge(data);
 				em.flush();
 			}catch (Exception e){	
-				logger.severe(e.toString());
+				 System.err.println(e.toString());
 				throw e;
 			}
 		}
@@ -883,23 +916,51 @@ public class ModelData implements IModelData {
 				em.remove(data);
 				em.flush();
 			}catch (Exception e){	
-				logger.severe(e.toString());
+				 System.err.println(e.toString());
 				throw e;
 			}
 		}
 		
 		private BigDecimal getTransactionNo(String code)
 		{		
+			
 			try
 			{
-				BigDecimal acctBal = (BigDecimal) em.createNativeQuery("SELECT pkg_application_function.config_number ( ? ) "
-						+ " FROM DUAL ").setParameter(1, code).getSingleResult();
-							
-				return acctBal;			
+				if(code.equalsIgnoreCase("WOSEQ")) {
+					String sql = "SELECT R.WO FROM WO R WHERE R.WO = ? ";
+					long i = 	10000;
+					long max = 	19999;
+					try {	
+			            while (true)
+			            {
+			            	if(i >= max) {
+			            		i = 10000;
+			            	}
+			            	try {
+			            	  @SuppressWarnings("unused")
+			            	  BigDecimal found = (BigDecimal) em.createNativeQuery(sql)
+			        			.setParameter(1, i )
+			        			.getSingleResult();	
+			            	}  catch (NoResultException e) {
+			            		return new BigDecimal(i);
+			            	}   
+				            i++;		                
+			            }
+			        } catch (Exception e) {
+			        	 System.err.println("Error getting WO.");
+			        	 System.err.println(e.toString());
+			            throw e;
+			        } 
+				}else {
+					BigDecimal acctBal = (BigDecimal) em.createNativeQuery("SELECT pkg_application_function.config_number ( ? ) "
+							+ " FROM DUAL ").setParameter(1, code).getSingleResult();
+								
+					return acctBal;
+				}
 			}
 			catch (Exception e) 
 			{
-				logger.severe("An unexpected error occurred getting the sequence. " + "\nmessage: " + e.toString());
+				 System.err.println("An unexpected error occurred getting the sequence. " + "\nmessage: " + e.toString());
 			}
 			
 			return null;
@@ -990,21 +1051,10 @@ public class ModelData implements IModelData {
 
 
 		@Override
-		public void sendPrint(MODEL input, String xml, Wo w) {
+		public void sendRequestToPrintServer(MODEL input, String xml, Wo w) {
 			//creates temp wo with attached xml
-			String company = "SIA", ac, location , site, type ;
 			String printer = "", date, time, revision;
 			ArrayList<PrintAck> ack = null;
-			ac = input.getEFFECTIVITY().getREGNBR();
-			location = "SIN";
-			site = input.getEFFECTIVITY().getJOBCARD().getCENTER();
-			type = input.getEFFECTIVITY().getJOBCARD().getTYPE();
-			if(siaec.contains(input.getMODELNBR())) {
-				company = "SIAEC";
-			}else if(scoot.contains(filterADDATTR(input.getEFFECTIVITY().getJOBCARD().getJOBI().getPLI().getADDATTR(), "BUSR06"))) {
-				company = "SCOOT";
-			}
-			
 			 int status = 0;
 			
 			//creates temp wo task card 
@@ -1012,7 +1062,7 @@ public class ModelData implements IModelData {
 				
 				createTempWoTaskCard(input, w); 
 				
-				//call wo pack print with flag TODO
+				//call wo pack print with flag 
 				status = sendWorkPackPrintJob(w );
 			}catch (Exception e) {
 				e.printStackTrace();
@@ -1053,8 +1103,8 @@ public class ModelData implements IModelData {
 			
 		}	
 		
+		@SuppressWarnings("unchecked")
 		public void processBatFile() {
-			
 			try
 			{	
 				List<InterfaceAudit> interfaceAudits = em.createQuery("SELECT p FROM InterfaceAudit p WHERE p.transactionObject = :obj "
@@ -1063,11 +1113,11 @@ public class ModelData implements IModelData {
 						.setParameter("tas", "Y")
 						.getResultList();
 				if(interfaceAudits != null && !interfaceAudits.isEmpty()) {
-					logger.info("Interface Audit SIZE " +interfaceAudits.size());
+					 System.out.println("Interface Audit SIZE " +interfaceAudits.size());
 					for(InterfaceAudit i : interfaceAudits) {
 						try 
 						{
-							logger.info("Interface Audit PROCESSING " +i.getTransaction());
+							 System.out.println("Interface Audit PROCESSING " +i.getTransaction());
 							for (InterfaceData id : i.getInterfaceData()) {
 								S3Utilities.setDatFile(id.getClobDocument(),id.getFileName(),String.valueOf( i.getTransaction()));
 							}
@@ -1089,6 +1139,45 @@ public class ModelData implements IModelData {
 			{	
 				e.printStackTrace();
 			}
+		}
+		
+		private String setExpenditure(String string) {
+			JournalEntriesExpenditure journalEntriesExpenditure = null;
+			try
+			{
+				journalEntriesExpenditure = em.createQuery("SELECT j FROM JournalEntriesExpenditure j WHERE j.id.categoryCode = :code AND  j.id.transaction = :tra AND j.id.category = :cat", JournalEntriesExpenditure.class)
+				.setParameter("code", string)
+				.setParameter("tra", "WIP")
+				.setParameter("cat", "EXPENDITURE")
+				.getSingleResult();
+				
+				
+				return journalEntriesExpenditure.getId().getCategoryCode();
+			}
+			catch (Exception e)
+			{
+				journalEntriesExpenditure = new JournalEntriesExpenditure();
+				JournalEntriesExpenditurePK pk = new JournalEntriesExpenditurePK();
+				journalEntriesExpenditure.setId(pk);
+				journalEntriesExpenditure.setModifiedBy("TRAX_IFACE");
+				journalEntriesExpenditure.setModifiedDate(new Date());
+				journalEntriesExpenditure.setCreatedBy("TRAX_IFACE");
+				journalEntriesExpenditure.setCreatedDate(new Date());
+				
+				journalEntriesExpenditure.getId().setCategoryCode("DEFAULT");
+				journalEntriesExpenditure.getId().setTransaction("WIP");
+				journalEntriesExpenditure.getId().setCategory("EXPENDITURE");
+				
+				journalEntriesExpenditure.getId().setClass_("LABOR");
+				
+				journalEntriesExpenditure.setJournalDescription("DEFAULT");
+				journalEntriesExpenditure.setExpenditureUse("PRODUCTION");
+				
+				
+				 System.out.println("INSERTING CODE: " + journalEntriesExpenditure.getId().getCategoryCode());
+				insertData(journalEntriesExpenditure);
+			}
+			return journalEntriesExpenditure.getId().getCategoryCode();
 		}
 		
 }

@@ -11,7 +11,6 @@ import javax.ejb.Singleton;
 import javax.ejb.Startup;
 
 import trax.aero.interfaces.IModelData;
-import trax.aero.logger.LogManager;
 import trax.aero.util.RunAble;
 
 @Startup
@@ -19,7 +18,6 @@ import trax.aero.util.RunAble;
 public class Start
 {
 
-	static Logger logger = LogManager.getLogger("TechdocEDCO");
 	private ScheduledExecutorService scheduledServ;
 	RunAble timer = null;
 	@EJB IModelData data;
@@ -32,7 +30,7 @@ public class Start
 		
 		if (scheduledServ == null) {
 			int scheduledPoolSize = 1;
-			logger.info("Creating default Scheduled Executor Service [poolSize =" + String.valueOf(scheduledPoolSize) + "]");
+			System.out.println("Creating default Scheduled Executor Service [poolSize =" + String.valueOf(scheduledPoolSize) + "]");
 			this.scheduledServ = Executors.newScheduledThreadPool(scheduledPoolSize);
 		}
 		scheduledServ.scheduleAtFixedRate(timer, 30, Long.parseLong(System.getProperty("Techdoc_interval")), TimeUnit.SECONDS);

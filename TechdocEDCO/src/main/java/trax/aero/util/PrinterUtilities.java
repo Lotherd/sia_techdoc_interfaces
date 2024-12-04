@@ -1,31 +1,15 @@
 package trax.aero.util;
 
-import java.awt.print.PrinterJob;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.StringWriter;
 import java.nio.file.Files;
 import java.nio.file.StandardCopyOption;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.logging.Logger;
 
-import javax.print.Doc;
-import javax.print.DocFlavor;
-import javax.print.DocPrintJob;
-import javax.print.PrintService;
-import javax.print.PrintServiceLookup;
-import javax.print.SimpleDoc;
-import javax.print.attribute.HashPrintRequestAttributeSet;
-import javax.print.attribute.PrintRequestAttributeSet;
-import javax.print.attribute.standard.Copies;
-import javax.print.attribute.standard.Media;
-import javax.print.attribute.standard.MediaTray;
-import javax.print.attribute.standard.OrientationRequested;
-import javax.print.attribute.standard.Sides;
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.client.Entity;
@@ -34,11 +18,7 @@ import javax.xml.bind.JAXBContext;
 import javax.xml.bind.Marshaller;
 
 import org.apache.commons.io.FilenameUtils;
-import org.apache.pdfbox.pdmodel.PDDocument;
-import org.apache.pdfbox.printing.PDFPrintable;
-import org.apache.pdfbox.printing.Scaling;
 
-import trax.aero.logger.LogManager;
 import trax.aero.pojo.Dw_Wo_Pack_Print;
 import trax.aero.pojo.jdf.AuditPoolBean;
 import trax.aero.pojo.jdf.ComChannelBean;
@@ -85,7 +65,6 @@ import trax.types.PrintQueueJob;
 
 public class PrinterUtilities {
 
-	static Logger logger = LogManager.getLogger("TechdocEDCO");
 
 	static ArrayList<String> heavyPrinters = new ArrayList<String>(Arrays.asList("EC61", "EC62", "EC63", "SINW","SIO1"));
 	
@@ -117,7 +96,7 @@ public class PrinterUtilities {
 
 			addJobToJMSQueue(propJob, "Y");
 
-			logger.info("Print Job " +  dwSel.getRow().getWo() + " Has been successfuly sent to the print queue");
+			System.out.println("Print Job " +  dwSel.getRow().getWo() + " Has been successfuly sent to the print queue");
 
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -152,71 +131,7 @@ public class PrinterUtilities {
 		}
 	}
 	
-	public static void sendToPrinter(String printService, File file) {
-
-		if (file != null && printService != null && file.exists() && file.isFile()) {
-			System.out.println("Job received for printer: " + printService);
-
-			try {
-
-	            PDDocument document = PDDocument.load(file);
-
-	            // Create a PDF printable instance
-	            PDFPrintable pdfPrintable = new PDFPrintable(document, Scaling.SHRINK_TO_FIT);
-
-				PrintService printServ = null;
-	            
-	            // Create a PrinterJob
-	            PrinterJob job = PrinterJob.getPrinterJob();
-	            job.setPrintable(pdfPrintable);
-
-	            // Find a CUPS printer
-	            PrintService[] printServices = PrintServiceLookup.lookupPrintServices(null, null);
-	            
-				System.out.println("Printer services avaible:");
-
-				if (printServices != null && printServices.length > 0) {
-					for (int i = 0; i < printServices.length; i++) {
-						PrintService servIter = printServices[i];
-
-						System.out.println(servIter.getName());
-
-						if (servIter.getName().equalsIgnoreCase(printService))
-							printServ = servIter;
-					}
-				} else
-					System.out.println("Not printer services avaible");
-
-				if (printServ != null) {
-					
-					job.setPrintService(printServ);
-
-		            // Set print attributes (like orientation, number of copies, etc.)
-		            PrintRequestAttributeSet attributes = new HashPrintRequestAttributeSet();
-		            attributes.add(new Copies(1)); // Number of copies
-		            attributes.add(OrientationRequested.PORTRAIT); // Portrait or landscape
-
-		            // Print the document
-		            job.print(attributes);
-
-		            // Close the document
-		            document.close();
-
-		            System.out.println("Printing completed!");
-					
-
-				}
-
-			} catch (Exception exc) {
-				exc.printStackTrace();
-				System.out.println("Exception printing JOB***************************");
-				System.out.println(exc.getMessage());
-			}
-		}
-	}
-	
-	
-	public static void sendToPrinterHeavy(String printService, File file, String side, String tray) {
+	public static void sendToPrinterHeavyLP(String printService, File file, String side, String tray) throws Exception {
 
 		if (file != null && printService != null && file.exists() && file.isFile()) {
 			System.out.println("Job received for printer: " + printService);
@@ -225,83 +140,48 @@ public class PrinterUtilities {
 
 				addJdfToPdf(printService, file);
 				
-	            PrintService printServ = null;
-	            
-	            
-
-	            // Find a CUPS printer
-	            PrintService[] printServices = PrintServiceLookup.lookupPrintServices(null, null);
-	            
-				System.out.println("Printer services avaible:");
-
-				if (printServices != null && printServices.length > 0) {
-					for (int i = 0; i < printServices.length; i++) {
-						PrintService servIter = printServices[i];
-
-						System.out.println(servIter.getName());
-
-						if (servIter.getName().equalsIgnoreCase(printService))
-							printServ = servIter;
-					}
-				} else
-					System.out.println("Not printer services avaible");
-
-				if (printServ != null) {
-					
-					 // Create a print job
-		            DocPrintJob printJob = printServ.createPrintJob();
-
-		            InputStream is = new FileInputStream(file);
-
-					// Create a document to print (in this case, a PDF)
-		            Doc doc = new SimpleDoc(is, DocFlavor.INPUT_STREAM.PDF, null);
-					
-		            // Set print attributes (like orientation, number of copies, etc.)
-		            PrintRequestAttributeSet attributes = new HashPrintRequestAttributeSet();
-		            // Set tray selection to Tray 2
-		            switch(tray){
-		            	case "1": attributes.add(MediaTray.TOP);
-		            		
-		            	case "2": attributes.add(MediaTray.MIDDLE);
-		            	
-		            	case "3": attributes.add(MediaTray.BOTTOM);
-		            	
-		            	case "4": attributes.add(MediaTray.ENVELOPE);
-		            		
-		            	default: attributes.add(MediaTray.TOP);	
-		       
-		            }
-		            
-		            
-		           
-
-		            
-		            if(side.equalsIgnoreCase("DUPLEX")) {
-		            	attributes.add(Sides.DUPLEX);  
-		            }else {
-		            	attributes.add(Sides.ONE_SIDED);  		            	
-		            }
-
-		            // Set other optional attributes (e.g., number of copies, orientation)
-		            attributes.add(new Copies(1));  // Set the number of copies to 1
-		            attributes.add(OrientationRequested.PORTRAIT);  // Portrait orientation
-
-		            // Send the print job with the specified attributes
-		            printJob.print(doc, attributes);
-
-
-		            is.close();
-		            
-
-		            System.out.println("Printing completed!");
-					
-
+				switch(tray){
+	            	case "1": tray = "Upper";
+	            		
+	            	case "2": tray = "MultiPurpose"; 
+	            	
+	            	case "3": tray = "Lower";             		
+	            	
+	            	case "4": tray = "LargeCapacity";
+	            		
+	            	default: tray = "Upper";
+       
 				}
+				
+				if(side.equalsIgnoreCase("DUPLEX")) {
+					side = "two-sided-long-edge";
+	            	
+	            }else {
+	            	side = "one-sided";
+	            }
+				
+				// Command to print the document with duplex and tray options using lp on Linux
+	            String command = "lp -d "+printService+" -o sides="+side+" -o tray="+tray+" " + file.getAbsolutePath();
+	            System.out.println("Command: " + command);
+	            // Create the process builder
+	            ProcessBuilder processBuilder = new ProcessBuilder(command.split(" "));
+
+	            // Start the process (print)
+	            Process process = processBuilder.start();
+
+	            // Wait for the process to finish
+	            int exitCode = process.waitFor();
+	            if (exitCode == 0) {
+	                System.out.println("Print job submitted successfully.");
+	            } else {
+	                System.out.println("Error occurred during printing.");
+	            }		      
 
 			} catch (Exception exc) {
 				exc.printStackTrace();
 				System.out.println("Exception printing JOB***************************");
 				System.out.println(exc.getMessage());
+				throw exc;
 			}
 		}
 	}
@@ -315,7 +195,7 @@ public class PrinterUtilities {
 	
 	
 	
-	public static void  sendPrint(String printer, String path, String side, String tray) {
+	public static void  sendPrint(String printer, String path, String side, String tray) throws Exception {
 		
 		//ArrayList<File> pdfs = new ArrayList<File>();
 		String fileLocOut =  System.getProperty("TECH_fileLocOut") ;
@@ -338,17 +218,18 @@ public class PrinterUtilities {
 			File localPrint = new File(fileLocOut+File.separator+FilenameUtils.removeExtension(print.getName())+File.separator +print.getName());
 			//sendToPrinter(printer, print);
 			if(heavyPrinters.contains(printer)) {
-				sendToPrinterHeavy(printer, localPrint,side,tray);
+				sendToPrinterHeavyLP(printer, localPrint,side,tray);
 			}else {
 				sendToPrinterLP(printer, localPrint);
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
+			throw e;
 		}		
 		return;
 	}
 
-	private static void sendToPrinterLP(String printer, File print) {
+	private static void sendToPrinterLP(String printer, File print) throws Exception {
 		 try {
 	            // Create a ProcessBuilder to run the 'lp' command
 	            ProcessBuilder processBuilder = new ProcessBuilder("lp", "-d", printer, print.getPath());
@@ -367,6 +248,7 @@ public class PrinterUtilities {
 	        	exc.printStackTrace();
 				System.out.println("Exception printing JOB***************************");
 				System.out.println(exc.getMessage());
+				throw exc;
 	        }
 		
 	}
@@ -384,8 +266,8 @@ public class PrinterUtilities {
 		marshaller.marshal(jdf, sw);
 		
 		String xml = sw.toString();
-		logger.info(xml);
-		logger.info(print.getPath());
+		System.out.println(xml);
+		System.out.println(print.getPath());
 	 	//Files.write(Paths.get(print.getPath()), xml.getBytes(), StandardOpenOption.);
 		prependPrefix(print, xml);
 		 

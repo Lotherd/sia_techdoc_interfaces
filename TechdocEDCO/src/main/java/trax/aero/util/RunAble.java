@@ -12,7 +12,6 @@ import javax.xml.bind.Marshaller;
 import javax.xml.bind.Unmarshaller;
 
 import trax.aero.interfaces.IModelData;
-import trax.aero.logger.LogManager;
 import trax.aero.model.Wo;
 import trax.aero.pojo.xml.ADDATTR;
 import trax.aero.pojo.xml.MODEL;
@@ -23,7 +22,6 @@ import trax.aero.pojo.xml.ROOT;
 public class RunAble implements Runnable {
 	
 	//Variables
-	Logger logger = LogManager.getLogger("TechdocEDCO");
 	@EJB IModelData data;
 
 	
@@ -42,7 +40,7 @@ public class RunAble implements Runnable {
 		
 		if(message != null) {
 			
-			logger.info(message);
+			System.out.println(message);
 			try {
 				
 				message = "<ROOT>"+ message + "</ROOT>";
@@ -66,8 +64,8 @@ public class RunAble implements Runnable {
 					xml=xml.replaceAll("&amp;lt;", 		"&lt;");
 					xml=xml.replaceAll("&amp;quot;", 	"&quot;");
 					xml=xml.replaceAll("&amp;re;", 		"&#xA;");
-					Wo w= data.issueTo(model,xml );
-					data.sendPrint(model, xml, w);
+					Wo w= data.issueToTechDocRequest(model,xml );
+					data.sendRequestToPrintServer(model, xml, w);
 					 try{
 						if(data.getCon() != null && !data.getCon().isClosed())
 							data.getCon().close();

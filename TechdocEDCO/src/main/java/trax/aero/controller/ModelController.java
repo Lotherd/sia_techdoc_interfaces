@@ -11,15 +11,12 @@ import org.apache.commons.mail.HtmlEmail ;
 import org.apache.commons.mail.EmailAttachment;
 import org.apache.commons.mail.SimpleEmail;
 
-import trax.aero.logger.LogManager;
 import trax.aero.model.InterfaceData;
 import trax.aero.pojo.acknowledgement.PrintAck;
 
 public class ModelController {
 	
-	
-	static Logger logger = LogManager.getLogger("TechdocEDCO");
-	
+		
 	static String errors = "";
 	public ModelController()
 	{
@@ -51,7 +48,7 @@ public class ModelController {
 			email.setHostName(host);
 			email.setSmtpPort(Integer.valueOf(port));
 			email.setFrom(fromEmail);
-			email.setSubject("TECHDOC-TRAX - PDF attachment not printed["+wo+"] - ALERT");
+			email.setSubject("TECHDOC-TRAX 2 - PDF attachment not printed["+wo+"] - ALERT");
 			for(String emails: emailsList)
 	        {
 				email.addTo(emails);
@@ -79,14 +76,14 @@ public class ModelController {
 					"");
 			
 			email.send();
-			logger.info("SUCCESS");
+			 System.out.println("SUCCESS");
 		}
 		catch(Exception e)
 		{
 			
-			logger.severe(e.getMessage());
-			logger.severe(e.toString());
-			logger.severe("Email not found");
+			 System.err.println(e.getMessage());
+			 System.err.println(e.toString());
+			 System.err.println("Email not found");
 			
 		}
 		finally
@@ -119,7 +116,7 @@ public class ModelController {
 				email.setHostName(host);
 				email.setSmtpPort(Integer.valueOf(port));
 				email.setFrom(fromEmail);
-				email.setSubject("TECHDOC-TRAX - EDCO attachment not printed["+wo+"] - ALERT");
+				email.setSubject("TECHDOC-TRAX 2 - EDCO attachment not printed["+wo+"] - ALERT");
 				for(String emails: emailsList)
 		        {
 					email.addTo(emails);
@@ -147,14 +144,14 @@ public class ModelController {
 						"");
 				
 				email.send();
-				logger.info("SUCCESS");
+				 System.out.println("SUCCESS");
 			}
 			catch(Exception e)
 			{
 				
-				logger.severe(e.getMessage());
-				logger.severe(e.toString());
-				logger.severe("Email not found");
+				 System.err.println(e.getMessage());
+				 System.err.println(e.toString());
+				 System.err.println("Email not found");
 				
 			}
 			finally
@@ -181,7 +178,7 @@ public class ModelController {
 				email.setHostName(host);
 				email.setSmtpPort(Integer.valueOf(port));
 				email.setFrom(fromEmail);
-				email.setSubject("TECHDOC- MQ - Connection Error");
+				email.setSubject("TECHDOC- MQ 2 - Connection Error");
 				for(String emails: emailsList)
 		        {
 					email.addTo(emails);
@@ -194,14 +191,14 @@ public class ModelController {
 						"");
 				
 				email.send();
-				logger.info("SUCCESS");
+				 System.out.println("SUCCESS");
 			}
 			catch(Exception e)
 			{
 				
-				logger.severe(e.getMessage());
-				logger.severe(e.toString());
-				logger.severe("Email not found");
+				 System.err.println(e.getMessage());
+				 System.err.println(e.toString());
+				 System.err.println("Email not found");
 				
 			}
 			finally
@@ -232,7 +229,7 @@ public class ModelController {
 				email.setHostName(host);
 				email.setSmtpPort(Integer.valueOf(port));
 				email.setFrom(fromEmail);
-				email.setSubject("TECHDOC-PRINT - attachment not printed["+wo+"] - ALERT");
+				email.setSubject("TECHDOC-PRINT 2 - attachment not printed["+wo+"] - ALERT");
 				for(String emails: emailsList)
 		        {
 					email.addTo(emails);
@@ -260,14 +257,14 @@ public class ModelController {
 						"");
 				
 				email.send();
-				logger.info("SUCCESS");
+				 System.out.println("SUCCESS");
 			}
 			catch(Exception e)
 			{
 				
-				logger.severe(e.getMessage());
-				logger.severe(e.toString());
-				logger.severe("Email not found");
+				 System.err.println(e.getMessage());
+				 System.err.println(e.toString());
+				 System.err.println("Email not found");
 				
 			}
 			finally
@@ -297,7 +294,7 @@ public class ModelController {
 				email.setHostName(host);
 				email.setSmtpPort(Integer.valueOf(port));
 				email.setFrom(fromEmail);
-				email.setSubject("New "+fleet+" Attachments Loaded in CDM. Requires Follow-up action.");
+				email.setSubject("New "+fleet+" Attachments Loaded in CDM. Requires Follow-up action. TD 2");
 				for(String emails: emailsList)
 		        {
 					email.addTo(emails);
@@ -317,14 +314,14 @@ public class ModelController {
 				+" Attached are the new tasks, deleted tasks and current tasks generated as attachment for your review and necessary action.");
 				
 				email.send();
-				logger.info("SUCCESS");
+				 System.out.println("SUCCESS");
 			}
 			catch(Exception e)
 			{
 				
-				logger.severe(e.getMessage());
-				logger.severe(e.toString());
-				logger.severe("Email not found");
+				 System.err.println(e.getMessage());
+				 System.err.println(e.toString());
+				 System.err.println("Email not found");
 				
 			}
 			finally

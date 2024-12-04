@@ -59,7 +59,7 @@ public class Service {
 		try 
         {    
 			System.out.println("Print WO:" +input.getWo() + ", PATH:" +input.getPath());
-			data.print(input);
+			data.sendPrintToOutBound(input);
 		}
 		catch(Exception e)
 		{
@@ -112,8 +112,8 @@ public class Service {
 				xml=xml.replaceAll("&amp;lt;", 		"&lt;");
 				xml=xml.replaceAll("&amp;quot;", 	"&quot;");
 				xml=xml.replaceAll("&amp;re;", 		"&#xA;");
-				Wo w= data.issueTo(model,xml );
-				data.sendPrint(model, xml, w);
+				Wo w= data.issueToTechDocRequest(model,xml );
+				data.sendRequestToPrintServer(model, xml, w);
 				 try{
 					if(data.getCon() != null && !data.getCon().isClosed())
 						data.getCon().close();
