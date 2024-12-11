@@ -15,11 +15,11 @@ public interface IModelData {
 	public String filterADDATTR(List<ADDATTR> attributes, String filter);
 
 	
-	public void sendPrintToOutBound(Print input);
+	public void sendPrintToOutBound(Print input) throws Exception;
 
 	public Connection getCon();
 
-	public void sendRequestToPrintServer(MODEL model, String xml, Wo w);
+	public void sendRequestToPrintServer(MODEL model, String xml, Wo w) throws Exception;
 
 	public void processBatFile();
 

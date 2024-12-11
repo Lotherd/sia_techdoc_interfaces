@@ -153,7 +153,7 @@ public class ModelData implements IModelData {
 	}
 	
 	@Override
-	public void sendPrintToOutBound(Print print) {
+	public void sendPrintToOutBound(Print print) throws Exception {
 		
 		String printer = "", date, time, revision, folder = "";
 		ArrayList<PrintAck> ack = null;
@@ -375,7 +375,7 @@ public class ModelData implements IModelData {
 		dwPackPrint.getRow().setTask_card_sort("N");
 		dwPackPrint.getRow().setEc("N");
 		dwPackPrint.getRow().setWo_release_form("N");
-		dwPackPrint.getRow().setWo_select("Y");
+		dwPackPrint.getRow().setWo_select("N");
 		dwPackPrint.getRow().setComponent_print("N");
 		dwPackPrint.getRow().setWo_export_to_wics("N");
 		dwPackPrint.getRow().setWo_task_card_panel_images("NO");
@@ -429,12 +429,14 @@ public class ModelData implements IModelData {
 	}
 
 
-	private void deleteTempWoTaskCardBlob(Wo w, ArrayList<WoTaskCard> taskCards, BlobTable blob) {
+	private void deleteTempWoTaskCardBlob(Wo w, ArrayList<WoTaskCard> taskCards, BlobTable blob  ) throws Exception {
 		
 		for(WoTaskCard t : taskCards) {
 			 System.out.println("DELETING TEMP Task Card: " + t.getId().getTaskCard());
 			deleteData(em.find(WoTaskCard.class, t.getId()));
-		}	
+		}
+		System.out.println("DELETING TEMP WO TaskCard Pn: " + w.getWo());
+		deleteWoTaskCardPn(String.valueOf( w.getWo()));
 		
 		 System.out.println("DELETING TEMP BLOB: " + blob.getId().getBlobNo());
 		deleteData(em.find(BlobTable.class, blob.getId()));
@@ -929,7 +931,7 @@ public class ModelData implements IModelData {
 				if(code.equalsIgnoreCase("WOSEQ")) {
 					String sql = "SELECT R.WO FROM WO R WHERE R.WO = ? ";
 					long i = 	10000;
-					long max = 	19999;
+					long max = 	29999;
 					try {	
 			            while (true)
 			            {
@@ -971,7 +973,7 @@ public class ModelData implements IModelData {
 		
 
 
-		private void deleteTempWoTaskCardBlob(String wo) {
+		private void deleteTempWoTaskCardBlob(String wo) throws Exception {
 
 			Wo w = getTempWo(wo);
 			BlobTable blob = getTempBlob(w.getBlobNo());
@@ -995,6 +997,17 @@ public class ModelData implements IModelData {
 			}	
 		}
 
+		public void deleteWoTaskCardPn( String wo) throws Exception{
+			String query = "DELETE WO_TASK_CARD_PN where WO = ?";		
+			try
+			{	
+				em.createNativeQuery(query).setParameter(1, wo).executeUpdate();	
+			}
+			catch (Exception e) 
+			{
+				throw new Exception("An Exception occurred executing the query to delete the WO_TASK_CARD_PN. " + "\n error: " + e.toString());
+			}
+		}
 
 		private BlobTable getTempBlob(BigDecimal blobNo) {
 			try {
