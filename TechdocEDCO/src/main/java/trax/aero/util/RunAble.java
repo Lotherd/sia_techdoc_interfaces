@@ -23,7 +23,8 @@ public class RunAble implements Runnable {
 	
 	//Variables
 	@EJB IModelData data;
-
+	int minuteCounter = 0;
+	boolean sendEmail = false;
 	
 	public RunAble(IModelData data) {
 		this.data = data;
@@ -35,8 +36,13 @@ public class RunAble implements Runnable {
 		JAXBContext jc = JAXBContext.newInstance(ROOT.class);
 		Unmarshaller unmarshaller = jc.createUnmarshaller();
 		
-		
-		message = MqUtilities.receiveMqText();
+		minuteCounter++;
+		if (minuteCounter >= 5) {
+			sendEmail = true;
+			minuteCounter = 0;
+		}
+		message = MqUtilities.receiveMqText(sendEmail);
+		sendEmail = false;
 		
 		if(message != null) {
 			

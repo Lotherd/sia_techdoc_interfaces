@@ -68,11 +68,11 @@ public class PrinterUtilities {
 
 	static ArrayList<String> heavyPrinters = new ArrayList<String>(Arrays.asList("EC61", "EC62", "EC63", "SINW","SIO1"));
 	
-	public static int sendWorkPackPrintJob(String printWindow, Dw_Wo_Pack_Print dwSel) {
+	public static int sendWorkPackPrintJob(String printWindow, Dw_Wo_Pack_Print dwSel) throws Exception {
 		int job = 0;
 		String s_wo_print = "";
 
-		try {
+		
 
 			StringWriter sw = new StringWriter();
 			JAXBContext jc = JAXBContext.newInstance(Dw_Wo_Pack_Print.class);
@@ -98,9 +98,7 @@ public class PrinterUtilities {
 
 			System.out.println("Print Job " +  dwSel.getRow().getWo() + " Has been successfuly sent to the print queue");
 
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+		
 
 		return job;
 	}

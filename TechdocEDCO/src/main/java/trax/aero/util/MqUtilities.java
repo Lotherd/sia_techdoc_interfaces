@@ -140,7 +140,7 @@ public class MqUtilities {
 		return false;
     }
     
-    public static String receiveMqText() throws JMSException {
+    public static String receiveMqText(boolean sendEmail ) throws JMSException {
 		QueueReceiver queueReceiver = null;
 		QueueConnection queueConnection = null;
 		QueueSession queueSession = null;
@@ -174,8 +174,10 @@ public class MqUtilities {
             
 
         } catch (Exception e) {
-        	ModelController.sendEmailMQ(ExceptionUtils.getStackTrace ( e ));
-            e.printStackTrace();
+        	if(sendEmail) {
+        		ModelController.sendEmailMQ(ExceptionUtils.getStackTrace ( e ));
+        	}
+        	e.printStackTrace();
         }finally {
              queueReceiver.close();
              queueSession.close();

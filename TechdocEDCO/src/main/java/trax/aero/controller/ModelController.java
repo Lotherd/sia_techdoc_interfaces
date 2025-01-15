@@ -48,7 +48,7 @@ public class ModelController {
 			email.setHostName(host);
 			email.setSmtpPort(Integer.valueOf(port));
 			email.setFrom(fromEmail);
-			email.setSubject("TECHDOC-TRAX 2 - PDF attachment not printed["+wo+"] - ALERT");
+			email.setSubject("TECHDOC 2-TRAX - PDF attachment not printed["+wo+"] - ALERT");
 			for(String emails: emailsList)
 	        {
 				email.addTo(emails);
@@ -116,7 +116,7 @@ public class ModelController {
 				email.setHostName(host);
 				email.setSmtpPort(Integer.valueOf(port));
 				email.setFrom(fromEmail);
-				email.setSubject("TECHDOC-TRAX 2 - EDCO attachment not printed["+wo+"] - ALERT");
+				email.setSubject("TECHDOC 2-TRAX - EDCO attachment not printed["+wo+"] - ALERT");
 				for(String emails: emailsList)
 		        {
 					email.addTo(emails);
@@ -178,7 +178,7 @@ public class ModelController {
 				email.setHostName(host);
 				email.setSmtpPort(Integer.valueOf(port));
 				email.setFrom(fromEmail);
-				email.setSubject("TECHDOC- MQ 2 - Connection Error");
+				email.setSubject("TECHDOC 2 - MQ - Connection Error");
 				for(String emails: emailsList)
 		        {
 					email.addTo(emails);
@@ -229,7 +229,7 @@ public class ModelController {
 				email.setHostName(host);
 				email.setSmtpPort(Integer.valueOf(port));
 				email.setFrom(fromEmail);
-				email.setSubject("TECHDOC-PRINT 2 - attachment not printed["+wo+"] - ALERT");
+				email.setSubject("TECHDOC 2-PRINT - attachment not printed["+wo+"] - ALERT");
 				for(String emails: emailsList)
 		        {
 					email.addTo(emails);

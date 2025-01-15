@@ -355,7 +355,7 @@ public class ModelData implements IModelData {
 
 
 
-	private int sendWorkPackPrintJob(Wo w) {
+	private int sendWorkPackPrintJob(Wo w) throws Exception {
 
 		Dw_Wo_Pack_Print dwPackPrint =  new Dw_Wo_Pack_Print();
 
@@ -1110,6 +1110,8 @@ public class ModelData implements IModelData {
 								, revision, date, time, ack);
 						break;
 					default:
+						ModelController.sendEmailPrint(input.getEFFECTIVITY().getJOBCARD().getWPNBR()
+								, revision, date, time, ack);
 						break;
 			}
 			}
