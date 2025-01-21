@@ -482,7 +482,14 @@ public class ModelData implements IModelData {
 			for(String tc: taskCards) {
 				cstmt.setInt(1, Long.valueOf( w.getWo()).intValue());
 				cstmt.setString(2, tc);
+				
+				String ac = input.getEFFECTIVITY().getREGNBR();
+				if(ac == null || ac.isEmpty()) {
+					cstmt.setString(3, "          ");
+				}else {
 				cstmt.setString(3, input.getEFFECTIVITY().getREGNBR());
+				}
+				
 				cstmt.setString(4, "                                   ");
 				cstmt.setString(5, "                                   ");
 				cstmt.setString(6, "IFACE-SIA");
