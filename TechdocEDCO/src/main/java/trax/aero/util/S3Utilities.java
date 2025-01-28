@@ -52,10 +52,12 @@ public class S3Utilities {
 	
 	// ---------------------------------------------------------------------------- Send File
 	
-	protected static void putS3Object( File file, String key, String bucketName) {
+	protected static void putS3Object( File file, String key, String bucketName) throws Exception {
         try {
-        	
-        	
+        	//Path targetPath  = Paths.get(key+File.separator+file.getName());
+        	//if (Files.notExists(targetPath )) {
+            //    Files.createDirectories(targetPath.getParent());
+            //}
         	//Files.move(file.toPath(), new File(key+File.separator+file.getName()).toPath(), StandardCopyOption.REPLACE_EXISTING);
         	S3Client s3 = S3Client.builder().build();       
         	if(file.getName().contains("index") || file.getName().contains("footer")) {

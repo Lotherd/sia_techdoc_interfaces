@@ -5,7 +5,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.logging.Logger;
 
-import org.apache.commons.mail.ByteArrayDataSource;
+import javax.mail.util.ByteArrayDataSource;
 import org.apache.commons.mail.Email;
 import org.apache.commons.mail.HtmlEmail ;
 import org.apache.commons.mail.EmailAttachment;
@@ -30,7 +30,7 @@ public class ModelController {
 			String revision,
 			String date,
 			String time,
-			ArrayList<PrintAck> pAcks , String printer , String printFileName)
+			String pAcks , String printer , String printFileName)
 	{
 		try
 		{
@@ -73,19 +73,8 @@ public class ModelController {
 	        htmlContent.append("</tr>");
 			
 	        // Add table rows
-	        for (PrintAck data : pAcks) {
-	            htmlContent.append("<tr>")
-	                       .append("<td style='border: 1px solid black; padding: 8px;'>").append(printFileName).append("</td>") // Assuming the name of PDF attachment is constant
-	                       .append("<td style='border: 1px solid black; padding: 8px;'>").append(data.getSapServiceOrder()).append("</td>")
-	                       .append("<td style='border: 1px solid black; padding: 8px;'>").append(data.getJobcardNumber()).append("</td>")
-	                       .append("<td style='border: 1px solid black; padding: 8px;'>").append(data.getJcTitle()).append("</td>")
-	                       .append("<td style='border: 1px solid black; padding: 8px;'>").append(data.getSapGroupNumber()).append("</td>")
-	                       .append("<td style='border: 1px solid black; padding: 8px;'>").append(data.getTaskType()).append("</td>")
-	                       .append("<td style='border: 1px solid black; padding: 8px;'>").append(data.getTraxWoNumber()).append("</td>")
-	                       .append("<td style='border: 1px solid black; padding: 8px;'>").append(data.getAttachment()).append("</td>")
-	                       .append("<td style='border: 1px solid black; padding: 8px;'>").append(data.getAttachmentID()).append("</td>")
-	                       .append("</tr>");
-	        }
+	        htmlContent.append(pAcks);
+	        
 	        htmlContent.append("</table>");
 			String print = htmlContent.toString();
 			
@@ -116,7 +105,7 @@ public class ModelController {
 				String revision,
 				String date,
 				String time,
-				ArrayList<PrintAck> pAcks , String printer , String printFileName )
+				String pAcks , String printer , String printFileName )
 		{
 			try
 			{
@@ -159,19 +148,8 @@ public class ModelController {
 		        htmlContent.append("</tr>");
 				
 		        // Add table rows
-		        for (PrintAck data : pAcks) {
-		            htmlContent.append("<tr>")
-		                       .append("<td style='border: 1px solid black; padding: 8px;'>").append(printFileName).append("</td>") // Assuming the name of PDF attachment is constant
-		                       .append("<td style='border: 1px solid black; padding: 8px;'>").append(data.getSapServiceOrder()).append("</td>")
-		                       .append("<td style='border: 1px solid black; padding: 8px;'>").append(data.getJobcardNumber()).append("</td>")
-		                       .append("<td style='border: 1px solid black; padding: 8px;'>").append(data.getJcTitle()).append("</td>")
-		                       .append("<td style='border: 1px solid black; padding: 8px;'>").append(data.getSapGroupNumber()).append("</td>")
-		                       .append("<td style='border: 1px solid black; padding: 8px;'>").append(data.getTaskType()).append("</td>")
-		                       .append("<td style='border: 1px solid black; padding: 8px;'>").append(data.getTraxWoNumber()).append("</td>")
-		                       .append("<td style='border: 1px solid black; padding: 8px;'>").append(data.getAttachment()).append("</td>")
-		                       .append("<td style='border: 1px solid black; padding: 8px;'>").append(data.getAttachmentID()).append("</td>")
-		                       .append("</tr>");
-		        }
+		        htmlContent.append(pAcks);
+		        
 		        htmlContent.append("</table>");
 				String print = htmlContent.toString();
 				
@@ -247,7 +225,7 @@ public class ModelController {
 				String revision,
 				String date,
 				String time,
-				ArrayList<PrintAck> pAcks , String printer , String printFileName)
+				String pAcks , String printer , String printFileName)
 		{
 			try
 			{
@@ -291,19 +269,8 @@ public class ModelController {
 		        htmlContent.append("</tr>");
 				
 		        // Add table rows
-		        for (PrintAck data : pAcks) {
-		            htmlContent.append("<tr>")
-		                       .append("<td style='border: 1px solid black; padding: 8px;'>").append(printFileName).append("</td>") // Assuming the name of PDF attachment is constant
-		                       .append("<td style='border: 1px solid black; padding: 8px;'>").append(data.getSapServiceOrder()).append("</td>")
-		                       .append("<td style='border: 1px solid black; padding: 8px;'>").append(data.getJobcardNumber()).append("</td>")
-		                       .append("<td style='border: 1px solid black; padding: 8px;'>").append(data.getJcTitle()).append("</td>")
-		                       .append("<td style='border: 1px solid black; padding: 8px;'>").append(data.getSapGroupNumber()).append("</td>")
-		                       .append("<td style='border: 1px solid black; padding: 8px;'>").append(data.getTaskType()).append("</td>")
-		                       .append("<td style='border: 1px solid black; padding: 8px;'>").append(data.getTraxWoNumber()).append("</td>")
-		                       .append("<td style='border: 1px solid black; padding: 8px;'>").append(data.getAttachment()).append("</td>")
-		                       .append("<td style='border: 1px solid black; padding: 8px;'>").append(data.getAttachmentID()).append("</td>")
-		                       .append("</tr>");
-		        }
+		        htmlContent.append(pAcks);
+		        
 		        htmlContent.append("</table>");
 				String print = htmlContent.toString();
 				

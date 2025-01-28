@@ -127,6 +127,7 @@ public class Service {
 				}catch (SQLException e) { 
 					e.printStackTrace();
 				}
+				 count++;
 			}
 		}catch (Exception e) {
 			e.printStackTrace();

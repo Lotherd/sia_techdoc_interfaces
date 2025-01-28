@@ -141,6 +141,21 @@ public class ModelData implements IModelData {
 				a.setTraxWoNumber(input.getEFFECTIVITY().getJOBCARD().getWPTITLE());
 				ack.add(a);	
 			}
+			// save ack to parent from child
+			 StringBuilder htmlContent = new StringBuilder();			 
+			 for (PrintAck data : ack) {
+		            htmlContent.append("<tr>")
+		                       .append("<td style='border: 1px solid black; padding: 8px;'>").append(printer).append("</td>") // Assuming the name of PDF attachment is constant
+		                       .append("<td style='border: 1px solid black; padding: 8px;'>").append(data.getSapServiceOrder()).append("</td>")
+		                       .append("<td style='border: 1px solid black; padding: 8px;'>").append(data.getJobcardNumber()).append("</td>")
+		                       .append("<td style='border: 1px solid black; padding: 8px;'>").append(data.getJcTitle()).append("</td>")
+		                       .append("<td style='border: 1px solid black; padding: 8px;'>").append(data.getSapGroupNumber()).append("</td>")
+		                       .append("<td style='border: 1px solid black; padding: 8px;'>").append(data.getTaskType()).append("</td>")
+		                       .append("<td style='border: 1px solid black; padding: 8px;'>").append(data.getTraxWoNumber()).append("</td>")
+		                       .append("<td style='border: 1px solid black; padding: 8px;'>").append(data.getAttachment()).append("</td>")
+		                       .append("<td style='border: 1px solid black; padding: 8px;'>").append(data.getAttachmentID()).append("</td>")
+		                       .append("</tr>");
+		     }
 			
 			
 			
@@ -148,21 +163,21 @@ public class ModelData implements IModelData {
 				case "ECXX":
 				case "ECXY":
 					ModelController.sendEmailEDCO( input.getEFFECTIVITY().getJOBCARD().getWPNBR()
-							, revision, date, time, ack , printer , "Cover Page Missing");
+							, revision, date, time, htmlContent.toString() , printer , "Cover Page Missing");
 					break;
 				case "TRAX":	
 					ModelController.sendEmailTrax(input.getEFFECTIVITY().getJOBCARD().getWPNBR()
-							, revision, date, time, ack, printer , "Cover Page Missing");
+							, revision, date, time, htmlContent.toString(), printer , "Cover Page Missing");
 					break;
 	
 				case "EDXX":
 				case "ECXZ":	
 					ModelController.sendEmailPrint(input.getEFFECTIVITY().getJOBCARD().getWPNBR()
-							, revision, date, time, ack, printer , "Cover Page Missing");
+							, revision, date, time, htmlContent.toString(), printer , "Cover Page Missing");
 					break;
 				default:
 					ModelController.sendEmailPrint(input.getEFFECTIVITY().getJOBCARD().getWPNBR()
-							, revision, date, time, ack, printer , "Cover Page Missing");
+							, revision, date, time, htmlContent.toString(), printer , "Cover Page Missing");
 					break;
 			}
 			
@@ -177,12 +192,15 @@ public class ModelData implements IModelData {
 		ArrayList<PrintAck> ack = new ArrayList<PrintAck>();
 		MODEL input = null;
 		String pdfName = ""  ;
+		Wo child = null, parent = null;
 		
 		boolean sendFinal = false;
 		try {
-			Wo child = em.find(Wo.class,Long.parseLong( print.getWo()));
-			Wo parent = em.find(Wo.class,child.getNhWo().longValue());
+			child = em.find(Wo.class,Long.parseLong( print.getWo()));
+			parent = em.find(Wo.class,child.getNhWo().longValue());
+			em.refresh(parent);
 			if(parent.getTaskCardNumberingSystem().intValue() == child.getTaskCardNumberingSystem().intValue()) {
+				System.out.println("Final print found " + child.getTaskCardNumberingSystem().intValue());
 				sendFinal = true;
 			}
 			
@@ -219,7 +237,23 @@ public class ModelData implements IModelData {
 						a.setTaskType(input.getEFFECTIVITY().getJOBCARD().getTYPE());
 						a.setTraxWoNumber(input.getEFFECTIVITY().getJOBCARD().getWPTITLE());
 						ack.add(a);	
-						
+						// save ack to parent from child
+						StringBuilder htmlContent = new StringBuilder();
+						if(parent.getWoDescription() != null && !parent.getWoDescription().isEmpty()) {
+							htmlContent.append(parent.getWoDescription());
+						}
+					    htmlContent.append("<tr>")
+					               .append("<td style='border: 1px solid black; padding: 8px;'>").append(printer).append("</td>") // Assuming the name of PDF attachment is constant
+					               .append("<td style='border: 1px solid black; padding: 8px;'>").append(a.getSapServiceOrder()).append("</td>")
+					               .append("<td style='border: 1px solid black; padding: 8px;'>").append(a.getJobcardNumber()).append("</td>")
+					               .append("<td style='border: 1px solid black; padding: 8px;'>").append(a.getJcTitle()).append("</td>")
+					               .append("<td style='border: 1px solid black; padding: 8px;'>").append(a.getSapGroupNumber()).append("</td>")
+					               .append("<td style='border: 1px solid black; padding: 8px;'>").append(a.getTaskType()).append("</td>")
+					               .append("<td style='border: 1px solid black; padding: 8px;'>").append(a.getTraxWoNumber()).append("</td>")
+					               .append("<td style='border: 1px solid black; padding: 8px;'>").append(a.getAttachment()).append("</td>")
+					               .append("<td style='border: 1px solid black; padding: 8px;'>").append(a.getAttachmentID()).append("</td>")
+					               .append("</tr>");
+						parent.setWoDescription(htmlContent.toString());
 					}
 				}
 				
@@ -298,28 +332,30 @@ public class ModelData implements IModelData {
 			date =filterADDATTR( input.getEFFECTIVITY().getJOBCARD().getJOBI().getPLI().getADDATTR(), "IDOC-DATE");
 			revision = input.getEFFECTIVITY().getJOBCARD().getWPNBR();
 			time = filterADDATTR( input.getEFFECTIVITY().getJOBCARD().getJOBI().getPLI().getADDATTR(), "IDOC-TIME") ;
-			switch(printer) {
-			
-			 
-				case "ECXX":
-				case "ECXY":
-					ModelController.sendEmailEDCO( input.getEFFECTIVITY().getJOBCARD().getWPNBR()
-							, revision, date, time, ack, printer , pdfName);
-					break;
-				case "TRAX":	
-					ModelController.sendEmailTrax(input.getEFFECTIVITY().getJOBCARD().getWPNBR()
-							, revision, date, time, ack, printer, pdfName);
-					break;
-
-				case "EDXX":
-				case "ECXZ":	
-					ModelController.sendEmailPrint(input.getEFFECTIVITY().getJOBCARD().getWPNBR()
-							, revision, date, time, ack, printer, pdfName);
-					break;
-				default:
-					ModelController.sendEmailPrint(input.getEFFECTIVITY().getJOBCARD().getWPNBR()
-							, revision, date, time, ack, printer, pdfName);
-					break;
+			if(sendFinal) {
+				switch(printer) {
+				
+				 
+					case "ECXX":
+					case "ECXY":
+						ModelController.sendEmailEDCO( input.getEFFECTIVITY().getJOBCARD().getWPNBR()
+								, revision, date, time, parent.getWoDescription(), printer , pdfName);
+						break;
+					case "TRAX":	
+						ModelController.sendEmailTrax(input.getEFFECTIVITY().getJOBCARD().getWPNBR()
+								, revision, date, time, parent.getWoDescription(), printer, pdfName);
+						break;
+	
+					case "EDXX":
+					case "ECXZ":	
+						ModelController.sendEmailPrint(input.getEFFECTIVITY().getJOBCARD().getWPNBR()
+								, revision, date, time, parent.getWoDescription(), printer, pdfName);
+						break;
+					default:
+						ModelController.sendEmailPrint(input.getEFFECTIVITY().getJOBCARD().getWPNBR()
+								, revision, date, time, parent.getWoDescription(), printer, pdfName);
+						break;
+				}
 			}
 			
 			
@@ -330,7 +366,7 @@ public class ModelData implements IModelData {
 			if(System.getProperty("Techdoc_DELETE") != null 
 				&& !System.getProperty("Techdoc_DELETE").isEmpty()
 				&& System.getProperty("Techdoc_DELETE").equalsIgnoreCase("YES")) {
-				deleteTempWoTaskCardBlob(print.getWo() );
+				deleteTemp(print.getWo() );
 			}
 		}
 	}
@@ -389,33 +425,48 @@ public class ModelData implements IModelData {
 				a.setTraxWoNumber(input.getEFFECTIVITY().getJOBCARD().getWPTITLE());
 				ack.add(a);	
 			}
+			// save ack to parent from child
+			 StringBuilder htmlContent = new StringBuilder();			 
+			 for (PrintAck data : ack) {
+		            htmlContent.append("<tr>")
+		                       .append("<td style='border: 1px solid black; padding: 8px;'>").append(printer).append("</td>") // Assuming the name of PDF attachment is constant
+		                       .append("<td style='border: 1px solid black; padding: 8px;'>").append(data.getSapServiceOrder()).append("</td>")
+		                       .append("<td style='border: 1px solid black; padding: 8px;'>").append(data.getJobcardNumber()).append("</td>")
+		                       .append("<td style='border: 1px solid black; padding: 8px;'>").append(data.getJcTitle()).append("</td>")
+		                       .append("<td style='border: 1px solid black; padding: 8px;'>").append(data.getSapGroupNumber()).append("</td>")
+		                       .append("<td style='border: 1px solid black; padding: 8px;'>").append(data.getTaskType()).append("</td>")
+		                       .append("<td style='border: 1px solid black; padding: 8px;'>").append(data.getTraxWoNumber()).append("</td>")
+		                       .append("<td style='border: 1px solid black; padding: 8px;'>").append(data.getAttachment()).append("</td>")
+		                       .append("<td style='border: 1px solid black; padding: 8px;'>").append(data.getAttachmentID()).append("</td>")
+		                       .append("</tr>");
+		     }
 			
 			switch(printer) {
 				case "ECXX":
 				case "ECXY":
 					ModelController.sendEmailEDCO( input.getEFFECTIVITY().getJOBCARD().getWPNBR()
-							, revision, date, time, ack, printer , "Cover Page Missing");
+							, revision, date, time, htmlContent.toString(), printer , "Cover Page Missing");
 					break;
 				case "TRAX":	
 					ModelController.sendEmailTrax(input.getEFFECTIVITY().getJOBCARD().getWPNBR()
-							, revision, date, time, ack, printer , "Cover Page Missing");
+							, revision, date, time, htmlContent.toString(), printer , "Cover Page Missing");
 					break;
 	
 				case "EDXX":
 				case "ECXZ":	
 					ModelController.sendEmailPrint(input.getEFFECTIVITY().getJOBCARD().getWPNBR()
-							, revision, date, time, ack, printer , "Cover Page Missing");
+							, revision, date, time, htmlContent.toString(), printer , "Cover Page Missing");
 					break;
 				default:
 					ModelController.sendEmailPrint(input.getEFFECTIVITY().getJOBCARD().getWPNBR()
-							, revision, date, time, ack, printer , "Cover Page Missing");
+							, revision, date, time, htmlContent.toString(), printer , "Cover Page Missing");
 					break;
 			}
 			// deletes wo and wo task card 
 			if(System.getProperty("Techdoc_DELETE") != null 
 				&& !System.getProperty("Techdoc_DELETE").isEmpty()
 				&& System.getProperty("Techdoc_DELETE").equalsIgnoreCase("YES")) {
-				deleteTempWoTaskCardBlob(String.valueOf(w.getWo() ));
+				deleteTemp(String.valueOf(w.getWo() ));
 			}
 		}
 		
@@ -622,29 +673,6 @@ public class ModelData implements IModelData {
 		return PrinterUtilities.sendWorkPackPrintJob("w_wo_pack_print", dwPackPrint);
 	}
 
-
-	private void deleteTempWoTaskCardBlob(Wo w, ArrayList<WoTaskCard> taskCards, BlobTable blob  ) throws Exception {
-		
-		for(WoTaskCard t : taskCards) {
-			 System.out.println("DELETING TEMP Task Card: " + t.getId().getTaskCard());
-			deleteData(em.find(WoTaskCard.class, t.getId()));
-		}
-		System.out.println("DELETING TEMP WO TaskCard Pn: " + w.getWo());
-		deleteWoTaskCardPn(String.valueOf( w.getWo()));
-		
-		 System.out.println("DELETING TEMP BLOB: " + blob.getId().getBlobNo());
-		deleteData(em.find(BlobTable.class, blob.getId()));
-		
-		 System.out.println("DELETING TEMP WO: " + w.getWo());
-		deleteData(em.find(Wo.class, w.getWo()));
-
-		
-		
-		
-		
-	}
-
-
 	private void createTempWoTaskCard(MODEL input, Wo w) throws Exception {
 
 		ArrayList<String> taskIds = new ArrayList<String>();
@@ -733,7 +761,6 @@ public class ModelData implements IModelData {
 							taskCardStrings.add( tc.getTaskCard());
 						}
 					}catch (Exception e) {
-						e.printStackTrace();
 						List<TaskCard> cards = em.createQuery("Select t From TaskCard t where t.tcSub =:sub", TaskCard.class)
 								.setParameter("sub", subTaskId)
 								.getResultList();
@@ -1200,7 +1227,7 @@ public class ModelData implements IModelData {
 		
 
 
-		private void deleteTempWoTaskCardBlob(String wo) throws Exception {
+		private void deleteTemp(String wo) throws Exception {
 
 			Wo w = getTempWo(wo);
 			BlobTable blob = getTempBlob(w.getBlobNo());
@@ -1209,7 +1236,19 @@ public class ModelData implements IModelData {
 
 			Wo parent = em.find(Wo.class, w.getNhWo().longValue());
 			
-			deleteTempWoTaskCardBlob(w, taskCards, blob);
+			for(WoTaskCard t : taskCards) {
+				System.out.println("DELETING TEMP Task Card: " + t.getId().getTaskCard());
+				deleteData(em.find(WoTaskCard.class, t.getId()));
+			}
+			System.out.println("DELETING TEMP WO TaskCard Pn: " + w.getWo());
+			deleteWoTaskCardPn(String.valueOf( w.getWo()));
+			
+			System.out.println("DELETING TEMP BLOB: " + blob.getId().getBlobNo());
+			deleteData(em.find(BlobTable.class, blob.getId()));
+			
+			System.out.println("DELETING TEMP WO: " + w.getWo());
+			deleteData(em.find(Wo.class, w.getWo()));
+			
 			if( parent != null && 
 				w.getTaskCardNumberingSystem().intValue() == parent.getTaskCardNumberingSystem().intValue()) {
 				System.out.println("DELETING TEMP WO PARENT: " + parent.getWo());
@@ -1415,7 +1454,7 @@ public class ModelData implements IModelData {
 			
 			w.setNhWo(new BigDecimal(parent.getWo()));
 			w.setTaskCardNumberingSystem(count);
-			
+			 System.out.println("LINKING TEMP WO: " + w.getWo() + " TO PARENT TEMP WO: " +parent.getWo() + " COUNT: " +count.intValue());
 			insertData(w);
 		}
 		
