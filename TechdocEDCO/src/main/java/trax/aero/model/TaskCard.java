@@ -490,6 +490,10 @@ public class TaskCard implements Serializable {
 	//bi-directional many-to-one association to TaskCardPn
 	@OneToMany(mappedBy="taskCardBean")
 	private List<TaskCardPn> taskCardPns;
+	
+	//bi-directional many-to-one association to TaskCardEffectivityHead
+		@OneToMany(mappedBy="taskCardBean")
+		private List<TaskCardEffectivityHead> taskCardEffectivityHeads;
 
 	public TaskCard() {
 	}
@@ -1868,4 +1872,26 @@ public class TaskCard implements Serializable {
 	}
 	*/
 
+	
+	public List<TaskCardEffectivityHead> getTaskCardEffectivityHeads() {
+		return this.taskCardEffectivityHeads;
+	}
+
+	public void setTaskCardEffectivityHeads(List<TaskCardEffectivityHead> taskCardEffectivityHeads) {
+		this.taskCardEffectivityHeads = taskCardEffectivityHeads;
+	}
+
+	public TaskCardEffectivityHead addTaskCardEffectivityHead(TaskCardEffectivityHead taskCardEffectivityHead) {
+		getTaskCardEffectivityHeads().add(taskCardEffectivityHead);
+		taskCardEffectivityHead.setTaskCardBean(this);
+
+		return taskCardEffectivityHead;
+	}
+
+	public TaskCardEffectivityHead removeTaskCardEffectivityHead(TaskCardEffectivityHead taskCardEffectivityHead) {
+		getTaskCardEffectivityHeads().remove(taskCardEffectivityHead);
+		taskCardEffectivityHead.setTaskCardBean(null);
+
+		return taskCardEffectivityHead;
+	}
 }
