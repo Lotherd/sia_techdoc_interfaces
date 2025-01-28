@@ -52,27 +52,29 @@
 		<class>trax.aero.model.PicklistDistributionPK</class>
 		<class>trax.aero.model.PicklistHeader</class>
 		<class>trax.aero.model.PnInventoryDetail</class>
-	<class>trax.aero.model.PnMaster</class>
-	<class>trax.aero.model.WoTaskCardCustomer</class>
-	<class>trax.aero.model.WoTaskCardCustomerPK</class>
-	<class>trax.aero.model.TaskCardKeyword</class>
-	<class>trax.aero.model.TaskCardKeywordPK</class>
-	<class>trax.aero.model.TaskCardExecution</class>
-	<class>trax.aero.model.TaskCardExecutionPK</class>
-	<class>trax.aero.model.WoTaskCardExecution</class>
-	<class>trax.aero.model.WoTaskCardExecutionPK</class>
-	<class>trax.aero.model.InterfaceLockMaster</class>
-	<class>trax.aero.model.TaskCardControlMaster</class>
-	<class>trax.aero.model.TaskCardControlMasterPK</class>
-	<class>trax.aero.model.WoTaskCardControl</class>
-	<class>trax.aero.model.WoTaskCardControlPK</class>
-	<class>trax.aero.model.AcMaster</class>
-	<class>trax.aero.model.AcTypeSeriesMaster</class>
-	<class>trax.aero.model.AcTypeSeriesMasterPK</class>
-	<class>trax.aero.model.InterfaceAudit</class>
-	<class>trax.aero.model.InterfaceData</class>
-	<class>trax.aero.model.InterfaceDataPK</class>
-	<class>trax.aero.model.JournalEntriesExpenditure</class>
+		<class>trax.aero.model.PnMaster</class>
+		<class>trax.aero.model.WoTaskCardCustomer</class>
+		<class>trax.aero.model.WoTaskCardCustomerPK</class>
+		<class>trax.aero.model.TaskCardKeyword</class>
+		<class>trax.aero.model.TaskCardKeywordPK</class>
+		<class>trax.aero.model.TaskCardExecution</class>
+		<class>trax.aero.model.TaskCardExecutionPK</class>
+		<class>trax.aero.model.WoTaskCardExecution</class>
+		<class>trax.aero.model.WoTaskCardExecutionPK</class>
+		<class>trax.aero.model.InterfaceLockMaster</class>
+		<class>trax.aero.model.TaskCardControlMaster</class>
+		<class>trax.aero.model.TaskCardControlMasterPK</class>
+		<class>trax.aero.model.WoTaskCardControl</class>
+		<class>trax.aero.model.WoTaskCardControlPK</class>
+		<class>trax.aero.model.AcMaster</class>
+		<class>trax.aero.model.AcTypeSeriesMaster</class>
+		<class>trax.aero.model.AcTypeSeriesMasterPK</class>
+		<class>trax.aero.model.InterfaceAudit</class>
+		<class>trax.aero.model.InterfaceData</class>
+		<class>trax.aero.model.InterfaceDataPK</class>
+		<class>trax.aero.model.JournalEntriesExpenditure</class>
+		<class>trax.aero.model.TaskCardEffectivityHead</class>
+		<class>trax.aero.model.TaskCardEffectivityHeadPK</class>
 		<class>trax.aero.model.JournalEntriesExpenditurePK</class>
         <shared-cache-mode>NONE</shared-cache-mode>
 		<properties>
