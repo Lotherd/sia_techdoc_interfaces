@@ -8,6 +8,8 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 import javax.xml.bind.JAXBContext;
@@ -22,6 +24,8 @@ import org.apache.pdfbox.pdmodel.font.PDType1Font;
 
 import software.amazon.awssdk.core.sync.RequestBody;
 import software.amazon.awssdk.services.s3.S3Client;
+import software.amazon.awssdk.services.s3.model.HeadObjectRequest;
+import software.amazon.awssdk.services.s3.model.HeadObjectResponse;
 import software.amazon.awssdk.services.s3.model.PutObjectRequest;
 import software.amazon.awssdk.services.s3.model.S3Exception;
 import trax.aero.pojo.json.ATTACHMENT;
@@ -53,9 +57,26 @@ public class S3Utilities {
         	
         	
         	//Files.move(file.toPath(), new File(key+File.separator+file.getName()).toPath(), StandardCopyOption.REPLACE_EXISTING);
+        	S3Client s3 = S3Client.builder().build();       
+        	if(file.getName().contains("index") || file.getName().contains("footer")) {
+        		HeadObjectRequest headObjectRequest = HeadObjectRequest.builder()
+                        .bucket(bucketName)
+                        .key(key+file.getName())
+                        .build();
 
+                try {
+					@SuppressWarnings("unused")
+					HeadObjectResponse headObjectResponse = s3.headObject(headObjectRequest);
+	                System.out.println("File exists in the bucket: "  + key+file.getName());
+	                return;
+                }catch (Exception e) {
+                	 System.out.println("File does not exists in the bucket: "  + key+file.getName());
+				}
+                
+        	}
         	
-	        	S3Client s3 = S3Client.builder().build();       
+        	
+	        	
 	            PutObjectRequest request = PutObjectRequest.builder()
 	                .bucket(bucketName)
 	                .key(key+file.getName())
@@ -120,7 +141,7 @@ public class S3Utilities {
 
 	public static trax.aero.pojo.xml.OUTPUT sendTrax(trax.aero.pojo.xml.OUTPUT xml, String pdfName,
 			ArrayList<String> txt, String txtName, String path, String folder, String header, String footer,
-			ArrayList<String> headerTxt, ArrayList<String> footerTxt) throws Exception {
+			ArrayList<String> headerTxt, ArrayList<String> footerTxt, boolean sendFinal) throws Exception {
 	
 		//ArrayList<File> pdfs = new ArrayList<File>();
 		
@@ -139,11 +160,12 @@ public class S3Utilities {
 
 			
 			//txt
-			Path text = Paths.get(fileLocOut+File.separator+FilenameUtils.removeExtension(print.getName())
-			+File.separator+ txtName+".txt");
-			List<String> lines = txt;
-			Files.write(text, lines, StandardCharsets.UTF_8);
-			
+			if(sendFinal) {
+				Path text = Paths.get(fileLocOut+File.separator+FilenameUtils.removeExtension(print.getName())
+				+File.separator+ txtName+".txt");
+				List<String> lines = txt;
+				Files.write(text, lines, StandardCharsets.UTF_8);
+			}
 			//xml 
 			File output = new File(fileLocOut+File.separator+FilenameUtils.removeExtension(print.getName())
 			+File.separator+ "wo_"+RandomStringUtils.random(19, false, true)+".xml");
@@ -209,7 +231,15 @@ public class S3Utilities {
 			
 			File folderPrint = new File(fileLocOut+File.separator+FilenameUtils.removeExtension(print.getName()));
 
+			
+			
 			File[] prints = folderPrint.listFiles();
+			
+			Arrays.sort(prints, (f1, f2) -> {
+	            if (f1.getName().endsWith(".txt")) return 1;
+	            if (f2.getName().endsWith(".txt")) return -1;
+	            return 0;
+	        });
 			
 			//Print server folder logic
 			if(prints != null)
@@ -227,7 +257,8 @@ public class S3Utilities {
 		return xml;
 	}
 
-	public static void sendVirtualPrint(String path, String folder, String pdfName) throws Exception {
+	public static void sendVirtualPrint(String path, String folder, String pdfName, 
+			String header, String footer,ArrayList<String> headerTxt, ArrayList<String> footerTxt, boolean sendFinal) throws Exception {
 		
 		try {
 			File print = new File(path);
@@ -240,11 +271,71 @@ public class S3Utilities {
 			Files.move(print.toPath(), new File(fileLocOut+File.separator+FilenameUtils.removeExtension(print.getName())
 			+File.separator +pdfName).toPath(), StandardCopyOption.REPLACE_EXISTING);
 
+			//header 
+			PDDocument documentHeader = new PDDocument();
+			PDPage pageHeader = new PDPage();
+			documentHeader.addPage(pageHeader);
+			PDPageContentStream contentStreamHeader = new PDPageContentStream(documentHeader, pageHeader);
+
+			contentStreamHeader.beginText();
+			contentStreamHeader.setLeading(14.5f);
+
+			contentStreamHeader.newLineAtOffset(25, 700);
+			contentStreamHeader.setFont(PDType1Font.HELVETICA, 16);
+
+			for(String linesheader: headerTxt)
+			{
+				System.out.println(linesheader);
+				contentStreamHeader.showText(linesheader);
+				contentStreamHeader.newLine(); 
+				
+			}
+			contentStreamHeader.endText();
+			contentStreamHeader.close();
+			documentHeader.save(fileLocOut+File.separator+FilenameUtils.removeExtension(print.getName())
+			+File.separator+ header);
+			documentHeader.close();
+			
+			if(sendFinal) {
+				//footer
+				PDDocument documentFooter = new PDDocument();
+				PDPage pageFooter = new PDPage();
+				documentFooter.addPage(pageFooter);
+	
+				PDPageContentStream contentStreamFooter = new PDPageContentStream(documentFooter, pageFooter);
+	
+				contentStreamFooter.beginText();
+				contentStreamFooter.setLeading(14.5f);
+	
+				contentStreamFooter.newLineAtOffset(25, 700);
+				contentStreamFooter.setFont(PDType1Font.HELVETICA, 16);
+	
+				for(String linesFooter: footerTxt)
+				{
+					System.out.println(linesFooter);
+	
+					contentStreamFooter.showText(linesFooter);
+					contentStreamFooter.newLine(); 
+				}
+				contentStreamFooter.endText();
+	
+				contentStreamFooter.close();
+				documentFooter.save(fileLocOut+File.separator+FilenameUtils.removeExtension(print.getName())
+				+File.separator+ footer);
+				documentFooter.close();
+			}
+			
 			//putS3Object(pathS3Print +folder +File.separator,bucketNamePrint);	
 			//putS3Object(print,pathS3Print +folder +File.separator,bucketNamePrint);
 			File folderPrint = new File(fileLocOut+File.separator+FilenameUtils.removeExtension(print.getName()));
 
 			File[] prints = folderPrint.listFiles();
+			
+			Arrays.sort(prints, (f1, f2) -> {
+	            if (f1.getName().endsWith(footer)) return 1;
+	            if (f2.getName().endsWith(footer)) return -1;
+	            return 0;
+	        });
 			
 			//Print server folder logic
 			if(prints != null)

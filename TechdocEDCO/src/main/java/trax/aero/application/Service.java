@@ -3,6 +3,7 @@ package trax.aero.application;
 
 import java.io.StringReader;
 import java.io.StringWriter;
+import java.math.BigDecimal;
 import java.sql.SQLException;
 
 import javax.ejb.EJB;
@@ -98,6 +99,11 @@ public class Service {
 
 			root = (ROOT) unmarshaller.unmarshal(sr);	
 			
+			//TODO create parent WO 
+			Wo parent = data.createParentWo(root.getMODELS().size());
+			System.out.println("Size: " +root.getMODELS().size() );
+			int count = 1;
+			
 			for(MODEL model : root.getMODELS()) {
 				printer = data.filterADDATTR(model.getEFFECTIVITY().getJOBCARD().getJOBI().getPLI().getADDATTR(), "PRINTER-NAME");
 				jc = JAXBContext.newInstance(MODEL.class);
@@ -114,6 +120,7 @@ public class Service {
 				xml=xml.replaceAll("&amp;re;", 		"&#xA;");
 				Wo w= data.issueToTechDocRequest(model,xml );
 				data.sendRequestToPrintServer(model, xml, w);
+				data.linkWoToParent(w,parent,new BigDecimal( count));
 				 try{
 					if(data.getCon() != null && !data.getCon().isClosed())
 						data.getCon().close();

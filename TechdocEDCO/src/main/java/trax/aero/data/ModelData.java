@@ -1,6 +1,7 @@
 package trax.aero.data;
 
 import java.io.File;
+import java.io.IOException;
 import java.io.StringReader;
 import java.io.StringWriter;
 import java.math.BigDecimal;
@@ -23,9 +24,12 @@ import javax.xml.bind.Marshaller;
 import javax.xml.bind.Unmarshaller;
 
 import org.apache.commons.lang3.RandomStringUtils;
+import org.apache.pdfbox.pdmodel.PDDocument;
+import org.apache.pdfbox.text.PDFTextStripper;
 
 import trax.aero.controller.ModelController;
 import trax.aero.interfaces.IModelData;
+import trax.aero.model.AcMaster;
 import trax.aero.model.BlobTable;
 import trax.aero.model.BlobTablePK;
 import trax.aero.model.InterfaceAudit;
@@ -87,7 +91,7 @@ public class ModelData implements IModelData {
 		
 		//creates temp wo with attached xml
 		String company = "SIA", ac, location , site, type ;
-		String printer = "", date, time, revision;
+		String printer = "", date, time, revision, error = "";
 		ArrayList<PrintAck> ack = null;
 		ac = input.getEFFECTIVITY().getREGNBR();
 		location = "SIN";
@@ -113,38 +117,52 @@ public class ModelData implements IModelData {
 		}catch (Exception e) {
 			e.printStackTrace();
 			status = 1;
+			error = e.getMessage();
 		}
 		
 		if(status == 0) {
-			sendPrintStatusAcknowledgement(input, "P", "SUCESS");
+			//sendPrintStatusAcknowledgement(input, "P", "SUCCESSFULLY PRINTED");
 		}else {
-			sendPrintStatusAcknowledgement(input, "E", "ERROR");
+			sendPrintStatusAcknowledgement(input, "E", "ERROR: " + error);
 			date =filterADDATTR( input.getEFFECTIVITY().getJOBCARD().getJOBI().getPLI().getADDATTR(), "IDOC-DATE");
-			revision = filterADDATTR( input.getEFFECTIVITY().getJOBCARD().getJOBI().getPLI().getADDATTR(), "LATEST-REVISION");
+			revision = input.getEFFECTIVITY().getJOBCARD().getWPNBR();
 			time = filterADDATTR( input.getEFFECTIVITY().getJOBCARD().getJOBI().getPLI().getADDATTR(), "IDOC-TIME") ;
 			printer = (filterADDATTR(input.getEFFECTIVITY().getJOBCARD().getJOBI().getPLI().getADDATTR(), "PRINTER-NAME"));
 			ack = new ArrayList<PrintAck>();
-			ack.add(new PrintAck());	
+			for( ATTACHMENT att : input.getEFFECTIVITY().getJOBCARD().getJOBI().getPLI().getATTACHMENT()) {
+				PrintAck a = new PrintAck();
+				a.setAttachment(att.getATTTYPE());
+				a.setAttachmentID(att.getID());
+				a.setJcTitle(input.getEFFECTIVITY().getJOBCARD().getJCTITLE());
+				a.setJobcardNumber(filterADDATTR(input.getEFFECTIVITY().getJOBCARD().getJOBI().getPLI().getADDATTR(), "TASK-NBR"));
+				a.setSapGroupNumber(input.getEFFECTIVITY().getJOBCARD().getJCNBR());
+				a.setSapServiceOrder(input.getEFFECTIVITY().getJOBCARD().getWONBR());
+				a.setTaskType(input.getEFFECTIVITY().getJOBCARD().getTYPE());
+				a.setTraxWoNumber(input.getEFFECTIVITY().getJOBCARD().getWPTITLE());
+				ack.add(a);	
+			}
+			
+			
 			
 			switch(printer) {
 				case "ECXX":
 				case "ECXY":
 					ModelController.sendEmailEDCO( input.getEFFECTIVITY().getJOBCARD().getWPNBR()
-							, revision, date, time, ack);
+							, revision, date, time, ack , printer , "Cover Page Missing");
 					break;
 				case "TRAX":	
 					ModelController.sendEmailTrax(input.getEFFECTIVITY().getJOBCARD().getWPNBR()
-							, revision, date, time, ack);
+							, revision, date, time, ack, printer , "Cover Page Missing");
 					break;
 	
 				case "EDXX":
 				case "ECXZ":	
 					ModelController.sendEmailPrint(input.getEFFECTIVITY().getJOBCARD().getWPNBR()
-							, revision, date, time, ack);
+							, revision, date, time, ack, printer , "Cover Page Missing");
 					break;
 				default:
 					ModelController.sendEmailPrint(input.getEFFECTIVITY().getJOBCARD().getWPNBR()
-							, revision, date, time, ack);
+							, revision, date, time, ack, printer , "Cover Page Missing");
 					break;
 			}
 			
@@ -156,16 +174,25 @@ public class ModelData implements IModelData {
 	public void sendPrintToOutBound(Print print) throws Exception {
 		
 		String printer = "", date, time, revision, folder = "";
-		ArrayList<PrintAck> ack = null;
+		ArrayList<PrintAck> ack = new ArrayList<PrintAck>();
 		MODEL input = null;
+		String pdfName = ""  ;
+		
+		boolean sendFinal = false;
 		try {
+			Wo child = em.find(Wo.class,Long.parseLong( print.getWo()));
+			Wo parent = em.find(Wo.class,child.getNhWo().longValue());
+			if(parent.getTaskCardNumberingSystem().intValue() == child.getTaskCardNumberingSystem().intValue()) {
+				sendFinal = true;
+			}
+			
 			input = getXml(print.getWo());
 			// creates zip file with pdf and txt file
 			
 			if(input == null) {
 				return ;
 			}
-			String pdfName = genratePdfName(input);	
+			pdfName = genratePdfName(input);	
 			ArrayList<String> txt =	genrateTxt(input);
 			String txtName = genrateTxtName(input);	
 			printer = (filterADDATTR(input.getEFFECTIVITY().getJOBCARD().getJOBI().getPLI().getADDATTR(), "PRINTER-NAME"));
@@ -178,10 +205,25 @@ public class ModelData implements IModelData {
 			filterADDATTR( input.getEFFECTIVITY().getJOBCARD().getJOBI().getPLI().getADDATTR(), "IDOC-DATE")
 			+ filterADDATTR( input.getEFFECTIVITY().getJOBCARD().getJOBI().getPLI().getADDATTR(), "IDOC-TIME") ;
 
-			ack = new ArrayList<PrintAck>();
-			ack.add(new PrintAck());
-			
-			
+			if (input.getEFFECTIVITY().getJOBCARD().getJOBI().getPLI().getATTACHMENT() != null && !input.getEFFECTIVITY().getJOBCARD().getJOBI().getPLI().getATTACHMENT().isEmpty()) {
+				for (ATTACHMENT att  : input.getEFFECTIVITY().getJOBCARD().getJOBI().getPLI().getATTACHMENT()){
+					String attString = att.getID();
+					if(! checkMissingAttachment(print , attString)) {
+						PrintAck a = new PrintAck();
+						a.setAttachment(att.getATTTYPE());
+						a.setAttachmentID(att.getID());
+						a.setJcTitle(input.getEFFECTIVITY().getJOBCARD().getJCTITLE());
+						a.setJobcardNumber(filterADDATTR(input.getEFFECTIVITY().getJOBCARD().getJOBI().getPLI().getADDATTR(), "TASK-NBR"));
+						a.setSapGroupNumber(input.getEFFECTIVITY().getJOBCARD().getJCNBR());
+						a.setSapServiceOrder(input.getEFFECTIVITY().getJOBCARD().getWONBR());
+						a.setTaskType(input.getEFFECTIVITY().getJOBCARD().getTYPE());
+						a.setTraxWoNumber(input.getEFFECTIVITY().getJOBCARD().getWPTITLE());
+						ack.add(a);	
+						
+					}
+				}
+				
+			}
 			if(printer.equalsIgnoreCase("ECXX") || printer.equalsIgnoreCase("ECXY")) {
 				trax.aero.pojo.json.OUTPUT	json = convertXmlToJson(input);
 				
@@ -204,14 +246,16 @@ public class ModelData implements IModelData {
 				//gets pdfs path with wo id
 				xml = S3Utilities.sendTrax(xml, pdfName,txt,txtName, print.getPath(), folder,
 						header,footer,
-						headerTxt, footerTxt);
+						headerTxt, footerTxt, sendFinal);
 						
 
 			}else if (printer.equalsIgnoreCase("EDXX") || printer.equalsIgnoreCase("ECXZ")){
 			
 				//send to virtual printer 
-				//VIA S3 just PDF
-				S3Utilities.sendVirtualPrint( print.getPath(),printer +File.separator+ folder,pdfName );
+				//VIA S3 just PDF, header, and footer
+				S3Utilities.sendVirtualPrint( print.getPath(),printer +File.separator+ folder,pdfName,
+						header,footer,
+						headerTxt, footerTxt, sendFinal);
 			}else {
 				String side = (filterADDATTR(input.getEFFECTIVITY().getJOBCARD().getJOBI().getPLI().getADDATTR(), "ORDER-TYPE"))
 				,tray = "4"; 
@@ -245,12 +289,14 @@ public class ModelData implements IModelData {
 							
 				PrinterUtilities.sendPrint(printer, print.getPath(),side,tray);
 			}
-			
+			if( ack !=null && !ack.isEmpty()) {
+				throw new Exception("Missing Attachment found");
+			}
 			 
 		} catch (Exception e) {
 			
 			date =filterADDATTR( input.getEFFECTIVITY().getJOBCARD().getJOBI().getPLI().getADDATTR(), "IDOC-DATE");
-			revision = filterADDATTR( input.getEFFECTIVITY().getJOBCARD().getJOBI().getPLI().getADDATTR(), "LATEST-REVISION");
+			revision = input.getEFFECTIVITY().getJOBCARD().getWPNBR();
 			time = filterADDATTR( input.getEFFECTIVITY().getJOBCARD().getJOBI().getPLI().getADDATTR(), "IDOC-TIME") ;
 			switch(printer) {
 			
@@ -258,21 +304,21 @@ public class ModelData implements IModelData {
 				case "ECXX":
 				case "ECXY":
 					ModelController.sendEmailEDCO( input.getEFFECTIVITY().getJOBCARD().getWPNBR()
-							, revision, date, time, ack);
+							, revision, date, time, ack, printer , pdfName);
 					break;
 				case "TRAX":	
 					ModelController.sendEmailTrax(input.getEFFECTIVITY().getJOBCARD().getWPNBR()
-							, revision, date, time, ack);
+							, revision, date, time, ack, printer, pdfName);
 					break;
 
 				case "EDXX":
 				case "ECXZ":	
 					ModelController.sendEmailPrint(input.getEFFECTIVITY().getJOBCARD().getWPNBR()
-							, revision, date, time, ack);
+							, revision, date, time, ack, printer, pdfName);
 					break;
 				default:
 					ModelController.sendEmailPrint(input.getEFFECTIVITY().getJOBCARD().getWPNBR()
-							, revision, date, time, ack);
+							, revision, date, time, ack, printer, pdfName);
 					break;
 			}
 			
@@ -290,7 +336,155 @@ public class ModelData implements IModelData {
 	}
 	
 	
+	public void deleteWoTaskCardPn( String wo) throws Exception{
+		String query = "DELETE WO_TASK_CARD_PN where WO = ?";		
+		try
+		{	
+			em.createNativeQuery(query).setParameter(1, wo).executeUpdate();	
+		}
+		catch (Exception e) 
+		{
+			throw new Exception("An Exception occurred executing the query to delete the WO_TASK_CARD_PN. " + "\n error: " + e.toString());
+		}
+	}
 	
+	@Override
+	public void sendRequestToPrintServer(MODEL input, String xml, Wo w) throws Exception {
+		//creates temp wo with attached xml
+		String printer = "", date, time, revision, error = "";
+		ArrayList<PrintAck> ack = null;
+		int status = 0;
+		
+		//creates temp wo task card 
+		try {
+			
+			createTempWoTaskCard(input, w); 
+			
+			//call wo pack print with flag 
+			status = sendWorkPackPrintJob(w );
+		}catch (Exception e) {
+			e.printStackTrace();
+			status = 1;
+			error = e.getMessage();
+		}
+		
+		if(status == 0) {
+			sendPrintStatusAcknowledgement(input, "P", "SUCCESSFULLY PRINTED");
+		}else {
+			sendPrintStatusAcknowledgement(input, "E", "ERROR " + error);
+			date =filterADDATTR( input.getEFFECTIVITY().getJOBCARD().getJOBI().getPLI().getADDATTR(), "IDOC-DATE");
+			revision = input.getEFFECTIVITY().getJOBCARD().getWPNBR();
+			time = filterADDATTR( input.getEFFECTIVITY().getJOBCARD().getJOBI().getPLI().getADDATTR(), "IDOC-TIME") ;
+			printer = (filterADDATTR(input.getEFFECTIVITY().getJOBCARD().getJOBI().getPLI().getADDATTR(), "PRINTER-NAME"));
+			ack = new ArrayList<PrintAck>();
+			for( ATTACHMENT att : input.getEFFECTIVITY().getJOBCARD().getJOBI().getPLI().getATTACHMENT()) {
+				PrintAck a = new PrintAck();
+				a.setAttachment(att.getATTTYPE());
+				a.setAttachmentID(att.getID());
+				a.setJcTitle(input.getEFFECTIVITY().getJOBCARD().getJCTITLE());
+				a.setJobcardNumber(filterADDATTR(input.getEFFECTIVITY().getJOBCARD().getJOBI().getPLI().getADDATTR(), "TASK-NBR"));
+				a.setSapGroupNumber(input.getEFFECTIVITY().getJOBCARD().getJCNBR());
+				a.setSapServiceOrder(input.getEFFECTIVITY().getJOBCARD().getWONBR());
+				a.setTaskType(input.getEFFECTIVITY().getJOBCARD().getTYPE());
+				a.setTraxWoNumber(input.getEFFECTIVITY().getJOBCARD().getWPTITLE());
+				ack.add(a);	
+			}
+			
+			switch(printer) {
+				case "ECXX":
+				case "ECXY":
+					ModelController.sendEmailEDCO( input.getEFFECTIVITY().getJOBCARD().getWPNBR()
+							, revision, date, time, ack, printer , "Cover Page Missing");
+					break;
+				case "TRAX":	
+					ModelController.sendEmailTrax(input.getEFFECTIVITY().getJOBCARD().getWPNBR()
+							, revision, date, time, ack, printer , "Cover Page Missing");
+					break;
+	
+				case "EDXX":
+				case "ECXZ":	
+					ModelController.sendEmailPrint(input.getEFFECTIVITY().getJOBCARD().getWPNBR()
+							, revision, date, time, ack, printer , "Cover Page Missing");
+					break;
+				default:
+					ModelController.sendEmailPrint(input.getEFFECTIVITY().getJOBCARD().getWPNBR()
+							, revision, date, time, ack, printer , "Cover Page Missing");
+					break;
+			}
+			// deletes wo and wo task card 
+			if(System.getProperty("Techdoc_DELETE") != null 
+				&& !System.getProperty("Techdoc_DELETE").isEmpty()
+				&& System.getProperty("Techdoc_DELETE").equalsIgnoreCase("YES")) {
+				deleteTempWoTaskCardBlob(String.valueOf(w.getWo() ));
+			}
+		}
+		
+	}	
+	
+	@SuppressWarnings("unchecked")
+	public void processBatFile() {
+		try
+		{	
+			List<InterfaceAudit> interfaceAudits = em.createQuery("SELECT p FROM InterfaceAudit p WHERE p.transactionObject = :obj "
+					+ "and p.messageNeedsToBeSent = :tas ")
+					.setParameter("obj", "SAP_TC")
+					.setParameter("tas", "Y")
+					.getResultList();
+			if(interfaceAudits != null && !interfaceAudits.isEmpty()) {
+				 System.out.println("Interface Audit SIZE " +interfaceAudits.size());
+				for(InterfaceAudit i : interfaceAudits) {
+					try 
+					{
+						 System.out.println("Interface Audit PROCESSING " +i.getTransaction());
+						for (InterfaceData id : i.getInterfaceData()) {
+							S3Utilities.setDatFile(id.getClobDocument(),id.getFileName(),String.valueOf( i.getTransaction()));
+						}
+						if(i.getInterfaceData() != null && !i.getInterfaceData().isEmpty()) {
+							ModelController.sendEmailDat(i.getInterfaceData());
+						}
+						em.refresh(i);
+						i.setMessageNeedsToBeSent("N");
+						insertData(i);
+					}
+					catch (Exception e) 
+			        {
+						
+					}
+				}
+			}
+		}
+		catch (Exception e)
+		{	
+			e.printStackTrace();
+		}
+	}
+	
+	private boolean checkMissingAttachment(Print print ,String searchString) throws IOException {
+		String filePath = print.getPath();
+		
+		
+		
+        try (PDDocument document = PDDocument.load(new File(filePath))) {
+            PDFTextStripper pdfStripper = new PDFTextStripper();
+            String text = pdfStripper.getText(document);
+
+            if (text.contains(searchString)) {
+               
+            } else {
+            	System.out.println("String "+searchString +" not found in the PDF!");
+                return false;
+            	
+            }
+            document.close();  
+        } catch (IOException e) {
+            throw e;
+        }
+		
+        return true;
+	}
+
+
+
 	private ArrayList<String> genrateFooterTxt(MODEL input) {
 		ArrayList<String> txt = new ArrayList<String>();
 		JOBCARD card = input.getEFFECTIVITY().getJOBCARD();
@@ -467,7 +661,7 @@ public class ModelData implements IModelData {
 
 		final String sql = "{ call pkg_wo_task_card_functions.add_wo_task_card(?, ?, ?, ?, ?, ?, ?, ?)}";
 		
-		ArrayList<String> taskCards = getTaskCards(taskIds);
+		ArrayList<String> taskCards = getTaskCards(taskIds , w.getAc());
 		 System.out.println("ENG TASK CARD size: " + taskCards.size());
 
 		if(this.con == null || this.con.isClosed())
@@ -507,22 +701,48 @@ public class ModelData implements IModelData {
 		}	
 	}
 
-	private ArrayList<String> getTaskCards(ArrayList<String> taskIds) {
+	private ArrayList<String> getTaskCards(ArrayList<String> taskIds, String ac ) {
 		try {
+			
+			AcMaster acMaster = em.find(AcMaster.class, ac);
+			String type = "", series = "";
+			if(acMaster != null) {
+				type = acMaster.getAcTypeSeriesMaster().getId().getAcType();
+				series = acMaster.getAcTypeSeriesMaster().getId().getAcSeries();
+			}
+			
 			
 			ArrayList<String> taskCardStrings = new ArrayList<String>();
 			for(String subTaskId  : taskIds) {
 				 System.out.println("SUB TASK CARD: " + subTaskId);
 				//get all tcs from tc sub fields
 				try {
-					List<TaskCard> cards = em.createQuery("Select t From TaskCard t where t.tcSub =:sub", TaskCard.class)
-							.setParameter("sub", subTaskId)
-							.getResultList();
-					for(TaskCard tc: cards) {
-						 System.out.println("ENG TASK CARD: " + tc.getTaskCard());
-		
-						taskCardStrings.add( tc.getTaskCard());
-					}
+					try {
+						List<TaskCard> cards = em.createQuery("Select t From TaskCard t , TaskCardEffectivityHead teh where t.taskCard = teh.id.taskCard and t.tcSub =:sub"
+								+ " and teh.id.acType =:type and teh.id.acSeries =:series", TaskCard.class)
+								.setParameter("sub", subTaskId)
+								.setParameter("type", type)
+								.setParameter("series", series)
+								.getResultList();
+						if(cards == null || cards.isEmpty()) {
+							throw new Exception("No Task Card found for Effectivity " + type + " " + series);
+						}
+						for(TaskCard tc: cards) {
+							 System.out.println("ENG TASK CARD: " + tc.getTaskCard());
+			
+							taskCardStrings.add( tc.getTaskCard());
+						}
+					}catch (Exception e) {
+						e.printStackTrace();
+						List<TaskCard> cards = em.createQuery("Select t From TaskCard t where t.tcSub =:sub", TaskCard.class)
+								.setParameter("sub", subTaskId)
+								.getResultList();
+						for(TaskCard tc: cards) {
+							 System.out.println("ENG TASK CARD: " + tc.getTaskCard());
+			
+							taskCardStrings.add( tc.getTaskCard());
+						}
+					}					
 				}catch (Exception e) {
 					 System.out.println("NO ENG TASK CARD FOUND FOR " + subTaskId);
 				}
@@ -987,8 +1207,14 @@ public class ModelData implements IModelData {
 			//creates temp wo task card 
 			ArrayList<WoTaskCard> taskCards =new ArrayList<WoTaskCard>(w.getWoTaskCards())  ; 
 
+			Wo parent = em.find(Wo.class, w.getNhWo().longValue());
 			
 			deleteTempWoTaskCardBlob(w, taskCards, blob);
+			if( parent != null && 
+				w.getTaskCardNumberingSystem().intValue() == parent.getTaskCardNumberingSystem().intValue()) {
+				System.out.println("DELETING TEMP WO PARENT: " + parent.getWo());
+				deleteData(em.find(Wo.class, parent.getWo()));
+			}
 		}
 
 
@@ -1004,17 +1230,7 @@ public class ModelData implements IModelData {
 			}	
 		}
 
-		public void deleteWoTaskCardPn( String wo) throws Exception{
-			String query = "DELETE WO_TASK_CARD_PN where WO = ?";		
-			try
-			{	
-				em.createNativeQuery(query).setParameter(1, wo).executeUpdate();	
-			}
-			catch (Exception e) 
-			{
-				throw new Exception("An Exception occurred executing the query to delete the WO_TASK_CARD_PN. " + "\n error: " + e.toString());
-			}
-		}
+		
 
 		private BlobTable getTempBlob(BigDecimal blobNo) {
 			try {
@@ -1070,98 +1286,7 @@ public class ModelData implements IModelData {
 
 
 
-		@Override
-		public void sendRequestToPrintServer(MODEL input, String xml, Wo w) {
-			//creates temp wo with attached xml
-			String printer = "", date, time, revision;
-			ArrayList<PrintAck> ack = null;
-			 int status = 0;
-			
-			//creates temp wo task card 
-			try {
-				
-				createTempWoTaskCard(input, w); 
-				
-				//call wo pack print with flag 
-				status = sendWorkPackPrintJob(w );
-			}catch (Exception e) {
-				e.printStackTrace();
-				status = 1;
-			}
-			
-			if(status == 0) {
-				sendPrintStatusAcknowledgement(input, "P", "SUCESS");
-			}else {
-				sendPrintStatusAcknowledgement(input, "E", "ERROR");
-				date =filterADDATTR( input.getEFFECTIVITY().getJOBCARD().getJOBI().getPLI().getADDATTR(), "IDOC-DATE");
-				revision = filterADDATTR( input.getEFFECTIVITY().getJOBCARD().getJOBI().getPLI().getADDATTR(), "LATEST-REVISION");
-				time = filterADDATTR( input.getEFFECTIVITY().getJOBCARD().getJOBI().getPLI().getADDATTR(), "IDOC-TIME") ;
-				printer = (filterADDATTR(input.getEFFECTIVITY().getJOBCARD().getJOBI().getPLI().getADDATTR(), "PRINTER-NAME"));
-				ack = new ArrayList<PrintAck>();
-				ack.add(new PrintAck());	
-				
-				switch(printer) {
-					case "ECXX":
-					case "ECXY":
-						ModelController.sendEmailEDCO( input.getEFFECTIVITY().getJOBCARD().getWPNBR()
-								, revision, date, time, ack);
-						break;
-					case "TRAX":	
-						ModelController.sendEmailTrax(input.getEFFECTIVITY().getJOBCARD().getWPNBR()
-								, revision, date, time, ack);
-						break;
 		
-					case "EDXX":
-					case "ECXZ":	
-						ModelController.sendEmailPrint(input.getEFFECTIVITY().getJOBCARD().getWPNBR()
-								, revision, date, time, ack);
-						break;
-					default:
-						ModelController.sendEmailPrint(input.getEFFECTIVITY().getJOBCARD().getWPNBR()
-								, revision, date, time, ack);
-						break;
-			}
-			}
-			
-		}	
-		
-		@SuppressWarnings("unchecked")
-		public void processBatFile() {
-			try
-			{	
-				List<InterfaceAudit> interfaceAudits = em.createQuery("SELECT p FROM InterfaceAudit p WHERE p.transactionObject = :obj "
-						+ "and p.messageNeedsToBeSent = :tas ")
-						.setParameter("obj", "SAP_TC")
-						.setParameter("tas", "Y")
-						.getResultList();
-				if(interfaceAudits != null && !interfaceAudits.isEmpty()) {
-					 System.out.println("Interface Audit SIZE " +interfaceAudits.size());
-					for(InterfaceAudit i : interfaceAudits) {
-						try 
-						{
-							 System.out.println("Interface Audit PROCESSING " +i.getTransaction());
-							for (InterfaceData id : i.getInterfaceData()) {
-								S3Utilities.setDatFile(id.getClobDocument(),id.getFileName(),String.valueOf( i.getTransaction()));
-							}
-							if(i.getInterfaceData() != null && !i.getInterfaceData().isEmpty()) {
-								ModelController.sendEmailDat(i.getInterfaceData());
-							}
-							em.refresh(i);
-							i.setMessageNeedsToBeSent("N");
-							insertData(i);
-						}
-						catch (Exception e) 
-				        {
-							
-						}
-					}
-				}
-			}
-			catch (Exception e)
-			{	
-				e.printStackTrace();
-			}
-		}
 		
 		private String setExpenditure(String string) {
 			JournalEntriesExpenditure journalEntriesExpenditure = null;
@@ -1200,6 +1325,98 @@ public class ModelData implements IModelData {
 				insertData(journalEntriesExpenditure);
 			}
 			return journalEntriesExpenditure.getId().getCategoryCode();
+		}
+
+
+
+		@Override
+		public Wo createParentWo(int size) {
+			Wo wo = null;
+
+			wo = new Wo();
+			wo.setCreatedDate(new Date());
+			wo.setCreatedBy("IFACE-SIA");
+			
+			wo.setTaskCardNumberingSystem(new BigDecimal(size));
+			//EMRO fields to create basic object
+			wo.setManufactureOrder("N");
+			wo.setAuthorization("Y");
+			wo.setAuthorizationBy("TRAX_IFACE");
+			wo.setGlCompany("SIAEC");				
+			wo.setExpenditure(setExpenditure("General"));
+			wo.setPriority("NORMAL");
+			
+			//wo.setWoDescription(print);
+			//wo.setWoCategory(type);
+			//wo.setLocation(location);
+			//wo.setSite(site);
+			//wo.setAc(ac);
+			//wo.setAcSn(acType);
+			//wo.setGlCompany(comapny);
+			/*
+			wo.setPnDescription(input.getEFFECTIVITY().getJOBCARD().getWPTITLE());
+			wo.setTaskCardNumberingSystem(new BigDecimal(0));
+			wo.setAmpRevision( filterADDATTR(jc.getJOBI().getPLI().getADDATTR(), "LATEST-REVISION-DATE"));
+			wo.setExternalReference(jc.getJOBI().getZONE() +"/" +jc.getPOS()
+			);
+			wo.setAmpTempRev(jc.getWPNBR());
+			wo.setCosl(jc.getJCNBR());
+			wo.setFlight(jc.getMANHRS().substring(0, 9));
+			wo.setAmpMs(filterADDATTR(jc.getJOBI().getPLI().getADDATTR(), "BUSR12"));
+			wo.setAuthorizationDate(convertStringToDate(jc.getWPDATE()));
+			*/
+			wo.setStatus("OPEN");
+			wo.setOrderType("W/O");
+			wo.setModule("PRODUCTION");
+			wo.setPaperChecked("NO");
+			wo.setAuthorization("Y");
+			wo.setNrReqItem("N");
+			wo.setRestrictActual("N");
+			wo.setNrAllow("YES");
+			wo.setExcludeMhPlanner("N");
+			wo.setThirdPartyWo("Y");
+			wo.setModifiedBy("IFACE-SIA");
+			wo.setLongTermEvent("YES");
+			wo.setModifiedDate(new Date());
+			wo.setExpenditure(("General"));
+			wo.setWo(getTransactionNo("WOSEQ").longValue());
+			
+			wo.setExpenditure(setExpenditure("General"));
+			wo.setPriority("NORMAL");
+						
+			wo.setScheduleStartHour(new BigDecimal(0));
+			wo.setScheduleStartMinute(new BigDecimal(0));
+			wo.setScheduleCompletionHour(new BigDecimal(0));
+			wo.setScheduleCompletionMinute(new BigDecimal(0));
+			
+			wo.setScheduleStartDate(new Date());
+			wo.setScheduleCompletionDate(new Date());
+			wo.setActualStartDate(new Date());
+			wo.setScheduleOrgCompletionDate(new Date());	
+			
+			wo.setActualStartHour(new BigDecimal(0));
+			wo.setActualStartMinute(new BigDecimal(0));
+			wo.setScheduleOrgCompletionHour(new BigDecimal(0));
+			wo.setScheduleOrgCompletionMinute(new BigDecimal(0));
+			
+			
+			
+			
+			
+			 System.out.println("INSERTING TEMP WO PARENT: " + wo.getWo());
+			
+			insertData(wo);
+			return wo;
+		}
+
+
+
+		public void linkWoToParent(Wo w, Wo parent, BigDecimal count) {
+			
+			w.setNhWo(new BigDecimal(parent.getWo()));
+			w.setTaskCardNumberingSystem(count);
+			
+			insertData(w);
 		}
 		
 }

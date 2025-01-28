@@ -2,6 +2,7 @@ package trax.aero.util;
 
 import java.io.StringReader;
 import java.io.StringWriter;
+import java.math.BigDecimal;
 import java.sql.SQLException;
 import java.util.List;
 import java.util.logging.Logger;
@@ -55,6 +56,10 @@ public class RunAble implements Runnable {
 				StringReader sr = new StringReader(message);
 	
 				root = (ROOT) unmarshaller.unmarshal(sr);	
+				//TODO create parent WO 
+				Wo parent = data.createParentWo(root.getMODELS().size());
+				System.out.println("Size: " +root.getMODELS().size() );
+				int count = 1;
 				
 				for(MODEL model : root.getMODELS()) {
 					printer = data.filterADDATTR(model.getEFFECTIVITY().getJOBCARD().getJOBI().getPLI().getADDATTR(), "PRINTER-NAME");
@@ -72,13 +77,17 @@ public class RunAble implements Runnable {
 					xml=xml.replaceAll("&amp;re;", 		"&#xA;");
 					Wo w= data.issueToTechDocRequest(model,xml );
 					data.sendRequestToPrintServer(model, xml, w);
+					data.linkWoToParent(w,parent,new BigDecimal( count));
 					 try{
 						if(data.getCon() != null && !data.getCon().isClosed())
 							data.getCon().close();
 					}catch (SQLException e) { 
 						e.printStackTrace();
 					}
+					 count++;
 				}
+			
+				//TODO save WO data to P
 			}catch (Exception e) {
 				e.printStackTrace();
 			}

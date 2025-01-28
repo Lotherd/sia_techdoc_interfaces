@@ -16,7 +16,7 @@ import trax.aero.pojo.acknowledgement.PrintAck;
 
 public class ModelController {
 	
-		
+	private static String[] headers = {"Name of PDF Attachment", "SAP Service Order", "Jobcard Number", "JC Title", "SAP Group Number", "Task Type", "TRAX WO Number", "Attachment", "Attachment ID"};	
 	static String errors = "";
 	public ModelController()
 	{
@@ -30,7 +30,7 @@ public class ModelController {
 			String revision,
 			String date,
 			String time,
-			ArrayList<PrintAck> pAcks)
+			ArrayList<PrintAck> pAcks , String printer , String printFileName)
 	{
 		try
 		{
@@ -44,34 +44,52 @@ public class ModelController {
 			
 			
 			
-			Email email = new SimpleEmail();
+			HtmlEmail  email = new HtmlEmail();
 			email.setHostName(host);
 			email.setSmtpPort(Integer.valueOf(port));
 			email.setFrom(fromEmail);
-			email.setSubject("TECHDOC 2-TRAX - PDF attachment not printed["+wo+"] - ALERT");
+			email.setSubject("TECHDOC 2 - TRAX - PRINT FAILURE ["+printer+"] - PDF attachment not printed["+wo+"] - ALERT");
 			for(String emails: emailsList)
 	        {
 				email.addTo(emails);
 	        }
+
+			// Create the HTML content
+	        StringBuilder htmlContent = new StringBuilder();
+	        htmlContent.append("<p>Hi All,</p>")
+            .append("<p>Please find below PDF attachment details for not printed:-</p>")
+            .append("<p>1. SAP Revision: "+revision+"</p>")
+            .append("<p>2. iDOC Date: "+date+"</p>")
+            .append("<p>3. iDOC Time: "+time+"</p>")
+	        .append("<br><br>");
+	        htmlContent.append("<h1 style='text-align: center;'>Attachment Missing</h1>")
+	        			.append("<table style='border-collapse: collapse; width: 100%;'>")
+	        			.append("<tr>");
+
+	        // Add table headers
+	        for (String header : headers) {
+	            htmlContent.append("<th style='border: 1px solid black; padding: 8px; text-align: left;'>").append(header).append("</th>");
+	        }
+	        htmlContent.append("</tr>");
 			
-			String print = "";
+	        // Add table rows
+	        for (PrintAck data : pAcks) {
+	            htmlContent.append("<tr>")
+	                       .append("<td style='border: 1px solid black; padding: 8px;'>").append(printFileName).append("</td>") // Assuming the name of PDF attachment is constant
+	                       .append("<td style='border: 1px solid black; padding: 8px;'>").append(data.getSapServiceOrder()).append("</td>")
+	                       .append("<td style='border: 1px solid black; padding: 8px;'>").append(data.getJobcardNumber()).append("</td>")
+	                       .append("<td style='border: 1px solid black; padding: 8px;'>").append(data.getJcTitle()).append("</td>")
+	                       .append("<td style='border: 1px solid black; padding: 8px;'>").append(data.getSapGroupNumber()).append("</td>")
+	                       .append("<td style='border: 1px solid black; padding: 8px;'>").append(data.getTaskType()).append("</td>")
+	                       .append("<td style='border: 1px solid black; padding: 8px;'>").append(data.getTraxWoNumber()).append("</td>")
+	                       .append("<td style='border: 1px solid black; padding: 8px;'>").append(data.getAttachment()).append("</td>")
+	                       .append("<td style='border: 1px solid black; padding: 8px;'>").append(data.getAttachmentID()).append("</td>")
+	                       .append("</tr>");
+	        }
+	        htmlContent.append("</table>");
+			String print = htmlContent.toString();
 			
-			for(PrintAck a : pAcks) {
-				print += a.getAttachment() +",";
-			}
-			
-			//TODO
-			email.setMsg("Hi All,\r\n" + 
-					"Please find below PDF attachment details for not printed :-\r\n" + 
-					"\r\n" + 
-					"1. SAP Revision: "+revision+"\r\n" + 
-					"2. iDOC Date: "+date+"\r\n" + 
-					"3. iDOC Time: "+time+"\r\n" + 
-					""+
-					"Attachment Missing\r\n" + 
-					"\r\n" + 
-					"\r\n" + 
-					"\r\n" + 
+			email.setHtmlMsg(
 					print+ 
 					"");
 			
@@ -98,7 +116,7 @@ public class ModelController {
 				String revision,
 				String date,
 				String time,
-				ArrayList<PrintAck> pAcks)
+				ArrayList<PrintAck> pAcks , String printer , String printFileName )
 		{
 			try
 			{
@@ -112,34 +130,52 @@ public class ModelController {
 				
 				
 				
-				Email email = new SimpleEmail();
+				HtmlEmail email = new HtmlEmail();
 				email.setHostName(host);
 				email.setSmtpPort(Integer.valueOf(port));
 				email.setFrom(fromEmail);
-				email.setSubject("TECHDOC 2-TRAX - EDCO attachment not printed["+wo+"] - ALERT");
+				email.setSubject("TECHDOC 2 - EDCO - PRINT FAILURE ["+printer+"] - EDCO attachment not printed["+wo+"] - ALERT");
 				for(String emails: emailsList)
 		        {
 					email.addTo(emails);
 		        }
+
+				// Create the HTML content
+		        StringBuilder htmlContent = new StringBuilder();
+		        htmlContent.append("<p>Hi All,</p>")
+                .append("<p>Please find below PDF attachment details for not printed:-</p>")
+                .append("<p>1. SAP Revision: "+revision+"</p>")
+                .append("<p>2. iDOC Date: "+date+"</p>")
+                .append("<p>3. iDOC Time: "+time+"</p>")
+		        .append("<br><br>");
+		        htmlContent.append("<h1 style='text-align: center;'>Attachment Missing</h1>")
+		        			.append("<table style='border-collapse: collapse; width: 100%;'>")
+		        			.append("<tr>");
+
+		        // Add table headers
+		        for (String header : headers) {
+		            htmlContent.append("<th style='border: 1px solid black; padding: 8px; text-align: left;'>").append(header).append("</th>");
+		        }
+		        htmlContent.append("</tr>");
 				
-				String print = "";
+		        // Add table rows
+		        for (PrintAck data : pAcks) {
+		            htmlContent.append("<tr>")
+		                       .append("<td style='border: 1px solid black; padding: 8px;'>").append(printFileName).append("</td>") // Assuming the name of PDF attachment is constant
+		                       .append("<td style='border: 1px solid black; padding: 8px;'>").append(data.getSapServiceOrder()).append("</td>")
+		                       .append("<td style='border: 1px solid black; padding: 8px;'>").append(data.getJobcardNumber()).append("</td>")
+		                       .append("<td style='border: 1px solid black; padding: 8px;'>").append(data.getJcTitle()).append("</td>")
+		                       .append("<td style='border: 1px solid black; padding: 8px;'>").append(data.getSapGroupNumber()).append("</td>")
+		                       .append("<td style='border: 1px solid black; padding: 8px;'>").append(data.getTaskType()).append("</td>")
+		                       .append("<td style='border: 1px solid black; padding: 8px;'>").append(data.getTraxWoNumber()).append("</td>")
+		                       .append("<td style='border: 1px solid black; padding: 8px;'>").append(data.getAttachment()).append("</td>")
+		                       .append("<td style='border: 1px solid black; padding: 8px;'>").append(data.getAttachmentID()).append("</td>")
+		                       .append("</tr>");
+		        }
+		        htmlContent.append("</table>");
+				String print = htmlContent.toString();
 				
-				for(PrintAck a : pAcks) {
-					print += a.getAttachment() +",";
-				}
-				
-				//TODO
-				email.setMsg("Hi All,\r\n" + 
-						"Please find below PDF attachment details for not printed :-\r\n" + 
-						"\r\n" + 
-						"1. SAP Revision: "+revision+"\r\n" + 
-						"2. iDOC Date: "+date+"\r\n" + 
-						"3. iDOC Time: "+time+"\r\n" + 
-						""+
-						"Attachment Missing\r\n" + 
-						"\r\n" + 
-						"\r\n" + 
-						"\r\n" + 
+				email.setHtmlMsg(
 						print+ 
 						"");
 				
@@ -211,7 +247,7 @@ public class ModelController {
 				String revision,
 				String date,
 				String time,
-				ArrayList<PrintAck> pAcks)
+				ArrayList<PrintAck> pAcks , String printer , String printFileName)
 		{
 			try
 			{
@@ -225,34 +261,53 @@ public class ModelController {
 				
 				
 				
-				Email email = new SimpleEmail();
+				HtmlEmail email = new HtmlEmail();
 				email.setHostName(host);
 				email.setSmtpPort(Integer.valueOf(port));
 				email.setFrom(fromEmail);
-				email.setSubject("TECHDOC 2-PRINT - attachment not printed["+wo+"] - ALERT");
+				email.setSubject("TECHDOC 2 - PRINT - PRINT FAILURE ["+printer+"] - attachment not printed["+wo+"] - ALERT");
 				for(String emails: emailsList)
 		        {
 					email.addTo(emails);
 		        }
+
+				// Create the HTML content
+		        StringBuilder htmlContent = new StringBuilder();
+		        
+		        htmlContent.append("<p>Hi All,</p>")
+                .append("<p>Please find below PDF attachment details for not printed:-</p>")
+                .append("<p>1. SAP Revision: "+revision+"</p>")
+                .append("<p>2. iDOC Date: "+date+"</p>")
+                .append("<p>3. iDOC Time: "+time+"</p>")
+		        .append("<br><br>");
+		        htmlContent.append("<h1 style='text-align: center;'>Attachment Missing</h1>")
+		        			.append("<table style='border-collapse: collapse; width: 100%;'>")
+		        			.append("<tr>");
+
+		        // Add table headers
+		        for (String header : headers) {
+		            htmlContent.append("<th style='border: 1px solid black; padding: 8px; text-align: left;'>").append(header).append("</th>");
+		        }
+		        htmlContent.append("</tr>");
 				
-				String print = "";
+		        // Add table rows
+		        for (PrintAck data : pAcks) {
+		            htmlContent.append("<tr>")
+		                       .append("<td style='border: 1px solid black; padding: 8px;'>").append(printFileName).append("</td>") // Assuming the name of PDF attachment is constant
+		                       .append("<td style='border: 1px solid black; padding: 8px;'>").append(data.getSapServiceOrder()).append("</td>")
+		                       .append("<td style='border: 1px solid black; padding: 8px;'>").append(data.getJobcardNumber()).append("</td>")
+		                       .append("<td style='border: 1px solid black; padding: 8px;'>").append(data.getJcTitle()).append("</td>")
+		                       .append("<td style='border: 1px solid black; padding: 8px;'>").append(data.getSapGroupNumber()).append("</td>")
+		                       .append("<td style='border: 1px solid black; padding: 8px;'>").append(data.getTaskType()).append("</td>")
+		                       .append("<td style='border: 1px solid black; padding: 8px;'>").append(data.getTraxWoNumber()).append("</td>")
+		                       .append("<td style='border: 1px solid black; padding: 8px;'>").append(data.getAttachment()).append("</td>")
+		                       .append("<td style='border: 1px solid black; padding: 8px;'>").append(data.getAttachmentID()).append("</td>")
+		                       .append("</tr>");
+		        }
+		        htmlContent.append("</table>");
+				String print = htmlContent.toString();
 				
-				for(PrintAck a : pAcks) {
-					print += a.getAttachment() +",";
-				}
-				
-				//TODO
-				email.setMsg("Hi All,\r\n" + 
-						"Please find below PDF attachment details for not printed :-\r\n" + 
-						"\r\n" + 
-						"1. SAP Revision: "+revision+"\r\n" + 
-						"2. iDOC Date: "+date+"\r\n" + 
-						"3. iDOC Time: "+time+"\r\n" + 
-						""+
-						"Attachment Missing\r\n" + 
-						"\r\n" + 
-						"\r\n" + 
-						"\r\n" + 
+				email.setHtmlMsg(
 						print+ 
 						"");
 				
@@ -284,7 +339,7 @@ public class ModelController {
 				String fromEmail = System.getProperty("fromEmail");
 				String host = System.getProperty("fromHost");
 				String port = System.getProperty("fromPort");
-				String toEmail = System.getProperty("fleet");
+				String toEmail = System.getProperty(fleet);
 				
 				ArrayList<String>  emailsList = new ArrayList<String> (Arrays.asList(toEmail.split(",")));
 				
@@ -294,7 +349,7 @@ public class ModelController {
 				email.setHostName(host);
 				email.setSmtpPort(Integer.valueOf(port));
 				email.setFrom(fromEmail);
-				email.setSubject("New "+fleet+" Attachments Loaded in CDM. Requires Follow-up action. TD 2");
+				email.setSubject("New "+fleet+" Attachments Loaded in CDM. Requires Follow-up action. Techdoc 2");
 				for(String emails: emailsList)
 		        {
 					email.addTo(emails);
@@ -318,7 +373,7 @@ public class ModelController {
 			}
 			catch(Exception e)
 			{
-				
+
 				 System.err.println(e.getMessage());
 				 System.err.println(e.toString());
 				 System.err.println("Email not found");

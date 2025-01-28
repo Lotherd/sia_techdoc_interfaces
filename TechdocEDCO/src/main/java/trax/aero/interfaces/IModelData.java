@@ -1,5 +1,6 @@
 package trax.aero.interfaces;
 
+import java.math.BigDecimal;
 import java.sql.Connection;
 import java.util.List;
 
@@ -22,6 +23,10 @@ public interface IModelData {
 	public void sendRequestToPrintServer(MODEL model, String xml, Wo w) throws Exception;
 
 	public void processBatFile();
+
+	public Wo createParentWo(int size);
+
+	public void linkWoToParent(Wo w, Wo parent, BigDecimal count);
 
 	
 }
