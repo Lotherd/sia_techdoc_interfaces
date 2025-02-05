@@ -241,6 +241,7 @@ public class PrinterUtilities {
 	                System.out.println("Printing completed successfully!");
 	            } else {
 	                System.out.println("Error occurred while printing. Exit code: " + exitCode);
+	                throw new Exception("Error occurred while printing. Exit code: " + exitCode);
 	            }
 	        } catch (Exception exc) {
 	        	exc.printStackTrace();
@@ -293,7 +294,6 @@ public class PrinterUtilities {
 		jdf.getCommentBean().setName("oce:TicketVersion");
 		jdf.getCommentBean().setComment("4.00");
 		
-		//TODO
 		jdf.getResourcePoolBean().setContactBean(new ContactBean());
 		jdf.getResourcePoolBean().getContactBean().setClass("Parameter");
 		jdf.getResourcePoolBean().getContactBean().setComChannelBean(new ComChannelBean());

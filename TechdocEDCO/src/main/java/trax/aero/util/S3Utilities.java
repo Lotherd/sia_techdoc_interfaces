@@ -126,7 +126,6 @@ public class S3Utilities {
 				//FOUND PDFS
 				for(File p : prints){						
 					putS3Object(p,pathS3EDCO ,bucketNameEDCO);	
-					PrinterUtilities.sendPrint(printer, p.getPath(),null,null);
 				}
 			}
 			
@@ -160,6 +159,9 @@ public class S3Utilities {
 			Files.move(print.toPath(), new File(fileLocOut+File.separator+FilenameUtils.removeExtension(print.getName())
 			+File.separator +pdfName).toPath(), StandardCopyOption.REPLACE_EXISTING);
 
+			//xml 
+			File output = new File(fileLocOut+File.separator+FilenameUtils.removeExtension(print.getName())
+			+File.separator+ "wo_"+RandomStringUtils.random(19, false, true)+".xml");
 			
 			//txt
 			if(sendFinal) {
@@ -167,63 +169,63 @@ public class S3Utilities {
 				+File.separator+ txtName+".txt");
 				List<String> lines = txt;
 				Files.write(text, lines, StandardCharsets.UTF_8);
-			}
-			//xml 
-			File output = new File(fileLocOut+File.separator+FilenameUtils.removeExtension(print.getName())
-			+File.separator+ "wo_"+RandomStringUtils.random(19, false, true)+".xml");
 			
 			
-			//header 
-			PDDocument documentHeader = new PDDocument();
-			PDPage pageHeader = new PDPage();
-			documentHeader.addPage(pageHeader);
-			PDPageContentStream contentStreamHeader = new PDPageContentStream(documentHeader, pageHeader);
-
-			contentStreamHeader.beginText();
-			contentStreamHeader.setLeading(14.5f);
-
-			contentStreamHeader.newLineAtOffset(25, 700);
-			contentStreamHeader.setFont(PDType1Font.HELVETICA, 16);
-
-			for(String linesheader: headerTxt)
-			{
-				System.out.println(linesheader);
-				contentStreamHeader.showText(linesheader);
-				contentStreamHeader.newLine(); 
+			
+			
+				//header 
+				PDDocument documentHeader = new PDDocument();
+				PDPage pageHeader = new PDPage();
+				documentHeader.addPage(pageHeader);
+				PDPageContentStream contentStreamHeader = new PDPageContentStream(documentHeader, pageHeader);
+	
+				contentStreamHeader.beginText();
+				contentStreamHeader.setLeading(14.5f);
+	
+				contentStreamHeader.newLineAtOffset(25, 700);
+				contentStreamHeader.setFont(PDType1Font.HELVETICA_BOLD,  9);
+	
+				for(String linesheader: headerTxt)
+				{
+					System.out.println(linesheader);
+					contentStreamHeader.showText(linesheader);
+					contentStreamHeader.newLine(); 
+					
+				}
+				contentStreamHeader.endText();
+				contentStreamHeader.close();
+				documentHeader.save(fileLocOut+File.separator+FilenameUtils.removeExtension(print.getName())
+				+File.separator+ header);
+				documentHeader.close();
 				
-			}
-			contentStreamHeader.endText();
-			contentStreamHeader.close();
-			documentHeader.save(fileLocOut+File.separator+FilenameUtils.removeExtension(print.getName())
-			+File.separator+ header);
-			documentHeader.close();
+				//footer
+				PDDocument documentFooter = new PDDocument();
+				PDPage pageFooter = new PDPage();
+				documentFooter.addPage(pageFooter);
+	
+				PDPageContentStream contentStreamFooter = new PDPageContentStream(documentFooter, pageFooter);
+	
+				contentStreamFooter.beginText();
+				contentStreamFooter.setLeading(14.5f);
+	
+				contentStreamFooter.newLineAtOffset(25, 700);
+				contentStreamFooter.setFont(PDType1Font.HELVETICA_BOLD, 9);
+	
+				for(String linesFooter: footerTxt)
+				{
+					System.out.println(linesFooter);
+	
+					contentStreamFooter.showText(linesFooter);
+					contentStreamFooter.newLine(); 
+				}
+				contentStreamFooter.endText();
+	
+				contentStreamFooter.close();
+				documentFooter.save(fileLocOut+File.separator+FilenameUtils.removeExtension(print.getName())
+				+File.separator+ footer);
+				documentFooter.close();
 			
-			//footer
-			PDDocument documentFooter = new PDDocument();
-			PDPage pageFooter = new PDPage();
-			documentFooter.addPage(pageFooter);
-
-			PDPageContentStream contentStreamFooter = new PDPageContentStream(documentFooter, pageFooter);
-
-			contentStreamFooter.beginText();
-			contentStreamFooter.setLeading(14.5f);
-
-			contentStreamFooter.newLineAtOffset(25, 700);
-			contentStreamFooter.setFont(PDType1Font.HELVETICA, 16);
-
-			for(String linesFooter: footerTxt)
-			{
-				System.out.println(linesFooter);
-
-				contentStreamFooter.showText(linesFooter);
-				contentStreamFooter.newLine(); 
 			}
-			contentStreamFooter.endText();
-
-			contentStreamFooter.close();
-			documentFooter.save(fileLocOut+File.separator+FilenameUtils.removeExtension(print.getName())
-			+File.separator+ footer);
-			documentFooter.close();
 			
 			JAXBContext jc = JAXBContext.newInstance(trax.aero.pojo.xml.OUTPUT.class);
 			Marshaller marshall = jc.createMarshaller();
@@ -248,7 +250,14 @@ public class S3Utilities {
 			{
 				//putS3Object(pathS3Trax+folder+ File.separator, bucketNameTrax);
 				//FOUND PDFS
-				for(File p : prints){	
+				for(File p : prints){
+					if (p.getName().endsWith(".txt")) {
+		                try {
+		                    Thread.sleep(1000); // Wait for 1 second
+		                } catch (InterruptedException e) {
+		                    e.printStackTrace();
+		                }
+					}
 					putS3Object(p,pathS3Trax+folder+ File.separator,bucketNameTrax);	
 				}
 			}
@@ -260,7 +269,7 @@ public class S3Utilities {
 	}
 
 	public static void sendVirtualPrint(String path, String folder, String pdfName, 
-			String header, String footer,ArrayList<String> headerTxt, ArrayList<String> footerTxt, boolean sendFinal) throws Exception {
+			String header, String footer,ArrayList<String> headerTxt, ArrayList<String> footerTxt, boolean sendFinal,ArrayList<String> txt, String txtName ) throws Exception {
 		
 		try {
 			File print = new File(path);
@@ -273,58 +282,66 @@ public class S3Utilities {
 			Files.move(print.toPath(), new File(fileLocOut+File.separator+FilenameUtils.removeExtension(print.getName())
 			+File.separator +pdfName).toPath(), StandardCopyOption.REPLACE_EXISTING);
 
-			//header 
-			PDDocument documentHeader = new PDDocument();
-			PDPage pageHeader = new PDPage();
-			documentHeader.addPage(pageHeader);
-			PDPageContentStream contentStreamHeader = new PDPageContentStream(documentHeader, pageHeader);
-
-			contentStreamHeader.beginText();
-			contentStreamHeader.setLeading(14.5f);
-
-			contentStreamHeader.newLineAtOffset(25, 700);
-			contentStreamHeader.setFont(PDType1Font.HELVETICA, 16);
-
-			for(String linesheader: headerTxt)
-			{
-				System.out.println(linesheader);
-				contentStreamHeader.showText(linesheader);
-				contentStreamHeader.newLine(); 
-				
-			}
-			contentStreamHeader.endText();
-			contentStreamHeader.close();
-			documentHeader.save(fileLocOut+File.separator+FilenameUtils.removeExtension(print.getName())
-			+File.separator+ header);
-			documentHeader.close();
 			
-			if(sendFinal) {
-				//footer
-				PDDocument documentFooter = new PDDocument();
-				PDPage pageFooter = new PDPage();
-				documentFooter.addPage(pageFooter);
+			if(sendFinal) { 
+				
+				Path text = Paths.get(fileLocOut+File.separator+FilenameUtils.removeExtension(print.getName())
+				+File.separator+ txtName+".txt");
+				List<String> lines = txt;
+				Files.write(text, lines, StandardCharsets.UTF_8);	
+				
+				//header 
+				PDDocument documentHeader = new PDDocument();
+				PDPage pageHeader = new PDPage();
+				documentHeader.addPage(pageHeader);
+				PDPageContentStream contentStreamHeader = new PDPageContentStream(documentHeader, pageHeader);
 	
-				PDPageContentStream contentStreamFooter = new PDPageContentStream(documentFooter, pageFooter);
+				contentStreamHeader.beginText();
+				contentStreamHeader.setLeading(14.5f);
 	
-				contentStreamFooter.beginText();
-				contentStreamFooter.setLeading(14.5f);
+				contentStreamHeader.newLineAtOffset(25, 700);
+				contentStreamHeader.setFont(PDType1Font.HELVETICA_BOLD,  9);
 	
-				contentStreamFooter.newLineAtOffset(25, 700);
-				contentStreamFooter.setFont(PDType1Font.HELVETICA, 16);
-	
-				for(String linesFooter: footerTxt)
+				for(String linesheader: headerTxt)
 				{
-					System.out.println(linesFooter);
-	
-					contentStreamFooter.showText(linesFooter);
-					contentStreamFooter.newLine(); 
+					System.out.println(linesheader);
+					contentStreamHeader.showText(linesheader);
+					contentStreamHeader.newLine(); 
+					
 				}
-				contentStreamFooter.endText();
-	
-				contentStreamFooter.close();
-				documentFooter.save(fileLocOut+File.separator+FilenameUtils.removeExtension(print.getName())
-				+File.separator+ footer);
-				documentFooter.close();
+				contentStreamHeader.endText();
+				contentStreamHeader.close();
+				documentHeader.save(fileLocOut+File.separator+FilenameUtils.removeExtension(print.getName())
+				+File.separator+ header);
+				documentHeader.close();
+				
+				
+					//footer
+					PDDocument documentFooter = new PDDocument();
+					PDPage pageFooter = new PDPage();
+					documentFooter.addPage(pageFooter);
+		
+					PDPageContentStream contentStreamFooter = new PDPageContentStream(documentFooter, pageFooter);
+		
+					contentStreamFooter.beginText();
+					contentStreamFooter.setLeading(14.5f);
+		
+					contentStreamFooter.newLineAtOffset(25, 700);
+					contentStreamFooter.setFont(PDType1Font.HELVETICA_BOLD,  9);
+		
+					for(String linesFooter: footerTxt)
+					{
+						System.out.println(linesFooter);
+		
+						contentStreamFooter.showText(linesFooter);
+						contentStreamFooter.newLine(); 
+					}
+					contentStreamFooter.endText();
+		
+					contentStreamFooter.close();
+					documentFooter.save(fileLocOut+File.separator+FilenameUtils.removeExtension(print.getName())
+					+File.separator+ footer);
+					documentFooter.close();
 			}
 			
 			//putS3Object(pathS3Print +folder +File.separator,bucketNamePrint);	
@@ -344,7 +361,14 @@ public class S3Utilities {
 			{
 				//putS3Object(pathS3Trax+folder+ File.separator, bucketNameTrax);
 				//FOUND PDFS
-				for(File p : prints){	
+				for(File p : prints){
+					if (p.getName().endsWith(footer)) {
+		                try {
+		                    Thread.sleep(1000); // Wait for 1 second
+		                } catch (InterruptedException e) {
+		                    e.printStackTrace();
+		                }
+					}
 					putS3Object(p,pathS3Print+folder+ File.separator,bucketNamePrint);	
 				}
 			}

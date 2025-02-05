@@ -205,13 +205,17 @@ public class ModelData implements IModelData {
 			}
 			
 			input = getXml(print.getWo());
+			
+			//save print report from child to parent
+			 parent = savePrintReport(parent , child ,input );
+			
 			// creates zip file with pdf and txt file
 			
 			if(input == null) {
 				return ;
 			}
 			pdfName = genratePdfName(input);	
-			ArrayList<String> txt =	genrateTxt(input);
+			ArrayList<String> txt =	genrateTxt(input, parent.getReopenReason());
 			String txtName = genrateTxtName(input);	
 			printer = (filterADDATTR(input.getEFFECTIVITY().getJOBCARD().getJOBI().getPLI().getADDATTR(), "PRINTER-NAME"));
 			String header = genrateHeaderName(input);	
@@ -289,7 +293,7 @@ public class ModelData implements IModelData {
 				//VIA S3 just PDF, header, and footer
 				S3Utilities.sendVirtualPrint( print.getPath(),printer +File.separator+ folder,pdfName,
 						header,footer,
-						headerTxt, footerTxt, sendFinal);
+						headerTxt, footerTxt, sendFinal ,txt,txtName );
 			}else {
 				String side = (filterADDATTR(input.getEFFECTIVITY().getJOBCARD().getJOBI().getPLI().getADDATTR(), "ORDER-TYPE"))
 				,tray = "4"; 
@@ -372,6 +376,30 @@ public class ModelData implements IModelData {
 	}
 	
 	
+	private Wo savePrintReport(Wo parent, Wo child, MODEL input) {
+		String printReport = "";
+		if(parent.getReopenReason() != null && !parent.getReopenReason().isEmpty()) {
+			printReport = parent.getReopenReason();
+		}
+		
+		
+		printReport += (input.getEFFECTIVITY().getJOBCARD().getSEQNBR()+"  " // print seq
+					+filterADDATTR(input.getEFFECTIVITY().getJOBCARD().getJOBI().getPLI().getADDATTR(), "BUSR12")+"   "  //order sq
+					+input.getEFFECTIVITY().getJOBCARD().getWONBR()+"   " //worder number
+					+filterADDATTR(input.getEFFECTIVITY().getJOBCARD().getJOBI().getPLI().getADDATTR(), "TASK-NBR") +"    "
+					+input.getEFFECTIVITY().getJOBCARD().getTRADE()+ "       " //jobcard number
+					+ "OK"	 + System.lineSeparator()); 
+		
+		
+		
+		parent.setReopenReason(printReport);
+		insertData(parent);
+		
+		return parent;
+	}
+
+
+
 	public void deleteWoTaskCardPn( String wo) throws Exception{
 		String query = "DELETE WO_TASK_CARD_PN where WO = ?";		
 		try
@@ -395,7 +423,7 @@ public class ModelData implements IModelData {
 		try {
 			
 			createTempWoTaskCard(input, w); 
-			
+			updateTempWoTaskCard(input,w);
 			//call wo pack print with flag 
 			status = sendWorkPackPrintJob(w );
 		}catch (Exception e) {
@@ -472,6 +500,41 @@ public class ModelData implements IModelData {
 		
 	}	
 	
+	private void updateTempWoTaskCard(MODEL input, Wo w) {
+		
+		 Wo parent = em.find(Wo.class, w.getWo());
+		
+		for(WoTaskCard card : parent.getWoTaskCards()) {
+			//TODO
+			/*
+			card.setRevisedDate(revisedDate);
+			
+			//	REV DATE BOTTOM
+			card.setRiiDate(riiDate);
+			
+			//REV DATE
+			card.setRevisedDate(revisedDate);
+			
+			//REV NO
+			card.setRevision(revision);
+			
+			//REVISION
+			card.setCurrentRev(currentRev);
+			
+			card.setAuditDate(auditDate);
+			*/
+			//TITLE
+			card.setTaskCardDescription(input.getEFFECTIVITY().getJOBCARD().getJCTITLE());
+			
+			//TASK NO
+			card.setReferenceTaskCard(filterADDATTR(input.getEFFECTIVITY().getJOBCARD().getJOBI().getPLI().getADDATTR(), "TASK-NBR"));
+			insertData(card);
+		}
+		
+	}
+
+
+
 	@SuppressWarnings("unchecked")
 	public void processBatFile() {
 		try
@@ -745,12 +808,12 @@ public class ModelData implements IModelData {
 				 System.out.println("SUB TASK CARD: " + subTaskId);
 				//get all tcs from tc sub fields
 				try {
-					try {
 						List<TaskCard> cards = em.createQuery("Select t From TaskCard t , TaskCardEffectivityHead teh where t.taskCard = teh.id.taskCard and t.tcSub =:sub"
-								+ " and teh.id.acType =:type and teh.id.acSeries =:series", TaskCard.class)
+								+ " and teh.id.acType =:type and teh.id.acSeries =:series and t.tcCompany =:com ", TaskCard.class)
 								.setParameter("sub", subTaskId)
 								.setParameter("type", type)
 								.setParameter("series", series)
+								.setParameter("com", "SIA")
 								.getResultList();
 						if(cards == null || cards.isEmpty()) {
 							throw new Exception("No Task Card found for Effectivity " + type + " " + series);
@@ -759,19 +822,10 @@ public class ModelData implements IModelData {
 							 System.out.println("ENG TASK CARD: " + tc.getTaskCard());
 			
 							taskCardStrings.add( tc.getTaskCard());
-						}
-					}catch (Exception e) {
-						List<TaskCard> cards = em.createQuery("Select t From TaskCard t where t.tcSub =:sub", TaskCard.class)
-								.setParameter("sub", subTaskId)
-								.getResultList();
-						for(TaskCard tc: cards) {
-							 System.out.println("ENG TASK CARD: " + tc.getTaskCard());
-			
-							taskCardStrings.add( tc.getTaskCard());
-						}
-					}					
+						}										
 				}catch (Exception e) {
 					 System.out.println("NO ENG TASK CARD FOUND FOR " + subTaskId);
+					 throw e;
 				}
 			}
 			return taskCardStrings;	
@@ -1091,32 +1145,30 @@ public class ModelData implements IModelData {
 	}
 
 
-	private ArrayList<String> genrateTxt(MODEL input) {
+	private ArrayList<String> genrateTxt(MODEL input , String print) {
 		
 		ArrayList<String> txt = new ArrayList<String>();
 	    SimpleDateFormat dateFormatter = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
 
-		
-		txt.add( "CDM Revision: " +input.getEFFECTIVITY().getJOBCARD().getWPNBR() + System.lineSeparator() + System.lineSeparator());
-		txt.add( "SAP Revision: " +input.getEFFECTIVITY().getJOBCARD().getWPNBR() + System.lineSeparator() + System.lineSeparator());
-		txt.add( "Aircraft Registration: " +input.getEFFECTIVITY().getREGNBR() + System.lineSeparator() + System.lineSeparator());
-		txt.add( "Aircraft Type: " +input.getMODELNBR() + System.lineSeparator() + System.lineSeparator());
-		txt.add( "Printer: " +filterADDATTR(input.getEFFECTIVITY().getJOBCARD().getJOBI().getPLI().getADDATTR(), "PRINTER-NAME")
-		+ System.lineSeparator() + System.lineSeparator());
-		txt.add( "Date: " +dateFormatter.format(new Date()) + System.lineSeparator() + System.lineSeparator());
-		
+		//TODO
+		txt.add( "CDM Revision: " +input.getEFFECTIVITY().getJOBCARD().getWPNBR() + System.lineSeparator());
+		txt.add( "SAP Revision: " +input.getEFFECTIVITY().getJOBCARD().getWPNBR() + System.lineSeparator());
+		txt.add( "Aircraft Registration: " +input.getEFFECTIVITY().getREGNBR() + System.lineSeparator());
+		txt.add( "Aircraft Type: " +input.getMODELNBR() + System.lineSeparator());
+		txt.add( "Printer: " +filterADDATTR(input.getEFFECTIVITY().getJOBCARD().getJOBI().getPLI().getADDATTR(), "PRINTER-NAME")+ System.lineSeparator());
+		txt.add( "Date: " +dateFormatter.format(new Date()) + System.lineSeparator());
 		
 		
+		
+		txt.add( "=========================================================="  + System.lineSeparator());
+
+		txt.add( "Print Order     WorkOrder      JobCard        Trade          Status"  + System.lineSeparator());
+		txt.add( "Seq   Seq       Number         Number                             "  + System.lineSeparator());
+
 		txt.add( "=========================================================="  + System.lineSeparator() + System.lineSeparator());
-
-		txt.add( "Print Order	WorkOrder	JobCardTrade	Status	Seq		Number"  + System.lineSeparator() + System.lineSeparator());
-
-		txt.add(input.getEFFECTIVITY().getJOBCARD().getSEQNBR()+" " +input.getEFFECTIVITY().getJOBCARD().getWONBR()
-				+" " +	filterADDATTR(input.getEFFECTIVITY().getJOBCARD().getJOBI().getPLI().getADDATTR(), "TASK-NBR") + " " + "OK"	);
 		
+		txt.add(print);
 		
-		txt.add( "=========================================================="  + System.lineSeparator() + System.lineSeparator());
-
 		txt.add( "- END OF REPORT -") ;
 
 		

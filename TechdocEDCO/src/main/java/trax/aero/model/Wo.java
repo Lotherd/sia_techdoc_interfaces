@@ -104,6 +104,9 @@ public class Wo implements Serializable {
 
 	@Column(name="DEFECT_AUTO_WO")
 	private String defectAutoWo;
+	
+	@Column(name="REOPEN_REASON")
+	private String reopenReason;
 
 	@Column(name="DEFECT_ITEM")
 	private BigDecimal defectItem;
@@ -1310,6 +1313,14 @@ public class Wo implements Serializable {
 		woTaskCard.setWoBean(null);
 
 		return woTaskCard;
+	}
+
+	public String getReopenReason() {
+		return reopenReason;
+	}
+
+	public void setReopenReason(String reopenReason) {
+		this.reopenReason = reopenReason;
 	}
 	
 	
