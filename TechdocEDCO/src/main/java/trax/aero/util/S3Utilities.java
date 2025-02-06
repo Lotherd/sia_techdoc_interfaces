@@ -21,6 +21,7 @@ import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.pdmodel.PDPage;
 import org.apache.pdfbox.pdmodel.PDPageContentStream;
 import org.apache.pdfbox.pdmodel.font.PDType1Font;
+import org.tinylog.Logger;
 
 import software.amazon.awssdk.core.sync.RequestBody;
 import software.amazon.awssdk.services.s3.S3Client;
@@ -69,10 +70,10 @@ public class S3Utilities {
                 try {
 					@SuppressWarnings("unused")
 					HeadObjectResponse headObjectResponse = s3.headObject(headObjectRequest);
-	                System.out.println("File exists in the bucket: "  + key+file.getName());
+	                Logger.info("File exists in the bucket: "  + key+file.getName());
 	                return;
                 }catch (Exception e) {
-                	 System.out.println("File does not exists in the bucket: "  + key+file.getName());
+                	 Logger.info("File does not exists in the bucket: "  + key+file.getName());
 				}
                 
         	}
@@ -85,12 +86,12 @@ public class S3Utilities {
 	                .build();
 	            s3.putObject(request, RequestBody.fromFile(file));
 	            
-	            System.out.println("Successfully placed " + key+file.getName() + " into bucket " + bucketName);
+	            Logger.info("Successfully placed " + key+file.getName() + " into bucket " + bucketName);
         } catch (S3Exception e) {
-            e.printStackTrace();
+            Logger.error(e);
             throw e;
         }catch (Exception e) {
-        	 e.printStackTrace();
+        	 Logger.error(e);
         	 throw e;
 		}
     }
@@ -133,7 +134,7 @@ public class S3Utilities {
 			json.setFILENAME(pdfName);
 			
 		} catch (Exception e) {
-			e.printStackTrace();
+			Logger.error(e);
 			throw e;
 		}	
 		
@@ -154,7 +155,7 @@ public class S3Utilities {
 			if (!theDir.exists()){
 			    theDir.mkdirs();
 			}
-			System.out.println("MOVE " +print.toPath() + " TO " 
+			Logger.info("MOVE " +print.toPath() + " TO " 
 			+fileLocOut+File.separator+FilenameUtils.removeExtension(print.getName())+File.separator +pdfName);
 			Files.move(print.toPath(), new File(fileLocOut+File.separator+FilenameUtils.removeExtension(print.getName())
 			+File.separator +pdfName).toPath(), StandardCopyOption.REPLACE_EXISTING);
@@ -187,7 +188,7 @@ public class S3Utilities {
 	
 				for(String linesheader: headerTxt)
 				{
-					System.out.println(linesheader);
+					Logger.info(linesheader);
 					contentStreamHeader.showText(linesheader);
 					contentStreamHeader.newLine(); 
 					
@@ -213,7 +214,7 @@ public class S3Utilities {
 	
 				for(String linesFooter: footerTxt)
 				{
-					System.out.println(linesFooter);
+					Logger.info(linesFooter);
 	
 					contentStreamFooter.showText(linesFooter);
 					contentStreamFooter.newLine(); 
@@ -255,14 +256,14 @@ public class S3Utilities {
 		                try {
 		                    Thread.sleep(1000); // Wait for 1 second
 		                } catch (InterruptedException e) {
-		                    e.printStackTrace();
+		                    Logger.error(e);
 		                }
 					}
 					putS3Object(p,pathS3Trax+folder+ File.separator,bucketNameTrax);	
 				}
 			}
 		} catch (Exception e) {
-			e.printStackTrace();
+			Logger.error(e);
 			throw e;
 		}		
 		return xml;
@@ -277,7 +278,7 @@ public class S3Utilities {
 			if (!theDir.exists()){
 			    theDir.mkdirs();
 			}
-			System.out.println("MOVE " +print.toPath() + " TO " 
+			Logger.info("MOVE " +print.toPath() + " TO " 
 			+fileLocOut+File.separator+FilenameUtils.removeExtension(print.getName())+File.separator +pdfName);
 			Files.move(print.toPath(), new File(fileLocOut+File.separator+FilenameUtils.removeExtension(print.getName())
 			+File.separator +pdfName).toPath(), StandardCopyOption.REPLACE_EXISTING);
@@ -304,7 +305,7 @@ public class S3Utilities {
 	
 				for(String linesheader: headerTxt)
 				{
-					System.out.println(linesheader);
+					Logger.info(linesheader);
 					contentStreamHeader.showText(linesheader);
 					contentStreamHeader.newLine(); 
 					
@@ -331,7 +332,7 @@ public class S3Utilities {
 		
 					for(String linesFooter: footerTxt)
 					{
-						System.out.println(linesFooter);
+						Logger.info(linesFooter);
 		
 						contentStreamFooter.showText(linesFooter);
 						contentStreamFooter.newLine(); 
@@ -366,7 +367,7 @@ public class S3Utilities {
 		                try {
 		                    Thread.sleep(1000); // Wait for 1 second
 		                } catch (InterruptedException e) {
-		                    e.printStackTrace();
+		                    Logger.error(e);
 		                }
 					}
 					putS3Object(p,pathS3Print+folder+ File.separator,bucketNamePrint);	
@@ -374,7 +375,7 @@ public class S3Utilities {
 			}
 			
 		} catch (Exception e) {
-			e.printStackTrace();
+			Logger.error(e);
 			throw e;
 		}	
 	}

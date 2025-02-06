@@ -19,6 +19,7 @@ import javax.net.ssl.SSLSocketFactory;
 import javax.net.ssl.TrustManagerFactory;
 
 import org.apache.commons.lang3.exception.ExceptionUtils;
+import org.tinylog.Logger;
 
 import com.ibm.mq.jms.MQQueueConnectionFactory;
 import com.ibm.msg.client.wmq.WMQConstants;
@@ -72,7 +73,7 @@ public class MqUtilities {
         KeyStore ks = KeyStore.getInstance("JKS");
        
         ks.load(new FileInputStream(JKS_LOCATION), KSPW);
-       // System.out.println("Number of keys on JKS: "  + Integer.toString(ks.size()));
+       // Logger.info("Number of keys on JKS: "  + Integer.toString(ks.size()));
 
         KeyManagerFactory keyManagerFactory =  KeyManagerFactory.getInstance(KeyManagerFactory.getDefaultAlgorithm());
 
@@ -86,7 +87,7 @@ public class MqUtilities {
         // Acessing available algorithm/protocol in the IBMJSSE2 provider
         // see http://www.ibm.com/developerworks/java/jdk/security/142/secguides/jsse2docs/JSSE2RefGuide.html
         // SSLContext sslContext = SSLContext.getInstance("SSL_TLS");
-      //   System.out.println("SSLContext provider: " +       sslContext.getProvider().toString());
+      //   Logger.info("SSLContext provider: " +       sslContext.getProvider().toString());
 
         // Initialise our SSL context from the key/trust managers
         sslContext.init(keyManagerFactory.getKeyManagers(), null, null);
@@ -126,12 +127,12 @@ public class MqUtilities {
             queueSender.send(textMessage);
 
             /*After sending a message we get message id */
-            System.out.println("after sending a message we get message id "+ textMessage.getJMSMessageID());
+            Logger.info("after sending a message we get message id "+ textMessage.getJMSMessageID());
             return true;
         } catch (JMSException e) {
-            e.printStackTrace();
+            Logger.error(e);
         } catch (Exception e) {
-            e.printStackTrace();
+            Logger.error(e);
         }finally {
         	 queueSender.close();
              queueSession.close();
@@ -166,7 +167,7 @@ public class MqUtilities {
             Message message = queueReceiver.receive(60*1000);
             if(message != null ) {
             	String responseMsg = ((TextMessage) message).getText();
-                System.out.println("responseMsg "+ responseMsg);
+                Logger.info("responseMsg "+ responseMsg);
                
                 return responseMsg;
             }
@@ -177,7 +178,7 @@ public class MqUtilities {
         	if(sendEmail) {
         		ModelController.sendEmailMQ(ExceptionUtils.getStackTrace ( e ));
         	}
-        	e.printStackTrace();
+        	Logger.error(e);
         }finally {
              queueReceiver.close();
              queueSession.close();

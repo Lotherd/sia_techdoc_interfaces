@@ -26,6 +26,7 @@ import javax.xml.bind.Unmarshaller;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.text.PDFTextStripper;
+import org.tinylog.Logger;
 
 import trax.aero.controller.ModelController;
 import trax.aero.interfaces.IModelData;
@@ -115,14 +116,12 @@ public class ModelData implements IModelData {
 			
 			return w;
 		}catch (Exception e) {
-			e.printStackTrace();
+			Logger.error(e);
 			status = 1;
 			error = e.getMessage();
 		}
 		
-		if(status == 0) {
-			//sendPrintStatusAcknowledgement(input, "P", "SUCCESSFULLY PRINTED");
-		}else {
+		if(status == 1) {
 			sendPrintStatusAcknowledgement(input, "E", "ERROR: " + error);
 			date =filterADDATTR( input.getEFFECTIVITY().getJOBCARD().getJOBI().getPLI().getADDATTR(), "IDOC-DATE");
 			revision = input.getEFFECTIVITY().getJOBCARD().getWPNBR();
@@ -133,6 +132,16 @@ public class ModelData implements IModelData {
 				PrintAck a = new PrintAck();
 				a.setAttachment(att.getATTTYPE());
 				a.setAttachmentID(att.getID());
+				a.setJcTitle(input.getEFFECTIVITY().getJOBCARD().getJCTITLE());
+				a.setJobcardNumber(filterADDATTR(input.getEFFECTIVITY().getJOBCARD().getJOBI().getPLI().getADDATTR(), "TASK-NBR"));
+				a.setSapGroupNumber(input.getEFFECTIVITY().getJOBCARD().getJCNBR());
+				a.setSapServiceOrder(input.getEFFECTIVITY().getJOBCARD().getWONBR());
+				a.setTaskType(input.getEFFECTIVITY().getJOBCARD().getTYPE());
+				a.setTraxWoNumber(input.getEFFECTIVITY().getJOBCARD().getWPTITLE());
+				ack.add(a);	
+			}
+			if(ack.isEmpty()) {
+				PrintAck a = new PrintAck();
 				a.setJcTitle(input.getEFFECTIVITY().getJOBCARD().getJCTITLE());
 				a.setJobcardNumber(filterADDATTR(input.getEFFECTIVITY().getJOBCARD().getJOBI().getPLI().getADDATTR(), "TASK-NBR"));
 				a.setSapGroupNumber(input.getEFFECTIVITY().getJOBCARD().getJCNBR());
@@ -193,29 +202,34 @@ public class ModelData implements IModelData {
 		MODEL input = null;
 		String pdfName = ""  ;
 		Wo child = null, parent = null;
+		BlobTable emailBlob = null;
 		
 		boolean sendFinal = false;
 		try {
 			child = em.find(Wo.class,Long.parseLong( print.getWo()));
 			parent = em.find(Wo.class,child.getNhWo().longValue());
 			em.refresh(parent);
+			
+			emailBlob = getTempBlobText( parent.getBlobNo(),"EMAIL");
+
+			
 			if(parent.getTaskCardNumberingSystem().intValue() == child.getTaskCardNumberingSystem().intValue()) {
-				System.out.println("Final print found " + child.getTaskCardNumberingSystem().intValue());
+				Logger.info("Final print found " + child.getTaskCardNumberingSystem().intValue());
 				sendFinal = true;
 			}
 			
 			input = getXml(print.getWo());
 			
 			//save print report from child to parent
-			 parent = savePrintReport(parent , child ,input );
+			String txtBlob = savePrintReport(parent , child ,input );
 			
 			// creates zip file with pdf and txt file
 			
 			if(input == null) {
 				return ;
 			}
-			pdfName = genratePdfName(input);	
-			ArrayList<String> txt =	genrateTxt(input, parent.getReopenReason());
+			pdfName = genratePdfName(input);
+			ArrayList<String> txt =	genrateTxt(input, txtBlob);
 			String txtName = genrateTxtName(input);	
 			printer = (filterADDATTR(input.getEFFECTIVITY().getJOBCARD().getJOBI().getPLI().getADDATTR(), "PRINTER-NAME"));
 			String header = genrateHeaderName(input);	
@@ -243,11 +257,11 @@ public class ModelData implements IModelData {
 						ack.add(a);	
 						// save ack to parent from child
 						StringBuilder htmlContent = new StringBuilder();
-						if(parent.getWoDescription() != null && !parent.getWoDescription().isEmpty()) {
-							htmlContent.append(parent.getWoDescription());
+						if(emailBlob.getBlobItem() != null ) {
+							htmlContent.append(new String(emailBlob.getBlobItem()));
 						}
 					    htmlContent.append("<tr>")
-					               .append("<td style='border: 1px solid black; padding: 8px;'>").append(printer).append("</td>") // Assuming the name of PDF attachment is constant
+					               .append("<td style='border: 1px solid black; padding: 8px;'>").append(pdfName).append("</td>") // Assuming the name of PDF attachment is constant
 					               .append("<td style='border: 1px solid black; padding: 8px;'>").append(a.getSapServiceOrder()).append("</td>")
 					               .append("<td style='border: 1px solid black; padding: 8px;'>").append(a.getJobcardNumber()).append("</td>")
 					               .append("<td style='border: 1px solid black; padding: 8px;'>").append(a.getJcTitle()).append("</td>")
@@ -257,11 +271,15 @@ public class ModelData implements IModelData {
 					               .append("<td style='border: 1px solid black; padding: 8px;'>").append(a.getAttachment()).append("</td>")
 					               .append("<td style='border: 1px solid black; padding: 8px;'>").append(a.getAttachmentID()).append("</td>")
 					               .append("</tr>");
-						parent.setWoDescription(htmlContent.toString());
+					    emailBlob.setBlobItem(htmlContent.toString().getBytes());
+						
 					}
 				}
 				
 			}
+			//SAVE EMAIL TABLE
+			insertData(emailBlob);
+			insertData(parent);
 			if(printer.equalsIgnoreCase("ECXX") || printer.equalsIgnoreCase("ECXY")) {
 				trax.aero.pojo.json.OUTPUT	json = convertXmlToJson(input);
 				
@@ -343,28 +361,28 @@ public class ModelData implements IModelData {
 					case "ECXX":
 					case "ECXY":
 						ModelController.sendEmailEDCO( input.getEFFECTIVITY().getJOBCARD().getWPNBR()
-								, revision, date, time, parent.getWoDescription(), printer , pdfName);
+								, revision, date, time,new String (emailBlob.getBlobItem()), printer , "Attachment Missing");
 						break;
 					case "TRAX":	
 						ModelController.sendEmailTrax(input.getEFFECTIVITY().getJOBCARD().getWPNBR()
-								, revision, date, time, parent.getWoDescription(), printer, pdfName);
+								, revision, date, time, new String (emailBlob.getBlobItem()), printer, "Attachment Missing");
 						break;
 	
 					case "EDXX":
 					case "ECXZ":	
 						ModelController.sendEmailPrint(input.getEFFECTIVITY().getJOBCARD().getWPNBR()
-								, revision, date, time, parent.getWoDescription(), printer, pdfName);
+								, revision, date, time, new String (emailBlob.getBlobItem()), printer, "Attachment Missing");
 						break;
 					default:
 						ModelController.sendEmailPrint(input.getEFFECTIVITY().getJOBCARD().getWPNBR()
-								, revision, date, time, parent.getWoDescription(), printer, pdfName);
+								, revision, date, time, new String (emailBlob.getBlobItem()), printer, "Attachment Missing");
 						break;
 				}
 			}
 			
 			
 			
-			e.printStackTrace();
+			Logger.error(e);
 		}finally {
 			// deletes wo and wo task card 
 			if(System.getProperty("Techdoc_DELETE") != null 
@@ -376,27 +394,7 @@ public class ModelData implements IModelData {
 	}
 	
 	
-	private Wo savePrintReport(Wo parent, Wo child, MODEL input) {
-		String printReport = "";
-		if(parent.getReopenReason() != null && !parent.getReopenReason().isEmpty()) {
-			printReport = parent.getReopenReason();
-		}
-		
-		
-		printReport += (input.getEFFECTIVITY().getJOBCARD().getSEQNBR()+"  " // print seq
-					+filterADDATTR(input.getEFFECTIVITY().getJOBCARD().getJOBI().getPLI().getADDATTR(), "BUSR12")+"   "  //order sq
-					+input.getEFFECTIVITY().getJOBCARD().getWONBR()+"   " //worder number
-					+filterADDATTR(input.getEFFECTIVITY().getJOBCARD().getJOBI().getPLI().getADDATTR(), "TASK-NBR") +"    "
-					+input.getEFFECTIVITY().getJOBCARD().getTRADE()+ "       " //jobcard number
-					+ "OK"	 + System.lineSeparator()); 
-		
-		
-		
-		parent.setReopenReason(printReport);
-		insertData(parent);
-		
-		return parent;
-	}
+	
 
 
 
@@ -418,23 +416,40 @@ public class ModelData implements IModelData {
 		String printer = "", date, time, revision, error = "";
 		ArrayList<PrintAck> ack = null;
 		int status = 0;
+		boolean sendFinal = false;
+		Wo parent = em.find(Wo.class,w.getNhWo().longValue());
+		em.refresh(parent);
+		
+		BlobTable emailBlob = getTempBlobText( parent.getBlobNo(),"EMAIL");
+		
+		if(parent.getTaskCardNumberingSystem().intValue() == w.getTaskCardNumberingSystem().intValue()) {
+			Logger.info("Final print found " + w.getTaskCardNumberingSystem().intValue());
+			sendFinal = true;
+		}
 		
 		//creates temp wo task card 
 		try {
 			
+			
 			createTempWoTaskCard(input, w); 
 			updateTempWoTaskCard(input,w);
 			//call wo pack print with flag 
-			status = sendWorkPackPrintJob(w );
+			
 		}catch (Exception e) {
-			e.printStackTrace();
+			Logger.error(e);
 			status = 1;
 			error = e.getMessage();
 		}
-		
+		try {
+			status = sendWorkPackPrintJob(w );
+		}catch (Exception e) {
+			Logger.error(e);
+			status = 1;
+			error = e.getMessage();
+		}
 		if(status == 0) {
 			sendPrintStatusAcknowledgement(input, "P", "SUCCESSFULLY PRINTED");
-		}else {
+		}else { 
 			sendPrintStatusAcknowledgement(input, "E", "ERROR " + error);
 			date =filterADDATTR( input.getEFFECTIVITY().getJOBCARD().getJOBI().getPLI().getADDATTR(), "IDOC-DATE");
 			revision = input.getEFFECTIVITY().getJOBCARD().getWPNBR();
@@ -453,11 +468,28 @@ public class ModelData implements IModelData {
 				a.setTraxWoNumber(input.getEFFECTIVITY().getJOBCARD().getWPTITLE());
 				ack.add(a);	
 			}
+			//ARRAY EMPTY == COVER PAGE EMAIL
+			if(ack.isEmpty()) {
+				PrintAck a = new PrintAck();
+				a.setAttachment("");
+				a.setAttachmentID("");
+				a.setJcTitle(input.getEFFECTIVITY().getJOBCARD().getJCTITLE());
+				a.setJobcardNumber(filterADDATTR(input.getEFFECTIVITY().getJOBCARD().getJOBI().getPLI().getADDATTR(), "TASK-NBR"));
+				a.setSapGroupNumber(input.getEFFECTIVITY().getJOBCARD().getJCNBR());
+				a.setSapServiceOrder(input.getEFFECTIVITY().getJOBCARD().getWONBR());
+				a.setTaskType(input.getEFFECTIVITY().getJOBCARD().getTYPE());
+				a.setTraxWoNumber(input.getEFFECTIVITY().getJOBCARD().getWPTITLE());
+				ack.add(a);	
+			}
+			
+			
 			// save ack to parent from child
-			 StringBuilder htmlContent = new StringBuilder();			 
+			 StringBuilder htmlContent = new StringBuilder();
+			 if(emailBlob.getBlobItem() != null ) {
+					htmlContent.append(new String(emailBlob.getBlobItem()));
+			 }
 			 for (PrintAck data : ack) {
 		            htmlContent.append("<tr>")
-		                       .append("<td style='border: 1px solid black; padding: 8px;'>").append(printer).append("</td>") // Assuming the name of PDF attachment is constant
 		                       .append("<td style='border: 1px solid black; padding: 8px;'>").append(data.getSapServiceOrder()).append("</td>")
 		                       .append("<td style='border: 1px solid black; padding: 8px;'>").append(data.getJobcardNumber()).append("</td>")
 		                       .append("<td style='border: 1px solid black; padding: 8px;'>").append(data.getJcTitle()).append("</td>")
@@ -468,27 +500,32 @@ public class ModelData implements IModelData {
 		                       .append("<td style='border: 1px solid black; padding: 8px;'>").append(data.getAttachmentID()).append("</td>")
 		                       .append("</tr>");
 		     }
+			emailBlob.setBlobItem(htmlContent.toString().getBytes());
+			em.merge(emailBlob);
+			em.flush();
 			
-			switch(printer) {
-				case "ECXX":
-				case "ECXY":
-					ModelController.sendEmailEDCO( input.getEFFECTIVITY().getJOBCARD().getWPNBR()
-							, revision, date, time, htmlContent.toString(), printer , "Cover Page Missing");
-					break;
-				case "TRAX":	
-					ModelController.sendEmailTrax(input.getEFFECTIVITY().getJOBCARD().getWPNBR()
-							, revision, date, time, htmlContent.toString(), printer , "Cover Page Missing");
-					break;
-	
-				case "EDXX":
-				case "ECXZ":	
-					ModelController.sendEmailPrint(input.getEFFECTIVITY().getJOBCARD().getWPNBR()
-							, revision, date, time, htmlContent.toString(), printer , "Cover Page Missing");
-					break;
-				default:
-					ModelController.sendEmailPrint(input.getEFFECTIVITY().getJOBCARD().getWPNBR()
-							, revision, date, time, htmlContent.toString(), printer , "Cover Page Missing");
-					break;
+			if(sendFinal) {
+				switch(printer) {
+					case "ECXX":
+					case "ECXY":
+						ModelController.sendEmailEDCO( input.getEFFECTIVITY().getJOBCARD().getWPNBR()
+								, revision, date, time, htmlContent.toString(), printer , "Cover Page Missing");
+						break;
+					case "TRAX":	
+						ModelController.sendEmailTrax(input.getEFFECTIVITY().getJOBCARD().getWPNBR()
+								, revision, date, time, htmlContent.toString(), printer , "Cover Page Missing");
+						break;
+		
+					case "EDXX":
+					case "ECXZ":	
+						ModelController.sendEmailPrint(input.getEFFECTIVITY().getJOBCARD().getWPNBR()
+								, revision, date, time, htmlContent.toString(), printer , "Cover Page Missing");
+						break;
+					default:
+						ModelController.sendEmailPrint(input.getEFFECTIVITY().getJOBCARD().getWPNBR()
+								, revision, date, time, htmlContent.toString(), printer , "Cover Page Missing");
+						break;
+				}
 			}
 			// deletes wo and wo task card 
 			if(System.getProperty("Techdoc_DELETE") != null 
@@ -500,38 +537,7 @@ public class ModelData implements IModelData {
 		
 	}	
 	
-	private void updateTempWoTaskCard(MODEL input, Wo w) {
-		
-		 Wo parent = em.find(Wo.class, w.getWo());
-		
-		for(WoTaskCard card : parent.getWoTaskCards()) {
-			//TODO
-			/*
-			card.setRevisedDate(revisedDate);
-			
-			//	REV DATE BOTTOM
-			card.setRiiDate(riiDate);
-			
-			//REV DATE
-			card.setRevisedDate(revisedDate);
-			
-			//REV NO
-			card.setRevision(revision);
-			
-			//REVISION
-			card.setCurrentRev(currentRev);
-			
-			card.setAuditDate(auditDate);
-			*/
-			//TITLE
-			card.setTaskCardDescription(input.getEFFECTIVITY().getJOBCARD().getJCTITLE());
-			
-			//TASK NO
-			card.setReferenceTaskCard(filterADDATTR(input.getEFFECTIVITY().getJOBCARD().getJOBI().getPLI().getADDATTR(), "TASK-NBR"));
-			insertData(card);
-		}
-		
-	}
+	
 
 
 
@@ -545,11 +551,11 @@ public class ModelData implements IModelData {
 					.setParameter("tas", "Y")
 					.getResultList();
 			if(interfaceAudits != null && !interfaceAudits.isEmpty()) {
-				 System.out.println("Interface Audit SIZE " +interfaceAudits.size());
+				 Logger.info("Interface Audit SIZE " +interfaceAudits.size());
 				for(InterfaceAudit i : interfaceAudits) {
 					try 
 					{
-						 System.out.println("Interface Audit PROCESSING " +i.getTransaction());
+						 Logger.info("Interface Audit PROCESSING " +i.getTransaction());
 						for (InterfaceData id : i.getInterfaceData()) {
 							S3Utilities.setDatFile(id.getClobDocument(),id.getFileName(),String.valueOf( i.getTransaction()));
 						}
@@ -569,7 +575,7 @@ public class ModelData implements IModelData {
 		}
 		catch (Exception e)
 		{	
-			e.printStackTrace();
+			Logger.error(e);
 		}
 	}
 	
@@ -585,7 +591,7 @@ public class ModelData implements IModelData {
             if (text.contains(searchString)) {
                
             } else {
-            	System.out.println("String "+searchString +" not found in the PDF!");
+            	Logger.info("String "+searchString +" not found in the PDF!");
                 return false;
             	
             }
@@ -738,27 +744,18 @@ public class ModelData implements IModelData {
 
 	private void createTempWoTaskCard(MODEL input, Wo w) throws Exception {
 
-		ArrayList<String> taskIds = new ArrayList<String>();
 		
-		if( input.getEFFECTIVITY().getJOBCARD().getJOBI().getPLI().getATTACHMENT() != null
-			&&  !input.getEFFECTIVITY().getJOBCARD().getJOBI().getPLI().getATTACHMENT().isEmpty()) {
-			for(ATTACHMENT at : input.getEFFECTIVITY().getJOBCARD().getJOBI().getPLI().getATTACHMENT()) {
-				taskIds.add(at.getID());
-			}
-		}else {
-			taskIds.add( filterADDATTR(input.getEFFECTIVITY().getJOBCARD().getJOBI().getPLI().getADDATTR(), "TASK-NBR")); 
-		}
 		CallableStatement cstmt = null;
 
 		final String sql = "{ call pkg_wo_task_card_functions.add_wo_task_card(?, ?, ?, ?, ?, ?, ?, ?)}";
 		
-		ArrayList<String> taskCards = getTaskCards(taskIds , w.getAc());
-		 System.out.println("ENG TASK CARD size: " + taskCards.size());
+		ArrayList<String> taskCards = getTaskCards(input.getEFFECTIVITY().getJOBCARD().getJOBI().getPLI().getATTACHMENT() , w.getAc());
+		 Logger.info("ENG TASK CARD size: " + taskCards.size());
 
 		if(this.con == null || this.con.isClosed())
 		{
 			this.con = trax.aero.util.DataSourceClient.getConnection();
-			 System.out.println("The connection was stablished successfully with status: " + String.valueOf(!this.con.isClosed()));
+			 Logger.info("The connection was stablished successfully with status: " + String.valueOf(!this.con.isClosed()));
 		}
 		
 		try {
@@ -784,6 +781,10 @@ public class ModelData implements IModelData {
 				cstmt.execute();
 			}
 		}catch (Exception e) {
+			
+			if(con != null && !con.isClosed()) {
+				con.rollback();
+			}
 			throw e;
 		}finally {
 			if(cstmt != null && !cstmt.isClosed()) {
@@ -792,7 +793,7 @@ public class ModelData implements IModelData {
 		}	
 	}
 
-	private ArrayList<String> getTaskCards(ArrayList<String> taskIds, String ac ) {
+	private ArrayList<String> getTaskCards(List<ATTACHMENT> list, String ac ) {
 		try {
 			
 			AcMaster acMaster = em.find(AcMaster.class, ac);
@@ -804,13 +805,14 @@ public class ModelData implements IModelData {
 			
 			
 			ArrayList<String> taskCardStrings = new ArrayList<String>();
-			for(String subTaskId  : taskIds) {
-				 System.out.println("SUB TASK CARD: " + subTaskId);
+			for(ATTACHMENT subTaskId  : list) {
+				 Logger.info("SUB TASK CARD: " + subTaskId.getID() + " TYPE: "  +subTaskId.getATTTYPE() );
 				//get all tcs from tc sub fields
 				try {
 						List<TaskCard> cards = em.createQuery("Select t From TaskCard t , TaskCardEffectivityHead teh where t.taskCard = teh.id.taskCard and t.tcSub =:sub"
-								+ " and teh.id.acType =:type and teh.id.acSeries =:series and t.tcCompany =:com ", TaskCard.class)
-								.setParameter("sub", subTaskId)
+								+ " and t.taskCardCategory =:att and teh.id.acType =:type and teh.id.acSeries =:series and t.tcCompany =:com ", TaskCard.class)
+								.setParameter("sub", subTaskId.getID())
+								.setParameter("att", subTaskId.getATTTYPE())
 								.setParameter("type", type)
 								.setParameter("series", series)
 								.setParameter("com", "SIA")
@@ -819,18 +821,18 @@ public class ModelData implements IModelData {
 							throw new Exception("No Task Card found for Effectivity " + type + " " + series);
 						}
 						for(TaskCard tc: cards) {
-							 System.out.println("ENG TASK CARD: " + tc.getTaskCard());
+							 Logger.info("ENG TASK CARD: " + tc.getTaskCard());
 			
 							taskCardStrings.add( tc.getTaskCard());
 						}										
 				}catch (Exception e) {
-					 System.out.println("NO ENG TASK CARD FOUND FOR " + subTaskId);
+					 Logger.error("NO ENG TASK CARD FOUND FOR " + subTaskId.getID());
 					 throw e;
 				}
 			}
 			return taskCardStrings;	
 		}catch (Exception e) {
-			e.printStackTrace();
+			Logger.error(e);
 			return null;
 		}	
 	}
@@ -862,7 +864,42 @@ public class ModelData implements IModelData {
 		blob.getId().setBlobNo(((getTransactionNo("BLOB").longValue())));
 		w.setBlobNo(new BigDecimal(blob.getId().getBlobNo()));
 			
-		 System.out.println("INSERTING TEMP Blob : " +blob.getId().getBlobNo() );
+		 Logger.info("INSERTING TEMP Blob : " +blob.getId().getBlobNo() );
+		
+		insertData(blob);
+		insertData(w);
+		
+		return blob;
+	}
+	
+	private BlobTable createTempBlobString(String text, Wo w, long line, String Description) {
+		BlobTable blob = null;
+    	
+		
+		BlobTablePK pk = new BlobTablePK();
+		blob = new BlobTable();
+		blob.setCreatedDate(new Date());
+		blob.setCreatedBy("IFACE-SIA");
+		blob.setId(pk);
+			
+		blob.setPrintFlag("YES");
+		blob.setDocType("TASKCARD");
+		blob.getId().setBlobLine(line);
+		
+		
+		blob.setModifiedBy("IFACE-SIA");
+		blob.setModifiedDate(new Date());
+		//blob.setBlobItem(text.getBytes());
+		blob.setBlobDescription(Description);
+		blob.setCustomDescription(Description);
+		
+		if(w.getBlobNo() == null) {
+			blob.getId().setBlobNo(((getTransactionNo("BLOB").longValue())));
+			w.setBlobNo(new BigDecimal(blob.getId().getBlobNo()));
+		}else {
+			blob.getId().setBlobNo(w.getBlobNo().longValue());
+		}
+		 Logger.info("INSERTING TEMP Blob : " +blob.getId().getBlobNo() );
 		
 		insertData(blob);
 		insertData(w);
@@ -945,7 +982,7 @@ public class ModelData implements IModelData {
 			
 			
 			
-			 System.out.println("INSERTING TEMP WO: " + wo.getWo());
+			 Logger.info("INSERTING TEMP WO: " + wo.getWo());
 			
 			insertData(wo);
 		
@@ -958,7 +995,7 @@ public class ModelData implements IModelData {
 
 	private trax.aero.pojo.json.OUTPUT convertXmlToJson(MODEL input) throws Exception
 	{
-		 System.out.println("Converting XML to JSON");
+		 Logger.info("Converting XML to JSON");
 		
 		trax.aero.pojo.json.OUTPUT json = new trax.aero.pojo.json.OUTPUT();
 		json.setMODEL(new trax.aero.pojo.json.MODEL());
@@ -1194,14 +1231,14 @@ public class ModelData implements IModelData {
 			StringWriter sw = new StringWriter();
 			marshaller.marshal(ack, sw);
 			
-			 System.out.println("Input: " + sw.toString());
+			 Logger.info("Input: " + sw.toString());
 			String text = sw.toString();
 			
 			
 			return MqUtilities.sendMqText(text);
 			
 		}catch (Exception e) {
-			e.printStackTrace();
+			Logger.error(e);
 			return false;
 		}
 	}	
@@ -1213,7 +1250,7 @@ public class ModelData implements IModelData {
 				em.merge(data);
 				em.flush();
 			}catch (Exception e){	
-				 System.err.println(e.toString());
+				Logger.error(e.toString());
 				throw e;
 			}
 		}
@@ -1224,7 +1261,7 @@ public class ModelData implements IModelData {
 				em.remove(data);
 				em.flush();
 			}catch (Exception e){	
-				 System.err.println(e.toString());
+				 Logger.error(e.toString());
 				throw e;
 			}
 		}
@@ -1255,8 +1292,8 @@ public class ModelData implements IModelData {
 				            i++;		                
 			            }
 			        } catch (Exception e) {
-			        	 System.err.println("Error getting WO.");
-			        	 System.err.println(e.toString());
+			        	 Logger.error("Error getting WO.");
+			        	 Logger.error(e.toString());
 			            throw e;
 			        } 
 				}else {
@@ -1268,7 +1305,7 @@ public class ModelData implements IModelData {
 			}
 			catch (Exception e) 
 			{
-				 System.err.println("An unexpected error occurred getting the sequence. " + "\nmessage: " + e.toString());
+				 Logger.error("An unexpected error occurred getting the sequence. " + "\nmessage: " + e.toString());
 			}
 			
 			return null;
@@ -1289,22 +1326,32 @@ public class ModelData implements IModelData {
 			Wo parent = em.find(Wo.class, w.getNhWo().longValue());
 			
 			for(WoTaskCard t : taskCards) {
-				System.out.println("DELETING TEMP Task Card: " + t.getId().getTaskCard());
+				Logger.info("DELETING TEMP Task Card: " + t.getId().getTaskCard());
 				deleteData(em.find(WoTaskCard.class, t.getId()));
 			}
-			System.out.println("DELETING TEMP WO TaskCard Pn: " + w.getWo());
+			Logger.info("DELETING TEMP WO TaskCard Pn: " + w.getWo());
 			deleteWoTaskCardPn(String.valueOf( w.getWo()));
 			
-			System.out.println("DELETING TEMP BLOB: " + blob.getId().getBlobNo());
+			Logger.info("DELETING TEMP BLOB: " + blob.getId().getBlobNo());
 			deleteData(em.find(BlobTable.class, blob.getId()));
 			
-			System.out.println("DELETING TEMP WO: " + w.getWo());
+			Logger.info("DELETING TEMP WO: " + w.getWo());
 			deleteData(em.find(Wo.class, w.getWo()));
 			
 			if( parent != null && 
 				w.getTaskCardNumberingSystem().intValue() == parent.getTaskCardNumberingSystem().intValue()) {
-				System.out.println("DELETING TEMP WO PARENT: " + parent.getWo());
+				BlobTable email = getTempBlobText(parent.getBlobNo(),"EMAIL");
+				BlobTable report = getTempBlobText(parent.getBlobNo(),"REPORT");
+
+				Logger.info("DELETING TEMP WO PARENT: " + parent.getWo());
 				deleteData(em.find(Wo.class, parent.getWo()));
+				
+				Logger.info("DELETING TEMP BLOB EMAIL: " + email.getId().getBlobNo());
+				deleteData(em.find(BlobTable.class, email.getId()));
+				
+				Logger.info("DELETING TEMP BLOB REPORT: " + report.getId().getBlobNo());
+				deleteData(em.find(BlobTable.class, report.getId()));
+				
 			}
 		}
 
@@ -1316,7 +1363,7 @@ public class ModelData implements IModelData {
 						.getSingleResult();
 				return w;	
 			}catch (Exception e) {
-				e.printStackTrace();
+				Logger.error(e);
 				return null;
 			}	
 		}
@@ -1331,11 +1378,23 @@ public class ModelData implements IModelData {
 						.getSingleResult();
 				return blob;	
 			}catch (Exception e) {
-				e.printStackTrace();
+				Logger.error(e);
 				return null;
 			}	
 		}
 
+		private BlobTable getTempBlobText(BigDecimal blobNo, String description) {
+			try {
+				BlobTable blob = em.createQuery("SELECT b FROM BlobTable b where b.id.blobNo = :bl and b.blobDescription = :des", BlobTable.class)
+						.setParameter("bl", blobNo.longValue())
+						.setParameter("des",description )
+						.getSingleResult();
+				return blob;	
+			}catch (Exception e) {
+				Logger.error(e);
+				return null;
+			}	
+		}
 
 		private MODEL getXml(String wo) {
 			try {
@@ -1349,7 +1408,7 @@ public class ModelData implements IModelData {
 				
 				;
 				String xml = new String(blob.getBlobItem(), StandardCharsets.UTF_8); 
-				System.out.println(xml);
+				Logger.info(xml);
 				
 				JAXBContext jc = JAXBContext.newInstance(MODEL.class);
 				Unmarshaller unmarshaller = jc.createUnmarshaller();
@@ -1357,7 +1416,7 @@ public class ModelData implements IModelData {
 				
 				return (MODEL) unmarshaller.unmarshal(sr);
 			}catch (Exception e) {
-				e.printStackTrace();
+				Logger.error(e);
 				return null;
 			}		
 		}
@@ -1366,7 +1425,7 @@ public class ModelData implements IModelData {
 			try {
 				return new SimpleDateFormat("yyyyMMdd").parse(string); 
 			}catch(Exception e) {
-				e.printStackTrace();
+				Logger.error(e);
 				return null;
 			}
 		}
@@ -1412,7 +1471,7 @@ public class ModelData implements IModelData {
 				journalEntriesExpenditure.setExpenditureUse("PRODUCTION");
 				
 				
-				 System.out.println("INSERTING CODE: " + journalEntriesExpenditure.getId().getCategoryCode());
+				 Logger.info("INSERTING CODE: " + journalEntriesExpenditure.getId().getCategoryCode());
 				insertData(journalEntriesExpenditure);
 			}
 			return journalEntriesExpenditure.getId().getCategoryCode();
@@ -1437,25 +1496,6 @@ public class ModelData implements IModelData {
 			wo.setExpenditure(setExpenditure("General"));
 			wo.setPriority("NORMAL");
 			
-			//wo.setWoDescription(print);
-			//wo.setWoCategory(type);
-			//wo.setLocation(location);
-			//wo.setSite(site);
-			//wo.setAc(ac);
-			//wo.setAcSn(acType);
-			//wo.setGlCompany(comapny);
-			/*
-			wo.setPnDescription(input.getEFFECTIVITY().getJOBCARD().getWPTITLE());
-			wo.setTaskCardNumberingSystem(new BigDecimal(0));
-			wo.setAmpRevision( filterADDATTR(jc.getJOBI().getPLI().getADDATTR(), "LATEST-REVISION-DATE"));
-			wo.setExternalReference(jc.getJOBI().getZONE() +"/" +jc.getPOS()
-			);
-			wo.setAmpTempRev(jc.getWPNBR());
-			wo.setCosl(jc.getJCNBR());
-			wo.setFlight(jc.getMANHRS().substring(0, 9));
-			wo.setAmpMs(filterADDATTR(jc.getJOBI().getPLI().getADDATTR(), "BUSR12"));
-			wo.setAuthorizationDate(convertStringToDate(jc.getWPDATE()));
-			*/
 			wo.setStatus("OPEN");
 			wo.setOrderType("W/O");
 			wo.setModule("PRODUCTION");
@@ -1490,13 +1530,13 @@ public class ModelData implements IModelData {
 			wo.setScheduleOrgCompletionHour(new BigDecimal(0));
 			wo.setScheduleOrgCompletionMinute(new BigDecimal(0));
 			
-			
-			
-			
-			
-			 System.out.println("INSERTING TEMP WO PARENT: " + wo.getWo());
+			 Logger.info("INSERTING TEMP WO PARENT: " + wo.getWo());
 			
 			insertData(wo);
+			
+			createTempBlobString(null, wo, 1, "EMAIL");
+			createTempBlobString(null, wo, 2, "REPORT");
+
 			return wo;
 		}
 
@@ -1506,8 +1546,64 @@ public class ModelData implements IModelData {
 			
 			w.setNhWo(new BigDecimal(parent.getWo()));
 			w.setTaskCardNumberingSystem(count);
-			 System.out.println("LINKING TEMP WO: " + w.getWo() + " TO PARENT TEMP WO: " +parent.getWo() + " COUNT: " +count.intValue());
+			 Logger.info("LINKING TEMP WO: " + w.getWo() + " TO PARENT TEMP WO: " +parent.getWo() + " COUNT: " +count.intValue());
 			insertData(w);
+		}
+		
+		private String savePrintReport(Wo parent, Wo child, MODEL input) {
+			String printReport = "";
+			BlobTable txtBlob = getTempBlobText( parent.getBlobNo(),"REPORT");
+
+			
+			if(txtBlob.getBlobItem() != null ) {
+				printReport = new String(txtBlob.getBlobItem());
+			}
+			
+			
+			printReport += (input.getEFFECTIVITY().getJOBCARD().getSEQNBR()+"  " // print seq
+						+filterADDATTR(input.getEFFECTIVITY().getJOBCARD().getJOBI().getPLI().getADDATTR(), "BUSR12")+"   "  //order sq
+						+input.getEFFECTIVITY().getJOBCARD().getWONBR()+"   " //worder number
+						+filterADDATTR(input.getEFFECTIVITY().getJOBCARD().getJOBI().getPLI().getADDATTR(), "TASK-NBR") +"    "
+						+input.getEFFECTIVITY().getJOBCARD().getTRADE()+ "       " //jobcard number
+						+ "OK"	 + System.lineSeparator()); 
+					
+			txtBlob.setBlobItem(printReport.getBytes());
+			insertData(parent);
+			insertData(txtBlob);
+			return new String(txtBlob.getBlobItem());
+		}
+		
+		private void updateTempWoTaskCard(MODEL input, Wo w) {
+			
+			 Wo parent = em.find(Wo.class, w.getWo());
+			
+			for(WoTaskCard card : parent.getWoTaskCards()) {
+				//TODO
+				/*
+				card.setRevisedDate(revisedDate);
+				
+				//	REV DATE BOTTOM
+				card.setRiiDate(riiDate);
+				
+				//REV DATE
+				card.setRevisedDate(revisedDate);
+				
+				//REV NO
+				card.setRevision(revision);
+				
+				//REVISION
+				card.setCurrentRev(currentRev);
+				
+				card.setAuditDate(auditDate);
+				*/
+				//TITLE
+				card.setTaskCardDescription(input.getEFFECTIVITY().getJOBCARD().getJCTITLE());
+				
+				//TASK NO
+				card.setReferenceTaskCard(filterADDATTR(input.getEFFECTIVITY().getJOBCARD().getJOBI().getPLI().getADDATTR(), "TASK-NBR"));
+				insertData(card);
+			}
+			
 		}
 		
 }

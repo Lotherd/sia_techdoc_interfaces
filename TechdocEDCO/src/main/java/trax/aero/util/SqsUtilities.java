@@ -2,6 +2,8 @@ package trax.aero.util;
 
 import java.util.UUID;
 
+import org.tinylog.Logger;
+
 import com.amazonaws.regions.Regions;
 import com.amazonaws.services.sqs.AmazonSQS;
 import com.amazonaws.services.sqs.AmazonSQSClientBuilder;
@@ -19,12 +21,12 @@ public class SqsUtilities {
 		String json;
 		String queueUrlTo = System.getProperty("Techdoc_ToSQS");
 
-		 System.out.println("Sending JSON To EDCO");
+		 Logger.info("Sending JSON To EDCO");
 
 		try {
 			json = gson.toJson(resend);
 			
-			System.out.println("Request Body: " + json);
+			Logger.info("Request Body: " + json);
 			AmazonSQS sqs = AmazonSQSClientBuilder.standard()
 	                .withRegion(Regions.AP_SOUTHEAST_1)  // Specify the region here
 	                .build(); 
@@ -37,11 +39,11 @@ public class SqsUtilities {
 			        .withMessageGroupId(UUID.randomUUID().toString())
 			        .withMessageDeduplicationId(UUID.randomUUID().toString());
 			SendMessageResult result =  sqs.sendMessage(send_msg_request);
-			System.out.println("after sending a message we get message id "+ result.getMessageId() );
+			Logger.info("after sending a message we get message id "+ result.getMessageId() );
 			
 		    return true;
 		}catch(Exception e){
-			System.err.println(e.toString());
+			Logger.error(e.toString());
 			throw e;
 		}
 	}

@@ -18,6 +18,7 @@ import javax.xml.bind.JAXBContext;
 import javax.xml.bind.Marshaller;
 
 import org.apache.commons.io.FilenameUtils;
+import org.tinylog.Logger;
 
 import trax.aero.pojo.Dw_Wo_Pack_Print;
 import trax.aero.pojo.jdf.AuditPoolBean;
@@ -96,7 +97,7 @@ public class PrinterUtilities {
 
 			addJobToJMSQueue(propJob, "Y");
 
-			System.out.println("Print Job " +  dwSel.getRow().getWo() + " Has been successfuly sent to the print queue");
+			Logger.info("Print Job " +  dwSel.getRow().getWo() + " Has been successfuly sent to the print queue");
 
 		
 
@@ -115,11 +116,11 @@ public class PrinterUtilities {
 		try {
 
 			client = ClientBuilder.newClient();
-			System.out.println("Calling Print web service : " + "'" + url + "'");
+			Logger.info("Calling Print web service : " + "'" + url + "'");
 
 			client.target(url).request().post(Entity.entity(propJob, MediaType.APPLICATION_JSON));
 
-			System.out.println("After Print web service ");
+			Logger.info("After Print web service ");
 
 		} catch (Exception e) {
 			throw e;
@@ -132,7 +133,7 @@ public class PrinterUtilities {
 	public static void sendToPrinterHeavyLP(String printService, File file, String side, String tray) throws Exception {
 
 		if (file != null && printService != null && file.exists() && file.isFile()) {
-			System.out.println("Job received for printer: " + printService);
+			Logger.info("Job received for printer: " + printService);
 
 			try {
 
@@ -160,7 +161,7 @@ public class PrinterUtilities {
 				
 				// Command to print the document with duplex and tray options using lp on Linux
 	            String command = "lp -d "+printService+" -o sides="+side+" -o tray="+tray+" " + file.getAbsolutePath();
-	            System.out.println("Command: " + command);
+	            Logger.info("Command: " + command);
 	            // Create the process builder
 	            ProcessBuilder processBuilder = new ProcessBuilder(command.split(" "));
 
@@ -170,15 +171,15 @@ public class PrinterUtilities {
 	            // Wait for the process to finish
 	            int exitCode = process.waitFor();
 	            if (exitCode == 0) {
-	                System.out.println("Print job submitted successfully.");
+	                Logger.info("Print job submitted successfully.");
 	            } else {
-	                System.out.println("Error occurred during printing.");
+	                Logger.info("Error occurred during printing.");
 	            }		      
 
 			} catch (Exception exc) {
 				exc.printStackTrace();
-				System.out.println("Exception printing JOB***************************");
-				System.out.println(exc.getMessage());
+				Logger.info("Exception printing JOB***************************");
+				Logger.info(exc.getMessage());
 				throw exc;
 			}
 		}
@@ -207,7 +208,7 @@ public class PrinterUtilities {
 			if (!theDir.exists()){
 			    theDir.mkdirs();
 			}
-			System.out.println("MOVE " +print.toPath() + " TO " 
+			Logger.info("MOVE " +print.toPath() + " TO " 
 			+fileLocOut+File.separator+FilenameUtils.removeExtension(print.getName())+File.separator +print.getName());
 			Files.move(print.toPath(), new File(fileLocOut+File.separator+FilenameUtils.removeExtension(print.getName())
 			+File.separator +print.getName()).toPath(), StandardCopyOption.REPLACE_EXISTING);
@@ -221,7 +222,7 @@ public class PrinterUtilities {
 				sendToPrinterLP(printer, localPrint);
 			}
 		} catch (Exception e) {
-			e.printStackTrace();
+			Logger.error(e);
 			throw e;
 		}		
 		return;
@@ -238,15 +239,15 @@ public class PrinterUtilities {
 	            // Wait for the process to complete
 	            int exitCode = process.waitFor();
 	            if (exitCode == 0) {
-	                System.out.println("Printing completed successfully!");
+	                Logger.info("Printing completed successfully!");
 	            } else {
-	                System.out.println("Error occurred while printing. Exit code: " + exitCode);
+	                Logger.info("Error occurred while printing. Exit code: " + exitCode);
 	                throw new Exception("Error occurred while printing. Exit code: " + exitCode);
 	            }
 	        } catch (Exception exc) {
 	        	exc.printStackTrace();
-				System.out.println("Exception printing JOB***************************");
-				System.out.println(exc.getMessage());
+				Logger.info("Exception printing JOB***************************");
+				Logger.info(exc.getMessage());
 				throw exc;
 	        }
 		
@@ -265,8 +266,8 @@ public class PrinterUtilities {
 		marshaller.marshal(jdf, sw);
 		
 		String xml = sw.toString();
-		System.out.println(xml);
-		System.out.println(print.getPath());
+		Logger.info(xml);
+		Logger.info(print.getPath());
 	 	//Files.write(Paths.get(print.getPath()), xml.getBytes(), StandardOpenOption.);
 		prependPrefix(print, xml);
 		 

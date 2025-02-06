@@ -3,20 +3,22 @@ package trax.aero.controller;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.logging.Logger;
 
 import javax.mail.util.ByteArrayDataSource;
 import org.apache.commons.mail.Email;
 import org.apache.commons.mail.HtmlEmail ;
 import org.apache.commons.mail.EmailAttachment;
 import org.apache.commons.mail.SimpleEmail;
+import org.tinylog.Logger;
 
 import trax.aero.model.InterfaceData;
 import trax.aero.pojo.acknowledgement.PrintAck;
 
 public class ModelController {
-	
-	private static String[] headers = {"Name of PDF Attachment", "SAP Service Order", "Jobcard Number", "JC Title", "SAP Group Number", "Task Type", "TRAX WO Number", "Attachment", "Attachment ID"};	
+
+	private static String[] headersPDF = {"Name of PDF Attachment", "SAP Service Order", "Jobcard Number", "JC Title", "SAP Group Number", "Task Type", "TRAX WO Number", "Attachment", "Attachment ID"};	
+	private static String[] headersCOVER = {"SAP Service Order", "Jobcard Number", "JC Title", "SAP Group Number", "Task Type", "TRAX WO Number", "Attachment", "Attachment ID"};	
+
 	static String errors = "";
 	public ModelController()
 	{
@@ -30,10 +32,16 @@ public class ModelController {
 			String revision,
 			String date,
 			String time,
-			String pAcks , String printer , String printFileName)
+			String pAcks , String printer , String stringHeader)
 	{
 		try
 		{
+			String[] headers = null;
+			if(stringHeader.equalsIgnoreCase("Attachment Missing")) {
+				headers = headersPDF;
+			}else {
+				headers = headersCOVER;
+			}
 			
 			String fromEmail = System.getProperty("fromEmail");
 			String host = System.getProperty("fromHost");
@@ -62,7 +70,7 @@ public class ModelController {
             .append("<p>2. iDOC Date: "+date+"</p>")
             .append("<p>3. iDOC Time: "+time+"</p>")
 	        .append("<br><br>");
-	        htmlContent.append("<h1 style='text-align: center;'>Attachment Missing</h1>")
+	        htmlContent.append("<h1 style='text-align: center;'>"+stringHeader+"</h1>")
 	        			.append("<table style='border-collapse: collapse; width: 100%;'>")
 	        			.append("<tr>");
 
@@ -76,21 +84,22 @@ public class ModelController {
 	        htmlContent.append(pAcks);
 	        
 	        htmlContent.append("</table>");
+	        htmlContent.append("<br><br>");
+	        htmlContent.append( "<p>Note: This is a system generated mail. Please do NOT reply to this mail.</p>");
+	       
 			String print = htmlContent.toString();
-			
+
 			email.setHtmlMsg(
 					print+ 
 					"");
 			
 			email.send();
-			 System.out.println("SUCCESS");
+			 Logger.info("SUCCESS EMAIL SENT");
 		}
 		catch(Exception e)
 		{
 			
-			 System.err.println(e.getMessage());
-			 System.err.println(e.toString());
-			 System.err.println("Email not found");
+			 Logger.error(e, "Email not found");
 			
 		}
 		finally
@@ -105,10 +114,16 @@ public class ModelController {
 				String revision,
 				String date,
 				String time,
-				String pAcks , String printer , String printFileName )
+				String pAcks , String printer , String stringHeader )
 		{
 			try
 			{
+				String[] headers = null;
+				if(stringHeader.equalsIgnoreCase("Attachment Missing")) {
+					headers = headersPDF;
+				}else {
+					headers = headersCOVER;
+				}
 				
 				String fromEmail = System.getProperty("fromEmail");
 				String host = System.getProperty("fromHost");
@@ -137,7 +152,7 @@ public class ModelController {
                 .append("<p>2. iDOC Date: "+date+"</p>")
                 .append("<p>3. iDOC Time: "+time+"</p>")
 		        .append("<br><br>");
-		        htmlContent.append("<h1 style='text-align: center;'>Attachment Missing</h1>")
+		        htmlContent.append("<h1 style='text-align: center;'>"+stringHeader+"</h1>")
 		        			.append("<table style='border-collapse: collapse; width: 100%;'>")
 		        			.append("<tr>");
 
@@ -151,6 +166,9 @@ public class ModelController {
 		        htmlContent.append(pAcks);
 		        
 		        htmlContent.append("</table>");
+		        htmlContent.append("<br><br>");
+		        htmlContent.append( "<p>Note: This is a system generated mail. Please do NOT reply to this mail.</p>");
+		        
 				String print = htmlContent.toString();
 				
 				email.setHtmlMsg(
@@ -158,14 +176,12 @@ public class ModelController {
 						"");
 				
 				email.send();
-				 System.out.println("SUCCESS");
+				Logger.info("SUCCESS EMAIL SENT");
 			}
 			catch(Exception e)
 			{
 				
-				 System.err.println(e.getMessage());
-				 System.err.println(e.toString());
-				 System.err.println("Email not found");
+				 Logger.error(e, "Email not found");
 				
 			}
 			finally
@@ -205,14 +221,12 @@ public class ModelController {
 						"");
 				
 				email.send();
-				 System.out.println("SUCCESS");
+				Logger.info("SUCCESS EMAIL SENT");
 			}
 			catch(Exception e)
 			{
 				
-				 System.err.println(e.getMessage());
-				 System.err.println(e.toString());
-				 System.err.println("Email not found");
+				 Logger.error(e, "Email not found");
 				
 			}
 			finally
@@ -225,10 +239,16 @@ public class ModelController {
 				String revision,
 				String date,
 				String time,
-				String pAcks , String printer , String printFileName)
+				String pAcks , String printer , String stringHeader)
 		{
 			try
 			{
+				String[] headers = null;
+				if(stringHeader.equalsIgnoreCase("Attachment Missing")) {
+					headers = headersPDF;
+				}else {
+					headers = headersCOVER;
+				}
 				
 				String fromEmail = System.getProperty("fromEmail");
 				String host = System.getProperty("fromHost");
@@ -258,7 +278,7 @@ public class ModelController {
                 .append("<p>2. iDOC Date: "+date+"</p>")
                 .append("<p>3. iDOC Time: "+time+"</p>")
 		        .append("<br><br>");
-		        htmlContent.append("<h1 style='text-align: center;'>Attachment Missing</h1>")
+		        htmlContent.append("<h1 style='text-align: center;'>"+stringHeader+"</h1>")
 		        			.append("<table style='border-collapse: collapse; width: 100%;'>")
 		        			.append("<tr>");
 
@@ -272,6 +292,9 @@ public class ModelController {
 		        htmlContent.append(pAcks);
 		        
 		        htmlContent.append("</table>");
+		        htmlContent.append("<br><br>");
+		        htmlContent.append( "<p>Note: This is a system generated mail. Please do NOT reply to this mail.</p>");
+		       
 				String print = htmlContent.toString();
 				
 				email.setHtmlMsg(
@@ -279,14 +302,12 @@ public class ModelController {
 						"");
 				
 				email.send();
-				 System.out.println("SUCCESS");
+				Logger.info("SUCCESS EMAIL SENT");
 			}
 			catch(Exception e)
 			{
 				
-				 System.err.println(e.getMessage());
-				 System.err.println(e.toString());
-				 System.err.println("Email not found");
+				 Logger.error(e, "Email not found");
 				
 			}
 			finally
@@ -336,14 +357,12 @@ public class ModelController {
 				+" Attached are the new tasks, deleted tasks and current tasks generated as attachment for your review and necessary action.");
 				
 				email.send();
-				 System.out.println("SUCCESS");
+				Logger.info("SUCCESS EMAIL SENT");
 			}
 			catch(Exception e)
 			{
 
-				 System.err.println(e.getMessage());
-				 System.err.println(e.toString());
-				 System.err.println("Email not found");
+				 Logger.error(e, "Email not found");
 				
 			}
 			finally
