@@ -2,13 +2,14 @@ package trax.aero.start;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
-import java.util.logging.Logger;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 import javax.ejb.EJB;
 import javax.ejb.Singleton;
 import javax.ejb.Startup;
+
+import org.tinylog.Logger;
 
 import trax.aero.interfaces.IModelData;
 import trax.aero.util.RunAble;
@@ -30,7 +31,7 @@ public class Start
 		
 		if (scheduledServ == null) {
 			int scheduledPoolSize = 1;
-			System.out.println("Creating default Scheduled Executor Service [poolSize =" + String.valueOf(scheduledPoolSize) + "]");
+			Logger.info("Creating default Scheduled Executor Service [poolSize =" + String.valueOf(scheduledPoolSize) + "]");
 			this.scheduledServ = Executors.newScheduledThreadPool(scheduledPoolSize);
 		}
 		scheduledServ.scheduleAtFixedRate(timer, 30, Long.parseLong(System.getProperty("Techdoc_interval")), TimeUnit.SECONDS);

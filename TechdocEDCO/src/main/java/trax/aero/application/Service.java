@@ -17,6 +17,8 @@ import javax.xml.bind.JAXBContext;
 import javax.xml.bind.Marshaller;
 import javax.xml.bind.Unmarshaller;
 
+import org.tinylog.Logger;
+
 import trax.aero.interfaces.IModelData;
 import trax.aero.model.Wo;
 import trax.aero.pojo.Print;
@@ -27,12 +29,10 @@ import trax.aero.util.MqUtilities;
 import trax.aero.util.PrinterUtilities;
 
 
-
 @Path("/Service")
 public class Service {
 	
 	@EJB IModelData data;
-
 	
 	@POST
 	@Path("/insertString")
@@ -46,7 +46,7 @@ public class Service {
 		}
 		catch(Exception e)
 		{
-			e.printStackTrace();
+			Logger.error(e);
        }
 	   return Response.ok().build();
 	}
@@ -59,12 +59,12 @@ public class Service {
 	{
 		try 
         {    
-			System.out.println("Print WO:" +input.getWo() + ", PATH:" +input.getPath());
+			Logger.info("Print WO:" +input.getWo() + ", PATH:" +input.getPath());
 			data.sendPrintToOutBound(input);
 		}
 		catch(Exception e)
 		{
-			e.printStackTrace();
+			Logger.error(e);
        }finally {
 	    	   try 
 	   		{
@@ -74,7 +74,7 @@ public class Service {
 	   		} 
 	   		catch (SQLException e) 
 	   		{ 
-	   			//e.printStackTrace();
+	   			//Logger.error(e);
 	   		}
        }
 	   return Response.ok().build();
@@ -101,7 +101,7 @@ public class Service {
 			
 			//TODO create parent WO 
 			Wo parent = data.createParentWo(root.getMODELS().size());
-			System.out.println("Size: " +root.getMODELS().size() );
+			Logger.info("Size: " +root.getMODELS().size() );
 			int count = 1;
 			
 			for(MODEL model : root.getMODELS()) {
@@ -119,18 +119,18 @@ public class Service {
 				xml=xml.replaceAll("&amp;quot;", 	"&quot;");
 				xml=xml.replaceAll("&amp;re;", 		"&#xA;");
 				Wo w= data.issueToTechDocRequest(model,xml );
-				data.sendRequestToPrintServer(model, xml, w);
 				data.linkWoToParent(w,parent,new BigDecimal( count));
+				data.sendRequestToPrintServer(model, xml, w);
 				 try{
 					if(data.getCon() != null && !data.getCon().isClosed())
 						data.getCon().close();
 				}catch (SQLException e) { 
-					e.printStackTrace();
+					Logger.error(e);
 				}
 				 count++;
 			}
 		}catch (Exception e) {
-			e.printStackTrace();
+			Logger.error(e);
 		}finally {
 	    	   try 
 	   		{
@@ -139,7 +139,7 @@ public class Service {
 	   		} 
 	   		catch (SQLException e) 
 	   		{ 
-	   			e.printStackTrace();
+				Logger.error(e);
 	   		}
        }
 	   return Response.ok().build();
@@ -168,7 +168,7 @@ public class Service {
 		}
 		catch(Exception e)
 		{
-			e.printStackTrace();
+			Logger.error(e);
        }
 	   return Response.ok().build();
 	}
