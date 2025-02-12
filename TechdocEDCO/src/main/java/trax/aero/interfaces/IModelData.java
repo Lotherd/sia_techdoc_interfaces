@@ -24,7 +24,7 @@ public interface IModelData {
 
 	public void processBatFile();
 
-	public Wo createParentWo(int size);
+	public Wo createParentWo(int size, String wpTitle);
 
 	public void linkWoToParent(Wo w, Wo parent, BigDecimal count);
 

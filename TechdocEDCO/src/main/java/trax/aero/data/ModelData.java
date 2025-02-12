@@ -1461,7 +1461,7 @@ public class ModelData implements IModelData {
 				journalEntriesExpenditure.setCreatedBy("TRAX_IFACE");
 				journalEntriesExpenditure.setCreatedDate(new Date());
 				
-				journalEntriesExpenditure.getId().setCategoryCode("DEFAULT");
+				journalEntriesExpenditure.getId().setCategoryCode("General");
 				journalEntriesExpenditure.getId().setTransaction("WIP");
 				journalEntriesExpenditure.getId().setCategory("EXPENDITURE");
 				
@@ -1480,57 +1480,63 @@ public class ModelData implements IModelData {
 
 
 		@Override
-		public Wo createParentWo(int size) {
-			Wo wo = null;
+		public Wo createParentWo(int size, String wpTitle) {
 
-			wo = new Wo();
-			wo.setCreatedDate(new Date());
-			wo.setCreatedBy("IFACE-SIA");
-			
-			wo.setTaskCardNumberingSystem(new BigDecimal(size));
-			//EMRO fields to create basic object
-			wo.setManufactureOrder("N");
-			wo.setAuthorization("Y");
-			wo.setAuthorizationBy("TRAX_IFACE");
-			wo.setGlCompany("SIAEC");				
-			wo.setExpenditure(setExpenditure("General"));
-			wo.setPriority("NORMAL");
-			
-			wo.setStatus("OPEN");
-			wo.setOrderType("W/O");
-			wo.setModule("PRODUCTION");
-			wo.setPaperChecked("NO");
-			wo.setAuthorization("Y");
-			wo.setNrReqItem("N");
-			wo.setRestrictActual("N");
-			wo.setNrAllow("YES");
-			wo.setExcludeMhPlanner("N");
-			wo.setThirdPartyWo("Y");
-			wo.setModifiedBy("IFACE-SIA");
-			wo.setLongTermEvent("YES");
-			wo.setModifiedDate(new Date());
-			wo.setExpenditure(("General"));
-			wo.setWo(getTransactionNo("WOSEQ").longValue());
-			
-			wo.setExpenditure(setExpenditure("General"));
-			wo.setPriority("NORMAL");
-						
-			wo.setScheduleStartHour(new BigDecimal(0));
-			wo.setScheduleStartMinute(new BigDecimal(0));
-			wo.setScheduleCompletionHour(new BigDecimal(0));
-			wo.setScheduleCompletionMinute(new BigDecimal(0));
-			
-			wo.setScheduleStartDate(new Date());
-			wo.setScheduleCompletionDate(new Date());
-			wo.setActualStartDate(new Date());
-			wo.setScheduleOrgCompletionDate(new Date());	
-			
-			wo.setActualStartHour(new BigDecimal(0));
-			wo.setActualStartMinute(new BigDecimal(0));
-			wo.setScheduleOrgCompletionHour(new BigDecimal(0));
-			wo.setScheduleOrgCompletionMinute(new BigDecimal(0));
-			
-			 Logger.info("INSERTING TEMP WO PARENT: " + wo.getWo());
+			Wo wo = null;
+			try {
+				wo = em.createQuery("SELECT w FROM Wo w WHERE w.woDescription = :wp ", Wo.class)
+						.setParameter("wp", wpTitle)
+						.getSingleResult();
+			}catch (Exception e) {
+				wo = new Wo();
+				wo.setCreatedDate(new Date());
+				wo.setCreatedBy("IFACE-SIA");
+				
+				wo.setTaskCardNumberingSystem(new BigDecimal(size));
+				//EMRO fields to create basic object
+				wo.setManufactureOrder("N");
+				wo.setAuthorization("Y");
+				wo.setAuthorizationBy("TRAX_IFACE");
+				wo.setGlCompany("SIAEC");				
+				wo.setExpenditure(setExpenditure("General"));
+				wo.setPriority("NORMAL");
+				
+				wo.setStatus("OPEN");
+				wo.setOrderType("W/O");
+				wo.setModule("PRODUCTION");
+				wo.setPaperChecked("NO");
+				wo.setAuthorization("Y");
+				wo.setNrReqItem("N");
+				wo.setRestrictActual("N");
+				wo.setNrAllow("YES");
+				wo.setExcludeMhPlanner("N");
+				wo.setThirdPartyWo("Y");
+				wo.setModifiedBy("IFACE-SIA");
+				wo.setLongTermEvent("YES");
+				wo.setModifiedDate(new Date());
+				wo.setExpenditure(("General"));
+				wo.setWo(getTransactionNo("WOSEQ").longValue());
+				
+				wo.setExpenditure(setExpenditure("General"));
+				wo.setPriority("NORMAL");
+							
+				wo.setScheduleStartHour(new BigDecimal(0));
+				wo.setScheduleStartMinute(new BigDecimal(0));
+				wo.setScheduleCompletionHour(new BigDecimal(0));
+				wo.setScheduleCompletionMinute(new BigDecimal(0));
+				
+				wo.setScheduleStartDate(new Date());
+				wo.setScheduleCompletionDate(new Date());
+				wo.setActualStartDate(new Date());
+				wo.setScheduleOrgCompletionDate(new Date());	
+				
+				wo.setActualStartHour(new BigDecimal(0));
+				wo.setActualStartMinute(new BigDecimal(0));
+				wo.setScheduleOrgCompletionHour(new BigDecimal(0));
+				wo.setScheduleOrgCompletionMinute(new BigDecimal(0));
+			}
+			wo.setWoDescription(wpTitle);
+			Logger.info("INSERTING TEMP WO PARENT: " + wo.getWo());
 			
 			insertData(wo);
 			

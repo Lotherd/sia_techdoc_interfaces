@@ -67,7 +67,9 @@ import trax.types.PrintQueueJob;
 public class PrinterUtilities {
 
 
-	static ArrayList<String> heavyPrinters = new ArrayList<String>(Arrays.asList("EC61", "EC62", "EC63", "SINW","SIO1"));
+	static ArrayList<String> heavyPrinters = new ArrayList<String>(Arrays.asList("EC61", "EC62", "EC63", "SINW","SIO1", "EC1O","SIOP"));
+	static ArrayList<String> heavyPrintersRicoh = new ArrayList<String>(Arrays.asList("EC1O","SIOP"));
+	static ArrayList<String> heavyPrintersOcepdf = new ArrayList<String>(Arrays.asList("EC61", "EC62", "EC63", "SINW","SIO1"));
 	
 	public static int sendWorkPackPrintJob(String printWindow, Dw_Wo_Pack_Print dwSel) throws Exception {
 		int job = 0;
@@ -136,9 +138,13 @@ public class PrinterUtilities {
 			Logger.info("Job received for printer: " + printService);
 
 			try {
-
-				addJdfToPdf(printService, file);
-				
+				String ricohCommands = "";
+				if(heavyPrintersOcepdf.contains(printService)) {
+					addJdfToPdf(printService, file);
+				}
+				if(heavyPrintersRicoh.contains(printService)) {
+					ricohCommands = " -o \"StapleLocation=UpperLeft\"";
+				}
 				switch(tray){
 	            	case "1": tray = "Upper";
 	            		
@@ -160,7 +166,7 @@ public class PrinterUtilities {
 	            }
 				
 				// Command to print the document with duplex and tray options using lp on Linux
-	            String command = "lp -d "+printService+" -o sides="+side+" -o tray="+tray+" " + file.getAbsolutePath();
+	            String command = "lp -d "+printService+" -o sides="+side+" -o tray="+tray+ricohCommands+" " + file.getAbsolutePath();
 	            Logger.info("Command: " + command);
 	            // Create the process builder
 	            ProcessBuilder processBuilder = new ProcessBuilder(command.split(" "));
@@ -173,7 +179,7 @@ public class PrinterUtilities {
 	            if (exitCode == 0) {
 	                Logger.info("Print job submitted successfully.");
 	            } else {
-	                Logger.info("Error occurred during printing.");
+	                Logger.info("Error occurred during printing: " + exitCode);
 	            }		      
 
 			} catch (Exception exc) {

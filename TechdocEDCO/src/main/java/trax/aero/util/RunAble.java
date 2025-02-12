@@ -39,7 +39,7 @@ public class RunAble implements Runnable {
 		Unmarshaller unmarshaller = jc.createUnmarshaller();
 		
 		minuteCounter++;
-		if (minuteCounter >= 5) {
+		if (minuteCounter >= 10) {
 			sendEmail = true;
 			minuteCounter = 0;
 		}
@@ -58,8 +58,20 @@ public class RunAble implements Runnable {
 	
 				root = (ROOT) unmarshaller.unmarshal(sr);	
 				//TODO create parent WO 
-				Wo parent = data.createParentWo(root.getMODELS().size());
-				Logger.info("Size: " +root.getMODELS().size() );
+				BigDecimal COUNT = new BigDecimal( data.filterADDATTR(root.getMODELS().get(0).getEFFECTIVITY().getJOBCARD().getJOBI().getPLI().getADDATTR(), "COUNT"));
+				printer = data.filterADDATTR(root.getMODELS().get(0).getEFFECTIVITY().getJOBCARD().getJOBI().getPLI().getADDATTR(), "PRINTER-NAME");
+
+				//SAVE TRAX WO NUMBER 
+				//AS ISSUE TO TRAX IS SEPRATE REQUESTS 
+				Wo parent = null;
+				if( printer.equalsIgnoreCase("TRAX")  ) {
+					parent = data.createParentWo(COUNT.intValue(),root.getMODELS().get(0).getEFFECTIVITY().getJOBCARD().getWPTITLE() );
+					Logger.info("Size: " +COUNT); 
+				}else {
+					parent = data.createParentWo(root.getMODELS().size(),null );
+					Logger.info("Size: " +root.getMODELS().size()); 
+
+				}
 				int count = 1;
 				
 				for(MODEL model : root.getMODELS()) {
@@ -77,7 +89,11 @@ public class RunAble implements Runnable {
 					xml=xml.replaceAll("&amp;quot;", 	"&quot;");
 					xml=xml.replaceAll("&amp;re;", 		"&#xA;");
 					Wo w= data.issueToTechDocRequest(model,xml );
-					data.linkWoToParent(w,parent,new BigDecimal( count));
+					if( printer.equalsIgnoreCase("TRAX")) {
+						data.linkWoToParent(w,parent,new BigDecimal( model.getEFFECTIVITY().getJOBCARD().getSEQNBR()));
+					}else {
+						data.linkWoToParent(w,parent,new BigDecimal( count));
+					}
 					data.sendRequestToPrintServer(model, xml, w);
 					 try{
 						if(data.getCon() != null && !data.getCon().isClosed())
@@ -85,7 +101,7 @@ public class RunAble implements Runnable {
 					}catch (SQLException e) { 
 						Logger.error(e);
 					}
-					 count++;
+					count++;
 				}
 			
 				//TODO save WO data to P
