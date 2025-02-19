@@ -72,7 +72,7 @@ public class Service {
 	   				data.getCon().close();
 	   			}	
 	   		} 
-	   		catch (SQLException e) 
+	   		catch (Exception e) 
 	   		{ 
 	   			//Logger.error(e);
 	   		}
@@ -151,7 +151,7 @@ public class Service {
 	   			if(data.getCon() != null && !data.getCon().isClosed())
 	   				data.getCon().close();
 	   		} 
-	   		catch (SQLException e) 
+	   		catch (Exception e) 
 	   		{ 
 				Logger.error(e);
 	   		}

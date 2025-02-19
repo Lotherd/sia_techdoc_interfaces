@@ -39,85 +39,96 @@ public class RunAble implements Runnable {
 		Unmarshaller unmarshaller = jc.createUnmarshaller();
 		
 		minuteCounter++;
-		if (minuteCounter >= 10) {
+		Logger.info("Counter " + minuteCounter);
+		if (minuteCounter >= 60) {
 			sendEmail = true;
 			minuteCounter = 0;
 		}
-		message = MqUtilities.receiveMqText(sendEmail);
-		sendEmail = false;
-		
-		if(message != null) {
+		try {
+			message = MqUtilities.receiveMqText(sendEmail);
+			sendEmail = false;
 			
-			Logger.info(message);
-			try {
+			if(message != null) {
 				
-				message = "<ROOT>"+ message + "</ROOT>";
-				
-				ROOT  root = null;
-				StringReader sr = new StringReader(message);
-	
-				root = (ROOT) unmarshaller.unmarshal(sr);	
-				//TODO create parent WO 
-				BigDecimal COUNT = new BigDecimal( data.filterADDATTR(root.getMODELS().get(0).getEFFECTIVITY().getJOBCARD().getJOBI().getPLI().getADDATTR(), "COUNT"));
-				printer = data.filterADDATTR(root.getMODELS().get(0).getEFFECTIVITY().getJOBCARD().getJOBI().getPLI().getADDATTR(), "PRINTER-NAME");
-
-				//SAVE TRAX WO NUMBER 
-				//AS ISSUE TO TRAX IS SEPRATE REQUESTS 
-				Wo parent = null;
-				if( printer.equalsIgnoreCase("TRAX")  ) {
-					parent = data.createParentWo(COUNT.intValue(),root.getMODELS().get(0).getEFFECTIVITY().getJOBCARD().getWPTITLE() );
-					Logger.info("Size: " +COUNT); 
-				}else {
-					parent = data.createParentWo(root.getMODELS().size(),null );
-					Logger.info("Size: " +root.getMODELS().size()); 
-
-				}
-				int count = 1;
-				
-				for(MODEL model : root.getMODELS()) {
-					printer = data.filterADDATTR(model.getEFFECTIVITY().getJOBCARD().getJOBI().getPLI().getADDATTR(), "PRINTER-NAME");
-					jc = JAXBContext.newInstance(MODEL.class);
-					Marshaller marshaller = jc.createMarshaller();
-					marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, Boolean.TRUE);
-					StringWriter sw = new StringWriter();
-					marshaller.marshal(model, sw);
+				Logger.info(message);
+				try {
 					
-					String xml = sw.toString();
-					xml=xml.replaceAll("&amp;apos;", 	"&apos;");
-					xml=xml.replaceAll("&amp;gt;", 		"&gt;");
-					xml=xml.replaceAll("&amp;lt;", 		"&lt;");
-					xml=xml.replaceAll("&amp;quot;", 	"&quot;");
-					xml=xml.replaceAll("&amp;re;", 		"&#xA;");
-					Wo w= data.issueToTechDocRequest(model,xml );
-					if( printer.equalsIgnoreCase("TRAX")) {
-						data.linkWoToParent(w,parent,new BigDecimal( model.getEFFECTIVITY().getJOBCARD().getSEQNBR()));
-					}else {
-						data.linkWoToParent(w,parent,new BigDecimal( count));
-					}
-					data.sendRequestToPrintServer(model, xml, w);
-					 try{
-						if(data.getCon() != null && !data.getCon().isClosed())
-							data.getCon().close();
-					}catch (SQLException e) { 
-						Logger.error(e);
-					}
-					count++;
-				}
-			
-				//TODO save WO data to P
-			}catch (Exception e) {
-				Logger.error(e);
-			}
-		}
+					message = "<ROOT>"+ message + "</ROOT>";
+					
+					ROOT  root = null;
+					StringReader sr = new StringReader(message);
 		
+					root = (ROOT) unmarshaller.unmarshal(sr);	
+					//TODO create parent WO 
+					BigDecimal COUNT = new BigDecimal( data.filterADDATTR(root.getMODELS().get(0).getEFFECTIVITY().getJOBCARD().getJOBI().getPLI().getADDATTR(), "COUNT"));
+					printer = data.filterADDATTR(root.getMODELS().get(0).getEFFECTIVITY().getJOBCARD().getJOBI().getPLI().getADDATTR(), "PRINTER-NAME");
+	
+					//SAVE TRAX WO NUMBER 
+					//AS ISSUE TO TRAX IS SEPRATE REQUESTS 
+					Wo parent = null;
+					if( printer.equalsIgnoreCase("TRAX")  ) {
+						parent = data.createParentWo(COUNT.intValue(),root.getMODELS().get(0).getEFFECTIVITY().getJOBCARD().getWPTITLE() );
+						Logger.info("Size: " +COUNT); 
+					}else {
+						parent = data.createParentWo(root.getMODELS().size(),null );
+						Logger.info("Size: " +root.getMODELS().size()); 
+	
+					}
+					int count = 1;
+					
+					for(MODEL model : root.getMODELS()) {
+						printer = data.filterADDATTR(model.getEFFECTIVITY().getJOBCARD().getJOBI().getPLI().getADDATTR(), "PRINTER-NAME");
+						jc = JAXBContext.newInstance(MODEL.class);
+						Marshaller marshaller = jc.createMarshaller();
+						marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, Boolean.TRUE);
+						StringWriter sw = new StringWriter();
+						marshaller.marshal(model, sw);
+						
+						String xml = sw.toString();
+						xml=xml.replaceAll("&amp;apos;", 	"&apos;");
+						xml=xml.replaceAll("&amp;gt;", 		"&gt;");
+						xml=xml.replaceAll("&amp;lt;", 		"&lt;");
+						xml=xml.replaceAll("&amp;quot;", 	"&quot;");
+						xml=xml.replaceAll("&amp;re;", 		"&#xA;");
+						Wo w= data.issueToTechDocRequest(model,xml );
+						if( printer.equalsIgnoreCase("TRAX")) {
+							data.linkWoToParent(w,parent,new BigDecimal( model.getEFFECTIVITY().getJOBCARD().getSEQNBR()));
+						}else {
+							data.linkWoToParent(w,parent,new BigDecimal( count));
+						}
+						data.sendRequestToPrintServer(model, xml, w);
+						 try{
+							if(data.getCon() != null && !data.getCon().isClosed())
+								data.getCon().close();
+						}catch (SQLException e) { 
+							Logger.error(e);
+						}
+						count++;
+					}
+				
+					//TODO save WO data to P
+				}catch (Exception e) {
+					Logger.error(e);
+				}
+			}
+		}catch (Exception e) {
+			Logger.error(e);
+		}finally{
+			sendEmail = false;
+		}
 	}
 	
 	
 	public void run() 
 	{
 		try {
-			process();
-			data.processBatFile();
+			if(data.lockAvailable("TD2"))
+			{
+				data.lockTable("TD2");
+				process();
+				data.processBatFile();
+				data.unlockTable("TD2");
+			}		
 		}catch(Exception e) {
 			Logger.error(e);
 		}		

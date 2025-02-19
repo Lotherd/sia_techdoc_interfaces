@@ -5,11 +5,16 @@ import java.io.IOException;
 import java.io.StringReader;
 import java.io.StringWriter;
 import java.math.BigDecimal;
+import java.net.InetAddress;
+import java.net.UnknownHostException;
 import java.nio.charset.StandardCharsets;
 import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.Types;
 import java.text.SimpleDateFormat;
+import java.time.Duration;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
@@ -35,6 +40,7 @@ import trax.aero.model.BlobTable;
 import trax.aero.model.BlobTablePK;
 import trax.aero.model.InterfaceAudit;
 import trax.aero.model.InterfaceData;
+import trax.aero.model.InterfaceLockMaster;
 import trax.aero.model.JournalEntriesExpenditure;
 import trax.aero.model.JournalEntriesExpenditurePK;
 import trax.aero.model.TaskCard;
@@ -394,7 +400,17 @@ public class ModelData implements IModelData {
 	}
 	
 	
-	
+	public void deleteWoTaskCardItem( String wo) throws Exception{
+		String query = "DELETE WO_TASK_CARD_ITEM where WO = ?";		
+		try
+		{	
+			em.createNativeQuery(query).setParameter(1, wo).executeUpdate();	
+		}
+		catch (Exception e) 
+		{
+			throw new Exception("An Exception occurred executing the query to delete the WO_TASK_CARD_ITEM. " + "\n error: " + e.toString());
+		}
+	}
 
 
 
@@ -555,12 +571,20 @@ public class ModelData implements IModelData {
 				for(InterfaceAudit i : interfaceAudits) {
 					try 
 					{
-						 Logger.info("Interface Audit PROCESSING " +i.getTransaction());
-						for (InterfaceData id : i.getInterfaceData()) {
-							S3Utilities.setDatFile(id.getClobDocument(),id.getFileName(),String.valueOf( i.getTransaction()));
+						Logger.info("Interface Audit PROCESSING " +i.getTransaction());
+						try {
+							for (InterfaceData id : i.getInterfaceData()) {
+								S3Utilities.setDatFile(id.getClobDocument(),id.getFileName(),String.valueOf( i.getTransaction()));
+							}
+						}catch (Exception e) {
+							
 						}
-						if(i.getInterfaceData() != null && !i.getInterfaceData().isEmpty()) {
-							ModelController.sendEmailDat(i.getInterfaceData());
+						try {
+							if(i.getInterfaceData() != null && !i.getInterfaceData().isEmpty()) {
+								ModelController.sendEmailDat(i.getInterfaceData());
+							}
+						}catch (Exception e) {
+							Logger.error(e);
 						}
 						em.refresh(i);
 						i.setMessageNeedsToBeSent("N");
@@ -568,7 +592,7 @@ public class ModelData implements IModelData {
 					}
 					catch (Exception e) 
 			        {
-						
+						Logger.error(e);
 					}
 				}
 			}
@@ -1250,7 +1274,7 @@ public class ModelData implements IModelData {
 				em.merge(data);
 				em.flush();
 			}catch (Exception e){	
-				Logger.error(e.toString());
+				Logger.error(e);
 				throw e;
 			}
 		}
@@ -1261,7 +1285,7 @@ public class ModelData implements IModelData {
 				em.remove(data);
 				em.flush();
 			}catch (Exception e){	
-				 Logger.error(e.toString());
+				Logger.error(e);
 				throw e;
 			}
 		}
@@ -1329,6 +1353,9 @@ public class ModelData implements IModelData {
 				Logger.info("DELETING TEMP Task Card: " + t.getId().getTaskCard());
 				deleteData(em.find(WoTaskCard.class, t.getId()));
 			}
+			Logger.info("DELETING TEMP WO TaskCard Item: " + w.getWo());
+			deleteWoTaskCardItem(String.valueOf( w.getWo()));
+			
 			Logger.info("DELETING TEMP WO TaskCard Pn: " + w.getWo());
 			deleteWoTaskCardPn(String.valueOf( w.getWo()));
 			
@@ -1604,12 +1631,72 @@ public class ModelData implements IModelData {
 				*/
 				//TITLE
 				card.setTaskCardDescription(input.getEFFECTIVITY().getJOBCARD().getJCTITLE());
-				
+				card.setInterfaceTransferredDate(new Date());
 				//TASK NO
-				card.setReferenceTaskCard(filterADDATTR(input.getEFFECTIVITY().getJOBCARD().getJOBI().getPLI().getADDATTR(), "TASK-NBR"));
+				//card.setReferenceTaskCard(filterADDATTR(input.getEFFECTIVITY().getJOBCARD().getJOBI().getPLI().getADDATTR(), "TASK-NBR"));
 				insertData(card);
 			}
 			
+		}
+				
+		public boolean lockAvailable(String notificationType)
+		{
+			
+			//em.getTransaction().begin();
+			InterfaceLockMaster lock = em.createQuery("SELECT i FROM InterfaceLockMaster i where i.interfaceType = :type", InterfaceLockMaster.class)
+					.setParameter("type", notificationType).getSingleResult();
+			em.refresh(lock);
+			//logger.info("lock " + lock.getLocked());
+			if(lock.getLocked().intValue() == 1)
+			{				
+				LocalDateTime today = LocalDateTime.now();
+				LocalDateTime locked = LocalDateTime.ofInstant(lock.getLockedDate().toInstant(), ZoneId.systemDefault());
+				Duration diff = Duration.between(locked, today);
+				if(diff.getSeconds() >= lock.getMaxLock().longValue())
+				{
+					lock.setLocked(new BigDecimal(1));
+					insertData(lock);
+					return true;
+				}
+				return false;
+			}
+			else
+			{
+				lock.setLocked(new BigDecimal(1));
+				insertData(lock);
+				return true;
+			}
+			
+		}
+		
+		
+		public void lockTable(String notificationType)
+		{
+			InterfaceLockMaster lock = em.createQuery("SELECT i FROM InterfaceLockMaster i where i.interfaceType = :type", InterfaceLockMaster.class)
+					.setParameter("type", notificationType).getSingleResult();
+			lock.setLocked(new BigDecimal(1));
+			
+			lock.setLockedDate(Date.from(LocalDateTime.now().atZone(ZoneId.systemDefault()).toInstant()) );
+			InetAddress address = null;
+			try {
+				address = InetAddress.getLocalHost();
+			} catch (UnknownHostException e) {
+				
+				Logger.error(e);
+			}
+			lock.setCurrentServer(address.getHostName());
+			insertData(lock);
+		}
+		
+		public void unlockTable(String notificationType)
+		{
+			
+			InterfaceLockMaster lock = em.createQuery("SELECT i FROM InterfaceLockMaster i where i.interfaceType = :type", InterfaceLockMaster.class)
+					.setParameter("type", notificationType).getSingleResult();
+			lock.setLocked(new BigDecimal(0));
+			
+			lock.setUnlockedDate(Date.from(LocalDateTime.now().atZone(ZoneId.systemDefault()).toInstant()) );
+			insertData(lock);
 		}
 		
 }

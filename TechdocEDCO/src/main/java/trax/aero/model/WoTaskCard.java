@@ -37,6 +37,9 @@ public class WoTaskCard implements Serializable {
 
 	@Column(name="AIR_GEAR")
 	private String airGear;
+	
+	@Column(name="INTERFACE_TRANSFERRED_DATE")
+	private Date interfaceTransferredDate;
 
 	@Column(name="AIR_GROUND_MODE")
 	private String airGroundMode;
@@ -3313,6 +3316,14 @@ public class WoTaskCard implements Serializable {
 		woTaskCardCustomer.setWoTaskCard(null);
 
 		return woTaskCardCustomer;
+	}
+
+	public Date getInterfaceTransferredDate() {
+		return interfaceTransferredDate;
+	}
+
+	public void setInterfaceTransferredDate(Date interfaceTransferredDate) {
+		this.interfaceTransferredDate = interfaceTransferredDate;
 	}
 
 	/*

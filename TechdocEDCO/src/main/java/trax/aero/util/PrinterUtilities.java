@@ -140,11 +140,13 @@ public class PrinterUtilities {
 			try {
 				String ricohCommands = "";
 				if(heavyPrintersOcepdf.contains(printService)) {
-					addJdfToPdf(printService, file);
+				//	addJdfToPdf(printService, file);
 				}
 				if(heavyPrintersRicoh.contains(printService)) {
 					ricohCommands = " -o \"StapleLocation=UpperLeft\"";
 				}
+				//InputSlot=1Tray  2Tray 3Tray RICHO
+				
 				switch(tray){
 	            	case "1": tray = "Upper";
 	            		
@@ -157,7 +159,7 @@ public class PrinterUtilities {
 	            	default: tray = "Upper";
        
 				}
-				
+				//Duplex=DuplexNoTumble RICHO 
 				if(side.equalsIgnoreCase("DUPLEX")) {
 					side = "two-sided-long-edge";
 	            	

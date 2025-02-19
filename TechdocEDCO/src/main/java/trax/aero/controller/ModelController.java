@@ -12,12 +12,12 @@ import org.apache.commons.mail.SimpleEmail;
 import org.tinylog.Logger;
 
 import trax.aero.model.InterfaceData;
-import trax.aero.pojo.acknowledgement.PrintAck;
 
 public class ModelController {
 
 	private static String[] headersPDF = {"Name of PDF Attachment", "SAP Service Order", "Jobcard Number", "JC Title", "SAP Group Number", "Task Type", "TRAX WO Number", "Attachment", "Attachment ID"};	
 	private static String[] headersCOVER = {"SAP Service Order", "Jobcard Number", "JC Title", "SAP Group Number", "Task Type", "TRAX WO Number", "Attachment", "Attachment ID"};	
+	private static String[] acType = {"380","350","737","747","777" , "777F","737NG","737Max", "330" , "789" ,"290" ,  "744" , "738",  };	
 
 	static String errors = "";
 	public ModelController()
@@ -321,9 +321,22 @@ public class ModelController {
 		{
 			try
 			{
-				
-				ArrayList<String>  fileName = new ArrayList<String> (Arrays.asList(ids.get(0).getFileName().split("_")));
-				String fleet = fileName.get(1);
+				String fleet = "";
+				try {
+					ArrayList<String>  fileName = new ArrayList<String> (Arrays.asList(ids.get(0).getFileName().split("_")));
+					fleet = fileName.get(1);
+				}catch (Exception e) {
+					Logger.error(e);
+					Logger.info("File Name: " + ids.get(0).getFileName());
+					for (String type : acType) {
+			            if (ids.get(0).getFileName().contains(type)) {
+			            	fleet =  type;
+			            	break;
+			            }
+			        }
+					
+					
+				}
 				String fromEmail = System.getProperty("fromEmail");
 				String host = System.getProperty("fromHost");
 				String port = System.getProperty("fromPort");
@@ -346,15 +359,31 @@ public class ModelController {
 				for (InterfaceData id :ids) {
 					
 					email.attach(new ByteArrayDataSource(id.getClobDocument().getBytes(), "text/plain"),
-							id.getFileName()+".dat", "Document description",
-						       EmailAttachment.ATTACHMENT);
+							id.getFileName()+".dat", id.getFileName()+".dat",EmailAttachment.ATTACHMENT);
 				}
+				String emails =""; 
+				for (String e:emailsList) {
+					emails += e+", ";
+				}
+				emails = emails.trim(); // Remove trailing spaces
+            	if (emails.endsWith(",")) {
+            		emails = emails.substring(0, emails.length() - 1);
+            	}
+				
+				String message = "**********************************************************\r\n" + 
+						"* This is an system generated email.                     *\r\n" + 
+						"*                                                        *\r\n" + 
+						"* Please send your email to opn_csb@singaporeair.com.sg. *\r\n" + 
+						"**********************************************************\r\n" + 
+						""+System.lineSeparator()+System.lineSeparator()+
+						"TO: " + emails +System.lineSeparator()+System.lineSeparator()+
+						"The latest copy of attachment has been loaded into CDM." +System.lineSeparator()+
+						"Attached are the new tasks, deleted tasks and current tasks generated as attachment for your review and necessary action."+System.lineSeparator()+
+						"*****\r\n" +
+						"The list of attachment for new tasks will be transferred to SAP for your further action.";
 				
 				
-				
-				
-				email.setMsg("The latest copy of attachment has been loaded into CDM." +System.lineSeparator()
-				+" Attached are the new tasks, deleted tasks and current tasks generated as attachment for your review and necessary action.");
+				email.setMsg(message);
 				
 				email.send();
 				Logger.info("SUCCESS EMAIL SENT");
