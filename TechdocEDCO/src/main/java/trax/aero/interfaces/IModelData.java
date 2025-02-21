@@ -33,7 +33,7 @@ public interface IModelData {
 
 	public void processBatFile();
 
-	public Wo createParentWo(int size, String wpTitle);
+	public Wo createParentWo(BigDecimal COUNT, String wpTitle);
 
 	public void linkWoToParent(Wo w, Wo parent, BigDecimal count);
 	

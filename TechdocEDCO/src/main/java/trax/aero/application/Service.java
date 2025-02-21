@@ -104,16 +104,12 @@ public class Service {
 			//SAVE TRAX WO NUMBER 
 			//AS ISSUE TO TRAX IS SEPRATE REQUESTS 
 			Wo parent = null;
-			if( printer.equalsIgnoreCase("TRAX")  ) {
-				parent = data.createParentWo(COUNT.intValue(),root.getMODELS().get(0).getEFFECTIVITY().getJOBCARD().getWPTITLE() );
-				Logger.info("Size: " +COUNT); 
-			}else {
-				parent = data.createParentWo(root.getMODELS().size(),null );
-				Logger.info("Size: " +root.getMODELS().size()); 
-
-			}
-			int count = 1;
-			
+			String idocID = data.filterADDATTR(root.getMODELS().get(0).getEFFECTIVITY().getJOBCARD().getJOBI().getPLI().getADDATTR(), "USER-NAME") +
+					data.filterADDATTR(root.getMODELS().get(0).getEFFECTIVITY().getJOBCARD().getJOBI().getPLI().getADDATTR(), "IDOC-DATE") + 
+					data.filterADDATTR(root.getMODELS().get(0).getEFFECTIVITY().getJOBCARD().getJOBI().getPLI().getADDATTR(), "IDOC-TIME");
+			parent = data.createParentWo(COUNT,idocID );
+			Logger.info("Size: " +parent.getDocumentNo().intValue()); 
+								
 			for(MODEL model : root.getMODELS()) {
 				printer = data.filterADDATTR(model.getEFFECTIVITY().getJOBCARD().getJOBI().getPLI().getADDATTR(), "PRINTER-NAME");
 				jc = JAXBContext.newInstance(MODEL.class);
@@ -129,19 +125,17 @@ public class Service {
 				xml=xml.replaceAll("&amp;quot;", 	"&quot;");
 				xml=xml.replaceAll("&amp;re;", 		"&#xA;");
 				Wo w= data.issueToTechDocRequest(model,xml );
-				if( printer.equalsIgnoreCase("TRAX")) {
+					
 					data.linkWoToParent(w,parent,new BigDecimal( model.getEFFECTIVITY().getJOBCARD().getSEQNBR()));
-				}else {
-					data.linkWoToParent(w,parent,new BigDecimal( count));
-				}	
+				
 				data.sendRequestToPrintServer(model, xml, w);
-				 try{
+				try{
 					if(data.getCon() != null && !data.getCon().isClosed())
 						data.getCon().close();
-				}catch (SQLException e) { 
+				}catch (Exception e) { 
 					Logger.error(e);
 				}
-				count++;
+				
 			}
 		}catch (Exception e) {
 			Logger.error(e);

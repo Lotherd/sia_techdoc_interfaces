@@ -323,7 +323,7 @@ public class ModelController {
 			{
 				String fleet = "";
 				try {
-					ArrayList<String>  fileName = new ArrayList<String> (Arrays.asList(ids.get(0).getFileName().split("_")));
+					ArrayList<String>  fileName = new ArrayList<String> (Arrays.asList(ids.get(0).getFileName().split("-")));
 					fleet = fileName.get(1);
 				}catch (Exception e) {
 					Logger.error(e);

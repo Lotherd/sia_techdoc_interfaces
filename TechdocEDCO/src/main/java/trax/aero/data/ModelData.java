@@ -46,6 +46,7 @@ import trax.aero.model.JournalEntriesExpenditurePK;
 import trax.aero.model.TaskCard;
 import trax.aero.model.Wo;
 import trax.aero.model.WoTaskCard;
+import trax.aero.model.WoTaskCardItem;
 import trax.aero.pojo.Dw_Wo_Pack_Print;
 import trax.aero.pojo.Print;
 import trax.aero.pojo.Row;
@@ -219,8 +220,8 @@ public class ModelData implements IModelData {
 			emailBlob = getTempBlobText( parent.getBlobNo(),"EMAIL");
 
 			
-			if(parent.getTaskCardNumberingSystem().intValue() == child.getTaskCardNumberingSystem().intValue()) {
-				Logger.info("Final print found " + child.getTaskCardNumberingSystem().intValue());
+			if(parent.getDocumentNo().intValue() == child.getDocumentNo().intValue()) {
+				Logger.info("Final print found " + child.getDocumentNo().intValue());
 				sendFinal = true;
 			}
 			
@@ -438,8 +439,8 @@ public class ModelData implements IModelData {
 		
 		BlobTable emailBlob = getTempBlobText( parent.getBlobNo(),"EMAIL");
 		
-		if(parent.getTaskCardNumberingSystem().intValue() == w.getTaskCardNumberingSystem().intValue()) {
-			Logger.info("Final print found " + w.getTaskCardNumberingSystem().intValue());
+		if(parent.getDocumentNo().intValue() == w.getDocumentNo().intValue()) {
+			Logger.info("Final print found " + w.getDocumentNo().intValue());
 			sendFinal = true;
 		}
 		
@@ -1366,7 +1367,7 @@ public class ModelData implements IModelData {
 			deleteData(em.find(Wo.class, w.getWo()));
 			
 			if( parent != null && 
-				w.getTaskCardNumberingSystem().intValue() == parent.getTaskCardNumberingSystem().intValue()) {
+				w.getDocumentNo().intValue() == parent.getDocumentNo().intValue()) {
 				BlobTable email = getTempBlobText(parent.getBlobNo(),"EMAIL");
 				BlobTable report = getTempBlobText(parent.getBlobNo(),"REPORT");
 
@@ -1507,7 +1508,7 @@ public class ModelData implements IModelData {
 
 
 		@Override
-		public Wo createParentWo(int size, String wpTitle) {
+		public Wo createParentWo(BigDecimal COUNT, String wpTitle) {
 
 			Wo wo = null;
 			try {
@@ -1519,7 +1520,7 @@ public class ModelData implements IModelData {
 				wo.setCreatedDate(new Date());
 				wo.setCreatedBy("IFACE-SIA");
 				
-				wo.setTaskCardNumberingSystem(new BigDecimal(size));
+				wo.setDocumentNo( (COUNT));
 				//EMRO fields to create basic object
 				wo.setManufactureOrder("N");
 				wo.setAuthorization("Y");
@@ -1578,8 +1579,8 @@ public class ModelData implements IModelData {
 		public void linkWoToParent(Wo w, Wo parent, BigDecimal count) {
 			
 			w.setNhWo(new BigDecimal(parent.getWo()));
-			w.setTaskCardNumberingSystem(count);
-			 Logger.info("LINKING TEMP WO: " + w.getWo() + " TO PARENT TEMP WO: " +parent.getWo() + " COUNT: " +count.intValue());
+			w.setDocumentNo(count);
+			Logger.info("LINKING TEMP WO: " + w.getWo() + " TO PARENT TEMP WO: " +parent.getWo() + " COUNT: " +w.getDocumentNo().intValue());
 			insertData(w);
 		}
 		
@@ -1611,30 +1612,29 @@ public class ModelData implements IModelData {
 			 Wo parent = em.find(Wo.class, w.getWo());
 			
 			for(WoTaskCard card : parent.getWoTaskCards()) {
-				//TODO
-				/*
-				card.setRevisedDate(revisedDate);
+				if(card.getTaskCardCategory().equalsIgnoreCase("SI-B")) {
 				
-				//	REV DATE BOTTOM
-				card.setRiiDate(riiDate);
-				
-				//REV DATE
-				card.setRevisedDate(revisedDate);
-				
-				//REV NO
-				card.setRevision(revision);
-				
-				//REVISION
-				card.setCurrentRev(currentRev);
-				
-				card.setAuditDate(auditDate);
-				*/
-				//TITLE
-				card.setTaskCardDescription(input.getEFFECTIVITY().getJOBCARD().getJCTITLE());
-				card.setInterfaceTransferredDate(new Date());
-				//TASK NO
-				//card.setReferenceTaskCard(filterADDATTR(input.getEFFECTIVITY().getJOBCARD().getJOBI().getPLI().getADDATTR(), "TASK-NBR"));
-				insertData(card);
+					//Priority
+					card.setPlanningPriority(filterADDATTR(input.getEFFECTIVITY().getJOBCARD().getJOBI().getPLI().getADDATTR(), "PRIORITY"));
+					
+					//REV NO  
+					card.setRevision(filterADDATTR(input.getEFFECTIVITY().getJOBCARD().getJOBI().getPLI().getADDATTR(), "LATEST-REVISION"));
+					
+					//Date of task
+					card.setInspectedDate(convertStringToDate(input.getEFFECTIVITY().getJOBCARD().getWPDATE()));
+					
+					//TITLE
+					card.setTaskCardDescription(input.getEFFECTIVITY().getJOBCARD().getJCTITLE());
+					
+					card.setInterfaceTransferredDate(new Date());
+					//TASK NO
+					card.setScheduleTaskCard(filterADDATTR(input.getEFFECTIVITY().getJOBCARD().getJOBI().getPLI().getADDATTR(), "TASK-NBR"));
+					insertData(card);
+					for(WoTaskCardItem item : card.getWoTaskCardItems()) {
+						item.setPhase(input.getEFFECTIVITY().getJOBCARD().getTRADE());
+						insertData(item);
+					}
+				}
 			}
 			
 		}

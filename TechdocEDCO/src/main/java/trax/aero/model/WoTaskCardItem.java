@@ -37,6 +37,8 @@ public class WoTaskCardItem implements Serializable {
 	@Column(name="DUAL_INSPECTED_BY")
 	private String dualInspectedBy;
 
+	private String phase;
+	
 	@Column(name="DUAL_INSPECTED_DATE")
 	private Date dualInspectedDate;
 
@@ -933,6 +935,14 @@ public class WoTaskCardItem implements Serializable {
 
 	public void setOpsNo(String opsNo) {
 		this.opsNo = opsNo;
+	}
+
+	public String getPhase() {
+		return phase;
+	}
+
+	public void setPhase(String phase) {
+		this.phase = phase;
 	}
 	
 	
