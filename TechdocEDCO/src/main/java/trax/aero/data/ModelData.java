@@ -1628,7 +1628,7 @@ public class ModelData implements IModelData {
 					
 					card.setInterfaceTransferredDate(new Date());
 					//TASK NO
-					card.setScheduleTaskCard(filterADDATTR(input.getEFFECTIVITY().getJOBCARD().getJOBI().getPLI().getADDATTR(), "TASK-NBR"));
+					card.setTdSvo(filterADDATTR(input.getEFFECTIVITY().getJOBCARD().getJOBI().getPLI().getADDATTR(), "TASK-NBR"));
 					insertData(card);
 					for(WoTaskCardItem item : card.getWoTaskCardItems()) {
 						item.setPhase(input.getEFFECTIVITY().getJOBCARD().getTRADE());

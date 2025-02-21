@@ -38,6 +38,9 @@ public class WoTaskCard implements Serializable {
 	@Column(name="AIR_GEAR")
 	private String airGear;
 	
+	@Column(name="TD_SVO")
+	private String tdSvo;
+	
 	@Column(name="INTERFACE_TRANSFERRED_DATE")
 	private Date interfaceTransferredDate;
 
@@ -3324,6 +3327,14 @@ public class WoTaskCard implements Serializable {
 
 	public void setInterfaceTransferredDate(Date interfaceTransferredDate) {
 		this.interfaceTransferredDate = interfaceTransferredDate;
+	}
+
+	public String getTdSvo() {
+		return tdSvo;
+	}
+
+	public void setTdSvo(String tdSvo) {
+		this.tdSvo = tdSvo;
 	}
 
 	/*
