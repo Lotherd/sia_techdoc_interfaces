@@ -118,6 +118,7 @@ public class RunAble implements Runnable {
 				data.lockTable("TD2");
 				process();
 				data.processBatFile();
+				data.cleanUpTemp();
 				data.unlockTable("TD2");
 			}		
 		}catch(Exception e) {

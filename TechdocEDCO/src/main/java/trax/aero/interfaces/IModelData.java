@@ -43,5 +43,7 @@ public interface IModelData {
 	public void lockTable(String notificationType);
 	
 	public void unlockTable(String notificationType);
+
+	public void cleanUpTemp();
 	
 }

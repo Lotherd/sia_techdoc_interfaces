@@ -41,6 +41,18 @@ public class WoTaskCard implements Serializable {
 	@Column(name="TD_SVO")
 	private String tdSvo;
 	
+	@Column(name="TD_REVISION")
+	private String tdRevision;
+	
+	@Column(name="TD_ISSUE_NBR")
+	private String tdIssueNbr;
+	
+	@Column(name="TD_ISSUE_DATE")
+	private String tdIssueDate;
+	
+	@Column(name="TD_TRADE_IBL")
+	private String tdTradeIbl;
+	
 	@Column(name="INTERFACE_TRANSFERRED_DATE")
 	private Date interfaceTransferredDate;
 
@@ -3335,6 +3347,38 @@ public class WoTaskCard implements Serializable {
 
 	public void setTdSvo(String tdSvo) {
 		this.tdSvo = tdSvo;
+	}
+
+	public String getTdRevision() {
+		return tdRevision;
+	}
+
+	public void setTdRevision(String tdRevision) {
+		this.tdRevision = tdRevision;
+	}
+
+	public String getTdIssueNbr() {
+		return tdIssueNbr;
+	}
+
+	public void setTdIssueNbr(String tdIssueNbr) {
+		this.tdIssueNbr = tdIssueNbr;
+	}
+
+	public String getTdIssueDate() {
+		return tdIssueDate;
+	}
+
+	public void setTdIssueDate(String tdIssueDate) {
+		this.tdIssueDate = tdIssueDate;
+	}
+
+	public String getTdTradeIbl() {
+		return tdTradeIbl;
+	}
+
+	public void setTdTradeIbl(String tdTradeIbl) {
+		this.tdTradeIbl = tdTradeIbl;
 	}
 
 	/*

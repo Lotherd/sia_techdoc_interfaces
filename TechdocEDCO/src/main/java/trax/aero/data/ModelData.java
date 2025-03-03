@@ -562,6 +562,7 @@ public class ModelData implements IModelData {
 	public void processBatFile() {
 		try
 		{	
+			Logger.info(" processBatFile  Start ");
 			List<InterfaceAudit> interfaceAudits = em.createQuery("SELECT p FROM InterfaceAudit p WHERE p.transactionObject = :obj "
 					+ "and p.messageNeedsToBeSent = :tas ")
 					.setParameter("obj", "SAP_TC")
@@ -601,6 +602,8 @@ public class ModelData implements IModelData {
 		catch (Exception e)
 		{	
 			Logger.error(e);
+		}finally {
+			Logger.info(" processBatFile  End ");
 		}
 	}
 	
@@ -1618,7 +1621,10 @@ public class ModelData implements IModelData {
 					card.setPlanningPriority(filterADDATTR(input.getEFFECTIVITY().getJOBCARD().getJOBI().getPLI().getADDATTR(), "PRIORITY"));
 					
 					//REV NO  
-					card.setRevision(filterADDATTR(input.getEFFECTIVITY().getJOBCARD().getJOBI().getPLI().getADDATTR(), "LATEST-REVISION"));
+					card.setTdRevision(filterADDATTR(input.getEFFECTIVITY().getJOBCARD().getJOBI().getPLI().getADDATTR(), "LATEST-REVISION"));
+					
+					//REV Date
+					card.setRiiDate(convertStringToDate(filterADDATTR(input.getEFFECTIVITY().getJOBCARD().getJOBI().getPLI().getADDATTR(), "LATEST-REVISION-DATE")));
 					
 					//Date of task
 					card.setInspectedDate(convertStringToDate(input.getEFFECTIVITY().getJOBCARD().getWPDATE()));
@@ -1627,6 +1633,17 @@ public class ModelData implements IModelData {
 					card.setTaskCardDescription(input.getEFFECTIVITY().getJOBCARD().getJCTITLE());
 					
 					card.setInterfaceTransferredDate(new Date());
+					
+					//ISSUE-NBR 
+					card.setTdIssueNbr(input.getEFFECTIVITY().getJOBCARD().getISSUENBR());
+					
+					//ISSUE-DATE 
+					card.setTdIssueDate(input.getEFFECTIVITY().getJOBCARD().getISSUEDATE());
+					
+					//Tradelbl
+					card.setTdTradeIbl(filterADDATTR(input.getEFFECTIVITY().getJOBCARD().getJOBI().getPLI().getADDATTR(), "BUSR05")
+							+ " " + input.getEFFECTIVITY().getJOBCARD().getTRADE());
+					
 					//TASK NO
 					card.setTdSvo(filterADDATTR(input.getEFFECTIVITY().getJOBCARD().getJOBI().getPLI().getADDATTR(), "TASK-NBR"));
 					insertData(card);
@@ -1699,4 +1716,38 @@ public class ModelData implements IModelData {
 			insertData(lock);
 		}
 		
+		
+		public void cleanUpTemp()
+		{
+			String queryWo = "delete from wo where created_by = 'IFACE-SIA' and rownum <= 5 and created_date < SYSDATE - 1";	
+			
+			String queryWoTaskCard = "delete from wo_task_card where created_by = 'IFACE-SIA' and rownum <= 5 and created_date < SYSDATE - 1";	
+			
+			String queryWoTaskCardPn = "delete from wo_task_card_pn where created_by = 'IFACE-SIA' and rownum <= 5 and created_date < SYSDATE - 1";	
+			
+			String queryBlobTable = "delete from blob_table where created_by = 'IFACE-SIA' and rownum <= 5 and created_date < SYSDATE - 1";	
+			
+			String queryWoTaskCardItem = "delete from wo_task_card_item where created_by = 'IFACE-SIA' and rownum <= 5 and created_date < SYSDATE - 1";	
+			
+			try
+			{	
+				Logger.info(" Cleanup Start ");
+				em.createNativeQuery(queryWo).executeUpdate();	
+				
+				em.createNativeQuery(queryWoTaskCard).executeUpdate();	
+				
+				em.createNativeQuery(queryWoTaskCardPn).executeUpdate();	
+				
+				em.createNativeQuery(queryBlobTable).executeUpdate();	
+				
+				em.createNativeQuery(queryWoTaskCardItem).executeUpdate();	
+				
+			}
+			catch (Exception e) 
+			{
+				Logger.error(e);
+			}finally {
+				Logger.info(" Cleanup End ");
+			}
+		}
 }
