@@ -39,7 +39,7 @@ public class RunAble implements Runnable {
 		Unmarshaller unmarshaller = jc.createUnmarshaller();
 		
 		minuteCounter++;
-		Logger.info("Counter " + minuteCounter);
+		//Logger.info("Counter " + minuteCounter);
 		if (minuteCounter >= 60) {
 			sendEmail = true;
 			minuteCounter = 0;
@@ -86,7 +86,7 @@ public class RunAble implements Runnable {
 						xml=xml.replaceAll("&amp;re;", 		"&#xA;");
 						Wo w= data.issueToTechDocRequest(model,xml );
 						data.linkWoToParent(w,parent,new BigDecimal( model.getEFFECTIVITY().getJOBCARD().getSEQNBR()));
-						
+						data.setCountWoToParent(w,parent);
 						data.sendRequestToPrintServer(model, xml, w);
 						 try{
 							if(data.getCon() != null && !data.getCon().isClosed())

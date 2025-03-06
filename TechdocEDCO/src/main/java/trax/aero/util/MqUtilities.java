@@ -167,7 +167,7 @@ public class MqUtilities {
             Message message = queueReceiver.receive(60*1000);
             if(message != null ) {
             	String responseMsg = ((TextMessage) message).getText();
-            	Logger.info("JMSCorrelationID: "+ message.getJMSCorrelationID() + " JMSMessageID: " + message.getJMSMessageID()  );
+            	//Logger.info("JMSCorrelationID: "+ message.getJMSCorrelationID() + " JMSMessageID: " + message.getJMSMessageID()  );
                
                 return responseMsg;
             }

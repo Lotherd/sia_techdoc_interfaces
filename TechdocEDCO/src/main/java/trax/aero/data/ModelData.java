@@ -638,11 +638,14 @@ public class ModelData implements IModelData {
 		JOBCARD card = input.getEFFECTIVITY().getJOBCARD();
 		String count = (filterADDATTR(input.getEFFECTIVITY().getJOBCARD().getJOBI().getPLI().getADDATTR(), "COUNT"));
 		int c = Integer.parseInt(count);
-
+		
+		int incomplete = c - c;
+		
+		//TODO
 		txt.add( "FOOTER PAGE" );
 		txt.add( "Revision Number :" +" " +card.getWPNBR());
 		txt.add( "WorkOrder(s) Printed :" +" " +c);
-		txt.add( "WorkOrder(s) Incomplete :" +"  0" );
+		txt.add( "WorkOrder(s) Incomplete :" +" " + incomplete );
 		txt.add( "Total No of WorkOrder(s) :" +" "+c );
 
 		
@@ -1587,6 +1590,26 @@ public class ModelData implements IModelData {
 			insertData(w);
 		}
 		
+		public void setCountWoToParent(Wo w, Wo parent) {
+			try {
+				BigDecimal l_count =(BigDecimal) em.createNativeQuery("SELECT COUNT(*) FROM WO where NH_WO = ?")
+	            		.setParameter(1, parent.getWo())
+	            		.getSingleResult();
+				
+				if(w.getDocumentNo().intValue() != l_count.intValue()) {
+					w.setDocumentNo(l_count);
+				}else{
+					return;
+				}
+				Logger.info("TEMP WO: " + w.getWo() + " TO PARENT TEMP WO: " +parent.getWo() + " COUNT: " +w.getDocumentNo().intValue());
+				insertData(w);
+			
+			//SELECT COUNT(*) FROM WO WHERE NHWO;
+			}catch (Exception e) {
+				Logger.error(e);
+			}
+		}
+		
 		private String savePrintReport(Wo parent, Wo child, MODEL input) {
 			String printReport = "";
 			BlobTable txtBlob = getTempBlobText( parent.getBlobNo(),"REPORT");
@@ -1742,6 +1765,7 @@ public class ModelData implements IModelData {
 				
 				em.createNativeQuery(queryWoTaskCardItem).executeUpdate();	
 				
+				em.flush();
 			}
 			catch (Exception e) 
 			{

@@ -184,11 +184,10 @@ public class PrinterUtilities {
 	                Logger.info("Error occurred during printing: " + exitCode);
 	            }		      
 
-			} catch (Exception exc) {
-				exc.printStackTrace();
+			} catch (Exception e) {
 				Logger.info("Exception printing JOB***************************");
-				Logger.info(exc.getMessage());
-				throw exc;
+				Logger.error(e);
+				throw e;
 			}
 		}
 	}

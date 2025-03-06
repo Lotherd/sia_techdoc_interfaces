@@ -45,5 +45,7 @@ public interface IModelData {
 	public void unlockTable(String notificationType);
 
 	public void cleanUpTemp();
+
+	public void setCountWoToParent(Wo w, Wo parent);
 	
 }

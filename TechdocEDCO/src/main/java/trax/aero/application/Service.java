@@ -35,7 +35,7 @@ public class Service {
 	@EJB IModelData data;
 	
 	@POST
-	@Path("/insertString")
+	@Path("/sendMqText")
 	@Consumes(MediaType.TEXT_PLAIN)
 	@Produces(MediaType.TEXT_PLAIN )
 	public Response insertXml(String input)
@@ -65,23 +65,18 @@ public class Service {
 		catch(Exception e)
 		{
 			Logger.error(e);
-       }finally {
-	    	   try 
-	   		{
-	   			if(data.getCon() != null && !data.getCon().isClosed()) {
+		}finally {
+    	   try {
+    		   if(data.getCon() != null && !data.getCon().isClosed()) {
 	   				data.getCon().close();
 	   			}	
-	   		} 
-	   		catch (Exception e) 
-	   		{ 
-	   			//Logger.error(e);
-	   		}
+	   		}catch (Exception e)	{}
        }
 	   return Response.ok().build();
 	}
 
 	@POST
-	@Path("/issue")
+	@Path("/issueToTechDocRequest")
 	@Consumes(MediaType.TEXT_PLAIN)
 	@Produces(MediaType.TEXT_PLAIN )
 	public Response issue(String message)
@@ -124,10 +119,9 @@ public class Service {
 				xml=xml.replaceAll("&amp;lt;", 		"&lt;");
 				xml=xml.replaceAll("&amp;quot;", 	"&quot;");
 				xml=xml.replaceAll("&amp;re;", 		"&#xA;");
-				Wo w= data.issueToTechDocRequest(model,xml );
-					
-					data.linkWoToParent(w,parent,new BigDecimal( model.getEFFECTIVITY().getJOBCARD().getSEQNBR()));
-				
+				Wo w= data.issueToTechDocRequest(model,xml );	
+				data.linkWoToParent(w,parent,new BigDecimal( model.getEFFECTIVITY().getJOBCARD().getSEQNBR()));
+				data.setCountWoToParent(w,parent);
 				data.sendRequestToPrintServer(model, xml, w);
 				try{
 					if(data.getCon() != null && !data.getCon().isClosed())
