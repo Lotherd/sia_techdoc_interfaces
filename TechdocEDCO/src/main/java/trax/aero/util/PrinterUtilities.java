@@ -139,36 +139,48 @@ public class PrinterUtilities {
 
 			try {
 				String ricohCommands = "";
+				String oceCommands = "";
 				if(heavyPrintersOcepdf.contains(printService)) {
-				//	addJdfToPdf(printService, file);
+					oceCommands += " -o \"StapleWhen=EndOfSet\"" + " -o \"OCStaple=TopLeftPortrait\"";
+					
+					//InputSlot=1Tray  2Tray 3Tray RICHO
+					switch(tray){
+		            	case "1": tray = "Plain";
+		            	case "2": tray = "Tab"; 
+		            	case "3": tray = "TabInsert";             		
+		            	case "4": tray = "PrePunched";
+		            	default: tray = "Plain";
+					}
+					oceCommands += " -o \"InputSlot="+tray+"\"";
+					//Duplex=DuplexNoTumble RICHO 
+					if(side.equalsIgnoreCase("DUPLEX")) {
+						side = "DuplexNoTumble";
+		            }else {
+		            	side = "None";
+		            }
+					oceCommands+=" -o \"Duplex="+side+"\"";
+				}else if(heavyPrintersRicoh.contains(printService)) {
+					ricohCommands += " -o \"StapleLocation=UpperLeft\"";
+					
+					//InputSlot=1Tray  2Tray 3Tray RICHO
+					switch(tray){
+		            	case "1": tray = "1Tray";
+		            	case "2": tray = "2Tray"; 
+		            	case "3": tray = "3Tray";             		
+		            	case "4": tray = "3Tray";
+		            	default: tray = "3Tray";
+					}
+					ricohCommands += " -o \"InputSlot="+tray+"\"";
+					//Duplex=DuplexNoTumble RICHO 
+					if(side.equalsIgnoreCase("DUPLEX")) {
+						side = "DuplexNoTumble";
+		            }else {
+		            	side = "None";
+		            }
+					ricohCommands+=" -o \"Duplex="+side+"\"";
 				}
-				if(heavyPrintersRicoh.contains(printService)) {
-					ricohCommands = " -o \"StapleLocation=UpperLeft\"";
-				}
-				//InputSlot=1Tray  2Tray 3Tray RICHO
-				
-				switch(tray){
-	            	case "1": tray = "Upper";
-	            		
-	            	case "2": tray = "MultiPurpose"; 
-	            	
-	            	case "3": tray = "Lower";             		
-	            	
-	            	case "4": tray = "LargeCapacity";
-	            		
-	            	default: tray = "Upper";
-       
-				}
-				//Duplex=DuplexNoTumble RICHO 
-				if(side.equalsIgnoreCase("DUPLEX")) {
-					side = "two-sided-long-edge";
-	            	
-	            }else {
-	            	side = "one-sided";
-	            }
-				
 				// Command to print the document with duplex and tray options using lp on Linux
-	            String command = "lp -d "+printService+" -o sides="+side+" -o tray="+tray+ricohCommands+" " + file.getAbsolutePath();
+	            String command = "lp -d "+printService+oceCommands+ricohCommands+" " + file.getAbsolutePath();
 	            Logger.info("Command: " + command);
 	            // Create the process builder
 	            ProcessBuilder processBuilder = new ProcessBuilder(command.split(" "));

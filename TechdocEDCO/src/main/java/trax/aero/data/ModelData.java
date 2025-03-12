@@ -908,30 +908,30 @@ public class ModelData implements IModelData {
     	
 		
 		BlobTablePK pk = new BlobTablePK();
-		blob = new BlobTable();
-		blob.setCreatedDate(new Date());
-		blob.setCreatedBy("IFACE-SIA");
-		blob.setId(pk);
-			
+		pk.setBlobLine(line);
+		if(w.getBlobNo() == null) {
+			pk.setBlobNo(((getTransactionNo("BLOB").longValue())));
+		}else {
+			pk.setBlobNo(w.getBlobNo().longValue());
+		}
+		blob = em.find(BlobTable.class, pk);
+		
+		if(blob == null) {
+			blob = new BlobTable();
+			blob.setId(pk);
+			blob.setCreatedDate(new Date());
+			blob.setCreatedBy("IFACE-SIA");
+		}
+		
+		w.setBlobNo(new BigDecimal(pk.getBlobNo()));
 		blob.setPrintFlag("YES");
 		blob.setDocType("TASKCARD");
-		blob.getId().setBlobLine(line);
-		
-		
 		blob.setModifiedBy("IFACE-SIA");
 		blob.setModifiedDate(new Date());
-		//blob.setBlobItem(text.getBytes());
+		
 		blob.setBlobDescription(Description);
 		blob.setCustomDescription(Description);
-		
-		if(w.getBlobNo() == null) {
-			blob.getId().setBlobNo(((getTransactionNo("BLOB").longValue())));
-			w.setBlobNo(new BigDecimal(blob.getId().getBlobNo()));
-		}else {
-			blob.getId().setBlobNo(w.getBlobNo().longValue());
-		}
-		 Logger.info("INSERTING TEMP Blob : " +blob.getId().getBlobNo() );
-		
+		Logger.info("INSERTING TEMP Blob : " +blob.getId().getBlobNo() + " " + blob.getId().getBlobLine()  );
 		insertData(blob);
 		insertData(w);
 		
@@ -1619,8 +1619,9 @@ public class ModelData implements IModelData {
 				printReport = new String(txtBlob.getBlobItem());
 			}
 			
+			String seqNbr = String.format("%04d", child.getDocumentNo().intValue());
 			
-			printReport += (input.getEFFECTIVITY().getJOBCARD().getSEQNBR()+"  " // print seq
+			printReport += (seqNbr+"  " // print seq
 						+filterADDATTR(input.getEFFECTIVITY().getJOBCARD().getJOBI().getPLI().getADDATTR(), "BUSR12")+"   "  //order sq
 						+input.getEFFECTIVITY().getJOBCARD().getWONBR()+"   " //worder number
 						+filterADDATTR(input.getEFFECTIVITY().getJOBCARD().getJOBI().getPLI().getADDATTR(), "TASK-NBR") +"    "
