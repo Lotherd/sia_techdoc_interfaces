@@ -219,7 +219,7 @@ public class ModelData implements IModelData {
 			
 			emailBlob = getTempBlobText( parent.getBlobNo(),"EMAIL");
 
-			
+			Logger.info("Sub Wo" + child.getDocumentNo().intValue() + " Parent Wo: " + parent.getDocumentNo().intValue());
 			if(parent.getDocumentNo().intValue() == child.getDocumentNo().intValue()) {
 				Logger.info("Final print found " + child.getDocumentNo().intValue());
 				sendFinal = true;
@@ -334,19 +334,22 @@ public class ModelData implements IModelData {
 						case"4":
 						case"B":
 							tray = "3";
-						default:tray = "1";
+						default:tray = "4";
 					}
 				}else if(side.equalsIgnoreCase("SI")){
 					switch(input.getEFFECTIVITY().getJOBCARD().getJOBNBR()) {
 						case"1":tray = "2";					
 						case"2":tray = "3";
-						default:tray = "1";
+						default:tray = "4";
 					}
+				}else if(side.equalsIgnoreCase("SJC") 
+						|| side.equalsIgnoreCase("RSJC")
+						|| side.equalsIgnoreCase("CFD")
+						|| side.equalsIgnoreCase("MJC")){
+					tray = "1";	
 				}
 				
-				if(side.equalsIgnoreCase("MCS") 
-						|| side.equalsIgnoreCase("SI") 
-						|| side.equalsIgnoreCase("AMM/BTC")) {
+				if(!side.equalsIgnoreCase("CCS")) {
 					side = "DUPLEX";
 				}
 							
@@ -403,28 +406,16 @@ public class ModelData implements IModelData {
 	
 	public void deleteWoTaskCardItem( String wo) throws Exception{
 		String query = "DELETE WO_TASK_CARD_ITEM where WO = ?";		
-		try
-		{	
-			em.createNativeQuery(query).setParameter(1, wo).executeUpdate();	
-		}
-		catch (Exception e) 
-		{
-			throw new Exception("An Exception occurred executing the query to delete the WO_TASK_CARD_ITEM. " + "\n error: " + e.toString());
-		}
+			
+		em.createNativeQuery(query).setParameter(1, wo).executeUpdate();	
 	}
 
 
 
 	public void deleteWoTaskCardPn( String wo) throws Exception{
 		String query = "DELETE WO_TASK_CARD_PN where WO = ?";		
-		try
-		{	
-			em.createNativeQuery(query).setParameter(1, wo).executeUpdate();	
-		}
-		catch (Exception e) 
-		{
-			throw new Exception("An Exception occurred executing the query to delete the WO_TASK_CARD_PN. " + "\n error: " + e.toString());
-		}
+			
+		em.createNativeQuery(query).setParameter(1, wo).executeUpdate();	
 	}
 	
 	@Override
@@ -903,7 +894,7 @@ public class ModelData implements IModelData {
 		return blob;
 	}
 	
-	private BlobTable createTempBlobString(String text, Wo w, long line, String Description) {
+	private void createTempBlobString(String text, Wo w, long line, String Description) {
 		BlobTable blob = null;
     	
 		
@@ -921,21 +912,18 @@ public class ModelData implements IModelData {
 			blob.setId(pk);
 			blob.setCreatedDate(new Date());
 			blob.setCreatedBy("IFACE-SIA");
+			w.setBlobNo(new BigDecimal(pk.getBlobNo()));
+			blob.setPrintFlag("YES");
+			blob.setDocType("TASKCARD");
+			blob.setModifiedBy("IFACE-SIA");
+			blob.setModifiedDate(new Date());
+			
+			blob.setBlobDescription(Description);
+			blob.setCustomDescription(Description);
+			Logger.info("INSERTING TEMP Blob : " +blob.getId().getBlobNo() + " " + blob.getId().getBlobLine()  );
+			insertData(blob);
+			insertData(w);
 		}
-		
-		w.setBlobNo(new BigDecimal(pk.getBlobNo()));
-		blob.setPrintFlag("YES");
-		blob.setDocType("TASKCARD");
-		blob.setModifiedBy("IFACE-SIA");
-		blob.setModifiedDate(new Date());
-		
-		blob.setBlobDescription(Description);
-		blob.setCustomDescription(Description);
-		Logger.info("INSERTING TEMP Blob : " +blob.getId().getBlobNo() + " " + blob.getId().getBlobLine()  );
-		insertData(blob);
-		insertData(w);
-		
-		return blob;
 	}
 	
 
@@ -1568,6 +1556,7 @@ public class ModelData implements IModelData {
 				wo.setActualStartMinute(new BigDecimal(0));
 				wo.setScheduleOrgCompletionHour(new BigDecimal(0));
 				wo.setScheduleOrgCompletionMinute(new BigDecimal(0));
+				wo.setFormNo(BigDecimal.ZERO);
 			}
 			wo.setWoDescription(wpTitle);
 			Logger.info("INSERTING TEMP WO PARENT: " + wo.getWo());
@@ -1592,10 +1581,11 @@ public class ModelData implements IModelData {
 		
 		public void setCountWoToParent(Wo w, Wo parent) {
 			try {
-				BigDecimal l_count =(BigDecimal) em.createNativeQuery("SELECT COUNT(*) FROM WO where NH_WO = ?")
-	            		.setParameter(1, parent.getWo())
-	            		.getSingleResult();
-				
+				BigDecimal l_count = parent.getFormNo();
+				l_count = l_count.add(BigDecimal.ONE);
+				parent.setFormNo(l_count);
+				Logger.info("PARENT TEMP WO: "+ parent.getWo() + " COUNT F:" + parent.getFormNo().intValue());
+				insertData(parent);
 				if(w.getDocumentNo().intValue() != l_count.intValue()) {
 					w.setDocumentNo(l_count);
 				}else{
@@ -1603,8 +1593,6 @@ public class ModelData implements IModelData {
 				}
 				Logger.info("TEMP WO: " + w.getWo() + " TO PARENT TEMP WO: " +parent.getWo() + " COUNT: " +w.getDocumentNo().intValue());
 				insertData(w);
-			
-			//SELECT COUNT(*) FROM WO WHERE NHWO;
 			}catch (Exception e) {
 				Logger.error(e);
 			}
@@ -1755,7 +1743,6 @@ public class ModelData implements IModelData {
 			
 			try
 			{	
-				Logger.info(" Cleanup Start ");
 				em.createNativeQuery(queryWo).executeUpdate();	
 				
 				em.createNativeQuery(queryWoTaskCard).executeUpdate();	
@@ -1771,8 +1758,6 @@ public class ModelData implements IModelData {
 			catch (Exception e) 
 			{
 				Logger.error(e);
-			}finally {
-				Logger.info(" Cleanup End ");
 			}
 		}
 }

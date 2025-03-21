@@ -146,33 +146,4 @@ public class Service {
        }
 	   return Response.ok().build();
 	}
-	
-	@POST
-	@Path("/initJDF")
-	@Consumes(MediaType.TEXT_PLAIN)
-	@Produces(MediaType.TEXT_PLAIN )
-	public Response initJDF(String input)
-	{
-		try 
-        {    
-			JDFBean jdf = PrinterUtilities.initJDF(input);
-				
-				
-				JAXBContext jc = JAXBContext.newInstance(JDFBean.class);
-				Marshaller marshaller = jc.createMarshaller();
-				marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, Boolean.TRUE);
-				StringWriter sw = new StringWriter();
-				marshaller.marshal(jdf, sw);
-				
-				String xml = sw.toString();
-				return Response.ok(xml).build();
-
-		}
-		catch(Exception e)
-		{
-			Logger.error(e);
-       }
-	   return Response.ok().build();
-	}
-	
 }
