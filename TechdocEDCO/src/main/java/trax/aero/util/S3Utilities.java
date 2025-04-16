@@ -9,7 +9,6 @@ import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 
 import javax.xml.bind.JAXBContext;
@@ -28,7 +27,6 @@ import software.amazon.awssdk.services.s3.S3Client;
 import software.amazon.awssdk.services.s3.model.HeadObjectRequest;
 import software.amazon.awssdk.services.s3.model.HeadObjectResponse;
 import software.amazon.awssdk.services.s3.model.PutObjectRequest;
-import software.amazon.awssdk.services.s3.model.S3Exception;
 import trax.aero.pojo.json.ATTACHMENT;
 import trax.aero.pojo.json.OUTPUT;
 
@@ -54,13 +52,15 @@ public class S3Utilities {
 	// ---------------------------------------------------------------------------- Send File
 	
 	protected static void putS3Object( File file, String key, String bucketName) throws Exception {
-        try {
+        
+		S3Client s3 = null;
+		try {
         	//Path targetPath  = Paths.get(key+File.separator+file.getName());
         	//if (Files.notExists(targetPath )) {
             //    Files.createDirectories(targetPath.getParent());
             //}
         	//Files.move(file.toPath(), new File(key+File.separator+file.getName()).toPath(), StandardCopyOption.REPLACE_EXISTING);
-        	S3Client s3 = S3Client.builder().build();       
+        	 s3 = S3Client.builder().build();       
         	if(file.getName().contains("index") || file.getName().contains("footer")) {
         		HeadObjectRequest headObjectRequest = HeadObjectRequest.builder()
                         .bucket(bucketName)
@@ -87,12 +87,12 @@ public class S3Utilities {
 	            s3.putObject(request, RequestBody.fromFile(file));
 	            
 	            Logger.info("Successfully placed " + key+file.getName() + " into bucket " + bucketName);
-        } catch (S3Exception e) {
-            Logger.error(e);
-            throw e;
-        }catch (Exception e) {
+        } catch (Exception e) {
         	 Logger.error(e);
         	 throw e;
+		}finally {
+			if(s3 != null)
+				s3.close();
 		}
     }
 
@@ -393,7 +393,7 @@ public class S3Utilities {
 		//TODO
 		SftpUtilities sftp = new SftpUtilities();
 		
-		sftp.sendSftpFile(new FileInputStream(datFile), fileName+".dat");
+		sftp.sendSftpFile(Files.newInputStream(datFile.toPath()), fileName+".dat");
 		
 		//putS3Object(batFile, pathS3Print,bucketNamePrint );
 	}

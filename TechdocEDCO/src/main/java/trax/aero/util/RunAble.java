@@ -3,8 +3,6 @@ package trax.aero.util;
 import java.io.StringReader;
 import java.io.StringWriter;
 import java.math.BigDecimal;
-import java.sql.SQLException;
-import java.util.List;
 
 import javax.ejb.EJB;
 import javax.xml.bind.JAXBContext;
@@ -15,7 +13,6 @@ import org.tinylog.Logger;
 
 import trax.aero.interfaces.IModelData;
 import trax.aero.model.Wo;
-import trax.aero.pojo.xml.ADDATTR;
 import trax.aero.pojo.xml.MODEL;
 import trax.aero.pojo.xml.ROOT;
 
@@ -34,7 +31,7 @@ public class RunAble implements Runnable {
 	
 	private void process() throws Exception {
 		
-		String message = null, printer = null;
+		String message = null;
 		JAXBContext jc = JAXBContext.newInstance(ROOT.class);
 		Unmarshaller unmarshaller = jc.createUnmarshaller();
 		
@@ -59,7 +56,6 @@ public class RunAble implements Runnable {
 					StringReader sr = new StringReader(message);
 		
 					root = (ROOT) unmarshaller.unmarshal(sr);	
-					//TODO create parent WO 
 					BigDecimal COUNT = new BigDecimal( data.filterADDATTR(root.getMODELS().get(0).getEFFECTIVITY().getJOBCARD().getJOBI().getPLI().getADDATTR(), "COUNT"));	
 					//SAVE TRAX WO NUMBER 
 					//AS ISSUE TO TRAX IS SEPRATE REQUESTS 
@@ -71,7 +67,6 @@ public class RunAble implements Runnable {
 					Logger.info("Size: " +parent.getDocumentNo().intValue()); 
 										
 					for(MODEL model : root.getMODELS()) {
-						printer = data.filterADDATTR(model.getEFFECTIVITY().getJOBCARD().getJOBI().getPLI().getADDATTR(), "PRINTER-NAME");
 						jc = JAXBContext.newInstance(MODEL.class);
 						Marshaller marshaller = jc.createMarshaller();
 						marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, Boolean.TRUE);
@@ -86,18 +81,15 @@ public class RunAble implements Runnable {
 						xml=xml.replaceAll("&amp;re;", 		"&#xA;");
 						Wo w= data.issueToTechDocRequest(model,xml );
 						data.linkWoToParent(w,parent,new BigDecimal( model.getEFFECTIVITY().getJOBCARD().getSEQNBR()));
-						//data.setCountWoToParent(w,parent);
+						data.setCountWoToParent(w,parent);
 						data.sendRequestToPrintServer(model, xml, w);
 						 try{
 							if(data.getCon() != null && !data.getCon().isClosed())
 								data.getCon().close();
 						}catch (Exception e) { 
 							Logger.error(e);
-						}
-						 
+						}	 
 					}
-				
-					//TODO save WO data to P
 				}catch (Exception e) {
 					Logger.error(e);
 				}

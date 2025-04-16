@@ -92,7 +92,7 @@ public class PrinterUtilities {
 
 		if (file != null && printService != null && file.exists() && file.isFile()) {
 			Logger.info("Job received for printer: " + printService);
-
+			Logger.info("tray: " + tray + " side:"+ side);
 			try {
 				String ricohCommands = "";
 				String oceCommands = "";
@@ -129,7 +129,7 @@ public class PrinterUtilities {
 					ricohCommands += " -o \"InputSlot="+tray+"\"";
 					//Duplex=DuplexNoTumble RICHO 
 					if(side.equalsIgnoreCase("DUPLEX")) {
-						side = "DuplexNoTumble";
+						side = "DuplexTumble";
 		            }else {
 		            	side = "None";
 		            }
@@ -220,9 +220,8 @@ public class PrinterUtilities {
 	                throw new Exception("Error occurred while printing. Exit code: " + exitCode);
 	            }
 	        } catch (Exception exc) {
-	        	exc.printStackTrace();
 				Logger.info("Exception printing JOB***************************");
-				Logger.info(exc.getMessage());
+				Logger.error(exc);
 				throw exc;
 	        }
 		

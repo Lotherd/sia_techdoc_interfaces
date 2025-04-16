@@ -29,6 +29,7 @@ import javax.xml.bind.Marshaller;
 import javax.xml.bind.Unmarshaller;
 
 import org.apache.commons.lang3.RandomStringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.text.PDFTextStripper;
 import org.tinylog.Logger;
@@ -242,7 +243,7 @@ public class ModelData implements IModelData {
 			String header = genrateHeaderName(input);	
 			String footer = genrateFooterName(input);	
 			ArrayList<String> headerTxt = genrateHeaderTxt(input);	
-			ArrayList<String> footerTxt = genrateFooterTxt(input);	
+			ArrayList<String> footerTxt = genrateFooterTxt(input, StringUtils.countMatches(txtBlob, "OK"));	
 			
 			folder = input.getEFFECTIVITY().getJOBCARD().getWPNBR() +"_"+
 			filterADDATTR( input.getEFFECTIVITY().getJOBCARD().getJOBI().getPLI().getADDATTR(), "IDOC-DATE")
@@ -320,8 +321,7 @@ public class ModelData implements IModelData {
 						header,footer,
 						headerTxt, footerTxt, sendFinal ,txt,txtName );
 			}else {
-				String side = (filterADDATTR(input.getEFFECTIVITY().getJOBCARD().getJOBI().getPLI().getADDATTR(), "ORDER-TYPE"))
-				,tray = "4"; 
+				String side = input.getEFFECTIVITY().getJOBCARD().getTYPE()	,tray = "4"; 
 				
 				
 				if(side.equalsIgnoreCase("MCS")) {
@@ -404,14 +404,43 @@ public class ModelData implements IModelData {
 	}
 	
 	
-	public void deleteWoTaskCardItem( String wo) throws Exception{
+	private void deleteWoTaskCardItem( String wo) throws Exception{
 		String query = "DELETE WO_TASK_CARD_ITEM where WO = ?";		
 			
 		em.createNativeQuery(query).setParameter(1, wo).executeUpdate();	
 	}
 
 
-
+	private void deleteWoTaskCardTraxDocRef( String wo) throws Exception{
+		String query = "DELETE WO_TASK_CARD_TRAXDOC_REF where WO = ?";		
+			
+		em.createNativeQuery(query).setParameter(1, wo).executeUpdate();	
+	}
+	
+	private void deleteTraceWoTaskCard( String wo) throws Exception{
+		String query = "DELETE TRACE_WO_TASK_CARD where WO = ?";		
+			
+		em.createNativeQuery(query).setParameter(1, wo).executeUpdate();	
+	}
+	
+	private void deleteEngineeringPendingRelease( String wo) throws Exception{
+		String query = "DELETE engineering_pending_release where WO = ?";		
+			
+		em.createNativeQuery(query).setParameter(1, wo).executeUpdate();	
+	}
+	
+	private void deleteWoTaskCardControl( String wo) throws Exception{
+		String query = "DELETE wo_task_card_control where WO = ?";		
+			
+		em.createNativeQuery(query).setParameter(1, wo).executeUpdate();	
+	}
+	
+	private void deleteTaskCardItemForm( String wo) throws Exception{
+		String query = "DELETE task_card_item_form where WO = ?";		
+			
+		em.createNativeQuery(query).setParameter(1, wo).executeUpdate();	
+	}
+	
 	public void deleteWoTaskCardPn( String wo) throws Exception{
 		String query = "DELETE WO_TASK_CARD_PN where WO = ?";		
 			
@@ -624,18 +653,18 @@ public class ModelData implements IModelData {
 
 
 
-	private ArrayList<String> genrateFooterTxt(MODEL input) {
+	private ArrayList<String> genrateFooterTxt(MODEL input,int printed ) {
 		ArrayList<String> txt = new ArrayList<String>();
 		JOBCARD card = input.getEFFECTIVITY().getJOBCARD();
 		String count = (filterADDATTR(input.getEFFECTIVITY().getJOBCARD().getJOBI().getPLI().getADDATTR(), "COUNT"));
 		int c = Integer.parseInt(count);
 		
-		int incomplete = c - c;
+		int incomplete = c - printed;
 		
-		//TODO
+		
 		txt.add( "FOOTER PAGE" );
 		txt.add( "Revision Number :" +" " +card.getWPNBR());
-		txt.add( "WorkOrder(s) Printed :" +" " +c);
+		txt.add( "WorkOrder(s) Printed :" +" " +printed);
 		txt.add( "WorkOrder(s) Incomplete :" +" " + incomplete );
 		txt.add( "Total No of WorkOrder(s) :" +" "+c );
 
@@ -1206,8 +1235,8 @@ public class ModelData implements IModelData {
 		ArrayList<String> txt = new ArrayList<String>();
 	    SimpleDateFormat dateFormatter = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
 
-		//TODO
-		txt.add( "CDM Revision: " +input.getEFFECTIVITY().getJOBCARD().getWPNBR() + System.lineSeparator());
+		
+		txt.add( "CDM Revision: " +getCdmRevision(input) + System.lineSeparator());
 		txt.add( "SAP Revision: " +input.getEFFECTIVITY().getJOBCARD().getWPNBR() + System.lineSeparator());
 		txt.add( "Aircraft Registration: " +input.getEFFECTIVITY().getREGNBR() + System.lineSeparator());
 		txt.add( "Aircraft Type: " +input.getMODELNBR() + System.lineSeparator());
@@ -1230,6 +1259,10 @@ public class ModelData implements IModelData {
 		
 		return txt;
 	}
+
+	
+
+
 
 	//MOD 18
 	private Boolean sendPrintStatusAcknowledgement(MODEL input, String status, String remarks) {
@@ -1353,6 +1386,21 @@ public class ModelData implements IModelData {
 			
 			Logger.info("DELETING TEMP WO TaskCard Pn: " + w.getWo());
 			deleteWoTaskCardPn(String.valueOf( w.getWo()));
+			
+			Logger.info("DELETING TEMP WO Task Card Trax Doc Ref: " + w.getWo());
+			deleteWoTaskCardTraxDocRef(String.valueOf( w.getWo()));
+			
+			Logger.info("DELETING TEMP Trace WO Task Card: " + w.getWo());
+			deleteTraceWoTaskCard(String.valueOf( w.getWo()));
+			
+			Logger.info("DELETING TEMP Engineering Pending Release: " + w.getWo());
+			deleteEngineeringPendingRelease(String.valueOf( w.getWo()));
+			
+			Logger.info("DELETING TEMP Wo Task Card Control: " + w.getWo());
+			deleteWoTaskCardControl(String.valueOf( w.getWo()));
+			
+			Logger.info("DELETING TEMP Task Card Item Form: " + w.getWo());
+			deleteTaskCardItemForm(String.valueOf( w.getWo()));
 			
 			Logger.info("DELETING TEMP BLOB: " + blob.getId().getBlobNo());
 			deleteData(em.find(BlobTable.class, blob.getId()));
@@ -1499,7 +1547,7 @@ public class ModelData implements IModelData {
 			return journalEntriesExpenditure.getId().getCategoryCode();
 		}
 
-
+		
 
 		@Override
 		public Wo createParentWo(BigDecimal COUNT, String wpTitle) {
@@ -1741,6 +1789,16 @@ public class ModelData implements IModelData {
 			
 			String queryWoTaskCardItem = "delete from wo_task_card_item where created_by = 'IFACE-SIA' and rownum <= 5 and created_date < SYSDATE - 1";	
 			
+			String queryEngineeringPendingRelease = "delete from engineering_pending_release where created_by = 'IFACE-SIA' and rownum <= 5 and created_date < SYSDATE - 1";	
+			
+			String queryWoTaskCardControl = "delete from wo_task_card_control where created_by = 'IFACE-SIA' and rownum <= 5 and created_date < SYSDATE - 1";	
+			
+			String queryWoTaskCardItemForm = "delete from task_card_item_form where created_by = 'IFACE-SIA' and rownum <= 5 and created_date < SYSDATE - 1";	
+			
+			String queryWoTaskCardTraxdocRef = "delete from wo_task_card_traxdoc_ref where created_by = 'IFACE-SIA' and rownum <= 5 and created_date < SYSDATE - 1";	
+			
+			String queryTraceWoTaskCard = "delete from trace_wo_task_card where created_by = 'IFACE-SIA' and rownum <= 5 and created_date < SYSDATE - 1";	
+			
 			try
 			{	
 				em.createNativeQuery(queryWo).executeUpdate();	
@@ -1753,11 +1811,63 @@ public class ModelData implements IModelData {
 				
 				em.createNativeQuery(queryWoTaskCardItem).executeUpdate();	
 				
+				
+				
+				em.createNativeQuery(queryEngineeringPendingRelease).executeUpdate();	
+				
+				em.createNativeQuery(queryWoTaskCardControl).executeUpdate();	
+				
+				em.createNativeQuery(queryWoTaskCardItemForm).executeUpdate();	
+				
+				em.createNativeQuery(queryWoTaskCardTraxdocRef).executeUpdate();	
+				
+				em.createNativeQuery(queryTraceWoTaskCard).executeUpdate();	
+				
 				em.flush();
 			}
 			catch (Exception e) 
 			{
 				Logger.error(e);
 			}
+		}
+		
+		private String getCdmRevision(MODEL input) {
+			String sql = "SELECT tctr.TRAXDOC_REVISION || '-' ||  TO_CHAR(tctr.MODIFIED_DATE, 'YYYYMMDD') \r\n" + 
+					"FROM TASK_CARD tc  \r\n" + 
+					"JOIN TASK_CARD_EFFECTIVITY_HEAD tceh ON tc.TASK_CARD = tceh.TASK_CARD\r\n" + 
+					"JOIN TASK_CARD_TRAXDOC_REFERENCES tctr ON tc.TASK_CARD = tctr.TASK_CARD\r\n" + 
+					"WHERE tc.TC_SUB = ? \r\n" + 
+					"  AND tc.TASK_CARD_CATEGORY = ? \r\n" + 
+					"  AND tceh.AC_TYPE = ? \r\n" + 
+					"  AND tceh.AC_SERIES = ? \r\n" + 
+					"  AND tc.TC_COMPANY = 'SIA' \r\n" + 
+					"  AND ROWNUM = 1";
+			
+			try {
+			
+				AcMaster acMaster = em.find(AcMaster.class, input.getEFFECTIVITY().getREGNBR());
+				String type = "", series = "";
+				if(acMaster != null) {
+					type = acMaster.getAcTypeSeriesMaster().getId().getAcType();
+					series = acMaster.getAcTypeSeriesMaster().getId().getAcSeries();
+				}
+				ATTACHMENT subTaskId  = input.getEFFECTIVITY().getJOBCARD().getJOBI().getPLI().getATTACHMENT().get(0);
+				
+				String rev = (String) em.createNativeQuery(sql)
+					.setParameter(1, subTaskId.getID())
+					.setParameter(2, subTaskId.getATTTYPE())
+					.setParameter(3, type)
+					.setParameter(4, series)
+					.getSingleResult();
+				
+				return rev;
+				
+			}catch (Exception e) {
+				Logger.error(e);
+				return "";
+			}
+			
+			
+			
 		}
 }
