@@ -21,13 +21,13 @@ import java.util.Arrays;
 public class PrinterUtilities {
 
 
-    static ArrayList<String> heavyPrinters = new ArrayList<String>(Arrays.asList("EC61", "EC62", "EC63", "SINW", "SIO1", "EC1O", "SIOP"));
-    static ArrayList<String> heavyPrintersRicoh = new ArrayList<String>(Arrays.asList("EC1O", "SIOP"));
-    static ArrayList<String> heavyPrintersOcepdf = new ArrayList<String>(Arrays.asList("EC61", "EC62", "EC63", "SINW", "SIO1"));
+    static ArrayList<String> heavyPrinters = new ArrayList<>(Arrays.asList("EC61", "EC62", "EC63", "SINW", "SIO1", "EC1O", "SIOP"));
+    static ArrayList<String> heavyPrintersRicoh = new ArrayList<>(Arrays.asList("EC1O", "SIOP"));
+    static ArrayList<String> heavyPrintersOcepdf = new ArrayList<>(Arrays.asList("EC61", "EC62", "EC63", "SINW", "SIO1"));
 
     public static int sendWorkPackPrintJob(String printWindow, Dw_Wo_Pack_Print dwSel) throws Exception {
         int job = 0;
-        String s_wo_print = "";
+        String s_wo_print;
 
 
         StringWriter sw = new StringWriter();
@@ -58,7 +58,7 @@ public class PrinterUtilities {
         return job;
     }
 
-    private static void addJobToJMSQueue(PrintQueueJob propJob, String isWPP) throws Exception {
+    private static void addJobToJMSQueue(PrintQueueJob propJob, String isWPP) {
         propJob.setIsWPP(isWPP);
 
 
@@ -75,8 +75,6 @@ public class PrinterUtilities {
 
             Logger.info("After Print web service ");
 
-        } catch (Exception e) {
-            throw e;
         } finally {
             if (client != null)
                 client.close();
@@ -86,14 +84,11 @@ public class PrinterUtilities {
     public static void sendToPrinterHeavyLP(String printService, File file, String side, String tray) throws Exception {
 
         if (file != null && printService != null && file.exists() && file.isFile()) {
-            Logger.info("Job received for printer: " + printService);
-            Logger.info("tray: " + tray + " side:" + side);
+            Logger.info("Job received for printer: " + printService + " tray: " + tray + " side: " + side);
             try {
                 String ricohCommands = "";
                 String oceCommands = "";
                 if (heavyPrintersOcepdf.contains(printService)) {
-                    oceCommands += " -o \"StapleWhen=EndOfSet\"" + " -o \"OCStaple=TopLeftPortrait\"";
-
                     //InputSlot=1Tray  2Tray 3Tray OCE
                     switch (tray) {
                         case "1":
@@ -105,24 +100,18 @@ public class PrinterUtilities {
                         case "3":
                             tray = "Tab";
                             break;
-                        case "4":
-                            tray = "PrePunched";
-                            break;
                         default:
                             tray = "PrePunched";
                             break;
                     }
-                    oceCommands += " -o \"InputSlot=" + tray + "\"";
                     //Duplex=DuplexNoTumble OCE
                     if (side.equalsIgnoreCase("DUPLEX")) {
                         side = "DuplexNoTumble";
                     } else {
                         side = "None";
                     }
-                    oceCommands += " -o \"Duplex=" + side + "\"";
+                    oceCommands = " -o StapleWhen=EndOfSet -o OCStaple=TopLeftPortrait -o InputSlot=" +tray+ " -o Duplex=" + side;
                 } else if (heavyPrintersRicoh.contains(printService)) {
-                    ricohCommands += " -o \"StapleLocation=UpperLeft\"";
-
                     //InputSlot=1Tray  2Tray 3Tray RICHO
                     switch (tray) {
                         case "1":
@@ -134,54 +123,39 @@ public class PrinterUtilities {
                         case "3":
                             tray = "3Tray";
                             break;
-                        case "4":
-                            tray = "MultiTray";
-                            break;
                         default:
                             tray = "MultiTray";
                             break;
                     }
-                    ricohCommands += " -o \"InputSlot=" + tray + "\"";
-
-                    ricohCommands += " -o \"PageRegion=A4\"";
-
                     //Duplex=DuplexNoTumble RICHO
                     if (side.equalsIgnoreCase("DUPLEX")) {
                         side = "DuplexNoTumble";
                     } else {
                         side = "None";
                     }
-                    ricohCommands += " -o \"Duplex=" + side + "\"";
+                    ricohCommands = " -o StapleLocation=UpperLeft -o InputSlot=" + tray +" -o PageRegion=A4 -o Duplex=" + side;
                 }
                 // Command to print the document with duplex and tray options using lp on Linux
                 String command = "lp -d " + printService + oceCommands + ricohCommands + " " + file.getAbsolutePath();
                 Logger.info("Command: " + command);
                 // Create the process builder
+                ProcessBuilder processBuilder = new ProcessBuilder(command.split(" "));
 
-                Runtime runtime = Runtime.getRuntime();
-                Process process = runtime.exec(command);
-
+	            // Start the process (print)
+	            Process process = processBuilder.start();
 
                 // Wait for the process to finish
                 int exitCode = process.waitFor();
                 if (exitCode == 0) {
                     Logger.info("Print job submitted successfully.");
                 } else {
-                    Logger.info("Error occurred during printing: " + exitCode);
+                    Logger.error("Error occurred during printing: " + exitCode);
                 }
-
             } catch (Exception e) {
-                Logger.info("Exception printing JOB***************************");
-                Logger.error(e);
+                Logger.error("Exception printing JOB " ,e);
                 throw e;
             }
         }
-    }
-
-
-    public static boolean greaterThan(int p1, int p2) {
-
-        return p1 > p2;
     }
 
 
