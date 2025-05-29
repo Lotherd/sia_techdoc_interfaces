@@ -311,28 +311,28 @@ public class ModelData implements IModelData {
                     switch (input.getEFFECTIVITY().getJOBCARD().getJOBNBR()) {
                         case "A":
                         case "1":
-                            tray = "2";
+                            tray = "4";
                             break;
                         case "2":
                         case "3":
                         case "4":
                         case "B":
-                            tray = "3";
+                            tray = "2";
                             break;
                         default:
-                            tray = "4";
+                            tray = "3";
                             break;
                     }
                 } else if (side.equalsIgnoreCase("SI")) {
                     switch (input.getEFFECTIVITY().getJOBCARD().getJOBNBR()) {
                         case "1":
-                            tray = "2";
+                            tray = "4";
                             break;
                         case "2":
-                            tray = "3";
+                            tray = "2";
                             break;
                         default:
-                            tray = "4";
+                            tray = "3";
                             break;
                     }
                 } else if (side.equalsIgnoreCase("SJC")
@@ -351,7 +351,7 @@ public class ModelData implements IModelData {
             if (ack != null && !ack.isEmpty()) {
                 throw new Exception("Missing Attachment found");
             }
-
+            sendPrintStatusAcknowledgement(input, "P", "SUCCESSFULLY PRINTED");
         } catch (Exception e) {
 
             date = filterADDATTR(input.getEFFECTIVITY().getJOBCARD().getJOBI().getPLI().getADDATTR(), "IDOC-DATE");
@@ -476,9 +476,7 @@ public class ModelData implements IModelData {
             status = 1;
             error = e.getMessage();
         }
-        if (status == 0) {
-            sendPrintStatusAcknowledgement(input, "P", "SUCCESSFULLY PRINTED");
-        } else {
+        if (status != 0) {
             sendPrintStatusAcknowledgement(input, "E", "ERROR " + error);
             date = filterADDATTR(input.getEFFECTIVITY().getJOBCARD().getJOBI().getPLI().getADDATTR(), "IDOC-DATE");
             revision = input.getEFFECTIVITY().getJOBCARD().getWPNBR();
@@ -958,7 +956,7 @@ public class ModelData implements IModelData {
         wo.setGlCompany(comapny);
 
         wo.setPnDescription(input.getEFFECTIVITY().getJOBCARD().getWPTITLE());
-        wo.setTaskCardNumberingSystem(new BigDecimal(0));
+        wo.setTaskCardNumberingSystem(BigDecimal.ZERO);
         wo.setAmpRevision(filterADDATTR(jc.getJOBI().getPLI().getADDATTR(), "LATEST-REVISION-DATE"));
         wo.setExternalReference(jc.getJOBI().getZONE() + "/" + jc.getPOS()
         );
@@ -986,22 +984,28 @@ public class ModelData implements IModelData {
         wo.setExpenditure(setExpenditure("General"));
         wo.setPriority("NORMAL");
 
-        wo.setScheduleStartHour(new BigDecimal(0));
-        wo.setScheduleStartMinute(new BigDecimal(0));
-        wo.setScheduleCompletionHour(new BigDecimal(0));
-        wo.setScheduleCompletionMinute(new BigDecimal(0));
+        wo.setScheduleStartHour(BigDecimal.ZERO);
+        wo.setScheduleStartMinute(BigDecimal.ZERO);
+        wo.setScheduleCompletionHour(BigDecimal.ZERO);
+        wo.setScheduleCompletionMinute(BigDecimal.ZERO);
 
         wo.setScheduleStartDate(new Date());
         wo.setScheduleCompletionDate(new Date());
         wo.setActualStartDate(new Date());
         wo.setScheduleOrgCompletionDate(new Date());
 
-        wo.setActualStartHour(new BigDecimal(0));
-        wo.setActualStartMinute(new BigDecimal(0));
-        wo.setScheduleOrgCompletionHour(new BigDecimal(0));
-        wo.setScheduleOrgCompletionMinute(new BigDecimal(0));
+        wo.setActualStartHour(BigDecimal.ZERO);
+        wo.setActualStartMinute(BigDecimal.ZERO);
+        wo.setScheduleOrgCompletionHour(BigDecimal.ZERO);
+        wo.setScheduleOrgCompletionMinute(BigDecimal.ZERO);
 
 
+        //TD ENGINE-POS
+        wo.setTdEnginePos(input.getEFFECTIVITY().getJOBCARD().getENGINEPOS());
+       
+        //TD BUSR06
+       wo.setTdApuSn(filterADDATTR(jc.getJOBI().getPLI().getADDATTR(), "BUSR06"));
+        
         Logger.info("INSERTING TEMP WO: " + wo.getWo());
 
         insertData(wo);
@@ -1532,20 +1536,20 @@ public class ModelData implements IModelData {
             wo.setExpenditure(setExpenditure("General"));
             wo.setPriority("NORMAL");
 
-            wo.setScheduleStartHour(new BigDecimal(0));
-            wo.setScheduleStartMinute(new BigDecimal(0));
-            wo.setScheduleCompletionHour(new BigDecimal(0));
-            wo.setScheduleCompletionMinute(new BigDecimal(0));
+            wo.setScheduleStartHour(BigDecimal.ZERO);
+            wo.setScheduleStartMinute(BigDecimal.ZERO);
+            wo.setScheduleCompletionHour(BigDecimal.ZERO);
+            wo.setScheduleCompletionMinute(BigDecimal.ZERO);
 
             wo.setScheduleStartDate(new Date());
             wo.setScheduleCompletionDate(new Date());
             wo.setActualStartDate(new Date());
             wo.setScheduleOrgCompletionDate(new Date());
 
-            wo.setActualStartHour(new BigDecimal(0));
-            wo.setActualStartMinute(new BigDecimal(0));
-            wo.setScheduleOrgCompletionHour(new BigDecimal(0));
-            wo.setScheduleOrgCompletionMinute(new BigDecimal(0));
+            wo.setActualStartHour(BigDecimal.ZERO);
+            wo.setActualStartMinute(BigDecimal.ZERO);
+            wo.setScheduleOrgCompletionHour(BigDecimal.ZERO);
+            wo.setScheduleOrgCompletionMinute(BigDecimal.ZERO);
             wo.setFormNo(BigDecimal.ZERO);
         }
         wo.setWoDescription(wpTitle);
@@ -1704,7 +1708,7 @@ public class ModelData implements IModelData {
 
         InterfaceLockMaster lock = em.createQuery("SELECT i FROM InterfaceLockMaster i where i.interfaceType = :type", InterfaceLockMaster.class)
                 .setParameter("type", notificationType).getSingleResult();
-        lock.setLocked(new BigDecimal(0));
+        lock.setLocked(BigDecimal.ZERO);
 
         lock.setUnlockedDate(Date.from(LocalDateTime.now().atZone(ZoneId.systemDefault()).toInstant()));
         insertData(lock);
@@ -1779,10 +1783,10 @@ public class ModelData implements IModelData {
                 type = acMaster.getAcTypeSeriesMaster().getId().getAcType();
                 series = acMaster.getAcTypeSeriesMaster().getId().getAcSeries();
             }
-            ATTACHMENT subTaskId = input.getEFFECTIVITY().getJOBCARD().getJOBI().getPLI().getATTACHMENT().get(0);
+            String cardType = input.getEFFECTIVITY().getJOBCARD().getTYPE();
 
             String rev = (String) em.createNativeQuery(sql)
-                    .setParameter(1, subTaskId.getATTTYPE())
+                    .setParameter(1, cardType)
                     .setParameter(2, type)
                     .setParameter(3, series)
                     .getSingleResult();

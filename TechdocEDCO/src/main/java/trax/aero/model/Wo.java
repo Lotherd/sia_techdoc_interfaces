@@ -356,6 +356,12 @@ public class Wo implements Serializable {
 
 	@Column(name="WORK_STARTED")
 	private String workStarted;
+	
+	@Column(name="TD_ENGINE_POS")
+	private String tdEnginePos;
+	
+	@Column(name="TD_APU_SN")
+	private String tdApuSn;
 
 	//bi-directional many-to-one association to WoTaskCard
 	@OneToMany(mappedBy="woBean")
@@ -1321,6 +1327,22 @@ public class Wo implements Serializable {
 
 	public void setReopenReason(String reopenReason) {
 		this.reopenReason = reopenReason;
+	}
+
+	public String getTdEnginePos() {
+		return tdEnginePos;
+	}
+
+	public void setTdEnginePos(String tdEnginePos) {
+		this.tdEnginePos = tdEnginePos;
+	}
+
+	public String getTdApuSn() {
+		return tdApuSn;
+	}
+
+	public void setTdApuSn(String tdApuSn) {
+		this.tdApuSn = tdApuSn;
 	}
 	
 	

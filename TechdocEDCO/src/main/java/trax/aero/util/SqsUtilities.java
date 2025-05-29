@@ -43,7 +43,7 @@ public class SqsUtilities {
 			
 		    return true;
 		}catch(Exception e){
-			Logger.error(e.toString());
+			Logger.error(e);
 			throw e;
 		}
 	}

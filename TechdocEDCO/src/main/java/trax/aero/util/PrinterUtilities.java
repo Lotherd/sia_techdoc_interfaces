@@ -92,7 +92,7 @@ public class PrinterUtilities {
                     //InputSlot=1Tray  2Tray 3Tray OCE
                     switch (tray) {
                         case "1":
-                            tray = "Plain";
+                            tray = "1Tray";
                             break;
                         case "2":
                             tray = "TabInsert";
