@@ -353,7 +353,7 @@ public class ModelData implements IModelData {
             }
             sendPrintStatusAcknowledgement(input, "P", "SUCCESSFULLY PRINTED");
         } catch (Exception e) {
-
+        	sendPrintStatusAcknowledgement(input, "E", "ERROR " + e.getMessage());
             date = filterADDATTR(input.getEFFECTIVITY().getJOBCARD().getJOBI().getPLI().getADDATTR(), "IDOC-DATE");
             revision = input.getEFFECTIVITY().getJOBCARD().getWPNBR();
             time = filterADDATTR(input.getEFFECTIVITY().getJOBCARD().getJOBI().getPLI().getADDATTR(), "IDOC-TIME");
