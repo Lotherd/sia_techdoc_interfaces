@@ -8,562 +8,561 @@ import java.util.Date;
 
 /**
  * The persistent class for the TASK_CARD_ITEM database table.
- * 
  */
 @Entity
-@Table(name="TASK_CARD_ITEM")
-@NamedQuery(name="TaskCardItem.findAll", query="SELECT t FROM TaskCardItem t")
+@Table(name = "TASK_CARD_ITEM")
+@NamedQuery(name = "TaskCardItem.findAll", query = "SELECT t FROM TaskCardItem t")
 public class TaskCardItem implements Serializable {
-	private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 1L;
 
-	@EmbeddedId
-	private TaskCardItemPK id;
+    @EmbeddedId
+    private TaskCardItemPK id;
 
-	@Column(name="APPLIC_ID")
-	private String applicId;
+    @Column(name = "APPLIC_ID")
+    private String applicId;
 
-	@Column(name="CREATED_BY")
-	private String createdBy;
+    @Column(name = "CREATED_BY")
+    private String createdBy;
 
-	@Column(name="CREATED_DATE")
-	private Date createdDate;
+    @Column(name = "CREATED_DATE")
+    private Date createdDate;
 
-	@Column(name="DUAL_INSP_MAN_HOURS_ALTERED")
-	private String dualInspManHoursAltered;
+    @Column(name = "DUAL_INSP_MAN_HOURS_ALTERED")
+    private String dualInspManHoursAltered;
 
-	@Column(name="DUAL_INSPECTOR_MAN_HOURS")
-	private BigDecimal dualInspectorManHours;
+    @Column(name = "DUAL_INSPECTOR_MAN_HOURS")
+    private BigDecimal dualInspectorManHours;
 
-	@Column(name="DUAL_INSPECTOR_MAN_REQUIRE")
-	private BigDecimal dualInspectorManRequire;
+    @Column(name = "DUAL_INSPECTOR_MAN_REQUIRE")
+    private BigDecimal dualInspectorManRequire;
 
-	@Column(name="DUAL_INSPECTOR_SKILL")
-	private String dualInspectorSkill;
+    @Column(name = "DUAL_INSPECTOR_SKILL")
+    private String dualInspectorSkill;
 
-	@Column(name="DUPLICATE_INSPECTION")
-	private String duplicateInspection;
+    @Column(name = "DUPLICATE_INSPECTION")
+    private String duplicateInspection;
 
-	@Column(name="EXTERNAL_CUST_REF")
-	private String externalCustRef;
+    @Column(name = "EXTERNAL_CUST_REF")
+    private String externalCustRef;
 
-	@Column(name="FILE_NAME")
-	private String fileName;
+    @Column(name = "FILE_NAME")
+    private String fileName;
 
-	private String filename;
+    private String filename;
 
-	@Column(name="INFORMATIONAL_ONLY")
-	private String informationalOnly;
+    @Column(name = "INFORMATIONAL_ONLY")
+    private String informationalOnly;
 
-	@Column(name="INSP_MAN_HOURS_ALTERED")
-	private String inspManHoursAltered;
+    @Column(name = "INSP_MAN_HOURS_ALTERED")
+    private String inspManHoursAltered;
 
-	private String inspector;
+    private String inspector;
 
-	@Column(name="INSPECTOR_MAN_HOURS")
-	private BigDecimal inspectorManHours;
+    @Column(name = "INSPECTOR_MAN_HOURS")
+    private BigDecimal inspectorManHours;
 
-	@Column(name="INSPECTOR_MAN_REQUIRE")
-	private BigDecimal inspectorManRequire;
+    @Column(name = "INSPECTOR_MAN_REQUIRE")
+    private BigDecimal inspectorManRequire;
 
-	@Column(name="INSPECTOR_SKILL")
-	private String inspectorSkill;
+    @Column(name = "INSPECTOR_SKILL")
+    private String inspectorSkill;
 
-	@Column(name="INSPECTOR_SKILL_LEVEL")
-	private String inspectorSkillLevel;
+    @Column(name = "INSPECTOR_SKILL_LEVEL")
+    private String inspectorSkillLevel;
 
-	@Column(name="ITEM_TYPE")
-	private String itemType;
+    @Column(name = "ITEM_TYPE")
+    private String itemType;
 
-	@Column(name="MAIN_SKILL")
-	private String mainSkill;
+    @Column(name = "MAIN_SKILL")
+    private String mainSkill;
 
-	@Column(name="MAN_HOURS")
-	private BigDecimal manHours;
+    @Column(name = "MAN_HOURS")
+    private BigDecimal manHours;
 
-	@Column(name="MAN_HOURS_ALTERED")
-	private String manHoursAltered;
+    @Column(name = "MAN_HOURS_ALTERED")
+    private String manHoursAltered;
 
-	@Column(name="MAN_REQUIRE")
-	private BigDecimal manRequire;
+    @Column(name = "MAN_REQUIRE")
+    private BigDecimal manRequire;
 
-	@Column(name="MANUAL_ITEM")
-	private String manualItem;
+    @Column(name = "MANUAL_ITEM")
+    private String manualItem;
 
-	private String mechanic;
+    private String mechanic;
 
-	@Column(name="MECHANIC_SKILL_LEVEL")
-	private String mechanicSkillLevel;
+    @Column(name = "MECHANIC_SKILL_LEVEL")
+    private String mechanicSkillLevel;
 
-	@Column(name="MODIFIED_BY")
-	private String modifiedBy;
+    @Column(name = "MODIFIED_BY")
+    private String modifiedBy;
 
-	@Column(name="MODIFIED_DATE")
-	private Date modifiedDate;
+    @Column(name = "MODIFIED_DATE")
+    private Date modifiedDate;
 
-	private String mpd;
+    private String mpd;
 
-	@Column(name="MPD_MAN_HOURS")
-	private BigDecimal mpdManHours;
+    @Column(name = "MPD_MAN_HOURS")
+    private BigDecimal mpdManHours;
 
-	@Column(name="MRS_REQUIRED")
-	private String mrsRequired;
+    @Column(name = "MRS_REQUIRED")
+    private String mrsRequired;
 
-	@Column(name="NOT_APPLICABLE")
-	private String notApplicable;
+    @Column(name = "NOT_APPLICABLE")
+    private String notApplicable;
 
-	private BigDecimal notes;
+    private BigDecimal notes;
 
-	@Column(name="OP_HRS")
-	private BigDecimal opHrs;
+    @Column(name = "OP_HRS")
+    private BigDecimal opHrs;
 
-	@Column(name="PAGE_PDF_SIGNED")
-	private BigDecimal pagePdfSigned;
+    @Column(name = "PAGE_PDF_SIGNED")
+    private BigDecimal pagePdfSigned;
 
-	private String phase;
+    private String phase;
 
-	private String revision;
+    private String revision;
 
-	@Column(name="RTF_CONVERTED")
-	private String rtfConverted;
+    @Column(name = "RTF_CONVERTED")
+    private String rtfConverted;
 
-	private String skill;
+    private String skill;
 
-	@Column(name="SORT_ITEM")
-	private BigDecimal sortItem;
+    @Column(name = "SORT_ITEM")
+    private BigDecimal sortItem;
 
-	@Column(name="SUPPLEMENTAL_FLAG")
-	private String supplementalFlag;
+    @Column(name = "SUPPLEMENTAL_FLAG")
+    private String supplementalFlag;
 
-	@Lob
-	@Column(name="TASK_CARD_TEXT")
-	private String taskCardText;
+    @Lob
+    @Column(name = "TASK_CARD_TEXT")
+    private String taskCardText;
 
-	@Lob
-	@Column(name="TASK_CARD_TEXT_BLOB")
-	private byte[] taskCardTextBlob;
+    @Lob
+    @Column(name = "TASK_CARD_TEXT_BLOB")
+    private byte[] taskCardTextBlob;
 
-	@Column(name="TD_LINK_CONTENT_ID")
-	private BigDecimal tdLinkContentId;
+    @Column(name = "TD_LINK_CONTENT_ID")
+    private BigDecimal tdLinkContentId;
 
-	@Column(name="TRAXDOC_NO")
-	private BigDecimal traxdocNo;
+    @Column(name = "TRAXDOC_NO")
+    private BigDecimal traxdocNo;
 
-	@Column(name="TRAXDOC_REVISION")
-	private String traxdocRevision;
+    @Column(name = "TRAXDOC_REVISION")
+    private String traxdocRevision;
 
-	@Column(name="OPS_NO")
-	private String opsNo;
-	
-	@Lob
-	@Column(name="TRAXDOC_XML")
-	private byte[] traxdocXml;
+    @Column(name = "OPS_NO")
+    private String opsNo;
 
-	//bi-directional many-to-one association to TaskCard
-	@ManyToOne
-	@JoinColumn(name="TASK_CARD", insertable=false, updatable=false)
-	private TaskCard taskCardBean;
+    @Lob
+    @Column(name = "TRAXDOC_XML")
+    private byte[] traxdocXml;
 
-	public TaskCardItem() {
-	}
+    //bi-directional many-to-one association to TaskCard
+    @ManyToOne
+    @JoinColumn(name = "TASK_CARD", insertable = false, updatable = false)
+    private TaskCard taskCardBean;
 
-	public TaskCardItemPK getId() {
-		return this.id;
-	}
+    public TaskCardItem() {
+    }
 
-	public void setId(TaskCardItemPK id) {
-		this.id = id;
-	}
+    public TaskCardItemPK getId() {
+        return this.id;
+    }
 
-	public String getApplicId() {
-		return this.applicId;
-	}
+    public void setId(TaskCardItemPK id) {
+        this.id = id;
+    }
 
-	public void setApplicId(String applicId) {
-		this.applicId = applicId;
-	}
+    public String getApplicId() {
+        return this.applicId;
+    }
 
-	public String getCreatedBy() {
-		return this.createdBy;
-	}
+    public void setApplicId(String applicId) {
+        this.applicId = applicId;
+    }
 
-	public void setCreatedBy(String createdBy) {
-		this.createdBy = createdBy;
-	}
+    public String getCreatedBy() {
+        return this.createdBy;
+    }
 
-	public Date getCreatedDate() {
-		return this.createdDate;
-	}
+    public void setCreatedBy(String createdBy) {
+        this.createdBy = createdBy;
+    }
 
-	public void setCreatedDate(Date createdDate) {
-		this.createdDate = createdDate;
-	}
+    public Date getCreatedDate() {
+        return this.createdDate;
+    }
 
-	public String getDualInspManHoursAltered() {
-		return this.dualInspManHoursAltered;
-	}
+    public void setCreatedDate(Date createdDate) {
+        this.createdDate = createdDate;
+    }
 
-	public void setDualInspManHoursAltered(String dualInspManHoursAltered) {
-		this.dualInspManHoursAltered = dualInspManHoursAltered;
-	}
+    public String getDualInspManHoursAltered() {
+        return this.dualInspManHoursAltered;
+    }
 
-	public BigDecimal getDualInspectorManHours() {
-		return this.dualInspectorManHours;
-	}
+    public void setDualInspManHoursAltered(String dualInspManHoursAltered) {
+        this.dualInspManHoursAltered = dualInspManHoursAltered;
+    }
 
-	public void setDualInspectorManHours(BigDecimal dualInspectorManHours) {
-		this.dualInspectorManHours = dualInspectorManHours;
-	}
+    public BigDecimal getDualInspectorManHours() {
+        return this.dualInspectorManHours;
+    }
 
-	public BigDecimal getDualInspectorManRequire() {
-		return this.dualInspectorManRequire;
-	}
+    public void setDualInspectorManHours(BigDecimal dualInspectorManHours) {
+        this.dualInspectorManHours = dualInspectorManHours;
+    }
 
-	public void setDualInspectorManRequire(BigDecimal dualInspectorManRequire) {
-		this.dualInspectorManRequire = dualInspectorManRequire;
-	}
+    public BigDecimal getDualInspectorManRequire() {
+        return this.dualInspectorManRequire;
+    }
 
-	public String getDualInspectorSkill() {
-		return this.dualInspectorSkill;
-	}
+    public void setDualInspectorManRequire(BigDecimal dualInspectorManRequire) {
+        this.dualInspectorManRequire = dualInspectorManRequire;
+    }
 
-	public void setDualInspectorSkill(String dualInspectorSkill) {
-		this.dualInspectorSkill = dualInspectorSkill;
-	}
+    public String getDualInspectorSkill() {
+        return this.dualInspectorSkill;
+    }
 
-	public String getDuplicateInspection() {
-		return this.duplicateInspection;
-	}
+    public void setDualInspectorSkill(String dualInspectorSkill) {
+        this.dualInspectorSkill = dualInspectorSkill;
+    }
 
-	public void setDuplicateInspection(String duplicateInspection) {
-		this.duplicateInspection = duplicateInspection;
-	}
+    public String getDuplicateInspection() {
+        return this.duplicateInspection;
+    }
 
-	public String getExternalCustRef() {
-		return this.externalCustRef;
-	}
+    public void setDuplicateInspection(String duplicateInspection) {
+        this.duplicateInspection = duplicateInspection;
+    }
 
-	public void setExternalCustRef(String externalCustRef) {
-		this.externalCustRef = externalCustRef;
-	}
+    public String getExternalCustRef() {
+        return this.externalCustRef;
+    }
 
-	public String getFileName() {
-		return this.fileName;
-	}
+    public void setExternalCustRef(String externalCustRef) {
+        this.externalCustRef = externalCustRef;
+    }
 
-	public void setFileName(String fileName) {
-		this.fileName = fileName;
-	}
+    public String getFileName() {
+        return this.fileName;
+    }
 
-	public String getFilename() {
-		return this.filename;
-	}
+    public void setFileName(String fileName) {
+        this.fileName = fileName;
+    }
 
-	public void setFilename(String filename) {
-		this.filename = filename;
-	}
+    public String getFilename() {
+        return this.filename;
+    }
 
-	public String getInformationalOnly() {
-		return this.informationalOnly;
-	}
+    public void setFilename(String filename) {
+        this.filename = filename;
+    }
 
-	public void setInformationalOnly(String informationalOnly) {
-		this.informationalOnly = informationalOnly;
-	}
+    public String getInformationalOnly() {
+        return this.informationalOnly;
+    }
 
-	public String getInspManHoursAltered() {
-		return this.inspManHoursAltered;
-	}
+    public void setInformationalOnly(String informationalOnly) {
+        this.informationalOnly = informationalOnly;
+    }
 
-	public void setInspManHoursAltered(String inspManHoursAltered) {
-		this.inspManHoursAltered = inspManHoursAltered;
-	}
+    public String getInspManHoursAltered() {
+        return this.inspManHoursAltered;
+    }
 
-	public String getInspector() {
-		return this.inspector;
-	}
+    public void setInspManHoursAltered(String inspManHoursAltered) {
+        this.inspManHoursAltered = inspManHoursAltered;
+    }
 
-	public void setInspector(String inspector) {
-		this.inspector = inspector;
-	}
+    public String getInspector() {
+        return this.inspector;
+    }
 
-	public BigDecimal getInspectorManHours() {
-		return this.inspectorManHours;
-	}
+    public void setInspector(String inspector) {
+        this.inspector = inspector;
+    }
 
-	public void setInspectorManHours(BigDecimal inspectorManHours) {
-		this.inspectorManHours = inspectorManHours;
-	}
+    public BigDecimal getInspectorManHours() {
+        return this.inspectorManHours;
+    }
 
-	public BigDecimal getInspectorManRequire() {
-		return this.inspectorManRequire;
-	}
+    public void setInspectorManHours(BigDecimal inspectorManHours) {
+        this.inspectorManHours = inspectorManHours;
+    }
 
-	public void setInspectorManRequire(BigDecimal inspectorManRequire) {
-		this.inspectorManRequire = inspectorManRequire;
-	}
+    public BigDecimal getInspectorManRequire() {
+        return this.inspectorManRequire;
+    }
 
-	public String getInspectorSkill() {
-		return this.inspectorSkill;
-	}
+    public void setInspectorManRequire(BigDecimal inspectorManRequire) {
+        this.inspectorManRequire = inspectorManRequire;
+    }
 
-	public void setInspectorSkill(String inspectorSkill) {
-		this.inspectorSkill = inspectorSkill;
-	}
+    public String getInspectorSkill() {
+        return this.inspectorSkill;
+    }
 
-	public String getInspectorSkillLevel() {
-		return this.inspectorSkillLevel;
-	}
+    public void setInspectorSkill(String inspectorSkill) {
+        this.inspectorSkill = inspectorSkill;
+    }
 
-	public void setInspectorSkillLevel(String inspectorSkillLevel) {
-		this.inspectorSkillLevel = inspectorSkillLevel;
-	}
+    public String getInspectorSkillLevel() {
+        return this.inspectorSkillLevel;
+    }
 
-	public String getItemType() {
-		return this.itemType;
-	}
+    public void setInspectorSkillLevel(String inspectorSkillLevel) {
+        this.inspectorSkillLevel = inspectorSkillLevel;
+    }
 
-	public void setItemType(String itemType) {
-		this.itemType = itemType;
-	}
+    public String getItemType() {
+        return this.itemType;
+    }
 
-	public String getMainSkill() {
-		return this.mainSkill;
-	}
+    public void setItemType(String itemType) {
+        this.itemType = itemType;
+    }
 
-	public void setMainSkill(String mainSkill) {
-		this.mainSkill = mainSkill;
-	}
+    public String getMainSkill() {
+        return this.mainSkill;
+    }
 
-	public BigDecimal getManHours() {
-		return this.manHours;
-	}
+    public void setMainSkill(String mainSkill) {
+        this.mainSkill = mainSkill;
+    }
 
-	public void setManHours(BigDecimal manHours) {
-		this.manHours = manHours;
-	}
+    public BigDecimal getManHours() {
+        return this.manHours;
+    }
 
-	public String getManHoursAltered() {
-		return this.manHoursAltered;
-	}
+    public void setManHours(BigDecimal manHours) {
+        this.manHours = manHours;
+    }
 
-	public void setManHoursAltered(String manHoursAltered) {
-		this.manHoursAltered = manHoursAltered;
-	}
+    public String getManHoursAltered() {
+        return this.manHoursAltered;
+    }
 
-	public BigDecimal getManRequire() {
-		return this.manRequire;
-	}
+    public void setManHoursAltered(String manHoursAltered) {
+        this.manHoursAltered = manHoursAltered;
+    }
 
-	public void setManRequire(BigDecimal manRequire) {
-		this.manRequire = manRequire;
-	}
+    public BigDecimal getManRequire() {
+        return this.manRequire;
+    }
 
-	public String getManualItem() {
-		return this.manualItem;
-	}
+    public void setManRequire(BigDecimal manRequire) {
+        this.manRequire = manRequire;
+    }
 
-	public void setManualItem(String manualItem) {
-		this.manualItem = manualItem;
-	}
+    public String getManualItem() {
+        return this.manualItem;
+    }
 
-	public String getMechanic() {
-		return this.mechanic;
-	}
+    public void setManualItem(String manualItem) {
+        this.manualItem = manualItem;
+    }
 
-	public void setMechanic(String mechanic) {
-		this.mechanic = mechanic;
-	}
+    public String getMechanic() {
+        return this.mechanic;
+    }
 
-	public String getMechanicSkillLevel() {
-		return this.mechanicSkillLevel;
-	}
+    public void setMechanic(String mechanic) {
+        this.mechanic = mechanic;
+    }
 
-	public void setMechanicSkillLevel(String mechanicSkillLevel) {
-		this.mechanicSkillLevel = mechanicSkillLevel;
-	}
+    public String getMechanicSkillLevel() {
+        return this.mechanicSkillLevel;
+    }
 
-	public String getModifiedBy() {
-		return this.modifiedBy;
-	}
+    public void setMechanicSkillLevel(String mechanicSkillLevel) {
+        this.mechanicSkillLevel = mechanicSkillLevel;
+    }
 
-	public void setModifiedBy(String modifiedBy) {
-		this.modifiedBy = modifiedBy;
-	}
+    public String getModifiedBy() {
+        return this.modifiedBy;
+    }
 
-	public Date getModifiedDate() {
-		return this.modifiedDate;
-	}
+    public void setModifiedBy(String modifiedBy) {
+        this.modifiedBy = modifiedBy;
+    }
 
-	public void setModifiedDate(Date modifiedDate) {
-		this.modifiedDate = modifiedDate;
-	}
+    public Date getModifiedDate() {
+        return this.modifiedDate;
+    }
 
-	public String getMpd() {
-		return this.mpd;
-	}
+    public void setModifiedDate(Date modifiedDate) {
+        this.modifiedDate = modifiedDate;
+    }
 
-	public void setMpd(String mpd) {
-		this.mpd = mpd;
-	}
+    public String getMpd() {
+        return this.mpd;
+    }
 
-	public BigDecimal getMpdManHours() {
-		return this.mpdManHours;
-	}
+    public void setMpd(String mpd) {
+        this.mpd = mpd;
+    }
 
-	public void setMpdManHours(BigDecimal mpdManHours) {
-		this.mpdManHours = mpdManHours;
-	}
+    public BigDecimal getMpdManHours() {
+        return this.mpdManHours;
+    }
 
-	public String getMrsRequired() {
-		return this.mrsRequired;
-	}
+    public void setMpdManHours(BigDecimal mpdManHours) {
+        this.mpdManHours = mpdManHours;
+    }
 
-	public void setMrsRequired(String mrsRequired) {
-		this.mrsRequired = mrsRequired;
-	}
+    public String getMrsRequired() {
+        return this.mrsRequired;
+    }
 
-	public String getNotApplicable() {
-		return this.notApplicable;
-	}
+    public void setMrsRequired(String mrsRequired) {
+        this.mrsRequired = mrsRequired;
+    }
 
-	public void setNotApplicable(String notApplicable) {
-		this.notApplicable = notApplicable;
-	}
+    public String getNotApplicable() {
+        return this.notApplicable;
+    }
 
-	public BigDecimal getNotes() {
-		return this.notes;
-	}
+    public void setNotApplicable(String notApplicable) {
+        this.notApplicable = notApplicable;
+    }
 
-	public void setNotes(BigDecimal notes) {
-		this.notes = notes;
-	}
+    public BigDecimal getNotes() {
+        return this.notes;
+    }
 
-	public BigDecimal getOpHrs() {
-		return this.opHrs;
-	}
+    public void setNotes(BigDecimal notes) {
+        this.notes = notes;
+    }
 
-	public void setOpHrs(BigDecimal opHrs) {
-		this.opHrs = opHrs;
-	}
+    public BigDecimal getOpHrs() {
+        return this.opHrs;
+    }
 
-	public BigDecimal getPagePdfSigned() {
-		return this.pagePdfSigned;
-	}
+    public void setOpHrs(BigDecimal opHrs) {
+        this.opHrs = opHrs;
+    }
 
-	public void setPagePdfSigned(BigDecimal pagePdfSigned) {
-		this.pagePdfSigned = pagePdfSigned;
-	}
+    public BigDecimal getPagePdfSigned() {
+        return this.pagePdfSigned;
+    }
 
-	public String getPhase() {
-		return this.phase;
-	}
+    public void setPagePdfSigned(BigDecimal pagePdfSigned) {
+        this.pagePdfSigned = pagePdfSigned;
+    }
 
-	public void setPhase(String phase) {
-		this.phase = phase;
-	}
+    public String getPhase() {
+        return this.phase;
+    }
 
-	public String getRevision() {
-		return this.revision;
-	}
+    public void setPhase(String phase) {
+        this.phase = phase;
+    }
 
-	public void setRevision(String revision) {
-		this.revision = revision;
-	}
+    public String getRevision() {
+        return this.revision;
+    }
 
-	public String getRtfConverted() {
-		return this.rtfConverted;
-	}
+    public void setRevision(String revision) {
+        this.revision = revision;
+    }
 
-	public void setRtfConverted(String rtfConverted) {
-		this.rtfConverted = rtfConverted;
-	}
+    public String getRtfConverted() {
+        return this.rtfConverted;
+    }
 
-	public String getSkill() {
-		return this.skill;
-	}
+    public void setRtfConverted(String rtfConverted) {
+        this.rtfConverted = rtfConverted;
+    }
 
-	public void setSkill(String skill) {
-		this.skill = skill;
-	}
+    public String getSkill() {
+        return this.skill;
+    }
 
-	public BigDecimal getSortItem() {
-		return this.sortItem;
-	}
+    public void setSkill(String skill) {
+        this.skill = skill;
+    }
 
-	public void setSortItem(BigDecimal sortItem) {
-		this.sortItem = sortItem;
-	}
+    public BigDecimal getSortItem() {
+        return this.sortItem;
+    }
 
-	public String getSupplementalFlag() {
-		return this.supplementalFlag;
-	}
+    public void setSortItem(BigDecimal sortItem) {
+        this.sortItem = sortItem;
+    }
 
-	public void setSupplementalFlag(String supplementalFlag) {
-		this.supplementalFlag = supplementalFlag;
-	}
+    public String getSupplementalFlag() {
+        return this.supplementalFlag;
+    }
 
-	public String getTaskCardText() {
-		return this.taskCardText;
-	}
+    public void setSupplementalFlag(String supplementalFlag) {
+        this.supplementalFlag = supplementalFlag;
+    }
 
-	public void setTaskCardText(String taskCardText) {
-		this.taskCardText = taskCardText;
-	}
+    public String getTaskCardText() {
+        return this.taskCardText;
+    }
 
-	public byte[] getTaskCardTextBlob() {
-		return this.taskCardTextBlob;
-	}
+    public void setTaskCardText(String taskCardText) {
+        this.taskCardText = taskCardText;
+    }
 
-	public void setTaskCardTextBlob(byte[] taskCardTextBlob) {
-		this.taskCardTextBlob = taskCardTextBlob;
-	}
+    public byte[] getTaskCardTextBlob() {
+        return this.taskCardTextBlob;
+    }
 
-	public BigDecimal getTdLinkContentId() {
-		return this.tdLinkContentId;
-	}
+    public void setTaskCardTextBlob(byte[] taskCardTextBlob) {
+        this.taskCardTextBlob = taskCardTextBlob;
+    }
 
-	public void setTdLinkContentId(BigDecimal tdLinkContentId) {
-		this.tdLinkContentId = tdLinkContentId;
-	}
+    public BigDecimal getTdLinkContentId() {
+        return this.tdLinkContentId;
+    }
 
-	public BigDecimal getTraxdocNo() {
-		return this.traxdocNo;
-	}
+    public void setTdLinkContentId(BigDecimal tdLinkContentId) {
+        this.tdLinkContentId = tdLinkContentId;
+    }
 
-	public void setTraxdocNo(BigDecimal traxdocNo) {
-		this.traxdocNo = traxdocNo;
-	}
+    public BigDecimal getTraxdocNo() {
+        return this.traxdocNo;
+    }
 
-	public String getTraxdocRevision() {
-		return this.traxdocRevision;
-	}
+    public void setTraxdocNo(BigDecimal traxdocNo) {
+        this.traxdocNo = traxdocNo;
+    }
 
-	public void setTraxdocRevision(String traxdocRevision) {
-		this.traxdocRevision = traxdocRevision;
-	}
+    public String getTraxdocRevision() {
+        return this.traxdocRevision;
+    }
 
-	public byte[] getTraxdocXml() {
-		return this.traxdocXml;
-	}
+    public void setTraxdocRevision(String traxdocRevision) {
+        this.traxdocRevision = traxdocRevision;
+    }
 
-	public void setTraxdocXml(byte[] traxdocXml) {
-		this.traxdocXml = traxdocXml;
-	}
+    public byte[] getTraxdocXml() {
+        return this.traxdocXml;
+    }
 
-	public TaskCard getTaskCardBean() {
-		return this.taskCardBean;
-	}
+    public void setTraxdocXml(byte[] traxdocXml) {
+        this.traxdocXml = traxdocXml;
+    }
 
-	public void setTaskCardBean(TaskCard taskCardBean) {
-		this.taskCardBean = taskCardBean;
-	}
+    public TaskCard getTaskCardBean() {
+        return this.taskCardBean;
+    }
 
-	public String getOpsNo() {
-		return opsNo;
-	}
+    public void setTaskCardBean(TaskCard taskCardBean) {
+        this.taskCardBean = taskCardBean;
+    }
 
-	public void setOpsNo(String opsNo) {
-		this.opsNo = opsNo;
-	}
+    public String getOpsNo() {
+        return opsNo;
+    }
+
+    public void setOpsNo(String opsNo) {
+        this.opsNo = opsNo;
+    }
 
 }

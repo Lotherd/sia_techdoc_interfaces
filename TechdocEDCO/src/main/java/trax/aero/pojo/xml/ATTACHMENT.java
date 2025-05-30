@@ -7,9 +7,9 @@ import javax.xml.bind.annotation.XmlType;
 
 /**
  * <p>Java class for anonymous complex type.
- * 
+ *
  * <p>The following schema fragment specifies the expected content contained within this class.
- * 
+ *
  * <pre>
  * &lt;complexType>
  *   &lt;complexContent>
@@ -20,8 +20,6 @@ import javax.xml.bind.annotation.XmlType;
  *   &lt;/complexContent>
  * &lt;/complexType>
  * </pre>
- * 
- * 
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "")
@@ -32,17 +30,15 @@ public class ATTACHMENT {
     protected String atttype;
     @XmlAttribute(name = "ID")
     protected String id;
-    
+
     @XmlAttribute(name = "NOOFPAGES")
     protected String noofpages;
-    
+
     /**
      * Gets the value of the atttype property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link String }
-     *     
+     *
+     * @return possible object is
+     * {@link String }
      */
     public String getATTTYPE() {
         return atttype;
@@ -50,11 +46,9 @@ public class ATTACHMENT {
 
     /**
      * Sets the value of the atttype property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *     
+     *
+     * @param value allowed object is
+     *              {@link String }
      */
     public void setATTTYPE(String value) {
         this.atttype = value;
@@ -62,11 +56,9 @@ public class ATTACHMENT {
 
     /**
      * Gets the value of the id property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link String }
-     *     
+     *
+     * @return possible object is
+     * {@link String }
      */
     public String getID() {
         return id;
@@ -74,24 +66,21 @@ public class ATTACHMENT {
 
     /**
      * Sets the value of the id property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *     
+     *
+     * @param value allowed object is
+     *              {@link String }
      */
     public void setID(String value) {
         this.id = value;
     }
 
-	public String getNoofpages() {
-		return noofpages;
-	}
+    public String getNoofpages() {
+        return noofpages;
+    }
 
-	public void setNoofpages(String noofpages) {
-		this.noofpages = noofpages;
-	}
-
+    public void setNoofpages(String noofpages) {
+        this.noofpages = noofpages;
+    }
 
 
 }

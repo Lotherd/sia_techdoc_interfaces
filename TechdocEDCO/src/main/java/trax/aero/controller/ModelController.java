@@ -14,10 +14,10 @@ import java.util.List;
 
 public class ModelController {
 
-    static String errors = "";
     private static final String[] headersPDF = {"Name of PDF Attachment", "SAP Service Order", "Jobcard Number", "JC Title", "SAP Group Number", "Task Type", "TRAX WO Number", "Attachment", "Attachment ID"};
     private static final String[] headersCOVER = {"SAP Service Order", "Jobcard Number", "JC Title", "SAP Group Number", "Task Type", "TRAX WO Number", "Attachment", "Attachment ID"};
     private static final String[] acType = {"380", "350", "737", "747", "777", "777F", "737NG", "737Max", "330", "789", "290", "744", "738",};
+    static String errors = "";
 
     public ModelController() {
 

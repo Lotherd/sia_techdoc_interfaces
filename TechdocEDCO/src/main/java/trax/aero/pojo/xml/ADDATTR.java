@@ -8,9 +8,9 @@ import javax.xml.bind.annotation.XmlType;
 
 /**
  * <p>Java class for anonymous complex type.
- * 
+ *
  * <p>The following schema fragment specifies the expected content contained within this class.
- * 
+ *
  * <pre>
  * &lt;complexType>
  *   &lt;complexContent>
@@ -21,13 +21,10 @@ import javax.xml.bind.annotation.XmlType;
  *   &lt;/complexContent>
  * &lt;/complexType>
  * </pre>
- * 
- * 
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "")
 public class ADDATTR {
-	
 
 
     @XmlAttribute(name = "ATTR-NAME")
@@ -37,11 +34,9 @@ public class ADDATTR {
 
     /**
      * Gets the value of the attrname property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link String }
-     *     
+     *
+     * @return possible object is
+     * {@link String }
      */
     public String getATTRNAME() {
         return attrname;
@@ -49,11 +44,9 @@ public class ADDATTR {
 
     /**
      * Sets the value of the attrname property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *     
+     *
+     * @param value allowed object is
+     *              {@link String }
      */
     public void setATTRNAME(String value) {
         this.attrname = value;
@@ -61,11 +54,9 @@ public class ADDATTR {
 
     /**
      * Gets the value of the attrvalue property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link String }
-     *     
+     *
+     * @return possible object is
+     * {@link String }
      */
     public String getATTRVALUE() {
         return attrvalue;
@@ -73,16 +64,13 @@ public class ADDATTR {
 
     /**
      * Sets the value of the attrvalue property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *     
+     *
+     * @param value allowed object is
+     *              {@link String }
      */
     public void setATTRVALUE(String value) {
         this.attrvalue = value;
     }
-
 
 
 }

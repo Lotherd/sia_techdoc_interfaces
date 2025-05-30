@@ -29,7 +29,7 @@ import trax.aero.controller.ModelController;
 
 public class MqUtilities {
 
-	private static final String HOST = System.getProperty("Techdoc_host"); // Host name or IP address
+    private static final String HOST = System.getProperty("Techdoc_host"); // Host name or IP address
     private static final int PORT = Integer.valueOf(System.getProperty("Techdoc_port")).intValue(); // Listener port for your queue manager
     private static final String CHANNEL = System.getProperty("Techdoc_channel"); // Channel name
     private static final String QMGR = System.getProperty("Techdoc_qmgr"); // Queue manager name
@@ -37,48 +37,47 @@ public class MqUtilities {
     private static final String APP_PASSWORD = System.getProperty("Techdoc_password"); // Password that the application uses to connect to MQ
     private static final String QUEUE_NAME_SENDER = System.getProperty("Techdoc_send"); // Queue that the application uses to put and get messages to and from
     private static final String QUEUE_NAME_RECEIVE = System.getProperty("Techdoc_receive"); // Queue that the application uses to put and get messages to and from
-    
+
     private static final String JKS_LOCATION = System.getProperty("JKS_LOCATION"); // Queue that the application uses to put and get messages to and from
     private static final String JKS_PWD = System.getProperty("JKS_PWD"); // Queue that the application uses to put and get messages to and from
-    private static final String CIPHER  = System.getProperty("CIPHER"); // Queue that the application uses to put and get messages to and from
+    private static final String CIPHER = System.getProperty("CIPHER"); // Queue that the application uses to put and get messages to and from
 
-    
-    
-    public static MQQueueConnectionFactory createMQQueueConnectionFactory() throws JMSException,Exception {
-	    /*MQ Configuration*/
-	    MQQueueConnectionFactory mqQueueConnectionFactory = new MQQueueConnectionFactory();
-	    
-	    SSLSocketFactory sslSocketFactory = createSSLSocketFactory();
-	    
-	    mqQueueConnectionFactory.setHostName(HOST);
-	    mqQueueConnectionFactory.setChannel(CHANNEL);//communications link
-	    mqQueueConnectionFactory.setPort(PORT);
-	    mqQueueConnectionFactory.setQueueManager(QMGR);//service provider 
-        
-	    
-	    mqQueueConnectionFactory.setSSLFipsRequired(false);
-	    mqQueueConnectionFactory.setTransportType(JMSC.MQJMS_TP_CLIENT_MQ_TCPIP);
+
+    public static MQQueueConnectionFactory createMQQueueConnectionFactory() throws Exception {
+        /*MQ Configuration*/
+        MQQueueConnectionFactory mqQueueConnectionFactory = new MQQueueConnectionFactory();
+
+        SSLSocketFactory sslSocketFactory = createSSLSocketFactory();
+
+        mqQueueConnectionFactory.setHostName(HOST);
+        mqQueueConnectionFactory.setChannel(CHANNEL);//communications link
+        mqQueueConnectionFactory.setPort(PORT);
+        mqQueueConnectionFactory.setQueueManager(QMGR);//service provider
+
+
+        mqQueueConnectionFactory.setSSLFipsRequired(false);
+        mqQueueConnectionFactory.setTransportType(JMSC.MQJMS_TP_CLIENT_MQ_TCPIP);
         mqQueueConnectionFactory.setSSLCipherSuite(CIPHER);
         mqQueueConnectionFactory.setSSLSocketFactory(sslSocketFactory);
 
-        mqQueueConnectionFactory.setStringProperty(WMQConstants.USERID, APP_USER); 
-        mqQueueConnectionFactory.setStringProperty(WMQConstants.PASSWORD,APP_PASSWORD );
-	    return mqQueueConnectionFactory;
+        mqQueueConnectionFactory.setStringProperty(WMQConstants.USERID, APP_USER);
+        mqQueueConnectionFactory.setStringProperty(WMQConstants.PASSWORD, APP_PASSWORD);
+        return mqQueueConnectionFactory;
     }
-    
-    public static SSLSocketFactory  createSSLSocketFactory () throws Exception {
-    	
-    	char[] KSPW =  JKS_PWD.toCharArray();
+
+    public static SSLSocketFactory createSSLSocketFactory() throws Exception {
+
+        char[] KSPW = JKS_PWD.toCharArray();
 
         KeyStore ks = KeyStore.getInstance("JKS");
-       
-        ks.load(new FileInputStream(JKS_LOCATION), KSPW);
-       // Logger.info("Number of keys on JKS: "  + Integer.toString(ks.size()));
 
-        KeyManagerFactory keyManagerFactory =  KeyManagerFactory.getInstance(KeyManagerFactory.getDefaultAlgorithm());
+        ks.load(new FileInputStream(JKS_LOCATION), KSPW);
+        // Logger.info("Number of keys on JKS: "  + Integer.toString(ks.size()));
+
+        KeyManagerFactory keyManagerFactory = KeyManagerFactory.getInstance(KeyManagerFactory.getDefaultAlgorithm());
 
         // Initialise the managers
-        keyManagerFactory.init(ks,KSPW);
+        keyManagerFactory.init(ks, KSPW);
 
         // Accessing available algorithm/protocol in the SunJSSE provider
         // see http://java.sun.com/javase/6/docs/technotes/guides/security/SunProviders.html
@@ -87,28 +86,28 @@ public class MqUtilities {
         // Acessing available algorithm/protocol in the IBMJSSE2 provider
         // see http://www.ibm.com/developerworks/java/jdk/security/142/secguides/jsse2docs/JSSE2RefGuide.html
         // SSLContext sslContext = SSLContext.getInstance("SSL_TLS");
-      //   Logger.info("SSLContext provider: " +       sslContext.getProvider().toString());
+        //   Logger.info("SSLContext provider: " +       sslContext.getProvider().toString());
 
         // Initialise our SSL context from the key/trust managers
         sslContext.init(keyManagerFactory.getKeyManagers(), null, null);
 
         // Get an SSLSocketFactory to pass to WMQ
         SSLSocketFactory sslSocketFactory = sslContext.getSocketFactory();
-        
+
         return sslSocketFactory;
     }
-    
-	
+
+
     public static Boolean sendMqText(String text) throws JMSException {
-    	
-    	
-    	QueueSender queueSender = null;
-		QueueConnection queueConnection = null;
-		QueueSession queueSession = null;
-		
-		try {
+
+
+        QueueSender queueSender = null;
+        QueueConnection queueConnection = null;
+        QueueSession queueSession = null;
+
+        try {
             /*MQ Configuration*/
-			MQQueueConnectionFactory mqQueueConnectionFactory = MqUtilities.createMQQueueConnectionFactory();
+            MQQueueConnectionFactory mqQueueConnectionFactory = MqUtilities.createMQQueueConnectionFactory();
             /*Create Connection */
             queueConnection = mqQueueConnectionFactory.createQueueConnection();
             queueConnection.start();
@@ -120,35 +119,35 @@ public class MqUtilities {
             TextMessage textMessage = queueSession.createTextMessage(text);
             //textMessage.setJMSReplyTo(queue);
             textMessage.setJMSType("mcd://xmlns");//message type
-            textMessage.setJMSDeliveryMode(DeliveryMode.PERSISTENT); 
+            textMessage.setJMSDeliveryMode(DeliveryMode.PERSISTENT);
 
             /*Create sender queue */
             queueSender = queueSession.createSender(queueSession.createQueue(QUEUE_NAME_SENDER));
             queueSender.send(textMessage);
 
             /*After sending a message we get message id */
-            Logger.info("after sending a message we get message id "+ textMessage.getJMSMessageID());
+            Logger.info("after sending a message we get message id " + textMessage.getJMSMessageID());
             return true;
         } catch (JMSException e) {
             Logger.error(e);
         } catch (Exception e) {
             Logger.error(e);
-        }finally {
-        	 queueSender.close();
-             queueSession.close();
-             queueConnection.close();
+        } finally {
+            queueSender.close();
+            queueSession.close();
+            queueConnection.close();
         }
-		return false;
+        return false;
     }
-    
-    public static String receiveMqText(boolean sendEmail ) throws JMSException {
-		QueueReceiver queueReceiver = null;
-		QueueConnection queueConnection = null;
-		QueueSession queueSession = null;
-		
-		try {
+
+    public static String receiveMqText(boolean sendEmail) throws JMSException {
+        QueueReceiver queueReceiver = null;
+        QueueConnection queueConnection = null;
+        QueueSession queueSession = null;
+
+        try {
             /*MQ Configuration*/
-			MQQueueConnectionFactory mqQueueConnectionFactory = MqUtilities.createMQQueueConnectionFactory();
+            MQQueueConnectionFactory mqQueueConnectionFactory = MqUtilities.createMQQueueConnectionFactory();
             /*Create Connection */
             queueConnection = mqQueueConnectionFactory.createQueueConnection();
             queueConnection.start();
@@ -158,33 +157,32 @@ public class MqUtilities {
 
             /*Create response queue */
             Queue queue = queueSession.createQueue(QUEUE_NAME_RECEIVE);
-            
+
             /*Within the session we have to create queue reciver */
-             queueReceiver = queueSession.createReceiver(queue);
+            queueReceiver = queueSession.createReceiver(queue);
 
 
             /*Receive the message from*/
-            Message message = queueReceiver.receive(60*1000);
-            if(message != null ) {
-            	String responseMsg = ((TextMessage) message).getText();
-            	//Logger.info("JMSCorrelationID: "+ message.getJMSCorrelationID() + " JMSMessageID: " + message.getJMSMessageID()  );
-               
+            Message message = queueReceiver.receive(60 * 1000);
+            if (message != null) {
+                String responseMsg = ((TextMessage) message).getText();
+                //Logger.info("JMSCorrelationID: "+ message.getJMSCorrelationID() + " JMSMessageID: " + message.getJMSMessageID()  );
+
                 return responseMsg;
             }
-            
-            
+
 
         } catch (Exception e) {
-        	if(sendEmail) {
-        		ModelController.sendEmailMQ(ExceptionUtils.getStackTrace ( e ));
-        	}
-        	Logger.error(e);
-        }finally {
-             queueReceiver.close();
-             queueSession.close();
-             queueConnection.close();
+            if (sendEmail) {
+                ModelController.sendEmailMQ(ExceptionUtils.getStackTrace(e));
+            }
+            Logger.error(e);
+        } finally {
+            queueReceiver.close();
+            queueSession.close();
+            queueConnection.close();
         }
-		return null;
+        return null;
     }
-    
+
 }

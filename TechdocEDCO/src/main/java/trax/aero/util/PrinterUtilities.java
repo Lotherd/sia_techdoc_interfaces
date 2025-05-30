@@ -110,7 +110,7 @@ public class PrinterUtilities {
                     } else {
                         side = "None";
                     }
-                    oceCommands = " -o StapleWhen=EndOfSet -o OCStaple=TopLeftPortrait -o InputSlot=" +tray+ " -o Duplex=" + side;
+                    oceCommands = " -o StapleWhen=EndOfSet -o OCStaple=TopLeftPortrait -o InputSlot=" + tray + " -o Duplex=" + side;
                 } else if (heavyPrintersRicoh.contains(printService)) {
                     //InputSlot=1Tray  2Tray 3Tray RICHO
                     switch (tray) {
@@ -133,7 +133,7 @@ public class PrinterUtilities {
                     } else {
                         side = "None";
                     }
-                    ricohCommands = " -o StapleLocation=UpperLeft -o InputSlot=" + tray +" -o PageRegion=A4 -o Duplex=" + side;
+                    ricohCommands = " -o StapleLocation=UpperLeft -o InputSlot=" + tray + " -o PageRegion=A4 -o Duplex=" + side;
                 }
                 // Command to print the document with duplex and tray options using lp on Linux
                 String command = "lp -d " + printService + oceCommands + ricohCommands + " " + file.getAbsolutePath();
@@ -141,8 +141,8 @@ public class PrinterUtilities {
                 // Create the process builder
                 ProcessBuilder processBuilder = new ProcessBuilder(command.split(" "));
 
-	            // Start the process (print)
-	            Process process = processBuilder.start();
+                // Start the process (print)
+                Process process = processBuilder.start();
 
                 // Wait for the process to finish
                 int exitCode = process.waitFor();
@@ -152,7 +152,7 @@ public class PrinterUtilities {
                     Logger.error("Error occurred during printing: " + exitCode);
                 }
             } catch (Exception e) {
-                Logger.error("Exception printing JOB " ,e);
+                Logger.error("Exception printing JOB ", e);
                 throw e;
             }
         }

@@ -8,9 +8,9 @@ import javax.xml.bind.annotation.XmlType;
 
 /**
  * <p>Java class for anonymous complex type.
- * 
+ *
  * <p>The following schema fragment specifies the expected content contained within this class.
- * 
+ *
  * <pre>
  * &lt;complexType>
  *   &lt;complexContent>
@@ -153,12 +153,10 @@ import javax.xml.bind.annotation.XmlType;
  *   &lt;/complexContent>
  * &lt;/complexType>
  * </pre>
- * 
- * 
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "", propOrder = {
-    "jobi"
+        "jobi"
 })
 public class JOBCARD {
 
@@ -230,11 +228,9 @@ public class JOBCARD {
 
     /**
      * Gets the value of the jobi property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link JOBI }
-     *     
+     *
+     * @return possible object is
+     * {@link JOBI }
      */
     public JOBI getJOBI() {
         return jobi;
@@ -242,11 +238,9 @@ public class JOBCARD {
 
     /**
      * Sets the value of the jobi property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link JOBI }
-     *     
+     *
+     * @param value allowed object is
+     *              {@link JOBI }
      */
     public void setJOBI(JOBI value) {
         this.jobi = value;
@@ -254,11 +248,9 @@ public class JOBCARD {
 
     /**
      * Gets the value of the jcnbr property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link String }
-     *     
+     *
+     * @return possible object is
+     * {@link String }
      */
     public String getJCNBR() {
         return jcnbr;
@@ -266,11 +258,9 @@ public class JOBCARD {
 
     /**
      * Sets the value of the jcnbr property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *     
+     *
+     * @param value allowed object is
+     *              {@link String }
      */
     public void setJCNBR(String value) {
         this.jcnbr = value;
@@ -278,11 +268,9 @@ public class JOBCARD {
 
     /**
      * Gets the value of the jobnbr property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link String }
-     *     
+     *
+     * @return possible object is
+     * {@link String }
      */
     public String getJOBNBR() {
         return jobnbr;
@@ -290,11 +278,9 @@ public class JOBCARD {
 
     /**
      * Sets the value of the jobnbr property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *     
+     *
+     * @param value allowed object is
+     *              {@link String }
      */
     public void setJOBNBR(String value) {
         this.jobnbr = value;
@@ -302,11 +288,9 @@ public class JOBCARD {
 
     /**
      * Gets the value of the jctitle property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link String }
-     *     
+     *
+     * @return possible object is
+     * {@link String }
      */
     public String getJCTITLE() {
         return jctitle;
@@ -314,11 +298,9 @@ public class JOBCARD {
 
     /**
      * Sets the value of the jctitle property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *     
+     *
+     * @param value allowed object is
+     *              {@link String }
      */
     public void setJCTITLE(String value) {
         this.jctitle = value;
@@ -326,11 +308,9 @@ public class JOBCARD {
 
     /**
      * Gets the value of the center property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link String }
-     *     
+     *
+     * @return possible object is
+     * {@link String }
      */
     public String getCENTER() {
         return center;
@@ -338,11 +318,9 @@ public class JOBCARD {
 
     /**
      * Sets the value of the center property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *     
+     *
+     * @param value allowed object is
+     *              {@link String }
      */
     public void setCENTER(String value) {
         this.center = value;
@@ -350,11 +328,9 @@ public class JOBCARD {
 
     /**
      * Gets the value of the issuenbr property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link String }
-     *     
+     *
+     * @return possible object is
+     * {@link String }
      */
     public String getISSUENBR() {
         return issuenbr;
@@ -362,11 +338,9 @@ public class JOBCARD {
 
     /**
      * Sets the value of the issuenbr property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *     
+     *
+     * @param value allowed object is
+     *              {@link String }
      */
     public void setISSUENBR(String value) {
         this.issuenbr = value;
@@ -374,11 +348,9 @@ public class JOBCARD {
 
     /**
      * Gets the value of the issuedate property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link String }
-     *     
+     *
+     * @return possible object is
+     * {@link String }
      */
     public String getISSUEDATE() {
         return issuedate;
@@ -386,11 +358,9 @@ public class JOBCARD {
 
     /**
      * Sets the value of the issuedate property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *     
+     *
+     * @param value allowed object is
+     *              {@link String }
      */
     public void setISSUEDATE(String value) {
         this.issuedate = value;
@@ -398,11 +368,9 @@ public class JOBCARD {
 
     /**
      * Gets the value of the wpid property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link String }
-     *     
+     *
+     * @return possible object is
+     * {@link String }
      */
     public String getWPID() {
         return wpid;
@@ -410,11 +378,9 @@ public class JOBCARD {
 
     /**
      * Sets the value of the wpid property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *     
+     *
+     * @param value allowed object is
+     *              {@link String }
      */
     public void setWPID(String value) {
         this.wpid = value;
@@ -422,11 +388,9 @@ public class JOBCARD {
 
     /**
      * Gets the value of the wpnbr property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link String }
-     *     
+     *
+     * @return possible object is
+     * {@link String }
      */
     public String getWPNBR() {
         return wpnbr;
@@ -434,11 +398,9 @@ public class JOBCARD {
 
     /**
      * Sets the value of the wpnbr property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *     
+     *
+     * @param value allowed object is
+     *              {@link String }
      */
     public void setWPNBR(String value) {
         this.wpnbr = value;
@@ -446,11 +408,9 @@ public class JOBCARD {
 
     /**
      * Gets the value of the wptitle property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link String }
-     *     
+     *
+     * @return possible object is
+     * {@link String }
      */
     public String getWPTITLE() {
         return wptitle;
@@ -458,11 +418,9 @@ public class JOBCARD {
 
     /**
      * Sets the value of the wptitle property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *     
+     *
+     * @param value allowed object is
+     *              {@link String }
      */
     public void setWPTITLE(String value) {
         this.wptitle = value;
@@ -470,11 +428,9 @@ public class JOBCARD {
 
     /**
      * Gets the value of the wpdate property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link String }
-     *     
+     *
+     * @return possible object is
+     * {@link String }
      */
     public String getWPDATE() {
         return wpdate;
@@ -482,11 +438,9 @@ public class JOBCARD {
 
     /**
      * Sets the value of the wpdate property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *     
+     *
+     * @param value allowed object is
+     *              {@link String }
      */
     public void setWPDATE(String value) {
         this.wpdate = value;
@@ -494,11 +448,9 @@ public class JOBCARD {
 
     /**
      * Gets the value of the enginesn property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link String }
-     *     
+     *
+     * @return possible object is
+     * {@link String }
      */
     public String getENGINESN() {
         return enginesn;
@@ -506,11 +458,9 @@ public class JOBCARD {
 
     /**
      * Sets the value of the enginesn property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *     
+     *
+     * @param value allowed object is
+     *              {@link String }
      */
     public void setENGINESN(String value) {
         this.enginesn = value;
@@ -518,11 +468,9 @@ public class JOBCARD {
 
     /**
      * Gets the value of the enginepos property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link String }
-     *     
+     *
+     * @return possible object is
+     * {@link String }
      */
     public String getENGINEPOS() {
         return enginepos;
@@ -530,11 +478,9 @@ public class JOBCARD {
 
     /**
      * Sets the value of the enginepos property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *     
+     *
+     * @param value allowed object is
+     *              {@link String }
      */
     public void setENGINEPOS(String value) {
         this.enginepos = value;
@@ -542,11 +488,9 @@ public class JOBCARD {
 
     /**
      * Gets the value of the apu property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link String }
-     *     
+     *
+     * @return possible object is
+     * {@link String }
      */
     public String getAPU() {
         return apu;
@@ -554,11 +498,9 @@ public class JOBCARD {
 
     /**
      * Sets the value of the apu property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *     
+     *
+     * @param value allowed object is
+     *              {@link String }
      */
     public void setAPU(String value) {
         this.apu = value;
@@ -566,11 +508,9 @@ public class JOBCARD {
 
     /**
      * Gets the value of the apusn property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link String }
-     *     
+     *
+     * @return possible object is
+     * {@link String }
      */
     public String getAPUSN() {
         return apusn;
@@ -578,11 +518,9 @@ public class JOBCARD {
 
     /**
      * Sets the value of the apusn property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *     
+     *
+     * @param value allowed object is
+     *              {@link String }
      */
     public void setAPUSN(String value) {
         this.apusn = value;
@@ -590,11 +528,9 @@ public class JOBCARD {
 
     /**
      * Gets the value of the originator property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link String }
-     *     
+     *
+     * @return possible object is
+     * {@link String }
      */
     public String getORIGINATOR() {
         return originator;
@@ -602,11 +538,9 @@ public class JOBCARD {
 
     /**
      * Sets the value of the originator property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *     
+     *
+     * @param value allowed object is
+     *              {@link String }
      */
     public void setORIGINATOR(String value) {
         this.originator = value;
@@ -614,11 +548,9 @@ public class JOBCARD {
 
     /**
      * Gets the value of the seqnbr property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link String }
-     *     
+     *
+     * @return possible object is
+     * {@link String }
      */
     public String getSEQNBR() {
         return seqnbr;
@@ -626,11 +558,9 @@ public class JOBCARD {
 
     /**
      * Sets the value of the seqnbr property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *     
+     *
+     * @param value allowed object is
+     *              {@link String }
      */
     public void setSEQNBR(String value) {
         this.seqnbr = value;
@@ -638,11 +568,9 @@ public class JOBCARD {
 
     /**
      * Gets the value of the areacode property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link String }
-     *     
+     *
+     * @return possible object is
+     * {@link String }
      */
     public String getAREACODE() {
         return areacode;
@@ -650,11 +578,9 @@ public class JOBCARD {
 
     /**
      * Sets the value of the areacode property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *     
+     *
+     * @param value allowed object is
+     *              {@link String }
      */
     public void setAREACODE(String value) {
         this.areacode = value;
@@ -662,11 +588,9 @@ public class JOBCARD {
 
     /**
      * Gets the value of the area property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link String }
-     *     
+     *
+     * @return possible object is
+     * {@link String }
      */
     public String getAREA() {
         return area;
@@ -674,11 +598,9 @@ public class JOBCARD {
 
     /**
      * Sets the value of the area property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *     
+     *
+     * @param value allowed object is
+     *              {@link String }
      */
     public void setAREA(String value) {
         this.area = value;
@@ -686,11 +608,9 @@ public class JOBCARD {
 
     /**
      * Gets the value of the tradecode property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link String }
-     *     
+     *
+     * @return possible object is
+     * {@link String }
      */
     public String getTRADECODE() {
         return tradecode;
@@ -698,11 +618,9 @@ public class JOBCARD {
 
     /**
      * Sets the value of the tradecode property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *     
+     *
+     * @param value allowed object is
+     *              {@link String }
      */
     public void setTRADECODE(String value) {
         this.tradecode = value;
@@ -710,11 +628,9 @@ public class JOBCARD {
 
     /**
      * Gets the value of the trade property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link String }
-     *     
+     *
+     * @return possible object is
+     * {@link String }
      */
     public String getTRADE() {
         return trade;
@@ -722,11 +638,9 @@ public class JOBCARD {
 
     /**
      * Sets the value of the trade property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *     
+     *
+     * @param value allowed object is
+     *              {@link String }
      */
     public void setTRADE(String value) {
         this.trade = value;
@@ -734,11 +648,9 @@ public class JOBCARD {
 
     /**
      * Gets the value of the pos property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link String }
-     *     
+     *
+     * @return possible object is
+     * {@link String }
      */
     public String getPOS() {
         return pos;
@@ -746,11 +658,9 @@ public class JOBCARD {
 
     /**
      * Sets the value of the pos property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *     
+     *
+     * @param value allowed object is
+     *              {@link String }
      */
     public void setPOS(String value) {
         this.pos = value;
@@ -758,11 +668,9 @@ public class JOBCARD {
 
     /**
      * Gets the value of the manhrs property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link String }
-     *     
+     *
+     * @return possible object is
+     * {@link String }
      */
     public String getMANHRS() {
         return manhrs;
@@ -770,11 +678,9 @@ public class JOBCARD {
 
     /**
      * Sets the value of the manhrs property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *     
+     *
+     * @param value allowed object is
+     *              {@link String }
      */
     public void setMANHRS(String value) {
         this.manhrs = value;
@@ -782,11 +688,9 @@ public class JOBCARD {
 
     /**
      * Gets the value of the wonbr property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link String }
-     *     
+     *
+     * @return possible object is
+     * {@link String }
      */
     public String getWONBR() {
         return wonbr;
@@ -794,11 +698,9 @@ public class JOBCARD {
 
     /**
      * Sets the value of the wonbr property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *     
+     *
+     * @param value allowed object is
+     *              {@link String }
      */
     public void setWONBR(String value) {
         this.wonbr = value;
@@ -806,11 +708,9 @@ public class JOBCARD {
 
     /**
      * Gets the value of the language property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link String }
-     *     
+     *
+     * @return possible object is
+     * {@link String }
      */
     public String getLANGUAGE() {
         return language;
@@ -818,11 +718,9 @@ public class JOBCARD {
 
     /**
      * Sets the value of the language property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *     
+     *
+     * @param value allowed object is
+     *              {@link String }
      */
     public void setLANGUAGE(String value) {
         this.language = value;
@@ -830,11 +728,9 @@ public class JOBCARD {
 
     /**
      * Gets the value of the crewsize property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link String }
-     *     
+     *
+     * @return possible object is
+     * {@link String }
      */
     public String getCREWSIZE() {
         return crewsize;
@@ -842,11 +738,9 @@ public class JOBCARD {
 
     /**
      * Sets the value of the crewsize property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *     
+     *
+     * @param value allowed object is
+     *              {@link String }
      */
     public void setCREWSIZE(String value) {
         this.crewsize = value;
@@ -854,11 +748,9 @@ public class JOBCARD {
 
     /**
      * Gets the value of the duration property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link String }
-     *     
+     *
+     * @return possible object is
+     * {@link String }
      */
     public String getDURATION() {
         return duration;
@@ -866,11 +758,9 @@ public class JOBCARD {
 
     /**
      * Sets the value of the duration property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *     
+     *
+     * @param value allowed object is
+     *              {@link String }
      */
     public void setDURATION(String value) {
         this.duration = value;
@@ -878,11 +768,9 @@ public class JOBCARD {
 
     /**
      * Gets the value of the interval property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link String }
-     *     
+     *
+     * @return possible object is
+     * {@link String }
      */
     public String getINTERVAL() {
         return interval;
@@ -890,11 +778,9 @@ public class JOBCARD {
 
     /**
      * Sets the value of the interval property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *     
+     *
+     * @param value allowed object is
+     *              {@link String }
      */
     public void setINTERVAL(String value) {
         this.interval = value;
@@ -902,11 +788,9 @@ public class JOBCARD {
 
     /**
      * Gets the value of the hardtime property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link String }
-     *     
+     *
+     * @return possible object is
+     * {@link String }
      */
     public String getHARDTIME() {
         return hardtime;
@@ -914,11 +798,9 @@ public class JOBCARD {
 
     /**
      * Sets the value of the hardtime property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *     
+     *
+     * @param value allowed object is
+     *              {@link String }
      */
     public void setHARDTIME(String value) {
         this.hardtime = value;
@@ -926,11 +808,9 @@ public class JOBCARD {
 
     /**
      * Gets the value of the dimension property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link String }
-     *     
+     *
+     * @return possible object is
+     * {@link String }
      */
     public String getDIMENSION() {
         return dimension;
@@ -938,11 +818,9 @@ public class JOBCARD {
 
     /**
      * Sets the value of the dimension property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *     
+     *
+     * @param value allowed object is
+     *              {@link String }
      */
     public void setDIMENSION(String value) {
         this.dimension = value;
@@ -950,11 +828,9 @@ public class JOBCARD {
 
     /**
      * Gets the value of the opportunity property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link String }
-     *     
+     *
+     * @return possible object is
+     * {@link String }
      */
     public String getOPPORTUNITY() {
         return opportunity;
@@ -962,11 +838,9 @@ public class JOBCARD {
 
     /**
      * Sets the value of the opportunity property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *     
+     *
+     * @param value allowed object is
+     *              {@link String }
      */
     public void setOPPORTUNITY(String value) {
         this.opportunity = value;
@@ -974,11 +848,9 @@ public class JOBCARD {
 
     /**
      * Gets the value of the type property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link String }
-     *     
+     *
+     * @return possible object is
+     * {@link String }
      */
     public String getTYPE() {
         return type;
@@ -986,18 +858,13 @@ public class JOBCARD {
 
     /**
      * Sets the value of the type property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *     
+     *
+     * @param value allowed object is
+     *              {@link String }
      */
     public void setTYPE(String value) {
         this.type = value;
     }
-
-
-
 
 
 }

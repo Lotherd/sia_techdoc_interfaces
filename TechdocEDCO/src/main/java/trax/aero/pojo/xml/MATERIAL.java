@@ -8,9 +8,9 @@ import javax.xml.bind.annotation.XmlType;
 
 /**
  * <p>Java class for anonymous complex type.
- * 
+ *
  * <p>The following schema fragment specifies the expected content contained within this class.
- * 
+ *
  * <pre>
  * &lt;complexType>
  *   &lt;complexContent>
@@ -23,8 +23,6 @@ import javax.xml.bind.annotation.XmlType;
  *   &lt;/complexContent>
  * &lt;/complexType>
  * </pre>
- * 
- * 
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "")
@@ -39,7 +37,7 @@ public class MATERIAL {
     protected String qty;
     @XmlAttribute(name = "UNIT")
     protected String unit;
-    
+
     @XmlAttribute(name = "RSNUM")
     protected String rsnum;
     @XmlAttribute(name = "RSPOS")
@@ -47,25 +45,25 @@ public class MATERIAL {
 
     public String getRsnum() {
         return rsnum;
-    }  
+    }
+
     public void setRsnum(String value) {
         this.rsnum = value;
     }
-    
+
     public String getRspos() {
         return rspos;
-    }  
+    }
+
     public void setRspos(String value) {
         this.rspos = value;
     }
-    
+
     /**
      * Gets the value of the mpnnumber property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link String }
-     *     
+     *
+     * @return possible object is
+     * {@link String }
      */
     public String getMPNNUMBER() {
         return mpnnumber;
@@ -73,11 +71,9 @@ public class MATERIAL {
 
     /**
      * Sets the value of the mpnnumber property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *     
+     *
+     * @param value allowed object is
+     *              {@link String }
      */
     public void setMPNNUMBER(String value) {
         this.mpnnumber = value;
@@ -85,11 +81,9 @@ public class MATERIAL {
 
     /**
      * Gets the value of the desc property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link String }
-     *     
+     *
+     * @return possible object is
+     * {@link String }
      */
     public String getDESC() {
         return desc;
@@ -97,11 +91,9 @@ public class MATERIAL {
 
     /**
      * Sets the value of the desc property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *     
+     *
+     * @param value allowed object is
+     *              {@link String }
      */
     public void setDESC(String value) {
         this.desc = value;
@@ -109,11 +101,9 @@ public class MATERIAL {
 
     /**
      * Gets the value of the qty property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link String }
-     *     
+     *
+     * @return possible object is
+     * {@link String }
      */
     public String getQTY() {
         return qty;
@@ -121,11 +111,9 @@ public class MATERIAL {
 
     /**
      * Sets the value of the qty property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *     
+     *
+     * @param value allowed object is
+     *              {@link String }
      */
     public void setQTY(String value) {
         this.qty = value;
@@ -133,11 +121,9 @@ public class MATERIAL {
 
     /**
      * Gets the value of the unit property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link String }
-     *     
+     *
+     * @return possible object is
+     * {@link String }
      */
     public String getUNIT() {
         return unit;
@@ -145,16 +131,13 @@ public class MATERIAL {
 
     /**
      * Sets the value of the unit property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *     
+     *
+     * @param value allowed object is
+     *              {@link String }
      */
     public void setUNIT(String value) {
         this.unit = value;
     }
-
 
 
 }

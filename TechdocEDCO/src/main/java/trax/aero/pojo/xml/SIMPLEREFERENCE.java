@@ -7,9 +7,9 @@ import javax.xml.bind.annotation.XmlType;
 
 /**
  * <p>Java class for anonymous complex type.
- * 
+ *
  * <p>The following schema fragment specifies the expected content contained within this class.
- * 
+ *
  * <pre>
  * &lt;complexType>
  *   &lt;complexContent>
@@ -20,8 +20,6 @@ import javax.xml.bind.annotation.XmlType;
  *   &lt;/complexContent>
  * &lt;/complexType>
  * </pre>
- * 
- * 
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "")
@@ -35,11 +33,9 @@ public class SIMPLEREFERENCE {
 
     /**
      * Gets the value of the referencename property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link String }
-     *     
+     *
+     * @return possible object is
+     * {@link String }
      */
     public String getREFERENCENAME() {
         return referencename;
@@ -47,11 +43,9 @@ public class SIMPLEREFERENCE {
 
     /**
      * Sets the value of the referencename property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *     
+     *
+     * @param value allowed object is
+     *              {@link String }
      */
     public void setREFERENCENAME(String value) {
         this.referencename = value;
@@ -59,11 +53,9 @@ public class SIMPLEREFERENCE {
 
     /**
      * Gets the value of the reftext property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link String }
-     *     
+     *
+     * @return possible object is
+     * {@link String }
      */
     public String getREFTEXT() {
         return reftext;
@@ -71,16 +63,13 @@ public class SIMPLEREFERENCE {
 
     /**
      * Sets the value of the reftext property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *     
+     *
+     * @param value allowed object is
+     *              {@link String }
      */
     public void setREFTEXT(String value) {
         this.reftext = value;
     }
-
 
 
 }

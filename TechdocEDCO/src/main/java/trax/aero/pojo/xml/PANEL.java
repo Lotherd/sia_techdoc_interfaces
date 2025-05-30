@@ -9,9 +9,9 @@ import javax.xml.bind.annotation.XmlType;
 
 /**
  * <p>Java class for anonymous complex type.
- * 
+ *
  * <p>The following schema fragment specifies the expected content contained within this class.
- * 
+ *
  * <pre>
  * &lt;complexType>
  *   &lt;complexContent>
@@ -25,12 +25,10 @@ import javax.xml.bind.annotation.XmlType;
  *   &lt;/complexContent>
  * &lt;/complexType>
  * </pre>
- * 
- * 
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "", propOrder = {
-    "paneltext"
+        "paneltext"
 })
 public class PANEL {
 
@@ -44,11 +42,9 @@ public class PANEL {
 
     /**
      * Gets the value of the paneltext property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link String }
-     *     
+     *
+     * @return possible object is
+     * {@link String }
      */
     public String getPANELTEXT() {
         return paneltext;
@@ -56,11 +52,9 @@ public class PANEL {
 
     /**
      * Sets the value of the paneltext property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *     
+     *
+     * @param value allowed object is
+     *              {@link String }
      */
     public void setPANELTEXT(String value) {
         this.paneltext = value;
@@ -68,11 +62,9 @@ public class PANEL {
 
     /**
      * Gets the value of the panelnbr property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link String }
-     *     
+     *
+     * @return possible object is
+     * {@link String }
      */
     public String getPANELNBR() {
         return panelnbr;
@@ -80,11 +72,9 @@ public class PANEL {
 
     /**
      * Sets the value of the panelnbr property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *     
+     *
+     * @param value allowed object is
+     *              {@link String }
      */
     public void setPANELNBR(String value) {
         this.panelnbr = value;
@@ -92,11 +82,9 @@ public class PANEL {
 
     /**
      * Gets the value of the panelstate property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link String }
-     *     
+     *
+     * @return possible object is
+     * {@link String }
      */
     public String getPANELSTATE() {
         return panelstate;
@@ -104,16 +92,13 @@ public class PANEL {
 
     /**
      * Sets the value of the panelstate property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *     
+     *
+     * @param value allowed object is
+     *              {@link String }
      */
     public void setPANELSTATE(String value) {
         this.panelstate = value;
     }
-
 
 
 }

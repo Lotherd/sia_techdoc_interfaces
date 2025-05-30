@@ -353,7 +353,7 @@ public class ModelData implements IModelData {
             }
             sendPrintStatusAcknowledgement(input, "P", "SUCCESSFULLY PRINTED");
         } catch (Exception e) {
-        	sendPrintStatusAcknowledgement(input, "E", "ERROR " + e.getMessage());
+            sendPrintStatusAcknowledgement(input, "E", "ERROR " + e.getMessage());
             date = filterADDATTR(input.getEFFECTIVITY().getJOBCARD().getJOBI().getPLI().getADDATTR(), "IDOC-DATE");
             revision = input.getEFFECTIVITY().getJOBCARD().getWPNBR();
             time = filterADDATTR(input.getEFFECTIVITY().getJOBCARD().getJOBI().getPLI().getADDATTR(), "IDOC-TIME");
@@ -1002,10 +1002,10 @@ public class ModelData implements IModelData {
 
         //TD ENGINE-POS
         wo.setTdEnginePos(input.getEFFECTIVITY().getJOBCARD().getENGINEPOS());
-       
+
         //TD BUSR06
-       wo.setTdApuSn(filterADDATTR(jc.getJOBI().getPLI().getADDATTR(), "BUSR06"));
-        
+        wo.setTdApuSn(filterADDATTR(jc.getJOBI().getPLI().getADDATTR(), "BUSR06"));
+
         Logger.info("INSERTING TEMP WO: " + wo.getWo());
 
         insertData(wo);
@@ -1620,42 +1620,39 @@ public class ModelData implements IModelData {
         Wo parent = em.find(Wo.class, w.getWo());
 
         for (WoTaskCard card : parent.getWoTaskCards()) {
-            if (card.getTaskCardCategory().equalsIgnoreCase("SI-B")) {
+            //Priority
+            card.setPlanningPriority(filterADDATTR(input.getEFFECTIVITY().getJOBCARD().getJOBI().getPLI().getADDATTR(), "PRIORITY"));
 
-                //Priority
-                card.setPlanningPriority(filterADDATTR(input.getEFFECTIVITY().getJOBCARD().getJOBI().getPLI().getADDATTR(), "PRIORITY"));
+            //REV NO
+            card.setTdRevision(filterADDATTR(input.getEFFECTIVITY().getJOBCARD().getJOBI().getPLI().getADDATTR(), "LATEST-REVISION"));
 
-                //REV NO
-                card.setTdRevision(filterADDATTR(input.getEFFECTIVITY().getJOBCARD().getJOBI().getPLI().getADDATTR(), "LATEST-REVISION"));
+            //REV Date
+            card.setRiiDate(convertStringToDate(filterADDATTR(input.getEFFECTIVITY().getJOBCARD().getJOBI().getPLI().getADDATTR(), "LATEST-REVISION-DATE")));
 
-                //REV Date
-                card.setRiiDate(convertStringToDate(filterADDATTR(input.getEFFECTIVITY().getJOBCARD().getJOBI().getPLI().getADDATTR(), "LATEST-REVISION-DATE")));
+            //Date of task
+            card.setInspectedDate(convertStringToDate(input.getEFFECTIVITY().getJOBCARD().getWPDATE()));
 
-                //Date of task
-                card.setInspectedDate(convertStringToDate(input.getEFFECTIVITY().getJOBCARD().getWPDATE()));
+            //TITLE
+            card.setTaskCardDescription(input.getEFFECTIVITY().getJOBCARD().getJCTITLE());
 
-                //TITLE
-                card.setTaskCardDescription(input.getEFFECTIVITY().getJOBCARD().getJCTITLE());
+            card.setInterfaceTransferredDate(new Date());
 
-                card.setInterfaceTransferredDate(new Date());
+            //ISSUE-NBR
+            card.setTdIssueNbr(input.getEFFECTIVITY().getJOBCARD().getISSUENBR());
 
-                //ISSUE-NBR
-                card.setTdIssueNbr(input.getEFFECTIVITY().getJOBCARD().getISSUENBR());
+            //ISSUE-DATE
+            card.setTdIssueDate(input.getEFFECTIVITY().getJOBCARD().getISSUEDATE());
 
-                //ISSUE-DATE
-                card.setTdIssueDate(input.getEFFECTIVITY().getJOBCARD().getISSUEDATE());
+            //Tradelbl
+            card.setTdTradeIbl(filterADDATTR(input.getEFFECTIVITY().getJOBCARD().getJOBI().getPLI().getADDATTR(), "BUSR05")
+                    + " " + input.getEFFECTIVITY().getJOBCARD().getTRADE());
 
-                //Tradelbl
-                card.setTdTradeIbl(filterADDATTR(input.getEFFECTIVITY().getJOBCARD().getJOBI().getPLI().getADDATTR(), "BUSR05")
-                        + " " + input.getEFFECTIVITY().getJOBCARD().getTRADE());
-
-                //TASK NO
-                card.setTdSvo(filterADDATTR(input.getEFFECTIVITY().getJOBCARD().getJOBI().getPLI().getADDATTR(), "TASK-NBR"));
-                insertData(card);
-                for (WoTaskCardItem item : card.getWoTaskCardItems()) {
-                    item.setPhase(input.getEFFECTIVITY().getJOBCARD().getTRADE());
-                    insertData(item);
-                }
+            //TASK NO
+            card.setTdSvo(filterADDATTR(input.getEFFECTIVITY().getJOBCARD().getJOBI().getPLI().getADDATTR(), "TASK-NBR"));
+            insertData(card);
+            for (WoTaskCardItem item : card.getWoTaskCardItems()) {
+                item.setPhase(input.getEFFECTIVITY().getJOBCARD().getTRADE());
+                insertData(item);
             }
         }
 

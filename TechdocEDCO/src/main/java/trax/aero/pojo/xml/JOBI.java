@@ -11,9 +11,9 @@ import javax.xml.bind.annotation.XmlType;
 
 /**
  * <p>Java class for anonymous complex type.
- * 
+ *
  * <p>The following schema fragment specifies the expected content contained within this class.
- * 
+ *
  * <pre>
  * &lt;complexType>
  *   &lt;complexContent>
@@ -115,17 +115,14 @@ import javax.xml.bind.annotation.XmlType;
  *   &lt;/complexContent>
  * &lt;/complexType>
  * </pre>
- * 
- * 
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "", propOrder = {
-    "panel",
-    "pli"
+        "panel",
+        "pli"
 })
 
 public class JOBI {
-	
 
 
     @XmlElement(name = "PANEL")
@@ -149,25 +146,23 @@ public class JOBI {
 
     /**
      * Gets the value of the panel property.
-     * 
+     *
      * <p>
      * This accessor method returns a reference to the live list,
      * not a snapshot. Therefore any modification you make to the
      * returned list will be present inside the JAXB object.
      * This is why there is not a <CODE>set</CODE> method for the panel property.
-     * 
+     *
      * <p>
      * For example, to add a new item, do as follows:
      * <pre>
      *    getPANEL().add(newItem);
      * </pre>
-     * 
-     * 
+     *
+     *
      * <p>
      * Objects of the following type(s) are allowed in the list
      * {@link PANEL }
-     * 
-     * 
      */
     public List<PANEL> getPANEL() {
         if (panel == null) {
@@ -178,11 +173,9 @@ public class JOBI {
 
     /**
      * Gets the value of the pli property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link PLI }
-     *     
+     *
+     * @return possible object is
+     * {@link PLI }
      */
     public PLI getPLI() {
         return pli;
@@ -190,11 +183,9 @@ public class JOBI {
 
     /**
      * Sets the value of the pli property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link PLI }
-     *     
+     *
+     * @param value allowed object is
+     *              {@link PLI }
      */
     public void setPLI(PLI value) {
         this.pli = value;
@@ -202,11 +193,9 @@ public class JOBI {
 
     /**
      * Gets the value of the jobinbr property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link String }
-     *     
+     *
+     * @return possible object is
+     * {@link String }
      */
     public String getJOBINBR() {
         return jobinbr;
@@ -214,11 +203,9 @@ public class JOBI {
 
     /**
      * Sets the value of the jobinbr property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *     
+     *
+     * @param value allowed object is
+     *              {@link String }
      */
     public void setJOBINBR(String value) {
         this.jobinbr = value;
@@ -226,11 +213,9 @@ public class JOBI {
 
     /**
      * Gets the value of the jobititle property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link String }
-     *     
+     *
+     * @return possible object is
+     * {@link String }
      */
     public String getJOBITITLE() {
         return jobititle;
@@ -238,11 +223,9 @@ public class JOBI {
 
     /**
      * Sets the value of the jobititle property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *     
+     *
+     * @param value allowed object is
+     *              {@link String }
      */
     public void setJOBITITLE(String value) {
         this.jobititle = value;
@@ -250,11 +233,9 @@ public class JOBI {
 
     /**
      * Gets the value of the language property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link String }
-     *     
+     *
+     * @return possible object is
+     * {@link String }
      */
     public String getLANGUAGE() {
         return language;
@@ -262,11 +243,9 @@ public class JOBI {
 
     /**
      * Sets the value of the language property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *     
+     *
+     * @param value allowed object is
+     *              {@link String }
      */
     public void setLANGUAGE(String value) {
         this.language = value;
@@ -274,11 +253,9 @@ public class JOBI {
 
     /**
      * Gets the value of the zone property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link String }
-     *     
+     *
+     * @return possible object is
+     * {@link String }
      */
     public String getZONE() {
         return zone;
@@ -286,11 +263,9 @@ public class JOBI {
 
     /**
      * Sets the value of the zone property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *     
+     *
+     * @param value allowed object is
+     *              {@link String }
      */
     public void setZONE(String value) {
         this.zone = value;
@@ -298,11 +273,9 @@ public class JOBI {
 
     /**
      * Gets the value of the interval property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link String }
-     *     
+     *
+     * @return possible object is
+     * {@link String }
      */
     public String getINTERVAL() {
         return interval;
@@ -310,11 +283,9 @@ public class JOBI {
 
     /**
      * Sets the value of the interval property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *     
+     *
+     * @param value allowed object is
+     *              {@link String }
      */
     public void setINTERVAL(String value) {
         this.interval = value;
@@ -322,11 +293,9 @@ public class JOBI {
 
     /**
      * Gets the value of the hardtime property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link String }
-     *     
+     *
+     * @return possible object is
+     * {@link String }
      */
     public String getHARDTIME() {
         return hardtime;
@@ -334,11 +303,9 @@ public class JOBI {
 
     /**
      * Sets the value of the hardtime property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *     
+     *
+     * @param value allowed object is
+     *              {@link String }
      */
     public void setHARDTIME(String value) {
         this.hardtime = value;
@@ -346,11 +313,9 @@ public class JOBI {
 
     /**
      * Gets the value of the dimension property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link String }
-     *     
+     *
+     * @return possible object is
+     * {@link String }
      */
     public String getDIMENSION() {
         return dimension;
@@ -358,21 +323,13 @@ public class JOBI {
 
     /**
      * Sets the value of the dimension property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *     
+     *
+     * @param value allowed object is
+     *              {@link String }
      */
     public void setDIMENSION(String value) {
         this.dimension = value;
     }
-
-
-
-
-
-
 
 
 }

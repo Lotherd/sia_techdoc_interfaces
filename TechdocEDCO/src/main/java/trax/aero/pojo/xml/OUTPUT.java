@@ -17,9 +17,9 @@ import javax.xml.bind.annotation.XmlType;
 
 /**
  * <p>Java class for OUTPUT complex type.
- * 
+ *
  * <p>The following schema fragment specifies the expected content contained within this class.
- * 
+ *
  * <pre>
  * &lt;complexType name="OUTPUT">
  *   &lt;complexContent>
@@ -196,14 +196,12 @@ import javax.xml.bind.annotation.XmlType;
  *   &lt;/complexContent>
  * &lt;/complexType>
  * </pre>
- * 
- * 
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "OUTPUT", propOrder = {
-    "model",
-    "filename",
-    "attachment"
+        "model",
+        "filename",
+        "attachment"
 })
 @XmlRootElement(name = "OUTPUT")
 public class OUTPUT {
@@ -212,17 +210,15 @@ public class OUTPUT {
     protected MODEL model;
     @XmlElement(name = "FILENAME")
     protected String filename;
-    
+
     @XmlElement(name = "ATTACHMENT")
     private ATTACHMENT attachment;
 
     /**
      * Gets the value of the model property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link MODEL }
-     *     
+     *
+     * @return possible object is
+     * {@link MODEL }
      */
     public MODEL getMODEL() {
         return model;
@@ -230,11 +226,9 @@ public class OUTPUT {
 
     /**
      * Sets the value of the model property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link MODEL }
-     *     
+     *
+     * @param value allowed object is
+     *              {@link MODEL }
      */
     public void setMODEL(MODEL value) {
         this.model = value;
@@ -242,11 +236,9 @@ public class OUTPUT {
 
     /**
      * Gets the value of the filename property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link String }
-     *     
+     *
+     * @return possible object is
+     * {@link String }
      */
     public String getFILENAME() {
         return filename;
@@ -254,26 +246,21 @@ public class OUTPUT {
 
     /**
      * Sets the value of the filename property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *     
+     *
+     * @param value allowed object is
+     *              {@link String }
      */
     public void setFILENAME(String value) {
         this.filename = value;
     }
 
-	public ATTACHMENT getAttachment() {
-		return attachment;
-	}
+    public ATTACHMENT getAttachment() {
+        return attachment;
+    }
 
-	public void setAttachment(ATTACHMENT attachment) {
-		this.attachment = attachment;
-	}
-
-
-    
+    public void setAttachment(ATTACHMENT attachment) {
+        this.attachment = attachment;
+    }
 
 
 }

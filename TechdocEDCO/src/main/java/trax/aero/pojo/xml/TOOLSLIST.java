@@ -8,9 +8,9 @@ import javax.xml.bind.annotation.XmlAccessType;
 
 /**
  * <p>Java class for anonymous complex type.
- * 
+ *
  * <p>The following schema fragment specifies the expected content contained within this class.
- * 
+ *
  * <pre>
  * &lt;complexType>
  *   &lt;complexContent>
@@ -23,13 +23,10 @@ import javax.xml.bind.annotation.XmlAccessType;
  *   &lt;/complexContent>
  * &lt;/complexType>
  * </pre>
- * 
- * 
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "")
 public class TOOLSLIST {
-	
 
 
     @XmlAttribute(name = "PRT-NUMBER")
@@ -43,11 +40,9 @@ public class TOOLSLIST {
 
     /**
      * Gets the value of the prtnumber property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link String }
-     *     
+     *
+     * @return possible object is
+     * {@link String }
      */
     public String getPRTNUMBER() {
         return prtnumber;
@@ -55,11 +50,9 @@ public class TOOLSLIST {
 
     /**
      * Sets the value of the prtnumber property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *     
+     *
+     * @param value allowed object is
+     *              {@link String }
      */
     public void setPRTNUMBER(String value) {
         this.prtnumber = value;
@@ -67,11 +60,9 @@ public class TOOLSLIST {
 
     /**
      * Gets the value of the desc property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link String }
-     *     
+     *
+     * @return possible object is
+     * {@link String }
      */
     public String getDESC() {
         return desc;
@@ -79,11 +70,9 @@ public class TOOLSLIST {
 
     /**
      * Sets the value of the desc property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *     
+     *
+     * @param value allowed object is
+     *              {@link String }
      */
     public void setDESC(String value) {
         this.desc = value;
@@ -91,11 +80,9 @@ public class TOOLSLIST {
 
     /**
      * Gets the value of the qty property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link String }
-     *     
+     *
+     * @return possible object is
+     * {@link String }
      */
     public String getQTY() {
         return qty;
@@ -103,11 +90,9 @@ public class TOOLSLIST {
 
     /**
      * Sets the value of the qty property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *     
+     *
+     * @param value allowed object is
+     *              {@link String }
      */
     public void setQTY(String value) {
         this.qty = value;
@@ -115,11 +100,9 @@ public class TOOLSLIST {
 
     /**
      * Gets the value of the unit property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link String }
-     *     
+     *
+     * @return possible object is
+     * {@link String }
      */
     public String getUNIT() {
         return unit;
@@ -127,16 +110,13 @@ public class TOOLSLIST {
 
     /**
      * Sets the value of the unit property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *     
+     *
+     * @param value allowed object is
+     *              {@link String }
      */
     public void setUNIT(String value) {
         this.unit = value;
     }
-
 
 
 }

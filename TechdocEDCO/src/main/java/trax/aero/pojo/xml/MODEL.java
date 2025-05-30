@@ -6,11 +6,12 @@ import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
+
 /**
  * <p>Java class for anonymous complex type.
- * 
+ *
  * <p>The following schema fragment specifies the expected content contained within this class.
- * 
+ *
  * <pre>
  * &lt;complexType>
  *   &lt;complexContent>
@@ -176,16 +177,13 @@ import javax.xml.bind.annotation.XmlType;
  *   &lt;/complexContent>
  * &lt;/complexType>
  * </pre>
- * 
- * 
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "", propOrder = {
-    "effectivity"
+        "effectivity"
 })
 @XmlRootElement(name = "MODEL")
 public class MODEL {
-
 
 
     @XmlElement(name = "EFFECTIVITY")
@@ -195,11 +193,9 @@ public class MODEL {
 
     /**
      * Gets the value of the effectivity property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link EFFECTIVITY }
-     *     
+     *
+     * @return possible object is
+     * {@link EFFECTIVITY }
      */
     public EFFECTIVITY getEFFECTIVITY() {
         return effectivity;
@@ -207,11 +203,9 @@ public class MODEL {
 
     /**
      * Sets the value of the effectivity property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link EFFECTIVITY }
-     *     
+     *
+     * @param value allowed object is
+     *              {@link EFFECTIVITY }
      */
     public void setEFFECTIVITY(EFFECTIVITY value) {
         this.effectivity = value;
@@ -219,11 +213,9 @@ public class MODEL {
 
     /**
      * Gets the value of the modelnbr property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link String }
-     *     
+     *
+     * @return possible object is
+     * {@link String }
      */
     public String getMODELNBR() {
         return modelnbr;
@@ -231,18 +223,13 @@ public class MODEL {
 
     /**
      * Sets the value of the modelnbr property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *     
+     *
+     * @param value allowed object is
+     *              {@link String }
      */
     public void setMODELNBR(String value) {
         this.modelnbr = value;
     }
-
-
-
 
 
 }

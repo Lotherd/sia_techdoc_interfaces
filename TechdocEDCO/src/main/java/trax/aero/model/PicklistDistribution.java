@@ -8,383 +8,382 @@ import java.util.Date;
 
 /**
  * The persistent class for the PICKLIST_DISTRIBUTION database table.
- * 
  */
 @Entity
-@Table(name="PICKLIST_DISTRIBUTION")
-@NamedQuery(name="PicklistDistribution.findAll", query="SELECT p FROM PicklistDistribution p")
+@Table(name = "PICKLIST_DISTRIBUTION")
+@NamedQuery(name = "PicklistDistribution.findAll", query = "SELECT p FROM PicklistDistribution p")
 public class PicklistDistribution implements Serializable {
-	private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 1L;
 
-	@EmbeddedId
-	private PicklistDistributionPK id;
+    @EmbeddedId
+    private PicklistDistributionPK id;
 
-	@Column(name="AUTOMATED_WAREHOUSE_ISSUED")
-	private String automatedWarehouseIssued;
+    @Column(name = "AUTOMATED_WAREHOUSE_ISSUED")
+    private String automatedWarehouseIssued;
 
-	private BigDecimal batch;
+    private BigDecimal batch;
 
-	private String condition;
+    private String condition;
 
-	@Column(name="CREATED_BY")
-	private String createdBy;
+    @Column(name = "CREATED_BY")
+    private String createdBy;
 
-	@Column(name="CREATED_DATE")
-	private Date createdDate;
+    @Column(name = "CREATED_DATE")
+    private Date createdDate;
 
-	@Column(name="DATE_PICKED")
-	private Date datePicked;
+    @Column(name = "DATE_PICKED")
+    private Date datePicked;
 
-	@Column(name="EMOBILITY_PICKED_BY")
-	private String emobilityPickedBy;
+    @Column(name = "EMOBILITY_PICKED_BY")
+    private String emobilityPickedBy;
 
-	@Column(name="EMOBILITY_PICKED_DATE")
-	private Date emobilityPickedDate;
+    @Column(name = "EMOBILITY_PICKED_DATE")
+    private Date emobilityPickedDate;
 
-	@Column(name="EMOBILITY_PICKED_FLAG")
-	private String emobilityPickedFlag;
+    @Column(name = "EMOBILITY_PICKED_FLAG")
+    private String emobilityPickedFlag;
 
-	@Column(name="INTERFACE_MODIFIED_DATE")
-	private Date interfaceModifiedDate;
+    @Column(name = "INTERFACE_MODIFIED_DATE")
+    private Date interfaceModifiedDate;
 
-	@Column(name="MODIFIED_BY")
-	private String modifiedBy;
+    @Column(name = "MODIFIED_BY")
+    private String modifiedBy;
 
-	@Column(name="MODIFIED_DATE")
-	private Date modifiedDate;
+    @Column(name = "MODIFIED_DATE")
+    private Date modifiedDate;
 
-	private BigDecimal notes;
+    private BigDecimal notes;
 
-	@Column(name="ORDER_LINE")
-	private BigDecimal orderLine;
+    @Column(name = "ORDER_LINE")
+    private BigDecimal orderLine;
 
-	@Column(name="ORIGINAL_PICKLIST")
-	private BigDecimal originalPicklist;
+    @Column(name = "ORIGINAL_PICKLIST")
+    private BigDecimal originalPicklist;
 
-	@Column(name="PICKED_BY")
-	private String pickedBy;
+    @Column(name = "PICKED_BY")
+    private String pickedBy;
 
-	@Column(name="PICKED_DATE")
-	private Date pickedDate;
+    @Column(name = "PICKED_DATE")
+    private Date pickedDate;
 
-	@Column(name="PICKED_FLAG")
-	private String pickedFlag;
+    @Column(name = "PICKED_FLAG")
+    private String pickedFlag;
 
-	private String pn;
+    private String pn;
 
-	@Column(name="PRINT_TAG")
-	private String printTag;
+    @Column(name = "PRINT_TAG")
+    private String printTag;
 
-	private BigDecimal qty;
+    private BigDecimal qty;
 
-	@Column(name="QTY_PICKED")
-	private BigDecimal qtyPicked;
+    @Column(name = "QTY_PICKED")
+    private BigDecimal qtyPicked;
 
-	@Column(name="READY_FLAG")
-	private String readyFlag;
+    @Column(name = "READY_FLAG")
+    private String readyFlag;
 
-	private BigDecimal requisition;
+    private BigDecimal requisition;
 
-	@Column(name="REQUISITION_LINE")
-	private BigDecimal requisitionLine;
+    @Column(name = "REQUISITION_LINE")
+    private BigDecimal requisitionLine;
 
-	@Column(name="RO_FOLLOWING_ID")
-	private BigDecimal roFollowingId;
+    @Column(name = "RO_FOLLOWING_ID")
+    private BigDecimal roFollowingId;
 
-	@Column(name="SCAN_BATCH")
-	private BigDecimal scanBatch;
-	
-	@Column(name="EXTERNAL_CUST_RES")
-	private String externalCustRes;
-	
-	@Column(name="EXTERNAL_CUST_RES_ITEM")
-	private String externalCustResItem;
+    @Column(name = "SCAN_BATCH")
+    private BigDecimal scanBatch;
 
-	private String sn;
+    @Column(name = "EXTERNAL_CUST_RES")
+    private String externalCustRes;
 
-	private String status;
+    @Column(name = "EXTERNAL_CUST_RES_ITEM")
+    private String externalCustResItem;
 
-	@Column(name="TASK_CARD")
-	private String taskCard;
+    private String sn;
 
-	//bi-directional many-to-one association to PicklistHeader
-	@ManyToOne
-	@JoinColumn(name="PICKLIST" , insertable=false, updatable=false)
-	private PicklistHeader picklistHeader;
+    private String status;
 
-	public PicklistDistribution() {
-	}
+    @Column(name = "TASK_CARD")
+    private String taskCard;
 
-	public PicklistDistributionPK getId() {
-		return this.id;
-	}
+    //bi-directional many-to-one association to PicklistHeader
+    @ManyToOne
+    @JoinColumn(name = "PICKLIST", insertable = false, updatable = false)
+    private PicklistHeader picklistHeader;
 
-	public void setId(PicklistDistributionPK id) {
-		this.id = id;
-	}
+    public PicklistDistribution() {
+    }
 
-	public String getAutomatedWarehouseIssued() {
-		return this.automatedWarehouseIssued;
-	}
+    public PicklistDistributionPK getId() {
+        return this.id;
+    }
 
-	public void setAutomatedWarehouseIssued(String automatedWarehouseIssued) {
-		this.automatedWarehouseIssued = automatedWarehouseIssued;
-	}
+    public void setId(PicklistDistributionPK id) {
+        this.id = id;
+    }
 
-	public BigDecimal getBatch() {
-		return this.batch;
-	}
+    public String getAutomatedWarehouseIssued() {
+        return this.automatedWarehouseIssued;
+    }
 
-	public void setBatch(BigDecimal batch) {
-		this.batch = batch;
-	}
+    public void setAutomatedWarehouseIssued(String automatedWarehouseIssued) {
+        this.automatedWarehouseIssued = automatedWarehouseIssued;
+    }
 
-	public String getCondition() {
-		return this.condition;
-	}
+    public BigDecimal getBatch() {
+        return this.batch;
+    }
 
-	public void setCondition(String condition) {
-		this.condition = condition;
-	}
+    public void setBatch(BigDecimal batch) {
+        this.batch = batch;
+    }
 
-	public String getCreatedBy() {
-		return this.createdBy;
-	}
+    public String getCondition() {
+        return this.condition;
+    }
 
-	public void setCreatedBy(String createdBy) {
-		this.createdBy = createdBy;
-	}
+    public void setCondition(String condition) {
+        this.condition = condition;
+    }
 
-	public Date getCreatedDate() {
-		return this.createdDate;
-	}
+    public String getCreatedBy() {
+        return this.createdBy;
+    }
 
-	public void setCreatedDate(Date createdDate) {
-		this.createdDate = createdDate;
-	}
+    public void setCreatedBy(String createdBy) {
+        this.createdBy = createdBy;
+    }
 
-	public Date getDatePicked() {
-		return this.datePicked;
-	}
+    public Date getCreatedDate() {
+        return this.createdDate;
+    }
 
-	public void setDatePicked(Date datePicked) {
-		this.datePicked = datePicked;
-	}
+    public void setCreatedDate(Date createdDate) {
+        this.createdDate = createdDate;
+    }
 
-	public String getEmobilityPickedBy() {
-		return this.emobilityPickedBy;
-	}
+    public Date getDatePicked() {
+        return this.datePicked;
+    }
 
-	public void setEmobilityPickedBy(String emobilityPickedBy) {
-		this.emobilityPickedBy = emobilityPickedBy;
-	}
+    public void setDatePicked(Date datePicked) {
+        this.datePicked = datePicked;
+    }
 
-	public Date getEmobilityPickedDate() {
-		return this.emobilityPickedDate;
-	}
+    public String getEmobilityPickedBy() {
+        return this.emobilityPickedBy;
+    }
 
-	public void setEmobilityPickedDate(Date emobilityPickedDate) {
-		this.emobilityPickedDate = emobilityPickedDate;
-	}
+    public void setEmobilityPickedBy(String emobilityPickedBy) {
+        this.emobilityPickedBy = emobilityPickedBy;
+    }
 
-	public String getEmobilityPickedFlag() {
-		return this.emobilityPickedFlag;
-	}
+    public Date getEmobilityPickedDate() {
+        return this.emobilityPickedDate;
+    }
 
-	public void setEmobilityPickedFlag(String emobilityPickedFlag) {
-		this.emobilityPickedFlag = emobilityPickedFlag;
-	}
+    public void setEmobilityPickedDate(Date emobilityPickedDate) {
+        this.emobilityPickedDate = emobilityPickedDate;
+    }
 
-	public Date getInterfaceModifiedDate() {
-		return this.interfaceModifiedDate;
-	}
+    public String getEmobilityPickedFlag() {
+        return this.emobilityPickedFlag;
+    }
 
-	public void setInterfaceModifiedDate(Date interfaceModifiedDate) {
-		this.interfaceModifiedDate = interfaceModifiedDate;
-	}
+    public void setEmobilityPickedFlag(String emobilityPickedFlag) {
+        this.emobilityPickedFlag = emobilityPickedFlag;
+    }
 
-	public String getModifiedBy() {
-		return this.modifiedBy;
-	}
+    public Date getInterfaceModifiedDate() {
+        return this.interfaceModifiedDate;
+    }
 
-	public void setModifiedBy(String modifiedBy) {
-		this.modifiedBy = modifiedBy;
-	}
+    public void setInterfaceModifiedDate(Date interfaceModifiedDate) {
+        this.interfaceModifiedDate = interfaceModifiedDate;
+    }
 
-	public Date getModifiedDate() {
-		return this.modifiedDate;
-	}
+    public String getModifiedBy() {
+        return this.modifiedBy;
+    }
 
-	public void setModifiedDate(Date modifiedDate) {
-		this.modifiedDate = modifiedDate;
-	}
+    public void setModifiedBy(String modifiedBy) {
+        this.modifiedBy = modifiedBy;
+    }
 
-	public BigDecimal getNotes() {
-		return this.notes;
-	}
+    public Date getModifiedDate() {
+        return this.modifiedDate;
+    }
 
-	public void setNotes(BigDecimal notes) {
-		this.notes = notes;
-	}
+    public void setModifiedDate(Date modifiedDate) {
+        this.modifiedDate = modifiedDate;
+    }
 
-	public BigDecimal getOrderLine() {
-		return this.orderLine;
-	}
+    public BigDecimal getNotes() {
+        return this.notes;
+    }
 
-	public void setOrderLine(BigDecimal orderLine) {
-		this.orderLine = orderLine;
-	}
+    public void setNotes(BigDecimal notes) {
+        this.notes = notes;
+    }
 
-	public BigDecimal getOriginalPicklist() {
-		return this.originalPicklist;
-	}
+    public BigDecimal getOrderLine() {
+        return this.orderLine;
+    }
 
-	public void setOriginalPicklist(BigDecimal originalPicklist) {
-		this.originalPicklist = originalPicklist;
-	}
+    public void setOrderLine(BigDecimal orderLine) {
+        this.orderLine = orderLine;
+    }
 
-	public String getPickedBy() {
-		return this.pickedBy;
-	}
+    public BigDecimal getOriginalPicklist() {
+        return this.originalPicklist;
+    }
 
-	public void setPickedBy(String pickedBy) {
-		this.pickedBy = pickedBy;
-	}
+    public void setOriginalPicklist(BigDecimal originalPicklist) {
+        this.originalPicklist = originalPicklist;
+    }
 
-	public Date getPickedDate() {
-		return this.pickedDate;
-	}
+    public String getPickedBy() {
+        return this.pickedBy;
+    }
 
-	public void setPickedDate(Date pickedDate) {
-		this.pickedDate = pickedDate;
-	}
+    public void setPickedBy(String pickedBy) {
+        this.pickedBy = pickedBy;
+    }
 
-	public String getPickedFlag() {
-		return this.pickedFlag;
-	}
+    public Date getPickedDate() {
+        return this.pickedDate;
+    }
 
-	public void setPickedFlag(String pickedFlag) {
-		this.pickedFlag = pickedFlag;
-	}
+    public void setPickedDate(Date pickedDate) {
+        this.pickedDate = pickedDate;
+    }
 
-	public String getPn() {
-		return this.pn;
-	}
+    public String getPickedFlag() {
+        return this.pickedFlag;
+    }
 
-	public void setPn(String pn) {
-		this.pn = pn;
-	}
+    public void setPickedFlag(String pickedFlag) {
+        this.pickedFlag = pickedFlag;
+    }
 
-	public String getPrintTag() {
-		return this.printTag;
-	}
+    public String getPn() {
+        return this.pn;
+    }
 
-	public void setPrintTag(String printTag) {
-		this.printTag = printTag;
-	}
+    public void setPn(String pn) {
+        this.pn = pn;
+    }
 
-	public BigDecimal getQty() {
-		return this.qty;
-	}
+    public String getPrintTag() {
+        return this.printTag;
+    }
 
-	public void setQty(BigDecimal qty) {
-		this.qty = qty;
-	}
+    public void setPrintTag(String printTag) {
+        this.printTag = printTag;
+    }
 
-	public BigDecimal getQtyPicked() {
-		return this.qtyPicked;
-	}
+    public BigDecimal getQty() {
+        return this.qty;
+    }
 
-	public void setQtyPicked(BigDecimal qtyPicked) {
-		this.qtyPicked = qtyPicked;
-	}
+    public void setQty(BigDecimal qty) {
+        this.qty = qty;
+    }
 
-	public String getReadyFlag() {
-		return this.readyFlag;
-	}
+    public BigDecimal getQtyPicked() {
+        return this.qtyPicked;
+    }
 
-	public void setReadyFlag(String readyFlag) {
-		this.readyFlag = readyFlag;
-	}
+    public void setQtyPicked(BigDecimal qtyPicked) {
+        this.qtyPicked = qtyPicked;
+    }
 
-	public BigDecimal getRequisition() {
-		return this.requisition;
-	}
+    public String getReadyFlag() {
+        return this.readyFlag;
+    }
 
-	public void setRequisition(BigDecimal requisition) {
-		this.requisition = requisition;
-	}
+    public void setReadyFlag(String readyFlag) {
+        this.readyFlag = readyFlag;
+    }
 
-	public BigDecimal getRequisitionLine() {
-		return this.requisitionLine;
-	}
+    public BigDecimal getRequisition() {
+        return this.requisition;
+    }
 
-	public void setRequisitionLine(BigDecimal requisitionLine) {
-		this.requisitionLine = requisitionLine;
-	}
+    public void setRequisition(BigDecimal requisition) {
+        this.requisition = requisition;
+    }
 
-	public BigDecimal getRoFollowingId() {
-		return this.roFollowingId;
-	}
+    public BigDecimal getRequisitionLine() {
+        return this.requisitionLine;
+    }
 
-	public void setRoFollowingId(BigDecimal roFollowingId) {
-		this.roFollowingId = roFollowingId;
-	}
+    public void setRequisitionLine(BigDecimal requisitionLine) {
+        this.requisitionLine = requisitionLine;
+    }
 
-	public BigDecimal getScanBatch() {
-		return this.scanBatch;
-	}
+    public BigDecimal getRoFollowingId() {
+        return this.roFollowingId;
+    }
 
-	public void setScanBatch(BigDecimal scanBatch) {
-		this.scanBatch = scanBatch;
-	}
+    public void setRoFollowingId(BigDecimal roFollowingId) {
+        this.roFollowingId = roFollowingId;
+    }
 
-	public String getSn() {
-		return this.sn;
-	}
+    public BigDecimal getScanBatch() {
+        return this.scanBatch;
+    }
 
-	public void setSn(String sn) {
-		this.sn = sn;
-	}
+    public void setScanBatch(BigDecimal scanBatch) {
+        this.scanBatch = scanBatch;
+    }
 
-	public String getStatus() {
-		return this.status;
-	}
+    public String getSn() {
+        return this.sn;
+    }
 
-	public void setStatus(String status) {
-		this.status = status;
-	}
+    public void setSn(String sn) {
+        this.sn = sn;
+    }
 
-	public String getTaskCard() {
-		return this.taskCard;
-	}
+    public String getStatus() {
+        return this.status;
+    }
 
-	public void setTaskCard(String taskCard) {
-		this.taskCard = taskCard;
-	}
+    public void setStatus(String status) {
+        this.status = status;
+    }
 
-	public PicklistHeader getPicklistHeader() {
-		return this.picklistHeader;
-	}
+    public String getTaskCard() {
+        return this.taskCard;
+    }
 
-	public void setPicklistHeader(PicklistHeader picklistHeader) {
-		this.picklistHeader = picklistHeader;
-	}
+    public void setTaskCard(String taskCard) {
+        this.taskCard = taskCard;
+    }
 
-	public String getExternalCustRes() {
-		return externalCustRes;
-	}
+    public PicklistHeader getPicklistHeader() {
+        return this.picklistHeader;
+    }
 
-	public void setExternalCustRes(String externalCustRes) {
-		this.externalCustRes = externalCustRes;
-	}
+    public void setPicklistHeader(PicklistHeader picklistHeader) {
+        this.picklistHeader = picklistHeader;
+    }
 
-	public String getExternalCustResItem() {
-		return externalCustResItem;
-	}
+    public String getExternalCustRes() {
+        return externalCustRes;
+    }
 
-	public void setExternalCustResItem(String externalCustResItem) {
-		this.externalCustResItem = externalCustResItem;
-	}
+    public void setExternalCustRes(String externalCustRes) {
+        this.externalCustRes = externalCustRes;
+    }
+
+    public String getExternalCustResItem() {
+        return externalCustResItem;
+    }
+
+    public void setExternalCustResItem(String externalCustResItem) {
+        this.externalCustResItem = externalCustResItem;
+    }
 
 }

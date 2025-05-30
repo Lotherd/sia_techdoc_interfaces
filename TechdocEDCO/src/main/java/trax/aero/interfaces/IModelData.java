@@ -20,32 +20,32 @@ import trax.aero.pojo.xml.MODEL;
 
 public interface IModelData {
 
-	public Wo issueToTechDocRequest(MODEL input, String xml) throws Exception;
+    Wo issueToTechDocRequest(MODEL input, String xml) throws Exception;
 
-	public String filterADDATTR(List<ADDATTR> attributes, String filter);
+    String filterADDATTR(List<ADDATTR> attributes, String filter);
 
-	
-	public void sendPrintToOutBound(Print input) throws Exception;
 
-	public Connection getCon();
+    void sendPrintToOutBound(Print input) throws Exception;
 
-	public void sendRequestToPrintServer(MODEL model, String xml, Wo w) throws Exception;
+    Connection getCon();
 
-	public void processBatFile();
+    void sendRequestToPrintServer(MODEL model, String xml, Wo w) throws Exception;
 
-	public Wo createParentWo(BigDecimal COUNT, String wpTitle);
+    void processBatFile();
 
-	public void linkWoToParent(Wo w, Wo parent, BigDecimal count);
-	
-	public boolean lockAvailable(String notificationType);
-	
-	
-	public void lockTable(String notificationType);
-	
-	public void unlockTable(String notificationType);
+    Wo createParentWo(BigDecimal COUNT, String wpTitle);
 
-	public void cleanUpTemp();
+    void linkWoToParent(Wo w, Wo parent, BigDecimal count);
 
-	public void setCountWoToParent(Wo w, Wo parent);
-	
+    boolean lockAvailable(String notificationType);
+
+
+    void lockTable(String notificationType);
+
+    void unlockTable(String notificationType);
+
+    void cleanUpTemp();
+
+    void setCountWoToParent(Wo w, Wo parent);
+
 }

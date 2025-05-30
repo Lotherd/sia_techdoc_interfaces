@@ -8,11 +8,12 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlType;
+
 /**
  * <p>Java class for anonymous complex type.
- * 
+ *
  * <p>The following schema fragment specifies the expected content contained within this class.
- * 
+ *
  * <pre>
  * &lt;complexType>
  *   &lt;complexContent>
@@ -84,20 +85,17 @@ import javax.xml.bind.annotation.XmlType;
  *   &lt;/complexContent>
  * &lt;/complexType>
  * </pre>
- * 
- * 
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "", propOrder = {
-    "plitext",
-    "simplereference",
-    "toolslist",
-    "material",
-    "attachment",
-    "addattr"
+        "plitext",
+        "simplereference",
+        "toolslist",
+        "material",
+        "attachment",
+        "addattr"
 })
 public class PLI {
-	
 
 
     @XmlElement(name = "PLITEXT")
@@ -127,11 +125,9 @@ public class PLI {
 
     /**
      * Gets the value of the plitext property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link String }
-     *     
+     *
+     * @return possible object is
+     * {@link String }
      */
     public String getPLITEXT() {
         return plitext;
@@ -139,11 +135,9 @@ public class PLI {
 
     /**
      * Sets the value of the plitext property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *     
+     *
+     * @param value allowed object is
+     *              {@link String }
      */
     public void setPLITEXT(String value) {
         this.plitext = value;
@@ -151,25 +145,23 @@ public class PLI {
 
     /**
      * Gets the value of the simplereference property.
-     * 
+     *
      * <p>
      * This accessor method returns a reference to the live list,
      * not a snapshot. Therefore any modification you make to the
      * returned list will be present inside the JAXB object.
      * This is why there is not a <CODE>set</CODE> method for the simplereference property.
-     * 
+     *
      * <p>
      * For example, to add a new item, do as follows:
      * <pre>
      *    getSIMPLEREFERENCE().add(newItem);
      * </pre>
-     * 
-     * 
+     *
+     *
      * <p>
      * Objects of the following type(s) are allowed in the list
      * {@link SIMPLEREFERENCE }
-     * 
-     * 
      */
     public List<SIMPLEREFERENCE> getSIMPLEREFERENCE() {
         if (simplereference == null) {
@@ -180,25 +172,23 @@ public class PLI {
 
     /**
      * Gets the value of the toolslist property.
-     * 
+     *
      * <p>
      * This accessor method returns a reference to the live list,
      * not a snapshot. Therefore any modification you make to the
      * returned list will be present inside the JAXB object.
      * This is why there is not a <CODE>set</CODE> method for the toolslist property.
-     * 
+     *
      * <p>
      * For example, to add a new item, do as follows:
      * <pre>
      *    getTOOLSLIST().add(newItem);
      * </pre>
-     * 
-     * 
+     *
+     *
      * <p>
      * Objects of the following type(s) are allowed in the list
      * {@link TOOLSLIST }
-     * 
-     * 
      */
     public List<TOOLSLIST> getTOOLSLIST() {
         if (toolslist == null) {
@@ -209,25 +199,23 @@ public class PLI {
 
     /**
      * Gets the value of the material property.
-     * 
+     *
      * <p>
      * This accessor method returns a reference to the live list,
      * not a snapshot. Therefore any modification you make to the
      * returned list will be present inside the JAXB object.
      * This is why there is not a <CODE>set</CODE> method for the material property.
-     * 
+     *
      * <p>
      * For example, to add a new item, do as follows:
      * <pre>
      *    getMATERIAL().add(newItem);
      * </pre>
-     * 
-     * 
+     *
+     *
      * <p>
      * Objects of the following type(s) are allowed in the list
      * {@link MATERIAL }
-     * 
-     * 
      */
     public List<MATERIAL> getMATERIAL() {
         if (material == null) {
@@ -238,25 +226,23 @@ public class PLI {
 
     /**
      * Gets the value of the attachment property.
-     * 
+     *
      * <p>
      * This accessor method returns a reference to the live list,
      * not a snapshot. Therefore any modification you make to the
      * returned list will be present inside the JAXB object.
      * This is why there is not a <CODE>set</CODE> method for the attachment property.
-     * 
+     *
      * <p>
      * For example, to add a new item, do as follows:
      * <pre>
      *    getATTACHMENT().add(newItem);
      * </pre>
-     * 
-     * 
+     *
+     *
      * <p>
      * Objects of the following type(s) are allowed in the list
      * {@link ATTACHMENT }
-     * 
-     * 
      */
     public List<ATTACHMENT> getATTACHMENT() {
         if (attachment == null) {
@@ -267,25 +253,23 @@ public class PLI {
 
     /**
      * Gets the value of the addattr property.
-     * 
+     *
      * <p>
      * This accessor method returns a reference to the live list,
      * not a snapshot. Therefore any modification you make to the
      * returned list will be present inside the JAXB object.
      * This is why there is not a <CODE>set</CODE> method for the addattr property.
-     * 
+     *
      * <p>
      * For example, to add a new item, do as follows:
      * <pre>
      *    getADDATTR().add(newItem);
      * </pre>
-     * 
-     * 
+     *
+     *
      * <p>
      * Objects of the following type(s) are allowed in the list
      * {@link ADDATTR }
-     * 
-     * 
      */
     public List<ADDATTR> getADDATTR() {
         if (addattr == null) {
@@ -296,11 +280,9 @@ public class PLI {
 
     /**
      * Gets the value of the chapnbr property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link String }
-     *     
+     *
+     * @return possible object is
+     * {@link String }
      */
     public String getCHAPNBR() {
         return chapnbr;
@@ -308,11 +290,9 @@ public class PLI {
 
     /**
      * Sets the value of the chapnbr property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *     
+     *
+     * @param value allowed object is
+     *              {@link String }
      */
     public void setCHAPNBR(String value) {
         this.chapnbr = value;
@@ -320,11 +300,9 @@ public class PLI {
 
     /**
      * Gets the value of the sectnbr property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link String }
-     *     
+     *
+     * @return possible object is
+     * {@link String }
      */
     public String getSECTNBR() {
         return sectnbr;
@@ -332,11 +310,9 @@ public class PLI {
 
     /**
      * Sets the value of the sectnbr property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *     
+     *
+     * @param value allowed object is
+     *              {@link String }
      */
     public void setSECTNBR(String value) {
         this.sectnbr = value;
@@ -344,11 +320,9 @@ public class PLI {
 
     /**
      * Gets the value of the subjnbr property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link String }
-     *     
+     *
+     * @return possible object is
+     * {@link String }
      */
     public String getSUBJNBR() {
         return subjnbr;
@@ -356,11 +330,9 @@ public class PLI {
 
     /**
      * Sets the value of the subjnbr property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *     
+     *
+     * @param value allowed object is
+     *              {@link String }
      */
     public void setSUBJNBR(String value) {
         this.subjnbr = value;
@@ -368,11 +340,9 @@ public class PLI {
 
     /**
      * Gets the value of the plinbr property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link String }
-     *     
+     *
+     * @return possible object is
+     * {@link String }
      */
     public String getPLINBR() {
         return plinbr;
@@ -380,11 +350,9 @@ public class PLI {
 
     /**
      * Sets the value of the plinbr property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *     
+     *
+     * @param value allowed object is
+     *              {@link String }
      */
     public void setPLINBR(String value) {
         this.plinbr = value;
@@ -392,11 +360,9 @@ public class PLI {
 
     /**
      * Gets the value of the skill property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link String }
-     *     
+     *
+     * @return possible object is
+     * {@link String }
      */
     public String getSKILL() {
         return skill;
@@ -404,11 +370,9 @@ public class PLI {
 
     /**
      * Sets the value of the skill property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *     
+     *
+     * @param value allowed object is
+     *              {@link String }
      */
     public void setSKILL(String value) {
         this.skill = value;
@@ -416,11 +380,9 @@ public class PLI {
 
     /**
      * Gets the value of the language property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link String }
-     *     
+     *
+     * @return possible object is
+     * {@link String }
      */
     public String getLANGUAGE() {
         return language;
@@ -428,21 +390,13 @@ public class PLI {
 
     /**
      * Sets the value of the language property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *     
+     *
+     * @param value allowed object is
+     *              {@link String }
      */
     public void setLANGUAGE(String value) {
         this.language = value;
     }
-
-
-   
-
-
-
 
 
 }

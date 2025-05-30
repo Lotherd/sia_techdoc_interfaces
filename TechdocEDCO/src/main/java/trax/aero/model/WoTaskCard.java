@@ -9,832 +9,831 @@ import java.util.List;
 
 /**
  * The persistent class for the WO_TASK_CARD database table.
- * 
  */
 @Entity
-@Table(name="WO_TASK_CARD")
-@NamedQuery(name="WoTaskCard.findAll", query="SELECT w FROM WoTaskCard w")
+@Table(name = "WO_TASK_CARD")
+@NamedQuery(name = "WoTaskCard.findAll", query = "SELECT w FROM WoTaskCard w")
 public class WoTaskCard implements Serializable {
-	private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 1L;
 
-	@EmbeddedId
-	private WoTaskCardPK id;
+    @EmbeddedId
+    private WoTaskCardPK id;
 
-	@Column(name="AC_REWEIGHT")
-	private String acReweight;
+    @Column(name = "AC_REWEIGHT")
+    private String acReweight;
 
-	@Column(name="ADDITION_WORK")
-	private String additionWork;
+    @Column(name = "ADDITION_WORK")
+    private String additionWork;
 
-	@Column(name="AIR_AVIONICS")
-	private String airAvionics;
+    @Column(name = "AIR_AVIONICS")
+    private String airAvionics;
 
-	@Column(name="AIR_ENGINES")
-	private String airEngines;
+    @Column(name = "AIR_ENGINES")
+    private String airEngines;
 
-	@Column(name="AIR_FUEL")
-	private String airFuel;
+    @Column(name = "AIR_FUEL")
+    private String airFuel;
 
-	@Column(name="AIR_GEAR")
-	private String airGear;
-	
-	@Column(name="TD_SVO")
-	private String tdSvo;
-	
-	@Column(name="TD_REVISION")
-	private String tdRevision;
-	
-	@Column(name="TD_ISSUE_NBR")
-	private String tdIssueNbr;
-	
-	@Column(name="TD_ISSUE_DATE")
-	private String tdIssueDate;
-	
-	@Column(name="TD_TRADE_IBL")
-	private String tdTradeIbl;
-	
-	@Column(name="INTERFACE_TRANSFERRED_DATE")
-	private Date interfaceTransferredDate;
+    @Column(name = "AIR_GEAR")
+    private String airGear;
 
-	@Column(name="AIR_GROUND_MODE")
-	private String airGroundMode;
+    @Column(name = "TD_SVO")
+    private String tdSvo;
 
-	@Column(name="AIR_GROUND_MODE_YES")
-	private String airGroundModeYes;
+    @Column(name = "TD_REVISION")
+    private String tdRevision;
 
-	@Column(name="AIR_HYDRAULICS")
-	private String airHydraulics;
+    @Column(name = "TD_ISSUE_NBR")
+    private String tdIssueNbr;
 
-	@Column(name="AIRCRAFT_JACKED")
-	private String aircraftJacked;
+    @Column(name = "TD_ISSUE_DATE")
+    private String tdIssueDate;
 
-	@Column(name="ALLOW_DEFER")
-	private String allowDefer;
+    @Column(name = "TD_TRADE_IBL")
+    private String tdTradeIbl;
 
-	@Column(name="APU_REMOVAL")
-	private String apuRemoval;
+    @Column(name = "INTERFACE_TRANSFERRED_DATE")
+    private Date interfaceTransferredDate;
 
-	private String area;
+    @Column(name = "AIR_GROUND_MODE")
+    private String airGroundMode;
 
-	@Column(name="\"ASC\"")
-	private String asc;
+    @Column(name = "AIR_GROUND_MODE_YES")
+    private String airGroundModeYes;
 
-	@Column(name="ASSY_CODE")
-	private String assyCode;
+    @Column(name = "AIR_HYDRAULICS")
+    private String airHydraulics;
 
-	@Column(name="AUDIT_DATE")
-	private Date auditDate;
+    @Column(name = "AIRCRAFT_JACKED")
+    private String aircraftJacked;
 
-	@Column(name="AUDIT_NOTES")
-	private BigDecimal auditNotes;
+    @Column(name = "ALLOW_DEFER")
+    private String allowDefer;
 
-	@Column(name="AUDIT_RESULT")
-	private String auditResult;
+    @Column(name = "APU_REMOVAL")
+    private String apuRemoval;
 
-	private String audited;
+    private String area;
 
-	@Column(name="AUDITED_BY")
-	private String auditedBy;
+    @Column(name = "\"ASC\"")
+    private String asc;
 
-	@Column(name="\"AUTHORIZATION\"")
-	private String authorization;
+    @Column(name = "ASSY_CODE")
+    private String assyCode;
 
-	@Column(name="AUTHORIZATION_BY")
-	private String authorizationBy;
+    @Column(name = "AUDIT_DATE")
+    private Date auditDate;
 
-	@Column(name="AUTHORIZATION_CONTROL")
-	private BigDecimal authorizationControl;
+    @Column(name = "AUDIT_NOTES")
+    private BigDecimal auditNotes;
 
-	@Column(name="AUTHORIZATION_DATE")
-	private Date authorizationDate;
+    @Column(name = "AUDIT_RESULT")
+    private String auditResult;
 
-	@Column(name="BASIC_EMPTY_WEIGHT")
-	private BigDecimal basicEmptyWeight;
+    private String audited;
 
-	@Column(name="BLOB_NO")
-	private BigDecimal blobNo;
+    @Column(name = "AUDITED_BY")
+    private String auditedBy;
 
-	private String bust;
+    @Column(name = "\"AUTHORIZATION\"")
+    private String authorization;
 
-	@Column(name="BUY_BACK")
-	private String buyBack;
-	
-	@Column(name="EQPT_NO")
-	private String eqptNo;
-	
-	@Column(name="BUY_BACK_RII")
-	private String buyBackRii;
+    @Column(name = "AUTHORIZATION_BY")
+    private String authorizationBy;
 
-	@Column(name="CABIN_CEILING_PANELS_REM")
-	private String cabinCeilingPanelsRem;
+    @Column(name = "AUTHORIZATION_CONTROL")
+    private BigDecimal authorizationControl;
 
-	@Column(name="CABIN_FLOOR_PANELS_REMOVAL")
-	private String cabinFloorPanelsRemoval;
+    @Column(name = "AUTHORIZATION_DATE")
+    private Date authorizationDate;
 
-	@Column(name="CABIN_PRESSURIZATION")
-	private String cabinPressurization;
+    @Column(name = "BASIC_EMPTY_WEIGHT")
+    private BigDecimal basicEmptyWeight;
 
-	@Column(name="CARGO_PANELS_REMOVAL")
-	private String cargoPanelsRemoval;
+    @Column(name = "BLOB_NO")
+    private BigDecimal blobNo;
 
-	@Column(name="CAT_III")
-	private String catIii;
+    private String bust;
 
-	@Column(name="CAT_RATING")
-	private String catRating;
+    @Column(name = "BUY_BACK")
+    private String buyBack;
 
-	private String cdccl;
+    @Column(name = "EQPT_NO")
+    private String eqptNo;
 
-	private BigDecimal chapter;
+    @Column(name = "BUY_BACK_RII")
+    private String buyBackRii;
 
-	private String clean;
+    @Column(name = "CABIN_CEILING_PANELS_REM")
+    private String cabinCeilingPanelsRem;
 
-	private String cmr;
+    @Column(name = "CABIN_FLOOR_PANELS_REMOVAL")
+    private String cabinFloorPanelsRemoval;
 
-	@Column(name="CMR_CHECK")
-	private String cmrCheck;
+    @Column(name = "CABIN_PRESSURIZATION")
+    private String cabinPressurization;
 
-	@Column(name="COMMON_REPAIR")
-	private String commonRepair;
+    @Column(name = "CARGO_PANELS_REMOVAL")
+    private String cargoPanelsRemoval;
 
-	@Column(name="COMPLETED_BY")
-	private String completedBy;
+    @Column(name = "CAT_III")
+    private String catIii;
 
-	@Column(name="COMPLETED_ON")
-	private Date completedOn;
+    @Column(name = "CAT_RATING")
+    private String catRating;
 
-	@Column(name="COMPLETED_ON_HOUR")
-	private BigDecimal completedOnHour;
+    private String cdccl;
 
-	@Column(name="COMPLETED_ON_MINUTE")
-	private BigDecimal completedOnMinute;
+    private BigDecimal chapter;
 
-	@Column(name="COMPLETED_STATION")
-	private String completedStation;
+    private String clean;
 
-	@Column(name="CONFLICT_TASK_CARD")
-	private String conflictTaskCard;
+    private String cmr;
 
-	@Column(name="CORRECTIVE_ACTION")
-	private String correctiveAction;
+    @Column(name = "CMR_CHECK")
+    private String cmrCheck;
 
-	private String corrosion;
+    @Column(name = "COMMON_REPAIR")
+    private String commonRepair;
 
-	@Column(name="CORROSION_FINDINGS_NOTES")
-	private BigDecimal corrosionFindingsNotes;
+    @Column(name = "COMPLETED_BY")
+    private String completedBy;
 
-	@Column(name="CORROSION_LEVEL")
-	private String corrosionLevel;
+    @Column(name = "COMPLETED_ON")
+    private Date completedOn;
 
-	private BigDecimal cost;
+    @Column(name = "COMPLETED_ON_HOUR")
+    private BigDecimal completedOnHour;
 
-	@Column(name="COST_MATERIAL")
-	private BigDecimal costMaterial;
+    @Column(name = "COMPLETED_ON_MINUTE")
+    private BigDecimal completedOnMinute;
 
-	@Column(name="CPCP_ID")
-	private BigDecimal cpcpId;
+    @Column(name = "COMPLETED_STATION")
+    private String completedStation;
 
-	private String crack;
+    @Column(name = "CONFLICT_TASK_CARD")
+    private String conflictTaskCard;
 
-	@Column(name="CREATED_BY")
-	private String createdBy;
+    @Column(name = "CORRECTIVE_ACTION")
+    private String correctiveAction;
 
-	@Column(name="CREATED_DATE")
-	private Date createdDate;
+    private String corrosion;
 
-	@Column(name="CREATOR_AUTHORIZED_BY")
-	private String creatorAuthorizedBy;
+    @Column(name = "CORROSION_FINDINGS_NOTES")
+    private BigDecimal corrosionFindingsNotes;
 
-	@Column(name="CREATOR_AUTHORIZED_DATE")
-	private Date creatorAuthorizedDate;
+    @Column(name = "CORROSION_LEVEL")
+    private String corrosionLevel;
 
-	@Column(name="CREW_CODE")
-	private String crewCode;
+    private BigDecimal cost;
 
-	@Column(name="CRITICAL_TASK")
-	private String criticalTask;
+    @Column(name = "COST_MATERIAL")
+    private BigDecimal costMaterial;
 
-	@Column(name="CRITICAL_TASK_GROUP_NUMBER")
-	private String criticalTaskGroupNumber;
+    @Column(name = "CPCP_ID")
+    private BigDecimal cpcpId;
 
-	@Column(name="CUSTOMER_VISIBLE")
-	private String customerVisible;
+    private String crack;
 
-	private String defect;
+    @Column(name = "CREATED_BY")
+    private String createdBy;
 
-	@Column(name="DEFECT_DESCRIPTION")
-	private String defectDescription;
+    @Column(name = "CREATED_DATE")
+    private Date createdDate;
 
-	@Column(name="DEFECT_ITEM")
-	private BigDecimal defectItem;
+    @Column(name = "CREATOR_AUTHORIZED_BY")
+    private String creatorAuthorizedBy;
 
-	@Column(name="DEFECT_TYPE")
-	private String defectType;
+    @Column(name = "CREATOR_AUTHORIZED_DATE")
+    private Date creatorAuthorizedDate;
 
-	@Column(name="DEFER_EO")
-	private String deferEo;
+    @Column(name = "CREW_CODE")
+    private String crewCode;
 
-	@Column(name="DOCUMENT_NO")
-	private BigDecimal documentNo;
+    @Column(name = "CRITICAL_TASK")
+    private String criticalTask;
 
-	private String dt;
+    @Column(name = "CRITICAL_TASK_GROUP_NUMBER")
+    private String criticalTaskGroupNumber;
 
-	@Column(name="DUAL_INSPECTED_BY")
-	private String dualInspectedBy;
+    @Column(name = "CUSTOMER_VISIBLE")
+    private String customerVisible;
 
-	@Column(name="DUAL_INSPECTED_DATE")
-	private Date dualInspectedDate;
+    private String defect;
 
-	@Column(name="DUAL_INSPECTOR_STATUS")
-	private String dualInspectorStatus;
+    @Column(name = "DEFECT_DESCRIPTION")
+    private String defectDescription;
 
-	private String ectm;
+    @Column(name = "DEFECT_ITEM")
+    private BigDecimal defectItem;
 
-	@Column(name="EDITOR_USED")
-	private String editorUsed;
+    @Column(name = "DEFECT_TYPE")
+    private String defectType;
 
-	@Column(name="ELECTRICAL_LOAD_CHG")
-	private String electricalLoadChg;
+    @Column(name = "DEFER_EO")
+    private String deferEo;
 
-	@Column(name="ELECTRICAL_LOAD_CHG_NO")
-	private BigDecimal electricalLoadChgNo;
+    @Column(name = "DOCUMENT_NO")
+    private BigDecimal documentNo;
 
-	@Column(name="ELECTRICAL_POWER_REQ")
-	private String electricalPowerReq;
+    private String dt;
 
-	@Column(name="EMOB_REFERENCE")
-	private String emobReference;
+    @Column(name = "DUAL_INSPECTED_BY")
+    private String dualInspectedBy;
 
-	@Column(name="ENGINE_REMOVAL")
-	private String engineRemoval;
+    @Column(name = "DUAL_INSPECTED_DATE")
+    private Date dualInspectedDate;
 
-	private String engineering;
+    @Column(name = "DUAL_INSPECTOR_STATUS")
+    private String dualInspectorStatus;
 
-	@Column(name="ENGINERUN_UP")
-	private String enginerunUp;
+    private String ectm;
 
-	private String eo;
+    @Column(name = "EDITOR_USED")
+    private String editorUsed;
 
-	@Column(name="ESTIMATED_HOURS")
-	private BigDecimal estimatedHours;
+    @Column(name = "ELECTRICAL_LOAD_CHG")
+    private String electricalLoadChg;
 
-	private String et;
+    @Column(name = "ELECTRICAL_LOAD_CHG_NO")
+    private BigDecimal electricalLoadChgNo;
 
-	private String etops;
+    @Column(name = "ELECTRICAL_POWER_REQ")
+    private String electricalPowerReq;
 
-	@Column(name="EXCLUDE_CONTRACT")
-	private String excludeContract;
+    @Column(name = "EMOB_REFERENCE")
+    private String emobReference;
 
-	@Column(name="EXCLUDE_TYPE")
-	private String excludeType;
+    @Column(name = "ENGINE_REMOVAL")
+    private String engineRemoval;
 
-	@Column(name="EXPENDITURE_CODE")
-	private String expenditureCode;
+    private String engineering;
 
-	@Column(name="FAULT_CONFIRM")
-	private String faultConfirm;
+    @Column(name = "ENGINERUN_UP")
+    private String enginerunUp;
 
-	@Column(name="FLAPS_POSITION")
-	private String flapsPosition;
+    private String eo;
 
-	@Column(name="FLIGHT_SURFACE_LIMITATION")
-	private String flightSurfaceLimitation;
+    @Column(name = "ESTIMATED_HOURS")
+    private BigDecimal estimatedHours;
 
-	@Column(name="FLIGHT_SURFACES_REMOVAL")
-	private String flightSurfacesRemoval;
+    private String et;
 
-	private String flowday;
+    private String etops;
 
-	@Column(name="FORM_NO")
-	private BigDecimal formNo;
+    @Column(name = "EXCLUDE_CONTRACT")
+    private String excludeContract;
 
-	@Column(name="FUEL_LIMITATION")
-	private String fuelLimitation;
+    @Column(name = "EXCLUDE_TYPE")
+    private String excludeType;
 
-	@Column(name="FUEL_TANKS")
-	private String fuelTanks;
+    @Column(name = "EXPENDITURE_CODE")
+    private String expenditureCode;
 
-	@Column(name="FUNCTIONAL_CHECK")
-	private String functionalCheck;
+    @Column(name = "FAULT_CONFIRM")
+    private String faultConfirm;
 
-	@Column(name="GALLEY_TOILET_REMOVAL")
-	private String galleyToiletRemoval;
+    @Column(name = "FLAPS_POSITION")
+    private String flapsPosition;
 
-	@Column(name="GE_DUE_DATE")
-	private Date geDueDate;
+    @Column(name = "FLIGHT_SURFACE_LIMITATION")
+    private String flightSurfaceLimitation;
 
-	@Column(name="GE_MODIFIED_DATE")
-	private Date geModifiedDate;
+    @Column(name = "FLIGHT_SURFACES_REMOVAL")
+    private String flightSurfacesRemoval;
 
-	@Column(name="GE_TAC")
-	private BigDecimal geTac;
+    private String flowday;
 
-	@Column(name="GE_TAD")
-	private Date geTad;
+    @Column(name = "FORM_NO")
+    private BigDecimal formNo;
 
-	@Column(name="GE_TAT")
-	private BigDecimal geTat;
+    @Column(name = "FUEL_LIMITATION")
+    private String fuelLimitation;
 
-	@Column(name="GROUND_AIR_LEAK_CHECK")
-	private String groundAirLeakCheck;
+    @Column(name = "FUEL_TANKS")
+    private String fuelTanks;
 
-	@Column(name="HANGAR_SPACE_REQU")
-	private String hangarSpaceRequ;
+    @Column(name = "FUNCTIONAL_CHECK")
+    private String functionalCheck;
 
-	@Column(name="HIDE_FLAG")
-	private String hideFlag;
+    @Column(name = "GALLEY_TOILET_REMOVAL")
+    private String galleyToiletRemoval;
 
-	@Column(name="\"HOURS\"")
-	private BigDecimal hours;
+    @Column(name = "GE_DUE_DATE")
+    private Date geDueDate;
 
-	@Column(name="HYD_GROUND_CHARTREQU")
-	private String hydGroundChartrequ;
+    @Column(name = "GE_MODIFIED_DATE")
+    private Date geModifiedDate;
 
-	@Column(name="HYDRAULIC_POWER_REQ")
-	private String hydraulicPowerReq;
+    @Column(name = "GE_TAC")
+    private BigDecimal geTac;
 
-	@Column(name="INDEPENDENT_TASK")
-	private String independentTask;
+    @Column(name = "GE_TAD")
+    private Date geTad;
 
-	@Column(name="INSP_REJECTED_BY")
-	private String inspRejectedBy;
+    @Column(name = "GE_TAT")
+    private BigDecimal geTat;
 
-	@Column(name="INSP_REJECTED_DATE")
-	private Date inspRejectedDate;
+    @Column(name = "GROUND_AIR_LEAK_CHECK")
+    private String groundAirLeakCheck;
 
-	@Column(name="INSP_REJECTED_REASON")
-	private String inspRejectedReason;
+    @Column(name = "HANGAR_SPACE_REQU")
+    private String hangarSpaceRequ;
 
-	@Column(name="INSPECTED_BY")
-	private String inspectedBy;
+    @Column(name = "HIDE_FLAG")
+    private String hideFlag;
 
-	@Column(name="INSPECTED_DATE")
-	private Date inspectedDate;
+    @Column(name = "\"HOURS\"")
+    private BigDecimal hours;
 
-	@Column(name="INSPECTION_REQUIRED")
-	private String inspectionRequired;
+    @Column(name = "HYD_GROUND_CHARTREQU")
+    private String hydGroundChartrequ;
 
-	@Column(name="INSPECTOR_STATUS")
-	private String inspectorStatus;
+    @Column(name = "HYDRAULIC_POWER_REQ")
+    private String hydraulicPowerReq;
 
-	@Column(name="INSURANCE_CLAIM")
-	private String insuranceClaim;
+    @Column(name = "INDEPENDENT_TASK")
+    private String independentTask;
 
-	@Column(name="INSURANCE_NUMBER")
-	private String insuranceNumber;
+    @Column(name = "INSP_REJECTED_BY")
+    private String inspRejectedBy;
 
-	@Column(name="INTERFACE_CREATED_DATE")
-	private Date interfaceCreatedDate;
+    @Column(name = "INSP_REJECTED_DATE")
+    private Date inspRejectedDate;
 
-	@Column(name="INTERFACE_ECTM_TRANSFER_BY")
-	private String interfaceEctmTransferBy;
+    @Column(name = "INSP_REJECTED_REASON")
+    private String inspRejectedReason;
 
-	@Column(name="INTERFACE_ECTM_TRANSFER_DATE")
-	private Date interfaceEctmTransferDate;
+    @Column(name = "INSPECTED_BY")
+    private String inspectedBy;
 
-	@Column(name="INTERFACE_MODIFIED_DATE")
-	private Date interfaceModifiedDate;
+    @Column(name = "INSPECTED_DATE")
+    private Date inspectedDate;
 
-	@Column(name="INTERFACE_TRANSFER_BY")
-	private String interfaceTransferBy;
+    @Column(name = "INSPECTION_REQUIRED")
+    private String inspectionRequired;
 
-	@Column(name="INTERFACE_TRANSFER_DATE")
-	private Date interfaceTransferDate;
+    @Column(name = "INSPECTOR_STATUS")
+    private String inspectorStatus;
 
-	private String invoiced;
+    @Column(name = "INSURANCE_CLAIM")
+    private String insuranceClaim;
 
-	private String ir;
+    @Column(name = "INSURANCE_NUMBER")
+    private String insuranceNumber;
 
-	private String ishtmledited;
+    @Column(name = "INTERFACE_CREATED_DATE")
+    private Date interfaceCreatedDate;
 
-	@Column(name="ISSUED_AS_EXCHANGE")
-	private String issuedAsExchange;
+    @Column(name = "INTERFACE_ECTM_TRANSFER_BY")
+    private String interfaceEctmTransferBy;
 
-	@Column(name="JOB_NAME")
-	private String jobName;
+    @Column(name = "INTERFACE_ECTM_TRANSFER_DATE")
+    private Date interfaceEctmTransferDate;
 
-	@Column(name="LANDING_GEAR_REMOVAL")
-	private String landingGearRemoval;
+    @Column(name = "INTERFACE_MODIFIED_DATE")
+    private Date interfaceModifiedDate;
 
-	@Column(name="LEAD_MECH_AUTH_BY")
-	private String leadMechAuthBy;
+    @Column(name = "INTERFACE_TRANSFER_BY")
+    private String interfaceTransferBy;
 
-	@Column(name="LEAD_MECH_AUTH_DATE")
-	private Date leadMechAuthDate;
+    @Column(name = "INTERFACE_TRANSFER_DATE")
+    private Date interfaceTransferDate;
 
-	@Column(name="LEAK_CHECK")
-	private String leakCheck;
+    private String invoiced;
 
-	@Column(name="LOG_ITEM")
-	private BigDecimal logItem;
+    private String ir;
 
-	@Column(name="LOG_PAGE")
-	private String logPage;
+    private String ishtmledited;
 
-	private String lube;
+    @Column(name = "ISSUED_AS_EXCHANGE")
+    private String issuedAsExchange;
 
-	private String m;
+    @Column(name = "JOB_NAME")
+    private String jobName;
 
-	@Column(name="MANDATORY_CLASSIFICATION")
-	private String mandatoryClassification;
+    @Column(name = "LANDING_GEAR_REMOVAL")
+    private String landingGearRemoval;
 
-	private BigDecimal mechanic;
+    @Column(name = "LEAD_MECH_AUTH_BY")
+    private String leadMechAuthBy;
 
-	@Column(name="MOD_NO")
-	private String modNo;
+    @Column(name = "LEAD_MECH_AUTH_DATE")
+    private Date leadMechAuthDate;
 
-	@Column(name="MODIFIED_BY")
-	private String modifiedBy;
+    @Column(name = "LEAK_CHECK")
+    private String leakCheck;
 
-	@Column(name="MODIFIED_DATE")
-	private Date modifiedDate;
+    @Column(name = "LOG_ITEM")
+    private BigDecimal logItem;
 
-	@Column(name="MOMENT_CHG")
-	private String momentChg;
+    @Column(name = "LOG_PAGE")
+    private String logPage;
 
-	@Column(name="MOMENT_CHG_NO")
-	private BigDecimal momentChgNo;
+    private String lube;
 
-	private String mpd;
+    private String m;
 
-	private String mrb;
+    @Column(name = "MANDATORY_CLASSIFICATION")
+    private String mandatoryClassification;
 
-	private String mt;
+    private BigDecimal mechanic;
 
-	@Column(name="N_R_FINDING_TENDENCY")
-	private String nRFindingTendency;
+    @Column(name = "MOD_NO")
+    private String modNo;
 
-	private String ndt;
+    @Column(name = "MODIFIED_BY")
+    private String modifiedBy;
 
-	@Column(name="NEXT_SITE")
-	private String nextSite;
+    @Column(name = "MODIFIED_DATE")
+    private Date modifiedDate;
 
-	@Column(name="NO_OF_PRINT")
-	private BigDecimal noOfPrint;
+    @Column(name = "MOMENT_CHG")
+    private String momentChg;
 
-	@Column(name="NON_ROUTINE")
-	private String nonRoutine;
+    @Column(name = "MOMENT_CHG_NO")
+    private BigDecimal momentChgNo;
 
-	private BigDecimal notes;
+    private String mpd;
 
-	@Column(name="NOTIFY_APPEARANCE")
-	private String notifyAppearance;
+    private String mrb;
 
-	@Column(name="NOTIFY_ENGINEERING")
-	private String notifyEngineering;
+    private String mt;
 
-	@Column(name="NOTIFY_INSPECTOR")
-	private String notifyInspector;
+    @Column(name = "N_R_FINDING_TENDENCY")
+    private String nRFindingTendency;
 
-	@Column(name="NOTIFY_PLANNING")
-	private String notifyPlanning;
+    private String ndt;
 
-	@Column(name="NR_CLASSIFICATION")
-	private String nrClassification;
+    @Column(name = "NEXT_SITE")
+    private String nextSite;
 
-	@Column(name="NR_ENGINEERING_ID")
-	private BigDecimal nrEngineeringId;
+    @Column(name = "NO_OF_PRINT")
+    private BigDecimal noOfPrint;
 
-	@Column(name="NR_FROM_TC")
-	private String nrFromTc;
+    @Column(name = "NON_ROUTINE")
+    private String nonRoutine;
 
-	@Column(name="NR_NOTES")
-	private BigDecimal nrNotes;
+    private BigDecimal notes;
 
-	@Column(name="NR_REPORTED_BY")
-	private String nrReportedBy;
-	
-	@Column(name="FUNCTIONAL_LOCATION")
-	private String functionalLocation;
+    @Column(name = "NOTIFY_APPEARANCE")
+    private String notifyAppearance;
 
-	@Column(name="ON_CONDITION_TASK_CARD")
-	private String onConditionTaskCard;
+    @Column(name = "NOTIFY_ENGINEERING")
+    private String notifyEngineering;
 
-	@Column(name="OPERATING_EMPTY_WEIGHT_UPDATE")
-	private String operatingEmptyWeightUpdate;
+    @Column(name = "NOTIFY_INSPECTOR")
+    private String notifyInspector;
 
-	@Column(name="OUT_OF_HANGAR")
-	private String outOfHangar;
+    @Column(name = "NOTIFY_PLANNING")
+    private String notifyPlanning;
 
-	@Column(name="PANEL_TC")
-	private String panelTc;
+    @Column(name = "NR_CLASSIFICATION")
+    private String nrClassification;
 
-	@Column(name="PAPER_REQUIRED")
-	private String paperRequired;
+    @Column(name = "NR_ENGINEERING_ID")
+    private BigDecimal nrEngineeringId;
 
-	private BigDecimal paragraph;
+    @Column(name = "NR_FROM_TC")
+    private String nrFromTc;
 
-	@Column(name="PARENT_TD_LINK_CONTENT_ID")
-	private BigDecimal parentTdLinkContentId;
+    @Column(name = "NR_NOTES")
+    private BigDecimal nrNotes;
 
-	private String phase;
+    @Column(name = "NR_REPORTED_BY")
+    private String nrReportedBy;
 
-	@Column(name="PLANNING_PRIORITY")
-	private String planningPriority;
+    @Column(name = "FUNCTIONAL_LOCATION")
+    private String functionalLocation;
 
-	@Column(name="PM_CATEGORY")
-	private String pmCategory;
+    @Column(name = "ON_CONDITION_TASK_CARD")
+    private String onConditionTaskCard;
 
-	@Column(name="PN_REQUIRED")
-	private String pnRequired;
+    @Column(name = "OPERATING_EMPTY_WEIGHT_UPDATE")
+    private String operatingEmptyWeightUpdate;
 
-	@Column(name="PNEUMATIC_POWER")
-	private String pneumaticPower;
+    @Column(name = "OUT_OF_HANGAR")
+    private String outOfHangar;
 
-	private String priority;
+    @Column(name = "PANEL_TC")
+    private String panelTc;
 
-	@Column(name="PRIORITY_OVERRIDE")
-	private String priorityOverride;
+    @Column(name = "PAPER_REQUIRED")
+    private String paperRequired;
 
-	private String pt;
+    private BigDecimal paragraph;
 
-	@Column(name="PYLON_REMOVAL")
-	private String pylonRemoval;
+    @Column(name = "PARENT_TD_LINK_CONTENT_ID")
+    private BigDecimal parentTdLinkContentId;
 
-	@Column(name="QUOTATION_NO")
-	private String quotationNo;
+    private String phase;
 
-	private String reason;
+    @Column(name = "PLANNING_PRIORITY")
+    private String planningPriority;
 
-	private String recomendation;
+    @Column(name = "PM_CATEGORY")
+    private String pmCategory;
 
-	@Column(name="RECTIFIED_BY_ENGINEERING")
-	private String rectifiedByEngineering;
+    @Column(name = "PN_REQUIRED")
+    private String pnRequired;
 
-	@Column(name="REFERENCE_INTERVAL")
-	private String referenceInterval;
+    @Column(name = "PNEUMATIC_POWER")
+    private String pneumaticPower;
 
-	@Column(name="REFERENCE_TASK_CARD")
-	private String referenceTaskCard;
+    private String priority;
 
-	@Column(name="REFERERANCE_TO_AD")
-	private String refereranceToAd;
+    @Column(name = "PRIORITY_OVERRIDE")
+    private String priorityOverride;
 
-	@Column(name="REJECT_TEAM")
-	private String rejectTeam;
+    private String pt;
 
-	@Column(name="REJECTED_BY")
-	private String rejectedBy;
+    @Column(name = "PYLON_REMOVAL")
+    private String pylonRemoval;
 
-	@Column(name="REJECTED_CATEGORY")
-	private String rejectedCategory;
+    @Column(name = "QUOTATION_NO")
+    private String quotationNo;
 
-	@Column(name="REJECTED_DATE")
-	private Date rejectedDate;
+    private String reason;
 
-	@Column(name="REJECTED_REASON")
-	private String rejectedReason;
+    private String recomendation;
 
-	private String remarks;
+    @Column(name = "RECTIFIED_BY_ENGINEERING")
+    private String rectifiedByEngineering;
 
-	@Column(name="REOPEN_BY")
-	private String reopenBy;
+    @Column(name = "REFERENCE_INTERVAL")
+    private String referenceInterval;
 
-	@Column(name="REOPEN_DATE")
-	private Date reopenDate;
+    @Column(name = "REFERENCE_TASK_CARD")
+    private String referenceTaskCard;
 
-	@Column(name="REOPEN_REASON")
-	private String reopenReason;
+    @Column(name = "REFERERANCE_TO_AD")
+    private String refereranceToAd;
 
-	@Column(name="REQUIRED_INSPECTION_BY")
-	private String requiredInspectionBy;
+    @Column(name = "REJECT_TEAM")
+    private String rejectTeam;
 
-	@Column(name="REQUIRED_INSPECTION_ITEM")
-	private String requiredInspectionItem;
+    @Column(name = "REJECTED_BY")
+    private String rejectedBy;
 
-	@Column(name="\"RESET\"")
-	private String reset;
+    @Column(name = "REJECTED_CATEGORY")
+    private String rejectedCategory;
 
-	@Column(name="RESOLUTION_CATEGORY")
-	private String resolutionCategory;
+    @Column(name = "REJECTED_DATE")
+    private Date rejectedDate;
 
-	@Column(name="REVISED_DATE")
-	private Date revisedDate;
+    @Column(name = "REJECTED_REASON")
+    private String rejectedReason;
 
-	private String revision;
+    private String remarks;
 
-	private String rii;
+    @Column(name = "REOPEN_BY")
+    private String reopenBy;
 
-	@Column(name="RII_DATE")
-	private Date riiDate;
+    @Column(name = "REOPEN_DATE")
+    private Date reopenDate;
 
-	private String rvsm;
+    @Column(name = "REOPEN_REASON")
+    private String reopenReason;
 
-	@Column(name="SABRE_MESSAGE_NUMBER")
-	private BigDecimal sabreMessageNumber;
+    @Column(name = "REQUIRED_INSPECTION_BY")
+    private String requiredInspectionBy;
 
-	@Column(name="\"SCHEDULE\"")
-	private String schedule;
+    @Column(name = "REQUIRED_INSPECTION_ITEM")
+    private String requiredInspectionItem;
 
-	@Column(name="SCHEDULE_END_DATE")
-	private Date scheduleEndDate;
+    @Column(name = "\"RESET\"")
+    private String reset;
 
-	@Column(name="SCHEDULE_END_HOUR")
-	private BigDecimal scheduleEndHour;
+    @Column(name = "RESOLUTION_CATEGORY")
+    private String resolutionCategory;
 
-	@Column(name="SCHEDULE_END_MINUTE")
-	private BigDecimal scheduleEndMinute;
+    @Column(name = "REVISED_DATE")
+    private Date revisedDate;
 
-	@Column(name="SCHEDULE_START_DATE")
-	private Date scheduleStartDate;
+    private String revision;
 
-	@Column(name="SCHEDULE_START_HOUR")
-	private BigDecimal scheduleStartHour;
+    private String rii;
 
-	@Column(name="SCHEDULE_START_MINUTE")
-	private BigDecimal scheduleStartMinute;
+    @Column(name = "RII_DATE")
+    private Date riiDate;
 
-	@Column(name="SCHEDULE_TASK_CARD")
-	private String scheduleTaskCard;
+    private String rvsm;
 
-	@Column(name="SCHEDULE_TASK_CARD_ITEM")
-	private BigDecimal scheduleTaskCardItem;
+    @Column(name = "SABRE_MESSAGE_NUMBER")
+    private BigDecimal sabreMessageNumber;
 
-	private String sdr;
+    @Column(name = "\"SCHEDULE\"")
+    private String schedule;
 
-	@Column(name="\"SECTION\"")
-	private BigDecimal section;
+    @Column(name = "SCHEDULE_END_DATE")
+    private Date scheduleEndDate;
 
-	@Column(name="SELL_LABOR_AMOUNT")
-	private BigDecimal sellLaborAmount;
+    @Column(name = "SCHEDULE_END_HOUR")
+    private BigDecimal scheduleEndHour;
 
-	@Column(name="SELL_LABOR_CURRENCY")
-	private BigDecimal sellLaborCurrency;
+    @Column(name = "SCHEDULE_END_MINUTE")
+    private BigDecimal scheduleEndMinute;
 
-	@Column(name="SELL_LABOR_METHOD")
-	private String sellLaborMethod;
+    @Column(name = "SCHEDULE_START_DATE")
+    private Date scheduleStartDate;
 
-	@Column(name="SELL_MATERIAL_AMOUNT")
-	private BigDecimal sellMaterialAmount;
+    @Column(name = "SCHEDULE_START_HOUR")
+    private BigDecimal scheduleStartHour;
 
-	@Column(name="SELL_MATERIAL_CURRENCY")
-	private BigDecimal sellMaterialCurrency;
+    @Column(name = "SCHEDULE_START_MINUTE")
+    private BigDecimal scheduleStartMinute;
 
-	@Column(name="SELL_MATERIAL_METHOD")
-	private String sellMaterialMethod;
+    @Column(name = "SCHEDULE_TASK_CARD")
+    private String scheduleTaskCard;
 
-	@Column(name="SELL_OTHER_AMOUNT")
-	private BigDecimal sellOtherAmount;
+    @Column(name = "SCHEDULE_TASK_CARD_ITEM")
+    private BigDecimal scheduleTaskCardItem;
 
-	@Column(name="SELL_OTHER_METHOD")
-	private String sellOtherMethod;
+    private String sdr;
 
-	@Column(name="SENT_UTA")
-	private String sentUta;
+    @Column(name = "\"SECTION\"")
+    private BigDecimal section;
 
-	@Column(name="\"SERVICE\"")
-	private String service;
+    @Column(name = "SELL_LABOR_AMOUNT")
+    private BigDecimal sellLaborAmount;
 
-	private String site;
+    @Column(name = "SELL_LABOR_CURRENCY")
+    private BigDecimal sellLaborCurrency;
 
-	private String skill;
+    @Column(name = "SELL_LABOR_METHOD")
+    private String sellLaborMethod;
 
-	private String slats;
+    @Column(name = "SELL_MATERIAL_AMOUNT")
+    private BigDecimal sellMaterialAmount;
 
-	@Column(name="SORT_ITEM")
-	private BigDecimal sortItem;
+    @Column(name = "SELL_MATERIAL_CURRENCY")
+    private BigDecimal sellMaterialCurrency;
 
-	@Column(name="SORTING_ZONE")
-	private String sortingZone;
+    @Column(name = "SELL_MATERIAL_METHOD")
+    private String sellMaterialMethod;
 
-	@Column(name="SOURCE_CODE")
-	private String sourceCode;
+    @Column(name = "SELL_OTHER_AMOUNT")
+    private BigDecimal sellOtherAmount;
 
-	@Column(name="SPLIT_FROM")
-	private String splitFrom;
+    @Column(name = "SELL_OTHER_METHOD")
+    private String sellOtherMethod;
 
-	private String spoilers;
+    @Column(name = "SENT_UTA")
+    private String sentUta;
 
-	private String sr;
+    @Column(name = "\"SERVICE\"")
+    private String service;
 
-	private String ssid;
+    private String site;
 
-	private String status;
+    private String skill;
 
-	@Column(name="STATUS_CATEGORY")
-	private String statusCategory;
+    private String slats;
 
-	@Column(name="STATUS_REASON")
-	private String statusReason;
+    @Column(name = "SORT_ITEM")
+    private BigDecimal sortItem;
 
-	@Column(name="STATUS_REASON_PN")
-	private String statusReasonPn;
+    @Column(name = "SORTING_ZONE")
+    private String sortingZone;
 
-	@Column(name="STOWAGE_BIN_REMOVAL")
-	private String stowageBinRemoval;
+    @Column(name = "SOURCE_CODE")
+    private String sourceCode;
 
-	@Column(name="\"STRUCTURE\"")
-	private String structure;
+    @Column(name = "SPLIT_FROM")
+    private String splitFrom;
 
-	@Column(name="STRUCTURE_REPAIR")
-	private String structureRepair;
+    private String spoilers;
 
-	@Column(name="STRUCTURE_REPAIR_CLASS")
-	private String structureRepairClass;
+    private String sr;
 
-	@Column(name="STYLESHEET_MODIFIED_DATE")
-	private Date stylesheetModifiedDate;
+    private String ssid;
 
-	@Column(name="SUB_SUB_SYS_CODE")
-	private String subSubSysCode;
+    private String status;
 
-	@Column(name="SUB_SYS_CODE")
-	private String subSysCode;
+    @Column(name = "STATUS_CATEGORY")
+    private String statusCategory;
 
-	@Column(name="SUPERVISOR_AUTH_BY")
-	private String supervisorAuthBy;
+    @Column(name = "STATUS_REASON")
+    private String statusReason;
 
-	@Column(name="SUPERVISOR_AUTH_DATE")
-	private Date supervisorAuthDate;
+    @Column(name = "STATUS_REASON_PN")
+    private String statusReasonPn;
 
-	@Column(name="SYSTEM_CODE")
-	private String systemCode;
+    @Column(name = "STOWAGE_BIN_REMOVAL")
+    private String stowageBinRemoval;
 
-	@Column(name="TASK_CARD_CATEGORY")
-	private String taskCardCategory;
+    @Column(name = "\"STRUCTURE\"")
+    private String structure;
 
-	@Column(name="TASK_CARD_DESCRIPTION")
-	private String taskCardDescription;
+    @Column(name = "STRUCTURE_REPAIR")
+    private String structureRepair;
 
-	@Column(name="TASK_CARD_NUMBERING_SYSTEM")
-	private BigDecimal taskCardNumberingSystem;
+    @Column(name = "STRUCTURE_REPAIR_CLASS")
+    private String structureRepairClass;
 
-	@Lob
-	@Column(name="TASK_CARD_PDF")
-	private byte[] taskCardPdf;
+    @Column(name = "STYLESHEET_MODIFIED_DATE")
+    private Date stylesheetModifiedDate;
 
-	@Column(name="TECH_LEVEL")
-	private String techLevel;
+    @Column(name = "SUB_SUB_SYS_CODE")
+    private String subSubSysCode;
 
-	@Column(name="TEMPORARY_ID")
-	private String temporaryId;
+    @Column(name = "SUB_SYS_CODE")
+    private String subSysCode;
 
-	@Column(name="TEST_FLIGHT")
-	private String testFlight;
+    @Column(name = "SUPERVISOR_AUTH_BY")
+    private String supervisorAuthBy;
 
-	@Column(name="TOTAL_MOMENT")
-	private BigDecimal totalMoment;
+    @Column(name = "SUPERVISOR_AUTH_DATE")
+    private Date supervisorAuthDate;
 
-	@Column(name="TRAXDOC_NO")
-	private BigDecimal traxdocNo;
+    @Column(name = "SYSTEM_CODE")
+    private String systemCode;
 
-	@Column(name="\"TYPE\"")
-	private String type;
+    @Column(name = "TASK_CARD_CATEGORY")
+    private String taskCardCategory;
 
-	private String ut;
+    @Column(name = "TASK_CARD_DESCRIPTION")
+    private String taskCardDescription;
 
-	private String verified;
+    @Column(name = "TASK_CARD_NUMBERING_SYSTEM")
+    private BigDecimal taskCardNumberingSystem;
 
-	@Column(name="VERIFIED_BY")
-	private String verifiedBy;
+    @Lob
+    @Column(name = "TASK_CARD_PDF")
+    private byte[] taskCardPdf;
 
-	@Column(name="VERIFIED_DATE")
-	private Date verifiedDate;
+    @Column(name = "TECH_LEVEL")
+    private String techLevel;
 
-	@Column(name="VIBRATION_CHECK")
-	private String vibrationCheck;
+    @Column(name = "TEMPORARY_ID")
+    private String temporaryId;
 
-	private String warranty;
+    @Column(name = "TEST_FLIGHT")
+    private String testFlight;
 
-	private String weighing;
+    @Column(name = "TOTAL_MOMENT")
+    private BigDecimal totalMoment;
 
-	@Column(name="WEIGHT_BALANCE")
-	private String weightBalance;
+    @Column(name = "TRAXDOC_NO")
+    private BigDecimal traxdocNo;
 
-	@Column(name="WEIGHT_CHG")
-	private String weightChg;
+    @Column(name = "\"TYPE\"")
+    private String type;
 
-	@Column(name="WEIGHT_CHG_NO")
-	private BigDecimal weightChgNo;
+    private String ut;
 
-	@Column(name="WEIGHT_OFF")
-	private BigDecimal weightOff;
+    private String verified;
 
-	@Column(name="WEIGHT_ON")
-	private BigDecimal weightOn;
+    @Column(name = "VERIFIED_BY")
+    private String verifiedBy;
 
-	@Lob
-	@Column(name="WO_TASK_CARD_XML")
-	private String woTaskCardXml;
+    @Column(name = "VERIFIED_DATE")
+    private Date verifiedDate;
 
-	@Column(name="WORK_ACCOMPLISHED")
-	private String workAccomplished;
+    @Column(name = "VIBRATION_CHECK")
+    private String vibrationCheck;
 
-	@Column(name="WORK_ACCOMPLISHED_STATUS")
-	private String workAccomplishedStatus;
+    private String warranty;
 
-	@Column(name="WORK_AREA")
-	private String workArea;
+    private String weighing;
 
-	@Column(name="X_RAY")
-	private String xRay;
+    @Column(name = "WEIGHT_BALANCE")
+    private String weightBalance;
 
-	@Column(name="XML_STATUS")
-	private String xmlStatus;
+    @Column(name = "WEIGHT_CHG")
+    private String weightChg;
 
-	private String zonal;
+    @Column(name = "WEIGHT_CHG_NO")
+    private BigDecimal weightChgNo;
 
-	//ESD  TODO
+    @Column(name = "WEIGHT_OFF")
+    private BigDecimal weightOff;
+
+    @Column(name = "WEIGHT_ON")
+    private BigDecimal weightOn;
+
+    @Lob
+    @Column(name = "WO_TASK_CARD_XML")
+    private String woTaskCardXml;
+
+    @Column(name = "WORK_ACCOMPLISHED")
+    private String workAccomplished;
+
+    @Column(name = "WORK_ACCOMPLISHED_STATUS")
+    private String workAccomplishedStatus;
+
+    @Column(name = "WORK_AREA")
+    private String workArea;
+
+    @Column(name = "X_RAY")
+    private String xRay;
+
+    @Column(name = "XML_STATUS")
+    private String xmlStatus;
+
+    private String zonal;
+
+    //ESD  TODO
 	/*
 	private String gate;
 
@@ -844,2542 +843,2542 @@ public class WoTaskCard implements Serializable {
 	@Column(name="BILLABLE_HOURS")
 	private String billableHours;
 	*/
-	
-	//bi-directional many-to-one association to Wo
-	@ManyToOne
-	@JoinColumn(name="WO" , insertable=false, updatable=false)
-	private Wo woBean;
-	
-	//bi-directional many-to-one association to WoTaskCardAcModPlan
-	@OneToMany(mappedBy="woTaskCard")
-	private List<WoTaskCardAcModPlan> woTaskCardAcModPlans;
-
-	//bi-directional many-to-one association to WoTaskCardBust
-	@OneToMany(mappedBy="woTaskCard")
-	private List<WoTaskCardBust> woTaskCardBusts;
-
-	//bi-directional many-to-one association to WoTaskCardItem
-	@OneToMany(mappedBy="woTaskCard")
-	private List<WoTaskCardItem> woTaskCardItems;
-
-	//bi-directional many-to-one association to WoTaskCardKeyword
-	@OneToMany(mappedBy="woTaskCard")
-	private List<WoTaskCardKeyword> woTaskCardKeywords;
-
-	//bi-directional many-to-one association to WoTaskCardSignedPdf
-	@OneToMany(mappedBy="woTaskCard")
-	private List<WoTaskCardSignedPdf> woTaskCardSignedPdfs;
-
-	//bi-directional many-to-one association to WoTaskCardSurvey
-	@OneToMany(mappedBy="woTaskCard")
-	private List<WoTaskCardSurvey> woTaskCardSurveys;
-
-	//bi-directional many-to-one association to WoTaskCardWorkInProgress
-	@OneToMany(mappedBy="woTaskCard")
-	private List<WoTaskCardWorkInProgress> woTaskCardWorkInProgresses;
-	
-	//bi-directional many-to-one association to WoTaskCardCustomer
-		@OneToMany(mappedBy="woTaskCard")
-		private List<WoTaskCardCustomer> woTaskCardCustomers;
-
-	public WoTaskCard() {
-	}
-	
-	public Wo getWoBean() {
-		return this.woBean;
-	}
-
-	public void setWoBean(Wo woBean) {
-		this.woBean = woBean;
-	}
-
-	public WoTaskCardPK getId() {
-		return this.id;
-	}
-
-	public void setId(WoTaskCardPK id) {
-		this.id = id;
-	}
-
-	public String getAcReweight() {
-		return this.acReweight;
-	}
-
-	public void setAcReweight(String acReweight) {
-		this.acReweight = acReweight;
-	}
-
-	public String getAdditionWork() {
-		return this.additionWork;
-	}
-
-	public void setAdditionWork(String additionWork) {
-		this.additionWork = additionWork;
-	}
-
-	public String getAirAvionics() {
-		return this.airAvionics;
-	}
-
-	public void setAirAvionics(String airAvionics) {
-		this.airAvionics = airAvionics;
-	}
-
-	public String getAirEngines() {
-		return this.airEngines;
-	}
-
-	public void setAirEngines(String airEngines) {
-		this.airEngines = airEngines;
-	}
-
-	public String getAirFuel() {
-		return this.airFuel;
-	}
-
-	public void setAirFuel(String airFuel) {
-		this.airFuel = airFuel;
-	}
-
-	public String getAirGear() {
-		return this.airGear;
-	}
-
-	public void setAirGear(String airGear) {
-		this.airGear = airGear;
-	}
 
-	public String getAirGroundMode() {
-		return this.airGroundMode;
-	}
+    //bi-directional many-to-one association to Wo
+    @ManyToOne
+    @JoinColumn(name = "WO", insertable = false, updatable = false)
+    private Wo woBean;
 
-	public void setAirGroundMode(String airGroundMode) {
-		this.airGroundMode = airGroundMode;
-	}
+    //bi-directional many-to-one association to WoTaskCardAcModPlan
+    @OneToMany(mappedBy = "woTaskCard")
+    private List<WoTaskCardAcModPlan> woTaskCardAcModPlans;
 
-	public String getAirGroundModeYes() {
-		return this.airGroundModeYes;
-	}
+    //bi-directional many-to-one association to WoTaskCardBust
+    @OneToMany(mappedBy = "woTaskCard")
+    private List<WoTaskCardBust> woTaskCardBusts;
 
-	public void setAirGroundModeYes(String airGroundModeYes) {
-		this.airGroundModeYes = airGroundModeYes;
-	}
+    //bi-directional many-to-one association to WoTaskCardItem
+    @OneToMany(mappedBy = "woTaskCard")
+    private List<WoTaskCardItem> woTaskCardItems;
 
-	public String getAirHydraulics() {
-		return this.airHydraulics;
-	}
+    //bi-directional many-to-one association to WoTaskCardKeyword
+    @OneToMany(mappedBy = "woTaskCard")
+    private List<WoTaskCardKeyword> woTaskCardKeywords;
 
-	public void setAirHydraulics(String airHydraulics) {
-		this.airHydraulics = airHydraulics;
-	}
+    //bi-directional many-to-one association to WoTaskCardSignedPdf
+    @OneToMany(mappedBy = "woTaskCard")
+    private List<WoTaskCardSignedPdf> woTaskCardSignedPdfs;
 
-	public String getAircraftJacked() {
-		return this.aircraftJacked;
-	}
+    //bi-directional many-to-one association to WoTaskCardSurvey
+    @OneToMany(mappedBy = "woTaskCard")
+    private List<WoTaskCardSurvey> woTaskCardSurveys;
 
-	public void setAircraftJacked(String aircraftJacked) {
-		this.aircraftJacked = aircraftJacked;
-	}
+    //bi-directional many-to-one association to WoTaskCardWorkInProgress
+    @OneToMany(mappedBy = "woTaskCard")
+    private List<WoTaskCardWorkInProgress> woTaskCardWorkInProgresses;
 
-	public String getAllowDefer() {
-		return this.allowDefer;
-	}
+    //bi-directional many-to-one association to WoTaskCardCustomer
+    @OneToMany(mappedBy = "woTaskCard")
+    private List<WoTaskCardCustomer> woTaskCardCustomers;
 
-	public void setAllowDefer(String allowDefer) {
-		this.allowDefer = allowDefer;
-	}
+    public WoTaskCard() {
+    }
 
-	public String getApuRemoval() {
-		return this.apuRemoval;
-	}
+    public Wo getWoBean() {
+        return this.woBean;
+    }
 
-	public void setApuRemoval(String apuRemoval) {
-		this.apuRemoval = apuRemoval;
-	}
+    public void setWoBean(Wo woBean) {
+        this.woBean = woBean;
+    }
 
-	public String getArea() {
-		return this.area;
-	}
+    public WoTaskCardPK getId() {
+        return this.id;
+    }
 
-	public void setArea(String area) {
-		this.area = area;
-	}
+    public void setId(WoTaskCardPK id) {
+        this.id = id;
+    }
 
-	public String getAsc() {
-		return this.asc;
-	}
+    public String getAcReweight() {
+        return this.acReweight;
+    }
 
-	public void setAsc(String asc) {
-		this.asc = asc;
-	}
+    public void setAcReweight(String acReweight) {
+        this.acReweight = acReweight;
+    }
 
-	public String getAssyCode() {
-		return this.assyCode;
-	}
+    public String getAdditionWork() {
+        return this.additionWork;
+    }
 
-	public void setAssyCode(String assyCode) {
-		this.assyCode = assyCode;
-	}
+    public void setAdditionWork(String additionWork) {
+        this.additionWork = additionWork;
+    }
 
-	public Date getAuditDate() {
-		return this.auditDate;
-	}
+    public String getAirAvionics() {
+        return this.airAvionics;
+    }
 
-	public void setAuditDate(Date auditDate) {
-		this.auditDate = auditDate;
-	}
+    public void setAirAvionics(String airAvionics) {
+        this.airAvionics = airAvionics;
+    }
 
-	public BigDecimal getAuditNotes() {
-		return this.auditNotes;
-	}
+    public String getAirEngines() {
+        return this.airEngines;
+    }
 
-	public void setAuditNotes(BigDecimal auditNotes) {
-		this.auditNotes = auditNotes;
-	}
+    public void setAirEngines(String airEngines) {
+        this.airEngines = airEngines;
+    }
 
-	public String getAuditResult() {
-		return this.auditResult;
-	}
+    public String getAirFuel() {
+        return this.airFuel;
+    }
 
-	public void setAuditResult(String auditResult) {
-		this.auditResult = auditResult;
-	}
+    public void setAirFuel(String airFuel) {
+        this.airFuel = airFuel;
+    }
 
-	public String getAudited() {
-		return this.audited;
-	}
+    public String getAirGear() {
+        return this.airGear;
+    }
 
-	public void setAudited(String audited) {
-		this.audited = audited;
-	}
+    public void setAirGear(String airGear) {
+        this.airGear = airGear;
+    }
 
-	public String getAuditedBy() {
-		return this.auditedBy;
-	}
+    public String getAirGroundMode() {
+        return this.airGroundMode;
+    }
 
-	public void setAuditedBy(String auditedBy) {
-		this.auditedBy = auditedBy;
-	}
+    public void setAirGroundMode(String airGroundMode) {
+        this.airGroundMode = airGroundMode;
+    }
 
-	public String getAuthorization() {
-		return this.authorization;
-	}
+    public String getAirGroundModeYes() {
+        return this.airGroundModeYes;
+    }
 
-	public void setAuthorization(String authorization) {
-		this.authorization = authorization;
-	}
+    public void setAirGroundModeYes(String airGroundModeYes) {
+        this.airGroundModeYes = airGroundModeYes;
+    }
 
-	public String getAuthorizationBy() {
-		return this.authorizationBy;
-	}
+    public String getAirHydraulics() {
+        return this.airHydraulics;
+    }
 
-	public void setAuthorizationBy(String authorizationBy) {
-		this.authorizationBy = authorizationBy;
-	}
+    public void setAirHydraulics(String airHydraulics) {
+        this.airHydraulics = airHydraulics;
+    }
 
-	public BigDecimal getAuthorizationControl() {
-		return this.authorizationControl;
-	}
+    public String getAircraftJacked() {
+        return this.aircraftJacked;
+    }
 
-	public void setAuthorizationControl(BigDecimal authorizationControl) {
-		this.authorizationControl = authorizationControl;
-	}
+    public void setAircraftJacked(String aircraftJacked) {
+        this.aircraftJacked = aircraftJacked;
+    }
 
-	public Date getAuthorizationDate() {
-		return this.authorizationDate;
-	}
+    public String getAllowDefer() {
+        return this.allowDefer;
+    }
 
-	public void setAuthorizationDate(Date authorizationDate) {
-		this.authorizationDate = authorizationDate;
-	}
+    public void setAllowDefer(String allowDefer) {
+        this.allowDefer = allowDefer;
+    }
 
-	public BigDecimal getBasicEmptyWeight() {
-		return this.basicEmptyWeight;
-	}
+    public String getApuRemoval() {
+        return this.apuRemoval;
+    }
 
-	public void setBasicEmptyWeight(BigDecimal basicEmptyWeight) {
-		this.basicEmptyWeight = basicEmptyWeight;
-	}
+    public void setApuRemoval(String apuRemoval) {
+        this.apuRemoval = apuRemoval;
+    }
 
-	public BigDecimal getBlobNo() {
-		return this.blobNo;
-	}
+    public String getArea() {
+        return this.area;
+    }
 
-	public void setBlobNo(BigDecimal blobNo) {
-		this.blobNo = blobNo;
-	}
+    public void setArea(String area) {
+        this.area = area;
+    }
 
-	public String getBust() {
-		return this.bust;
-	}
+    public String getAsc() {
+        return this.asc;
+    }
 
-	public void setBust(String bust) {
-		this.bust = bust;
-	}
+    public void setAsc(String asc) {
+        this.asc = asc;
+    }
 
-	public String getBuyBack() {
-		return this.buyBack;
-	}
+    public String getAssyCode() {
+        return this.assyCode;
+    }
 
-	public void setBuyBack(String buyBack) {
-		this.buyBack = buyBack;
-	}
+    public void setAssyCode(String assyCode) {
+        this.assyCode = assyCode;
+    }
 
-	public String getBuyBackRii() {
-		return this.buyBackRii;
-	}
+    public Date getAuditDate() {
+        return this.auditDate;
+    }
 
-	public void setBuyBackRii(String buyBackRii) {
-		this.buyBackRii = buyBackRii;
-	}
+    public void setAuditDate(Date auditDate) {
+        this.auditDate = auditDate;
+    }
 
-	public String getCabinCeilingPanelsRem() {
-		return this.cabinCeilingPanelsRem;
-	}
+    public BigDecimal getAuditNotes() {
+        return this.auditNotes;
+    }
 
-	public void setCabinCeilingPanelsRem(String cabinCeilingPanelsRem) {
-		this.cabinCeilingPanelsRem = cabinCeilingPanelsRem;
-	}
+    public void setAuditNotes(BigDecimal auditNotes) {
+        this.auditNotes = auditNotes;
+    }
 
-	public String getCabinFloorPanelsRemoval() {
-		return this.cabinFloorPanelsRemoval;
-	}
+    public String getAuditResult() {
+        return this.auditResult;
+    }
 
-	public void setCabinFloorPanelsRemoval(String cabinFloorPanelsRemoval) {
-		this.cabinFloorPanelsRemoval = cabinFloorPanelsRemoval;
-	}
+    public void setAuditResult(String auditResult) {
+        this.auditResult = auditResult;
+    }
 
-	public String getCabinPressurization() {
-		return this.cabinPressurization;
-	}
+    public String getAudited() {
+        return this.audited;
+    }
 
-	public void setCabinPressurization(String cabinPressurization) {
-		this.cabinPressurization = cabinPressurization;
-	}
+    public void setAudited(String audited) {
+        this.audited = audited;
+    }
 
-	public String getCargoPanelsRemoval() {
-		return this.cargoPanelsRemoval;
-	}
+    public String getAuditedBy() {
+        return this.auditedBy;
+    }
 
-	public void setCargoPanelsRemoval(String cargoPanelsRemoval) {
-		this.cargoPanelsRemoval = cargoPanelsRemoval;
-	}
+    public void setAuditedBy(String auditedBy) {
+        this.auditedBy = auditedBy;
+    }
 
-	public String getCatIii() {
-		return this.catIii;
-	}
+    public String getAuthorization() {
+        return this.authorization;
+    }
 
-	public void setCatIii(String catIii) {
-		this.catIii = catIii;
-	}
+    public void setAuthorization(String authorization) {
+        this.authorization = authorization;
+    }
 
-	public String getCatRating() {
-		return this.catRating;
-	}
+    public String getAuthorizationBy() {
+        return this.authorizationBy;
+    }
 
-	public void setCatRating(String catRating) {
-		this.catRating = catRating;
-	}
+    public void setAuthorizationBy(String authorizationBy) {
+        this.authorizationBy = authorizationBy;
+    }
 
-	public String getCdccl() {
-		return this.cdccl;
-	}
+    public BigDecimal getAuthorizationControl() {
+        return this.authorizationControl;
+    }
 
-	public void setCdccl(String cdccl) {
-		this.cdccl = cdccl;
-	}
+    public void setAuthorizationControl(BigDecimal authorizationControl) {
+        this.authorizationControl = authorizationControl;
+    }
 
-	public BigDecimal getChapter() {
-		return this.chapter;
-	}
+    public Date getAuthorizationDate() {
+        return this.authorizationDate;
+    }
 
-	public void setChapter(BigDecimal chapter) {
-		this.chapter = chapter;
-	}
+    public void setAuthorizationDate(Date authorizationDate) {
+        this.authorizationDate = authorizationDate;
+    }
 
-	public String getClean() {
-		return this.clean;
-	}
+    public BigDecimal getBasicEmptyWeight() {
+        return this.basicEmptyWeight;
+    }
 
-	public void setClean(String clean) {
-		this.clean = clean;
-	}
+    public void setBasicEmptyWeight(BigDecimal basicEmptyWeight) {
+        this.basicEmptyWeight = basicEmptyWeight;
+    }
 
-	public String getCmr() {
-		return this.cmr;
-	}
+    public BigDecimal getBlobNo() {
+        return this.blobNo;
+    }
 
-	public void setCmr(String cmr) {
-		this.cmr = cmr;
-	}
+    public void setBlobNo(BigDecimal blobNo) {
+        this.blobNo = blobNo;
+    }
 
-	public String getCmrCheck() {
-		return this.cmrCheck;
-	}
+    public String getBust() {
+        return this.bust;
+    }
 
-	public void setCmrCheck(String cmrCheck) {
-		this.cmrCheck = cmrCheck;
-	}
+    public void setBust(String bust) {
+        this.bust = bust;
+    }
 
-	public String getCommonRepair() {
-		return this.commonRepair;
-	}
+    public String getBuyBack() {
+        return this.buyBack;
+    }
 
-	public void setCommonRepair(String commonRepair) {
-		this.commonRepair = commonRepair;
-	}
+    public void setBuyBack(String buyBack) {
+        this.buyBack = buyBack;
+    }
 
-	public String getCompletedBy() {
-		return this.completedBy;
-	}
+    public String getBuyBackRii() {
+        return this.buyBackRii;
+    }
 
-	public void setCompletedBy(String completedBy) {
-		this.completedBy = completedBy;
-	}
+    public void setBuyBackRii(String buyBackRii) {
+        this.buyBackRii = buyBackRii;
+    }
 
-	public Date getCompletedOn() {
-		return this.completedOn;
-	}
+    public String getCabinCeilingPanelsRem() {
+        return this.cabinCeilingPanelsRem;
+    }
 
-	public void setCompletedOn(Date completedOn) {
-		this.completedOn = completedOn;
-	}
+    public void setCabinCeilingPanelsRem(String cabinCeilingPanelsRem) {
+        this.cabinCeilingPanelsRem = cabinCeilingPanelsRem;
+    }
 
-	public BigDecimal getCompletedOnHour() {
-		return this.completedOnHour;
-	}
+    public String getCabinFloorPanelsRemoval() {
+        return this.cabinFloorPanelsRemoval;
+    }
 
-	public void setCompletedOnHour(BigDecimal completedOnHour) {
-		this.completedOnHour = completedOnHour;
-	}
+    public void setCabinFloorPanelsRemoval(String cabinFloorPanelsRemoval) {
+        this.cabinFloorPanelsRemoval = cabinFloorPanelsRemoval;
+    }
 
-	public BigDecimal getCompletedOnMinute() {
-		return this.completedOnMinute;
-	}
+    public String getCabinPressurization() {
+        return this.cabinPressurization;
+    }
 
-	public void setCompletedOnMinute(BigDecimal completedOnMinute) {
-		this.completedOnMinute = completedOnMinute;
-	}
+    public void setCabinPressurization(String cabinPressurization) {
+        this.cabinPressurization = cabinPressurization;
+    }
 
-	public String getCompletedStation() {
-		return this.completedStation;
-	}
+    public String getCargoPanelsRemoval() {
+        return this.cargoPanelsRemoval;
+    }
 
-	public void setCompletedStation(String completedStation) {
-		this.completedStation = completedStation;
-	}
+    public void setCargoPanelsRemoval(String cargoPanelsRemoval) {
+        this.cargoPanelsRemoval = cargoPanelsRemoval;
+    }
 
-	public String getConflictTaskCard() {
-		return this.conflictTaskCard;
-	}
+    public String getCatIii() {
+        return this.catIii;
+    }
 
-	public void setConflictTaskCard(String conflictTaskCard) {
-		this.conflictTaskCard = conflictTaskCard;
-	}
+    public void setCatIii(String catIii) {
+        this.catIii = catIii;
+    }
 
-	public String getCorrectiveAction() {
-		return this.correctiveAction;
-	}
+    public String getCatRating() {
+        return this.catRating;
+    }
 
-	public void setCorrectiveAction(String correctiveAction) {
-		this.correctiveAction = correctiveAction;
-	}
+    public void setCatRating(String catRating) {
+        this.catRating = catRating;
+    }
 
-	public String getCorrosion() {
-		return this.corrosion;
-	}
+    public String getCdccl() {
+        return this.cdccl;
+    }
 
-	public void setCorrosion(String corrosion) {
-		this.corrosion = corrosion;
-	}
+    public void setCdccl(String cdccl) {
+        this.cdccl = cdccl;
+    }
 
-	public BigDecimal getCorrosionFindingsNotes() {
-		return this.corrosionFindingsNotes;
-	}
+    public BigDecimal getChapter() {
+        return this.chapter;
+    }
 
-	public void setCorrosionFindingsNotes(BigDecimal corrosionFindingsNotes) {
-		this.corrosionFindingsNotes = corrosionFindingsNotes;
-	}
+    public void setChapter(BigDecimal chapter) {
+        this.chapter = chapter;
+    }
 
-	public String getCorrosionLevel() {
-		return this.corrosionLevel;
-	}
+    public String getClean() {
+        return this.clean;
+    }
 
-	public void setCorrosionLevel(String corrosionLevel) {
-		this.corrosionLevel = corrosionLevel;
-	}
+    public void setClean(String clean) {
+        this.clean = clean;
+    }
 
-	public BigDecimal getCost() {
-		return this.cost;
-	}
+    public String getCmr() {
+        return this.cmr;
+    }
 
-	public void setCost(BigDecimal cost) {
-		this.cost = cost;
-	}
+    public void setCmr(String cmr) {
+        this.cmr = cmr;
+    }
 
-	public BigDecimal getCostMaterial() {
-		return this.costMaterial;
-	}
+    public String getCmrCheck() {
+        return this.cmrCheck;
+    }
 
-	public void setCostMaterial(BigDecimal costMaterial) {
-		this.costMaterial = costMaterial;
-	}
+    public void setCmrCheck(String cmrCheck) {
+        this.cmrCheck = cmrCheck;
+    }
 
-	public BigDecimal getCpcpId() {
-		return this.cpcpId;
-	}
+    public String getCommonRepair() {
+        return this.commonRepair;
+    }
 
-	public void setCpcpId(BigDecimal cpcpId) {
-		this.cpcpId = cpcpId;
-	}
+    public void setCommonRepair(String commonRepair) {
+        this.commonRepair = commonRepair;
+    }
 
-	public String getCrack() {
-		return this.crack;
-	}
+    public String getCompletedBy() {
+        return this.completedBy;
+    }
 
-	public void setCrack(String crack) {
-		this.crack = crack;
-	}
+    public void setCompletedBy(String completedBy) {
+        this.completedBy = completedBy;
+    }
 
-	public String getCreatedBy() {
-		return this.createdBy;
-	}
+    public Date getCompletedOn() {
+        return this.completedOn;
+    }
 
-	public void setCreatedBy(String createdBy) {
-		this.createdBy = createdBy;
-	}
+    public void setCompletedOn(Date completedOn) {
+        this.completedOn = completedOn;
+    }
 
-	public Date getCreatedDate() {
-		return this.createdDate;
-	}
+    public BigDecimal getCompletedOnHour() {
+        return this.completedOnHour;
+    }
 
-	public void setCreatedDate(Date createdDate) {
-		this.createdDate = createdDate;
-	}
+    public void setCompletedOnHour(BigDecimal completedOnHour) {
+        this.completedOnHour = completedOnHour;
+    }
 
-	public String getCreatorAuthorizedBy() {
-		return this.creatorAuthorizedBy;
-	}
+    public BigDecimal getCompletedOnMinute() {
+        return this.completedOnMinute;
+    }
 
-	public void setCreatorAuthorizedBy(String creatorAuthorizedBy) {
-		this.creatorAuthorizedBy = creatorAuthorizedBy;
-	}
+    public void setCompletedOnMinute(BigDecimal completedOnMinute) {
+        this.completedOnMinute = completedOnMinute;
+    }
 
-	public Date getCreatorAuthorizedDate() {
-		return this.creatorAuthorizedDate;
-	}
+    public String getCompletedStation() {
+        return this.completedStation;
+    }
 
-	public void setCreatorAuthorizedDate(Date creatorAuthorizedDate) {
-		this.creatorAuthorizedDate = creatorAuthorizedDate;
-	}
+    public void setCompletedStation(String completedStation) {
+        this.completedStation = completedStation;
+    }
 
-	public String getCrewCode() {
-		return this.crewCode;
-	}
+    public String getConflictTaskCard() {
+        return this.conflictTaskCard;
+    }
 
-	public void setCrewCode(String crewCode) {
-		this.crewCode = crewCode;
-	}
+    public void setConflictTaskCard(String conflictTaskCard) {
+        this.conflictTaskCard = conflictTaskCard;
+    }
 
-	public String getCriticalTask() {
-		return this.criticalTask;
-	}
+    public String getCorrectiveAction() {
+        return this.correctiveAction;
+    }
 
-	public void setCriticalTask(String criticalTask) {
-		this.criticalTask = criticalTask;
-	}
+    public void setCorrectiveAction(String correctiveAction) {
+        this.correctiveAction = correctiveAction;
+    }
 
-	public String getCriticalTaskGroupNumber() {
-		return this.criticalTaskGroupNumber;
-	}
+    public String getCorrosion() {
+        return this.corrosion;
+    }
 
-	public void setCriticalTaskGroupNumber(String criticalTaskGroupNumber) {
-		this.criticalTaskGroupNumber = criticalTaskGroupNumber;
-	}
+    public void setCorrosion(String corrosion) {
+        this.corrosion = corrosion;
+    }
 
-	public String getCustomerVisible() {
-		return this.customerVisible;
-	}
+    public BigDecimal getCorrosionFindingsNotes() {
+        return this.corrosionFindingsNotes;
+    }
 
-	public void setCustomerVisible(String customerVisible) {
-		this.customerVisible = customerVisible;
-	}
+    public void setCorrosionFindingsNotes(BigDecimal corrosionFindingsNotes) {
+        this.corrosionFindingsNotes = corrosionFindingsNotes;
+    }
 
-	public String getDefect() {
-		return this.defect;
-	}
+    public String getCorrosionLevel() {
+        return this.corrosionLevel;
+    }
 
-	public void setDefect(String defect) {
-		this.defect = defect;
-	}
+    public void setCorrosionLevel(String corrosionLevel) {
+        this.corrosionLevel = corrosionLevel;
+    }
 
-	public String getDefectDescription() {
-		return this.defectDescription;
-	}
+    public BigDecimal getCost() {
+        return this.cost;
+    }
 
-	public void setDefectDescription(String defectDescription) {
-		this.defectDescription = defectDescription;
-	}
+    public void setCost(BigDecimal cost) {
+        this.cost = cost;
+    }
 
-	public BigDecimal getDefectItem() {
-		return this.defectItem;
-	}
+    public BigDecimal getCostMaterial() {
+        return this.costMaterial;
+    }
 
-	public void setDefectItem(BigDecimal defectItem) {
-		this.defectItem = defectItem;
-	}
+    public void setCostMaterial(BigDecimal costMaterial) {
+        this.costMaterial = costMaterial;
+    }
 
-	public String getDefectType() {
-		return this.defectType;
-	}
+    public BigDecimal getCpcpId() {
+        return this.cpcpId;
+    }
 
-	public void setDefectType(String defectType) {
-		this.defectType = defectType;
-	}
+    public void setCpcpId(BigDecimal cpcpId) {
+        this.cpcpId = cpcpId;
+    }
 
-	public String getDeferEo() {
-		return this.deferEo;
-	}
+    public String getCrack() {
+        return this.crack;
+    }
 
-	public void setDeferEo(String deferEo) {
-		this.deferEo = deferEo;
-	}
+    public void setCrack(String crack) {
+        this.crack = crack;
+    }
 
-	public BigDecimal getDocumentNo() {
-		return this.documentNo;
-	}
+    public String getCreatedBy() {
+        return this.createdBy;
+    }
 
-	public void setDocumentNo(BigDecimal documentNo) {
-		this.documentNo = documentNo;
-	}
+    public void setCreatedBy(String createdBy) {
+        this.createdBy = createdBy;
+    }
 
-	public String getDt() {
-		return this.dt;
-	}
+    public Date getCreatedDate() {
+        return this.createdDate;
+    }
 
-	public void setDt(String dt) {
-		this.dt = dt;
-	}
+    public void setCreatedDate(Date createdDate) {
+        this.createdDate = createdDate;
+    }
 
-	public String getDualInspectedBy() {
-		return this.dualInspectedBy;
-	}
+    public String getCreatorAuthorizedBy() {
+        return this.creatorAuthorizedBy;
+    }
 
-	public void setDualInspectedBy(String dualInspectedBy) {
-		this.dualInspectedBy = dualInspectedBy;
-	}
+    public void setCreatorAuthorizedBy(String creatorAuthorizedBy) {
+        this.creatorAuthorizedBy = creatorAuthorizedBy;
+    }
 
-	public Date getDualInspectedDate() {
-		return this.dualInspectedDate;
-	}
+    public Date getCreatorAuthorizedDate() {
+        return this.creatorAuthorizedDate;
+    }
 
-	public void setDualInspectedDate(Date dualInspectedDate) {
-		this.dualInspectedDate = dualInspectedDate;
-	}
+    public void setCreatorAuthorizedDate(Date creatorAuthorizedDate) {
+        this.creatorAuthorizedDate = creatorAuthorizedDate;
+    }
 
-	public String getDualInspectorStatus() {
-		return this.dualInspectorStatus;
-	}
+    public String getCrewCode() {
+        return this.crewCode;
+    }
 
-	public void setDualInspectorStatus(String dualInspectorStatus) {
-		this.dualInspectorStatus = dualInspectorStatus;
-	}
+    public void setCrewCode(String crewCode) {
+        this.crewCode = crewCode;
+    }
 
-	public String getEctm() {
-		return this.ectm;
-	}
+    public String getCriticalTask() {
+        return this.criticalTask;
+    }
 
-	public void setEctm(String ectm) {
-		this.ectm = ectm;
-	}
+    public void setCriticalTask(String criticalTask) {
+        this.criticalTask = criticalTask;
+    }
 
-	public String getEditorUsed() {
-		return this.editorUsed;
-	}
+    public String getCriticalTaskGroupNumber() {
+        return this.criticalTaskGroupNumber;
+    }
 
-	public void setEditorUsed(String editorUsed) {
-		this.editorUsed = editorUsed;
-	}
+    public void setCriticalTaskGroupNumber(String criticalTaskGroupNumber) {
+        this.criticalTaskGroupNumber = criticalTaskGroupNumber;
+    }
 
-	public String getElectricalLoadChg() {
-		return this.electricalLoadChg;
-	}
+    public String getCustomerVisible() {
+        return this.customerVisible;
+    }
 
-	public void setElectricalLoadChg(String electricalLoadChg) {
-		this.electricalLoadChg = electricalLoadChg;
-	}
+    public void setCustomerVisible(String customerVisible) {
+        this.customerVisible = customerVisible;
+    }
 
-	public BigDecimal getElectricalLoadChgNo() {
-		return this.electricalLoadChgNo;
-	}
+    public String getDefect() {
+        return this.defect;
+    }
 
-	public void setElectricalLoadChgNo(BigDecimal electricalLoadChgNo) {
-		this.electricalLoadChgNo = electricalLoadChgNo;
-	}
+    public void setDefect(String defect) {
+        this.defect = defect;
+    }
 
-	public String getElectricalPowerReq() {
-		return this.electricalPowerReq;
-	}
+    public String getDefectDescription() {
+        return this.defectDescription;
+    }
 
-	public void setElectricalPowerReq(String electricalPowerReq) {
-		this.electricalPowerReq = electricalPowerReq;
-	}
+    public void setDefectDescription(String defectDescription) {
+        this.defectDescription = defectDescription;
+    }
 
-	public String getEmobReference() {
-		return this.emobReference;
-	}
+    public BigDecimal getDefectItem() {
+        return this.defectItem;
+    }
 
-	public void setEmobReference(String emobReference) {
-		this.emobReference = emobReference;
-	}
+    public void setDefectItem(BigDecimal defectItem) {
+        this.defectItem = defectItem;
+    }
 
-	public String getEngineRemoval() {
-		return this.engineRemoval;
-	}
+    public String getDefectType() {
+        return this.defectType;
+    }
 
-	public void setEngineRemoval(String engineRemoval) {
-		this.engineRemoval = engineRemoval;
-	}
+    public void setDefectType(String defectType) {
+        this.defectType = defectType;
+    }
 
-	public String getEngineering() {
-		return this.engineering;
-	}
+    public String getDeferEo() {
+        return this.deferEo;
+    }
 
-	public void setEngineering(String engineering) {
-		this.engineering = engineering;
-	}
+    public void setDeferEo(String deferEo) {
+        this.deferEo = deferEo;
+    }
 
-	public String getEnginerunUp() {
-		return this.enginerunUp;
-	}
+    public BigDecimal getDocumentNo() {
+        return this.documentNo;
+    }
 
-	public void setEnginerunUp(String enginerunUp) {
-		this.enginerunUp = enginerunUp;
-	}
+    public void setDocumentNo(BigDecimal documentNo) {
+        this.documentNo = documentNo;
+    }
 
-	public String getEo() {
-		return this.eo;
-	}
+    public String getDt() {
+        return this.dt;
+    }
 
-	public void setEo(String eo) {
-		this.eo = eo;
-	}
+    public void setDt(String dt) {
+        this.dt = dt;
+    }
 
-	public BigDecimal getEstimatedHours() {
-		return this.estimatedHours;
-	}
+    public String getDualInspectedBy() {
+        return this.dualInspectedBy;
+    }
 
-	public void setEstimatedHours(BigDecimal estimatedHours) {
-		this.estimatedHours = estimatedHours;
-	}
+    public void setDualInspectedBy(String dualInspectedBy) {
+        this.dualInspectedBy = dualInspectedBy;
+    }
 
-	public String getEt() {
-		return this.et;
-	}
+    public Date getDualInspectedDate() {
+        return this.dualInspectedDate;
+    }
 
-	public void setEt(String et) {
-		this.et = et;
-	}
+    public void setDualInspectedDate(Date dualInspectedDate) {
+        this.dualInspectedDate = dualInspectedDate;
+    }
 
-	public String getEtops() {
-		return this.etops;
-	}
+    public String getDualInspectorStatus() {
+        return this.dualInspectorStatus;
+    }
 
-	public void setEtops(String etops) {
-		this.etops = etops;
-	}
+    public void setDualInspectorStatus(String dualInspectorStatus) {
+        this.dualInspectorStatus = dualInspectorStatus;
+    }
 
-	public String getExcludeContract() {
-		return this.excludeContract;
-	}
+    public String getEctm() {
+        return this.ectm;
+    }
 
-	public void setExcludeContract(String excludeContract) {
-		this.excludeContract = excludeContract;
-	}
+    public void setEctm(String ectm) {
+        this.ectm = ectm;
+    }
 
-	public String getExcludeType() {
-		return this.excludeType;
-	}
+    public String getEditorUsed() {
+        return this.editorUsed;
+    }
 
-	public void setExcludeType(String excludeType) {
-		this.excludeType = excludeType;
-	}
+    public void setEditorUsed(String editorUsed) {
+        this.editorUsed = editorUsed;
+    }
 
-	public String getExpenditureCode() {
-		return this.expenditureCode;
-	}
+    public String getElectricalLoadChg() {
+        return this.electricalLoadChg;
+    }
 
-	public void setExpenditureCode(String expenditureCode) {
-		this.expenditureCode = expenditureCode;
-	}
+    public void setElectricalLoadChg(String electricalLoadChg) {
+        this.electricalLoadChg = electricalLoadChg;
+    }
 
-	public String getFaultConfirm() {
-		return this.faultConfirm;
-	}
+    public BigDecimal getElectricalLoadChgNo() {
+        return this.electricalLoadChgNo;
+    }
 
-	public void setFaultConfirm(String faultConfirm) {
-		this.faultConfirm = faultConfirm;
-	}
+    public void setElectricalLoadChgNo(BigDecimal electricalLoadChgNo) {
+        this.electricalLoadChgNo = electricalLoadChgNo;
+    }
 
-	public String getFlapsPosition() {
-		return this.flapsPosition;
-	}
+    public String getElectricalPowerReq() {
+        return this.electricalPowerReq;
+    }
 
-	public void setFlapsPosition(String flapsPosition) {
-		this.flapsPosition = flapsPosition;
-	}
+    public void setElectricalPowerReq(String electricalPowerReq) {
+        this.electricalPowerReq = electricalPowerReq;
+    }
 
-	public String getFlightSurfaceLimitation() {
-		return this.flightSurfaceLimitation;
-	}
+    public String getEmobReference() {
+        return this.emobReference;
+    }
 
-	public void setFlightSurfaceLimitation(String flightSurfaceLimitation) {
-		this.flightSurfaceLimitation = flightSurfaceLimitation;
-	}
+    public void setEmobReference(String emobReference) {
+        this.emobReference = emobReference;
+    }
 
-	public String getFlightSurfacesRemoval() {
-		return this.flightSurfacesRemoval;
-	}
+    public String getEngineRemoval() {
+        return this.engineRemoval;
+    }
 
-	public void setFlightSurfacesRemoval(String flightSurfacesRemoval) {
-		this.flightSurfacesRemoval = flightSurfacesRemoval;
-	}
+    public void setEngineRemoval(String engineRemoval) {
+        this.engineRemoval = engineRemoval;
+    }
 
-	public String getFlowday() {
-		return this.flowday;
-	}
+    public String getEngineering() {
+        return this.engineering;
+    }
 
-	public void setFlowday(String flowday) {
-		this.flowday = flowday;
-	}
+    public void setEngineering(String engineering) {
+        this.engineering = engineering;
+    }
 
-	public BigDecimal getFormNo() {
-		return this.formNo;
-	}
+    public String getEnginerunUp() {
+        return this.enginerunUp;
+    }
 
-	public void setFormNo(BigDecimal formNo) {
-		this.formNo = formNo;
-	}
+    public void setEnginerunUp(String enginerunUp) {
+        this.enginerunUp = enginerunUp;
+    }
 
-	public String getFuelLimitation() {
-		return this.fuelLimitation;
-	}
+    public String getEo() {
+        return this.eo;
+    }
 
-	public void setFuelLimitation(String fuelLimitation) {
-		this.fuelLimitation = fuelLimitation;
-	}
+    public void setEo(String eo) {
+        this.eo = eo;
+    }
 
-	public String getFuelTanks() {
-		return this.fuelTanks;
-	}
+    public BigDecimal getEstimatedHours() {
+        return this.estimatedHours;
+    }
 
-	public void setFuelTanks(String fuelTanks) {
-		this.fuelTanks = fuelTanks;
-	}
+    public void setEstimatedHours(BigDecimal estimatedHours) {
+        this.estimatedHours = estimatedHours;
+    }
 
-	public String getFunctionalCheck() {
-		return this.functionalCheck;
-	}
+    public String getEt() {
+        return this.et;
+    }
 
-	public void setFunctionalCheck(String functionalCheck) {
-		this.functionalCheck = functionalCheck;
-	}
+    public void setEt(String et) {
+        this.et = et;
+    }
 
-	public String getGalleyToiletRemoval() {
-		return this.galleyToiletRemoval;
-	}
+    public String getEtops() {
+        return this.etops;
+    }
 
-	public void setGalleyToiletRemoval(String galleyToiletRemoval) {
-		this.galleyToiletRemoval = galleyToiletRemoval;
-	}
+    public void setEtops(String etops) {
+        this.etops = etops;
+    }
 
-	public Date getGeDueDate() {
-		return this.geDueDate;
-	}
+    public String getExcludeContract() {
+        return this.excludeContract;
+    }
 
-	public void setGeDueDate(Date geDueDate) {
-		this.geDueDate = geDueDate;
-	}
+    public void setExcludeContract(String excludeContract) {
+        this.excludeContract = excludeContract;
+    }
 
-	public Date getGeModifiedDate() {
-		return this.geModifiedDate;
-	}
+    public String getExcludeType() {
+        return this.excludeType;
+    }
 
-	public void setGeModifiedDate(Date geModifiedDate) {
-		this.geModifiedDate = geModifiedDate;
-	}
+    public void setExcludeType(String excludeType) {
+        this.excludeType = excludeType;
+    }
 
-	public BigDecimal getGeTac() {
-		return this.geTac;
-	}
+    public String getExpenditureCode() {
+        return this.expenditureCode;
+    }
 
-	public void setGeTac(BigDecimal geTac) {
-		this.geTac = geTac;
-	}
+    public void setExpenditureCode(String expenditureCode) {
+        this.expenditureCode = expenditureCode;
+    }
 
-	public Date getGeTad() {
-		return this.geTad;
-	}
+    public String getFaultConfirm() {
+        return this.faultConfirm;
+    }
 
-	public void setGeTad(Date geTad) {
-		this.geTad = geTad;
-	}
+    public void setFaultConfirm(String faultConfirm) {
+        this.faultConfirm = faultConfirm;
+    }
 
-	public BigDecimal getGeTat() {
-		return this.geTat;
-	}
+    public String getFlapsPosition() {
+        return this.flapsPosition;
+    }
 
-	public void setGeTat(BigDecimal geTat) {
-		this.geTat = geTat;
-	}
+    public void setFlapsPosition(String flapsPosition) {
+        this.flapsPosition = flapsPosition;
+    }
 
-	public String getGroundAirLeakCheck() {
-		return this.groundAirLeakCheck;
-	}
+    public String getFlightSurfaceLimitation() {
+        return this.flightSurfaceLimitation;
+    }
 
-	public void setGroundAirLeakCheck(String groundAirLeakCheck) {
-		this.groundAirLeakCheck = groundAirLeakCheck;
-	}
+    public void setFlightSurfaceLimitation(String flightSurfaceLimitation) {
+        this.flightSurfaceLimitation = flightSurfaceLimitation;
+    }
 
-	public String getHangarSpaceRequ() {
-		return this.hangarSpaceRequ;
-	}
+    public String getFlightSurfacesRemoval() {
+        return this.flightSurfacesRemoval;
+    }
 
-	public void setHangarSpaceRequ(String hangarSpaceRequ) {
-		this.hangarSpaceRequ = hangarSpaceRequ;
-	}
+    public void setFlightSurfacesRemoval(String flightSurfacesRemoval) {
+        this.flightSurfacesRemoval = flightSurfacesRemoval;
+    }
 
-	public String getHideFlag() {
-		return this.hideFlag;
-	}
+    public String getFlowday() {
+        return this.flowday;
+    }
 
-	public void setHideFlag(String hideFlag) {
-		this.hideFlag = hideFlag;
-	}
+    public void setFlowday(String flowday) {
+        this.flowday = flowday;
+    }
 
-	public BigDecimal getHours() {
-		return this.hours;
-	}
+    public BigDecimal getFormNo() {
+        return this.formNo;
+    }
 
-	public void setHours(BigDecimal hours) {
-		this.hours = hours;
-	}
+    public void setFormNo(BigDecimal formNo) {
+        this.formNo = formNo;
+    }
 
-	public String getHydGroundChartrequ() {
-		return this.hydGroundChartrequ;
-	}
+    public String getFuelLimitation() {
+        return this.fuelLimitation;
+    }
 
-	public void setHydGroundChartrequ(String hydGroundChartrequ) {
-		this.hydGroundChartrequ = hydGroundChartrequ;
-	}
+    public void setFuelLimitation(String fuelLimitation) {
+        this.fuelLimitation = fuelLimitation;
+    }
 
-	public String getHydraulicPowerReq() {
-		return this.hydraulicPowerReq;
-	}
+    public String getFuelTanks() {
+        return this.fuelTanks;
+    }
 
-	public void setHydraulicPowerReq(String hydraulicPowerReq) {
-		this.hydraulicPowerReq = hydraulicPowerReq;
-	}
+    public void setFuelTanks(String fuelTanks) {
+        this.fuelTanks = fuelTanks;
+    }
 
-	public String getIndependentTask() {
-		return this.independentTask;
-	}
+    public String getFunctionalCheck() {
+        return this.functionalCheck;
+    }
 
-	public void setIndependentTask(String independentTask) {
-		this.independentTask = independentTask;
-	}
+    public void setFunctionalCheck(String functionalCheck) {
+        this.functionalCheck = functionalCheck;
+    }
 
-	public String getInspRejectedBy() {
-		return this.inspRejectedBy;
-	}
+    public String getGalleyToiletRemoval() {
+        return this.galleyToiletRemoval;
+    }
 
-	public void setInspRejectedBy(String inspRejectedBy) {
-		this.inspRejectedBy = inspRejectedBy;
-	}
+    public void setGalleyToiletRemoval(String galleyToiletRemoval) {
+        this.galleyToiletRemoval = galleyToiletRemoval;
+    }
 
-	public Date getInspRejectedDate() {
-		return this.inspRejectedDate;
-	}
+    public Date getGeDueDate() {
+        return this.geDueDate;
+    }
 
-	public void setInspRejectedDate(Date inspRejectedDate) {
-		this.inspRejectedDate = inspRejectedDate;
-	}
+    public void setGeDueDate(Date geDueDate) {
+        this.geDueDate = geDueDate;
+    }
 
-	public String getInspRejectedReason() {
-		return this.inspRejectedReason;
-	}
+    public Date getGeModifiedDate() {
+        return this.geModifiedDate;
+    }
 
-	public void setInspRejectedReason(String inspRejectedReason) {
-		this.inspRejectedReason = inspRejectedReason;
-	}
+    public void setGeModifiedDate(Date geModifiedDate) {
+        this.geModifiedDate = geModifiedDate;
+    }
 
-	public String getInspectedBy() {
-		return this.inspectedBy;
-	}
+    public BigDecimal getGeTac() {
+        return this.geTac;
+    }
 
-	public void setInspectedBy(String inspectedBy) {
-		this.inspectedBy = inspectedBy;
-	}
+    public void setGeTac(BigDecimal geTac) {
+        this.geTac = geTac;
+    }
 
-	public Date getInspectedDate() {
-		return this.inspectedDate;
-	}
+    public Date getGeTad() {
+        return this.geTad;
+    }
 
-	public void setInspectedDate(Date inspectedDate) {
-		this.inspectedDate = inspectedDate;
-	}
+    public void setGeTad(Date geTad) {
+        this.geTad = geTad;
+    }
 
-	public String getInspectionRequired() {
-		return this.inspectionRequired;
-	}
+    public BigDecimal getGeTat() {
+        return this.geTat;
+    }
 
-	public void setInspectionRequired(String inspectionRequired) {
-		this.inspectionRequired = inspectionRequired;
-	}
+    public void setGeTat(BigDecimal geTat) {
+        this.geTat = geTat;
+    }
 
-	public String getInspectorStatus() {
-		return this.inspectorStatus;
-	}
+    public String getGroundAirLeakCheck() {
+        return this.groundAirLeakCheck;
+    }
 
-	public void setInspectorStatus(String inspectorStatus) {
-		this.inspectorStatus = inspectorStatus;
-	}
+    public void setGroundAirLeakCheck(String groundAirLeakCheck) {
+        this.groundAirLeakCheck = groundAirLeakCheck;
+    }
 
-	public String getInsuranceClaim() {
-		return this.insuranceClaim;
-	}
+    public String getHangarSpaceRequ() {
+        return this.hangarSpaceRequ;
+    }
 
-	public void setInsuranceClaim(String insuranceClaim) {
-		this.insuranceClaim = insuranceClaim;
-	}
+    public void setHangarSpaceRequ(String hangarSpaceRequ) {
+        this.hangarSpaceRequ = hangarSpaceRequ;
+    }
 
-	public String getInsuranceNumber() {
-		return this.insuranceNumber;
-	}
+    public String getHideFlag() {
+        return this.hideFlag;
+    }
 
-	public void setInsuranceNumber(String insuranceNumber) {
-		this.insuranceNumber = insuranceNumber;
-	}
+    public void setHideFlag(String hideFlag) {
+        this.hideFlag = hideFlag;
+    }
 
-	public Date getInterfaceCreatedDate() {
-		return this.interfaceCreatedDate;
-	}
+    public BigDecimal getHours() {
+        return this.hours;
+    }
 
-	public void setInterfaceCreatedDate(Date interfaceCreatedDate) {
-		this.interfaceCreatedDate = interfaceCreatedDate;
-	}
+    public void setHours(BigDecimal hours) {
+        this.hours = hours;
+    }
 
-	public String getInterfaceEctmTransferBy() {
-		return this.interfaceEctmTransferBy;
-	}
+    public String getHydGroundChartrequ() {
+        return this.hydGroundChartrequ;
+    }
 
-	public void setInterfaceEctmTransferBy(String interfaceEctmTransferBy) {
-		this.interfaceEctmTransferBy = interfaceEctmTransferBy;
-	}
+    public void setHydGroundChartrequ(String hydGroundChartrequ) {
+        this.hydGroundChartrequ = hydGroundChartrequ;
+    }
 
-	public Date getInterfaceEctmTransferDate() {
-		return this.interfaceEctmTransferDate;
-	}
+    public String getHydraulicPowerReq() {
+        return this.hydraulicPowerReq;
+    }
 
-	public void setInterfaceEctmTransferDate(Date interfaceEctmTransferDate) {
-		this.interfaceEctmTransferDate = interfaceEctmTransferDate;
-	}
+    public void setHydraulicPowerReq(String hydraulicPowerReq) {
+        this.hydraulicPowerReq = hydraulicPowerReq;
+    }
 
-	public Date getInterfaceModifiedDate() {
-		return this.interfaceModifiedDate;
-	}
+    public String getIndependentTask() {
+        return this.independentTask;
+    }
 
-	public void setInterfaceModifiedDate(Date interfaceModifiedDate) {
-		this.interfaceModifiedDate = interfaceModifiedDate;
-	}
+    public void setIndependentTask(String independentTask) {
+        this.independentTask = independentTask;
+    }
 
-	public String getInterfaceTransferBy() {
-		return this.interfaceTransferBy;
-	}
+    public String getInspRejectedBy() {
+        return this.inspRejectedBy;
+    }
 
-	public void setInterfaceTransferBy(String interfaceTransferBy) {
-		this.interfaceTransferBy = interfaceTransferBy;
-	}
+    public void setInspRejectedBy(String inspRejectedBy) {
+        this.inspRejectedBy = inspRejectedBy;
+    }
 
-	public Date getInterfaceTransferDate() {
-		return this.interfaceTransferDate;
-	}
+    public Date getInspRejectedDate() {
+        return this.inspRejectedDate;
+    }
 
-	public void setInterfaceTransferDate(Date interfaceTransferDate) {
-		this.interfaceTransferDate = interfaceTransferDate;
-	}
+    public void setInspRejectedDate(Date inspRejectedDate) {
+        this.inspRejectedDate = inspRejectedDate;
+    }
 
-	public String getInvoiced() {
-		return this.invoiced;
-	}
+    public String getInspRejectedReason() {
+        return this.inspRejectedReason;
+    }
 
-	public void setInvoiced(String invoiced) {
-		this.invoiced = invoiced;
-	}
+    public void setInspRejectedReason(String inspRejectedReason) {
+        this.inspRejectedReason = inspRejectedReason;
+    }
 
-	public String getIr() {
-		return this.ir;
-	}
+    public String getInspectedBy() {
+        return this.inspectedBy;
+    }
 
-	public void setIr(String ir) {
-		this.ir = ir;
-	}
+    public void setInspectedBy(String inspectedBy) {
+        this.inspectedBy = inspectedBy;
+    }
 
-	public String getIshtmledited() {
-		return this.ishtmledited;
-	}
+    public Date getInspectedDate() {
+        return this.inspectedDate;
+    }
 
-	public void setIshtmledited(String ishtmledited) {
-		this.ishtmledited = ishtmledited;
-	}
+    public void setInspectedDate(Date inspectedDate) {
+        this.inspectedDate = inspectedDate;
+    }
 
-	public String getIssuedAsExchange() {
-		return this.issuedAsExchange;
-	}
+    public String getInspectionRequired() {
+        return this.inspectionRequired;
+    }
 
-	public void setIssuedAsExchange(String issuedAsExchange) {
-		this.issuedAsExchange = issuedAsExchange;
-	}
+    public void setInspectionRequired(String inspectionRequired) {
+        this.inspectionRequired = inspectionRequired;
+    }
 
-	public String getJobName() {
-		return this.jobName;
-	}
+    public String getInspectorStatus() {
+        return this.inspectorStatus;
+    }
 
-	public void setJobName(String jobName) {
-		this.jobName = jobName;
-	}
+    public void setInspectorStatus(String inspectorStatus) {
+        this.inspectorStatus = inspectorStatus;
+    }
 
-	public String getLandingGearRemoval() {
-		return this.landingGearRemoval;
-	}
+    public String getInsuranceClaim() {
+        return this.insuranceClaim;
+    }
 
-	public void setLandingGearRemoval(String landingGearRemoval) {
-		this.landingGearRemoval = landingGearRemoval;
-	}
+    public void setInsuranceClaim(String insuranceClaim) {
+        this.insuranceClaim = insuranceClaim;
+    }
 
-	public String getLeadMechAuthBy() {
-		return this.leadMechAuthBy;
-	}
+    public String getInsuranceNumber() {
+        return this.insuranceNumber;
+    }
 
-	public void setLeadMechAuthBy(String leadMechAuthBy) {
-		this.leadMechAuthBy = leadMechAuthBy;
-	}
+    public void setInsuranceNumber(String insuranceNumber) {
+        this.insuranceNumber = insuranceNumber;
+    }
 
-	public Date getLeadMechAuthDate() {
-		return this.leadMechAuthDate;
-	}
+    public Date getInterfaceCreatedDate() {
+        return this.interfaceCreatedDate;
+    }
 
-	public void setLeadMechAuthDate(Date leadMechAuthDate) {
-		this.leadMechAuthDate = leadMechAuthDate;
-	}
+    public void setInterfaceCreatedDate(Date interfaceCreatedDate) {
+        this.interfaceCreatedDate = interfaceCreatedDate;
+    }
 
-	public String getLeakCheck() {
-		return this.leakCheck;
-	}
+    public String getInterfaceEctmTransferBy() {
+        return this.interfaceEctmTransferBy;
+    }
 
-	public void setLeakCheck(String leakCheck) {
-		this.leakCheck = leakCheck;
-	}
+    public void setInterfaceEctmTransferBy(String interfaceEctmTransferBy) {
+        this.interfaceEctmTransferBy = interfaceEctmTransferBy;
+    }
 
-	public BigDecimal getLogItem() {
-		return this.logItem;
-	}
+    public Date getInterfaceEctmTransferDate() {
+        return this.interfaceEctmTransferDate;
+    }
 
-	public void setLogItem(BigDecimal logItem) {
-		this.logItem = logItem;
-	}
+    public void setInterfaceEctmTransferDate(Date interfaceEctmTransferDate) {
+        this.interfaceEctmTransferDate = interfaceEctmTransferDate;
+    }
 
-	public String getLogPage() {
-		return this.logPage;
-	}
+    public Date getInterfaceModifiedDate() {
+        return this.interfaceModifiedDate;
+    }
 
-	public void setLogPage(String logPage) {
-		this.logPage = logPage;
-	}
+    public void setInterfaceModifiedDate(Date interfaceModifiedDate) {
+        this.interfaceModifiedDate = interfaceModifiedDate;
+    }
 
-	public String getLube() {
-		return this.lube;
-	}
+    public String getInterfaceTransferBy() {
+        return this.interfaceTransferBy;
+    }
 
-	public void setLube(String lube) {
-		this.lube = lube;
-	}
+    public void setInterfaceTransferBy(String interfaceTransferBy) {
+        this.interfaceTransferBy = interfaceTransferBy;
+    }
 
-	public String getM() {
-		return this.m;
-	}
+    public Date getInterfaceTransferDate() {
+        return this.interfaceTransferDate;
+    }
 
-	public void setM(String m) {
-		this.m = m;
-	}
+    public void setInterfaceTransferDate(Date interfaceTransferDate) {
+        this.interfaceTransferDate = interfaceTransferDate;
+    }
 
-	public String getMandatoryClassification() {
-		return this.mandatoryClassification;
-	}
+    public String getInvoiced() {
+        return this.invoiced;
+    }
 
-	public void setMandatoryClassification(String mandatoryClassification) {
-		this.mandatoryClassification = mandatoryClassification;
-	}
+    public void setInvoiced(String invoiced) {
+        this.invoiced = invoiced;
+    }
 
-	public BigDecimal getMechanic() {
-		return this.mechanic;
-	}
+    public String getIr() {
+        return this.ir;
+    }
 
-	public void setMechanic(BigDecimal mechanic) {
-		this.mechanic = mechanic;
-	}
+    public void setIr(String ir) {
+        this.ir = ir;
+    }
 
-	public String getModNo() {
-		return this.modNo;
-	}
+    public String getIshtmledited() {
+        return this.ishtmledited;
+    }
 
-	public void setModNo(String modNo) {
-		this.modNo = modNo;
-	}
+    public void setIshtmledited(String ishtmledited) {
+        this.ishtmledited = ishtmledited;
+    }
 
-	public String getModifiedBy() {
-		return this.modifiedBy;
-	}
+    public String getIssuedAsExchange() {
+        return this.issuedAsExchange;
+    }
 
-	public void setModifiedBy(String modifiedBy) {
-		this.modifiedBy = modifiedBy;
-	}
+    public void setIssuedAsExchange(String issuedAsExchange) {
+        this.issuedAsExchange = issuedAsExchange;
+    }
 
-	public Date getModifiedDate() {
-		return this.modifiedDate;
-	}
+    public String getJobName() {
+        return this.jobName;
+    }
 
-	public void setModifiedDate(Date modifiedDate) {
-		this.modifiedDate = modifiedDate;
-	}
+    public void setJobName(String jobName) {
+        this.jobName = jobName;
+    }
 
-	public String getMomentChg() {
-		return this.momentChg;
-	}
+    public String getLandingGearRemoval() {
+        return this.landingGearRemoval;
+    }
 
-	public void setMomentChg(String momentChg) {
-		this.momentChg = momentChg;
-	}
+    public void setLandingGearRemoval(String landingGearRemoval) {
+        this.landingGearRemoval = landingGearRemoval;
+    }
 
-	public BigDecimal getMomentChgNo() {
-		return this.momentChgNo;
-	}
+    public String getLeadMechAuthBy() {
+        return this.leadMechAuthBy;
+    }
 
-	public void setMomentChgNo(BigDecimal momentChgNo) {
-		this.momentChgNo = momentChgNo;
-	}
+    public void setLeadMechAuthBy(String leadMechAuthBy) {
+        this.leadMechAuthBy = leadMechAuthBy;
+    }
 
-	public String getMpd() {
-		return this.mpd;
-	}
+    public Date getLeadMechAuthDate() {
+        return this.leadMechAuthDate;
+    }
 
-	public void setMpd(String mpd) {
-		this.mpd = mpd;
-	}
+    public void setLeadMechAuthDate(Date leadMechAuthDate) {
+        this.leadMechAuthDate = leadMechAuthDate;
+    }
 
-	public String getMrb() {
-		return this.mrb;
-	}
+    public String getLeakCheck() {
+        return this.leakCheck;
+    }
 
-	public void setMrb(String mrb) {
-		this.mrb = mrb;
-	}
+    public void setLeakCheck(String leakCheck) {
+        this.leakCheck = leakCheck;
+    }
 
-	public String getMt() {
-		return this.mt;
-	}
+    public BigDecimal getLogItem() {
+        return this.logItem;
+    }
 
-	public void setMt(String mt) {
-		this.mt = mt;
-	}
+    public void setLogItem(BigDecimal logItem) {
+        this.logItem = logItem;
+    }
 
-	public String getNRFindingTendency() {
-		return this.nRFindingTendency;
-	}
+    public String getLogPage() {
+        return this.logPage;
+    }
 
-	public void setNRFindingTendency(String nRFindingTendency) {
-		this.nRFindingTendency = nRFindingTendency;
-	}
+    public void setLogPage(String logPage) {
+        this.logPage = logPage;
+    }
 
-	public String getNdt() {
-		return this.ndt;
-	}
+    public String getLube() {
+        return this.lube;
+    }
 
-	public void setNdt(String ndt) {
-		this.ndt = ndt;
-	}
+    public void setLube(String lube) {
+        this.lube = lube;
+    }
 
-	public String getNextSite() {
-		return this.nextSite;
-	}
+    public String getM() {
+        return this.m;
+    }
 
-	public void setNextSite(String nextSite) {
-		this.nextSite = nextSite;
-	}
+    public void setM(String m) {
+        this.m = m;
+    }
 
-	public BigDecimal getNoOfPrint() {
-		return this.noOfPrint;
-	}
+    public String getMandatoryClassification() {
+        return this.mandatoryClassification;
+    }
 
-	public void setNoOfPrint(BigDecimal noOfPrint) {
-		this.noOfPrint = noOfPrint;
-	}
+    public void setMandatoryClassification(String mandatoryClassification) {
+        this.mandatoryClassification = mandatoryClassification;
+    }
 
-	public String getNonRoutine() {
-		return this.nonRoutine;
-	}
+    public BigDecimal getMechanic() {
+        return this.mechanic;
+    }
 
-	public void setNonRoutine(String nonRoutine) {
-		this.nonRoutine = nonRoutine;
-	}
+    public void setMechanic(BigDecimal mechanic) {
+        this.mechanic = mechanic;
+    }
 
-	public BigDecimal getNotes() {
-		return this.notes;
-	}
+    public String getModNo() {
+        return this.modNo;
+    }
 
-	public void setNotes(BigDecimal notes) {
-		this.notes = notes;
-	}
+    public void setModNo(String modNo) {
+        this.modNo = modNo;
+    }
 
-	public String getNotifyAppearance() {
-		return this.notifyAppearance;
-	}
+    public String getModifiedBy() {
+        return this.modifiedBy;
+    }
 
-	public void setNotifyAppearance(String notifyAppearance) {
-		this.notifyAppearance = notifyAppearance;
-	}
+    public void setModifiedBy(String modifiedBy) {
+        this.modifiedBy = modifiedBy;
+    }
 
-	public String getNotifyEngineering() {
-		return this.notifyEngineering;
-	}
+    public Date getModifiedDate() {
+        return this.modifiedDate;
+    }
 
-	public void setNotifyEngineering(String notifyEngineering) {
-		this.notifyEngineering = notifyEngineering;
-	}
+    public void setModifiedDate(Date modifiedDate) {
+        this.modifiedDate = modifiedDate;
+    }
 
-	public String getNotifyInspector() {
-		return this.notifyInspector;
-	}
+    public String getMomentChg() {
+        return this.momentChg;
+    }
 
-	public void setNotifyInspector(String notifyInspector) {
-		this.notifyInspector = notifyInspector;
-	}
+    public void setMomentChg(String momentChg) {
+        this.momentChg = momentChg;
+    }
 
-	public String getNotifyPlanning() {
-		return this.notifyPlanning;
-	}
+    public BigDecimal getMomentChgNo() {
+        return this.momentChgNo;
+    }
 
-	public void setNotifyPlanning(String notifyPlanning) {
-		this.notifyPlanning = notifyPlanning;
-	}
+    public void setMomentChgNo(BigDecimal momentChgNo) {
+        this.momentChgNo = momentChgNo;
+    }
 
-	public String getNrClassification() {
-		return this.nrClassification;
-	}
+    public String getMpd() {
+        return this.mpd;
+    }
 
-	public void setNrClassification(String nrClassification) {
-		this.nrClassification = nrClassification;
-	}
+    public void setMpd(String mpd) {
+        this.mpd = mpd;
+    }
 
-	public BigDecimal getNrEngineeringId() {
-		return this.nrEngineeringId;
-	}
+    public String getMrb() {
+        return this.mrb;
+    }
 
-	public void setNrEngineeringId(BigDecimal nrEngineeringId) {
-		this.nrEngineeringId = nrEngineeringId;
-	}
+    public void setMrb(String mrb) {
+        this.mrb = mrb;
+    }
 
-	public String getNrFromTc() {
-		return this.nrFromTc;
-	}
+    public String getMt() {
+        return this.mt;
+    }
 
-	public void setNrFromTc(String nrFromTc) {
-		this.nrFromTc = nrFromTc;
-	}
+    public void setMt(String mt) {
+        this.mt = mt;
+    }
 
-	public BigDecimal getNrNotes() {
-		return this.nrNotes;
-	}
+    public String getNRFindingTendency() {
+        return this.nRFindingTendency;
+    }
 
-	public void setNrNotes(BigDecimal nrNotes) {
-		this.nrNotes = nrNotes;
-	}
+    public void setNRFindingTendency(String nRFindingTendency) {
+        this.nRFindingTendency = nRFindingTendency;
+    }
 
-	public String getNrReportedBy() {
-		return this.nrReportedBy;
-	}
+    public String getNdt() {
+        return this.ndt;
+    }
 
-	public void setNrReportedBy(String nrReportedBy) {
-		this.nrReportedBy = nrReportedBy;
-	}
+    public void setNdt(String ndt) {
+        this.ndt = ndt;
+    }
 
-	public String getOnConditionTaskCard() {
-		return this.onConditionTaskCard;
-	}
+    public String getNextSite() {
+        return this.nextSite;
+    }
 
-	public void setOnConditionTaskCard(String onConditionTaskCard) {
-		this.onConditionTaskCard = onConditionTaskCard;
-	}
+    public void setNextSite(String nextSite) {
+        this.nextSite = nextSite;
+    }
 
-	public String getOperatingEmptyWeightUpdate() {
-		return this.operatingEmptyWeightUpdate;
-	}
+    public BigDecimal getNoOfPrint() {
+        return this.noOfPrint;
+    }
 
-	public void setOperatingEmptyWeightUpdate(String operatingEmptyWeightUpdate) {
-		this.operatingEmptyWeightUpdate = operatingEmptyWeightUpdate;
-	}
+    public void setNoOfPrint(BigDecimal noOfPrint) {
+        this.noOfPrint = noOfPrint;
+    }
 
-	public String getOutOfHangar() {
-		return this.outOfHangar;
-	}
+    public String getNonRoutine() {
+        return this.nonRoutine;
+    }
 
-	public void setOutOfHangar(String outOfHangar) {
-		this.outOfHangar = outOfHangar;
-	}
+    public void setNonRoutine(String nonRoutine) {
+        this.nonRoutine = nonRoutine;
+    }
 
-	public String getPanelTc() {
-		return this.panelTc;
-	}
+    public BigDecimal getNotes() {
+        return this.notes;
+    }
 
-	public void setPanelTc(String panelTc) {
-		this.panelTc = panelTc;
-	}
+    public void setNotes(BigDecimal notes) {
+        this.notes = notes;
+    }
 
-	public String getPaperRequired() {
-		return this.paperRequired;
-	}
+    public String getNotifyAppearance() {
+        return this.notifyAppearance;
+    }
 
-	public void setPaperRequired(String paperRequired) {
-		this.paperRequired = paperRequired;
-	}
+    public void setNotifyAppearance(String notifyAppearance) {
+        this.notifyAppearance = notifyAppearance;
+    }
 
-	public BigDecimal getParagraph() {
-		return this.paragraph;
-	}
+    public String getNotifyEngineering() {
+        return this.notifyEngineering;
+    }
 
-	public void setParagraph(BigDecimal paragraph) {
-		this.paragraph = paragraph;
-	}
+    public void setNotifyEngineering(String notifyEngineering) {
+        this.notifyEngineering = notifyEngineering;
+    }
 
-	public BigDecimal getParentTdLinkContentId() {
-		return this.parentTdLinkContentId;
-	}
+    public String getNotifyInspector() {
+        return this.notifyInspector;
+    }
 
-	public void setParentTdLinkContentId(BigDecimal parentTdLinkContentId) {
-		this.parentTdLinkContentId = parentTdLinkContentId;
-	}
+    public void setNotifyInspector(String notifyInspector) {
+        this.notifyInspector = notifyInspector;
+    }
 
-	public String getPhase() {
-		return this.phase;
-	}
+    public String getNotifyPlanning() {
+        return this.notifyPlanning;
+    }
 
-	public void setPhase(String phase) {
-		this.phase = phase;
-	}
+    public void setNotifyPlanning(String notifyPlanning) {
+        this.notifyPlanning = notifyPlanning;
+    }
 
-	public String getPlanningPriority() {
-		return this.planningPriority;
-	}
+    public String getNrClassification() {
+        return this.nrClassification;
+    }
 
-	public void setPlanningPriority(String planningPriority) {
-		this.planningPriority = planningPriority;
-	}
+    public void setNrClassification(String nrClassification) {
+        this.nrClassification = nrClassification;
+    }
 
-	public String getPmCategory() {
-		return this.pmCategory;
-	}
+    public BigDecimal getNrEngineeringId() {
+        return this.nrEngineeringId;
+    }
 
-	public void setPmCategory(String pmCategory) {
-		this.pmCategory = pmCategory;
-	}
+    public void setNrEngineeringId(BigDecimal nrEngineeringId) {
+        this.nrEngineeringId = nrEngineeringId;
+    }
 
-	public String getPnRequired() {
-		return this.pnRequired;
-	}
+    public String getNrFromTc() {
+        return this.nrFromTc;
+    }
 
-	public void setPnRequired(String pnRequired) {
-		this.pnRequired = pnRequired;
-	}
+    public void setNrFromTc(String nrFromTc) {
+        this.nrFromTc = nrFromTc;
+    }
 
-	public String getPneumaticPower() {
-		return this.pneumaticPower;
-	}
+    public BigDecimal getNrNotes() {
+        return this.nrNotes;
+    }
 
-	public void setPneumaticPower(String pneumaticPower) {
-		this.pneumaticPower = pneumaticPower;
-	}
+    public void setNrNotes(BigDecimal nrNotes) {
+        this.nrNotes = nrNotes;
+    }
 
-	public String getPriority() {
-		return this.priority;
-	}
+    public String getNrReportedBy() {
+        return this.nrReportedBy;
+    }
 
-	public void setPriority(String priority) {
-		this.priority = priority;
-	}
+    public void setNrReportedBy(String nrReportedBy) {
+        this.nrReportedBy = nrReportedBy;
+    }
 
-	public String getPriorityOverride() {
-		return this.priorityOverride;
-	}
+    public String getOnConditionTaskCard() {
+        return this.onConditionTaskCard;
+    }
 
-	public void setPriorityOverride(String priorityOverride) {
-		this.priorityOverride = priorityOverride;
-	}
+    public void setOnConditionTaskCard(String onConditionTaskCard) {
+        this.onConditionTaskCard = onConditionTaskCard;
+    }
 
-	public String getPt() {
-		return this.pt;
-	}
+    public String getOperatingEmptyWeightUpdate() {
+        return this.operatingEmptyWeightUpdate;
+    }
 
-	public void setPt(String pt) {
-		this.pt = pt;
-	}
+    public void setOperatingEmptyWeightUpdate(String operatingEmptyWeightUpdate) {
+        this.operatingEmptyWeightUpdate = operatingEmptyWeightUpdate;
+    }
 
-	public String getPylonRemoval() {
-		return this.pylonRemoval;
-	}
+    public String getOutOfHangar() {
+        return this.outOfHangar;
+    }
 
-	public void setPylonRemoval(String pylonRemoval) {
-		this.pylonRemoval = pylonRemoval;
-	}
+    public void setOutOfHangar(String outOfHangar) {
+        this.outOfHangar = outOfHangar;
+    }
 
-	public String getQuotationNo() {
-		return this.quotationNo;
-	}
+    public String getPanelTc() {
+        return this.panelTc;
+    }
 
-	public void setQuotationNo(String quotationNo) {
-		this.quotationNo = quotationNo;
-	}
+    public void setPanelTc(String panelTc) {
+        this.panelTc = panelTc;
+    }
 
-	public String getReason() {
-		return this.reason;
-	}
+    public String getPaperRequired() {
+        return this.paperRequired;
+    }
 
-	public void setReason(String reason) {
-		this.reason = reason;
-	}
+    public void setPaperRequired(String paperRequired) {
+        this.paperRequired = paperRequired;
+    }
 
-	public String getRecomendation() {
-		return this.recomendation;
-	}
+    public BigDecimal getParagraph() {
+        return this.paragraph;
+    }
 
-	public void setRecomendation(String recomendation) {
-		this.recomendation = recomendation;
-	}
+    public void setParagraph(BigDecimal paragraph) {
+        this.paragraph = paragraph;
+    }
 
-	public String getRectifiedByEngineering() {
-		return this.rectifiedByEngineering;
-	}
+    public BigDecimal getParentTdLinkContentId() {
+        return this.parentTdLinkContentId;
+    }
 
-	public void setRectifiedByEngineering(String rectifiedByEngineering) {
-		this.rectifiedByEngineering = rectifiedByEngineering;
-	}
+    public void setParentTdLinkContentId(BigDecimal parentTdLinkContentId) {
+        this.parentTdLinkContentId = parentTdLinkContentId;
+    }
 
-	public String getReferenceInterval() {
-		return this.referenceInterval;
-	}
+    public String getPhase() {
+        return this.phase;
+    }
 
-	public void setReferenceInterval(String referenceInterval) {
-		this.referenceInterval = referenceInterval;
-	}
+    public void setPhase(String phase) {
+        this.phase = phase;
+    }
 
-	public String getReferenceTaskCard() {
-		return this.referenceTaskCard;
-	}
+    public String getPlanningPriority() {
+        return this.planningPriority;
+    }
 
-	public void setReferenceTaskCard(String referenceTaskCard) {
-		this.referenceTaskCard = referenceTaskCard;
-	}
+    public void setPlanningPriority(String planningPriority) {
+        this.planningPriority = planningPriority;
+    }
 
-	public String getRefereranceToAd() {
-		return this.refereranceToAd;
-	}
+    public String getPmCategory() {
+        return this.pmCategory;
+    }
 
-	public void setRefereranceToAd(String refereranceToAd) {
-		this.refereranceToAd = refereranceToAd;
-	}
+    public void setPmCategory(String pmCategory) {
+        this.pmCategory = pmCategory;
+    }
 
-	public String getRejectTeam() {
-		return this.rejectTeam;
-	}
+    public String getPnRequired() {
+        return this.pnRequired;
+    }
 
-	public void setRejectTeam(String rejectTeam) {
-		this.rejectTeam = rejectTeam;
-	}
+    public void setPnRequired(String pnRequired) {
+        this.pnRequired = pnRequired;
+    }
 
-	public String getRejectedBy() {
-		return this.rejectedBy;
-	}
+    public String getPneumaticPower() {
+        return this.pneumaticPower;
+    }
 
-	public void setRejectedBy(String rejectedBy) {
-		this.rejectedBy = rejectedBy;
-	}
+    public void setPneumaticPower(String pneumaticPower) {
+        this.pneumaticPower = pneumaticPower;
+    }
 
-	public String getRejectedCategory() {
-		return this.rejectedCategory;
-	}
+    public String getPriority() {
+        return this.priority;
+    }
 
-	public void setRejectedCategory(String rejectedCategory) {
-		this.rejectedCategory = rejectedCategory;
-	}
+    public void setPriority(String priority) {
+        this.priority = priority;
+    }
 
-	public Date getRejectedDate() {
-		return this.rejectedDate;
-	}
+    public String getPriorityOverride() {
+        return this.priorityOverride;
+    }
 
-	public void setRejectedDate(Date rejectedDate) {
-		this.rejectedDate = rejectedDate;
-	}
+    public void setPriorityOverride(String priorityOverride) {
+        this.priorityOverride = priorityOverride;
+    }
 
-	public String getRejectedReason() {
-		return this.rejectedReason;
-	}
+    public String getPt() {
+        return this.pt;
+    }
 
-	public void setRejectedReason(String rejectedReason) {
-		this.rejectedReason = rejectedReason;
-	}
+    public void setPt(String pt) {
+        this.pt = pt;
+    }
 
-	public String getRemarks() {
-		return this.remarks;
-	}
+    public String getPylonRemoval() {
+        return this.pylonRemoval;
+    }
 
-	public void setRemarks(String remarks) {
-		this.remarks = remarks;
-	}
+    public void setPylonRemoval(String pylonRemoval) {
+        this.pylonRemoval = pylonRemoval;
+    }
 
-	public String getReopenBy() {
-		return this.reopenBy;
-	}
+    public String getQuotationNo() {
+        return this.quotationNo;
+    }
 
-	public void setReopenBy(String reopenBy) {
-		this.reopenBy = reopenBy;
-	}
+    public void setQuotationNo(String quotationNo) {
+        this.quotationNo = quotationNo;
+    }
 
-	public Date getReopenDate() {
-		return this.reopenDate;
-	}
+    public String getReason() {
+        return this.reason;
+    }
 
-	public void setReopenDate(Date reopenDate) {
-		this.reopenDate = reopenDate;
-	}
+    public void setReason(String reason) {
+        this.reason = reason;
+    }
 
-	public String getReopenReason() {
-		return this.reopenReason;
-	}
+    public String getRecomendation() {
+        return this.recomendation;
+    }
 
-	public void setReopenReason(String reopenReason) {
-		this.reopenReason = reopenReason;
-	}
+    public void setRecomendation(String recomendation) {
+        this.recomendation = recomendation;
+    }
 
-	public String getRequiredInspectionBy() {
-		return this.requiredInspectionBy;
-	}
+    public String getRectifiedByEngineering() {
+        return this.rectifiedByEngineering;
+    }
 
-	public void setRequiredInspectionBy(String requiredInspectionBy) {
-		this.requiredInspectionBy = requiredInspectionBy;
-	}
+    public void setRectifiedByEngineering(String rectifiedByEngineering) {
+        this.rectifiedByEngineering = rectifiedByEngineering;
+    }
 
-	public String getRequiredInspectionItem() {
-		return this.requiredInspectionItem;
-	}
+    public String getReferenceInterval() {
+        return this.referenceInterval;
+    }
 
-	public void setRequiredInspectionItem(String requiredInspectionItem) {
-		this.requiredInspectionItem = requiredInspectionItem;
-	}
+    public void setReferenceInterval(String referenceInterval) {
+        this.referenceInterval = referenceInterval;
+    }
 
-	public String getReset() {
-		return this.reset;
-	}
+    public String getReferenceTaskCard() {
+        return this.referenceTaskCard;
+    }
 
-	public void setReset(String reset) {
-		this.reset = reset;
-	}
+    public void setReferenceTaskCard(String referenceTaskCard) {
+        this.referenceTaskCard = referenceTaskCard;
+    }
 
-	public String getResolutionCategory() {
-		return this.resolutionCategory;
-	}
+    public String getRefereranceToAd() {
+        return this.refereranceToAd;
+    }
 
-	public void setResolutionCategory(String resolutionCategory) {
-		this.resolutionCategory = resolutionCategory;
-	}
+    public void setRefereranceToAd(String refereranceToAd) {
+        this.refereranceToAd = refereranceToAd;
+    }
 
-	public Date getRevisedDate() {
-		return this.revisedDate;
-	}
+    public String getRejectTeam() {
+        return this.rejectTeam;
+    }
 
-	public void setRevisedDate(Date revisedDate) {
-		this.revisedDate = revisedDate;
-	}
+    public void setRejectTeam(String rejectTeam) {
+        this.rejectTeam = rejectTeam;
+    }
 
-	public String getRevision() {
-		return this.revision;
-	}
+    public String getRejectedBy() {
+        return this.rejectedBy;
+    }
 
-	public void setRevision(String revision) {
-		this.revision = revision;
-	}
+    public void setRejectedBy(String rejectedBy) {
+        this.rejectedBy = rejectedBy;
+    }
 
-	public String getRii() {
-		return this.rii;
-	}
+    public String getRejectedCategory() {
+        return this.rejectedCategory;
+    }
 
-	public void setRii(String rii) {
-		this.rii = rii;
-	}
+    public void setRejectedCategory(String rejectedCategory) {
+        this.rejectedCategory = rejectedCategory;
+    }
 
-	public Date getRiiDate() {
-		return this.riiDate;
-	}
+    public Date getRejectedDate() {
+        return this.rejectedDate;
+    }
 
-	public void setRiiDate(Date riiDate) {
-		this.riiDate = riiDate;
-	}
+    public void setRejectedDate(Date rejectedDate) {
+        this.rejectedDate = rejectedDate;
+    }
 
-	public String getRvsm() {
-		return this.rvsm;
-	}
+    public String getRejectedReason() {
+        return this.rejectedReason;
+    }
 
-	public void setRvsm(String rvsm) {
-		this.rvsm = rvsm;
-	}
+    public void setRejectedReason(String rejectedReason) {
+        this.rejectedReason = rejectedReason;
+    }
 
-	public BigDecimal getSabreMessageNumber() {
-		return this.sabreMessageNumber;
-	}
+    public String getRemarks() {
+        return this.remarks;
+    }
 
-	public void setSabreMessageNumber(BigDecimal sabreMessageNumber) {
-		this.sabreMessageNumber = sabreMessageNumber;
-	}
+    public void setRemarks(String remarks) {
+        this.remarks = remarks;
+    }
 
-	public String getSchedule() {
-		return this.schedule;
-	}
+    public String getReopenBy() {
+        return this.reopenBy;
+    }
 
-	public void setSchedule(String schedule) {
-		this.schedule = schedule;
-	}
+    public void setReopenBy(String reopenBy) {
+        this.reopenBy = reopenBy;
+    }
 
-	public Date getScheduleEndDate() {
-		return this.scheduleEndDate;
-	}
+    public Date getReopenDate() {
+        return this.reopenDate;
+    }
 
-	public void setScheduleEndDate(Date scheduleEndDate) {
-		this.scheduleEndDate = scheduleEndDate;
-	}
+    public void setReopenDate(Date reopenDate) {
+        this.reopenDate = reopenDate;
+    }
 
-	public BigDecimal getScheduleEndHour() {
-		return this.scheduleEndHour;
-	}
+    public String getReopenReason() {
+        return this.reopenReason;
+    }
 
-	public void setScheduleEndHour(BigDecimal scheduleEndHour) {
-		this.scheduleEndHour = scheduleEndHour;
-	}
+    public void setReopenReason(String reopenReason) {
+        this.reopenReason = reopenReason;
+    }
 
-	public BigDecimal getScheduleEndMinute() {
-		return this.scheduleEndMinute;
-	}
+    public String getRequiredInspectionBy() {
+        return this.requiredInspectionBy;
+    }
 
-	public void setScheduleEndMinute(BigDecimal scheduleEndMinute) {
-		this.scheduleEndMinute = scheduleEndMinute;
-	}
+    public void setRequiredInspectionBy(String requiredInspectionBy) {
+        this.requiredInspectionBy = requiredInspectionBy;
+    }
 
-	public Date getScheduleStartDate() {
-		return this.scheduleStartDate;
-	}
+    public String getRequiredInspectionItem() {
+        return this.requiredInspectionItem;
+    }
 
-	public void setScheduleStartDate(Date scheduleStartDate) {
-		this.scheduleStartDate = scheduleStartDate;
-	}
+    public void setRequiredInspectionItem(String requiredInspectionItem) {
+        this.requiredInspectionItem = requiredInspectionItem;
+    }
 
-	public BigDecimal getScheduleStartHour() {
-		return this.scheduleStartHour;
-	}
+    public String getReset() {
+        return this.reset;
+    }
 
-	public void setScheduleStartHour(BigDecimal scheduleStartHour) {
-		this.scheduleStartHour = scheduleStartHour;
-	}
+    public void setReset(String reset) {
+        this.reset = reset;
+    }
 
-	public BigDecimal getScheduleStartMinute() {
-		return this.scheduleStartMinute;
-	}
+    public String getResolutionCategory() {
+        return this.resolutionCategory;
+    }
 
-	public void setScheduleStartMinute(BigDecimal scheduleStartMinute) {
-		this.scheduleStartMinute = scheduleStartMinute;
-	}
+    public void setResolutionCategory(String resolutionCategory) {
+        this.resolutionCategory = resolutionCategory;
+    }
 
-	public String getScheduleTaskCard() {
-		return this.scheduleTaskCard;
-	}
+    public Date getRevisedDate() {
+        return this.revisedDate;
+    }
 
-	public void setScheduleTaskCard(String scheduleTaskCard) {
-		this.scheduleTaskCard = scheduleTaskCard;
-	}
+    public void setRevisedDate(Date revisedDate) {
+        this.revisedDate = revisedDate;
+    }
 
-	public BigDecimal getScheduleTaskCardItem() {
-		return this.scheduleTaskCardItem;
-	}
+    public String getRevision() {
+        return this.revision;
+    }
 
-	public void setScheduleTaskCardItem(BigDecimal scheduleTaskCardItem) {
-		this.scheduleTaskCardItem = scheduleTaskCardItem;
-	}
+    public void setRevision(String revision) {
+        this.revision = revision;
+    }
 
-	public String getSdr() {
-		return this.sdr;
-	}
+    public String getRii() {
+        return this.rii;
+    }
 
-	public void setSdr(String sdr) {
-		this.sdr = sdr;
-	}
+    public void setRii(String rii) {
+        this.rii = rii;
+    }
 
-	public BigDecimal getSection() {
-		return this.section;
-	}
+    public Date getRiiDate() {
+        return this.riiDate;
+    }
 
-	public void setSection(BigDecimal section) {
-		this.section = section;
-	}
+    public void setRiiDate(Date riiDate) {
+        this.riiDate = riiDate;
+    }
 
-	public BigDecimal getSellLaborAmount() {
-		return this.sellLaborAmount;
-	}
+    public String getRvsm() {
+        return this.rvsm;
+    }
 
-	public void setSellLaborAmount(BigDecimal sellLaborAmount) {
-		this.sellLaborAmount = sellLaborAmount;
-	}
+    public void setRvsm(String rvsm) {
+        this.rvsm = rvsm;
+    }
 
-	public BigDecimal getSellLaborCurrency() {
-		return this.sellLaborCurrency;
-	}
+    public BigDecimal getSabreMessageNumber() {
+        return this.sabreMessageNumber;
+    }
 
-	public void setSellLaborCurrency(BigDecimal sellLaborCurrency) {
-		this.sellLaborCurrency = sellLaborCurrency;
-	}
+    public void setSabreMessageNumber(BigDecimal sabreMessageNumber) {
+        this.sabreMessageNumber = sabreMessageNumber;
+    }
 
-	public String getSellLaborMethod() {
-		return this.sellLaborMethod;
-	}
+    public String getSchedule() {
+        return this.schedule;
+    }
 
-	public void setSellLaborMethod(String sellLaborMethod) {
-		this.sellLaborMethod = sellLaborMethod;
-	}
+    public void setSchedule(String schedule) {
+        this.schedule = schedule;
+    }
 
-	public BigDecimal getSellMaterialAmount() {
-		return this.sellMaterialAmount;
-	}
+    public Date getScheduleEndDate() {
+        return this.scheduleEndDate;
+    }
 
-	public void setSellMaterialAmount(BigDecimal sellMaterialAmount) {
-		this.sellMaterialAmount = sellMaterialAmount;
-	}
+    public void setScheduleEndDate(Date scheduleEndDate) {
+        this.scheduleEndDate = scheduleEndDate;
+    }
 
-	public BigDecimal getSellMaterialCurrency() {
-		return this.sellMaterialCurrency;
-	}
+    public BigDecimal getScheduleEndHour() {
+        return this.scheduleEndHour;
+    }
 
-	public void setSellMaterialCurrency(BigDecimal sellMaterialCurrency) {
-		this.sellMaterialCurrency = sellMaterialCurrency;
-	}
+    public void setScheduleEndHour(BigDecimal scheduleEndHour) {
+        this.scheduleEndHour = scheduleEndHour;
+    }
 
-	public String getSellMaterialMethod() {
-		return this.sellMaterialMethod;
-	}
+    public BigDecimal getScheduleEndMinute() {
+        return this.scheduleEndMinute;
+    }
 
-	public void setSellMaterialMethod(String sellMaterialMethod) {
-		this.sellMaterialMethod = sellMaterialMethod;
-	}
+    public void setScheduleEndMinute(BigDecimal scheduleEndMinute) {
+        this.scheduleEndMinute = scheduleEndMinute;
+    }
 
-	public BigDecimal getSellOtherAmount() {
-		return this.sellOtherAmount;
-	}
+    public Date getScheduleStartDate() {
+        return this.scheduleStartDate;
+    }
 
-	public void setSellOtherAmount(BigDecimal sellOtherAmount) {
-		this.sellOtherAmount = sellOtherAmount;
-	}
+    public void setScheduleStartDate(Date scheduleStartDate) {
+        this.scheduleStartDate = scheduleStartDate;
+    }
 
-	public String getSellOtherMethod() {
-		return this.sellOtherMethod;
-	}
+    public BigDecimal getScheduleStartHour() {
+        return this.scheduleStartHour;
+    }
 
-	public void setSellOtherMethod(String sellOtherMethod) {
-		this.sellOtherMethod = sellOtherMethod;
-	}
+    public void setScheduleStartHour(BigDecimal scheduleStartHour) {
+        this.scheduleStartHour = scheduleStartHour;
+    }
 
-	public String getSentUta() {
-		return this.sentUta;
-	}
+    public BigDecimal getScheduleStartMinute() {
+        return this.scheduleStartMinute;
+    }
 
-	public void setSentUta(String sentUta) {
-		this.sentUta = sentUta;
-	}
+    public void setScheduleStartMinute(BigDecimal scheduleStartMinute) {
+        this.scheduleStartMinute = scheduleStartMinute;
+    }
 
-	public String getService() {
-		return this.service;
-	}
+    public String getScheduleTaskCard() {
+        return this.scheduleTaskCard;
+    }
 
-	public void setService(String service) {
-		this.service = service;
-	}
+    public void setScheduleTaskCard(String scheduleTaskCard) {
+        this.scheduleTaskCard = scheduleTaskCard;
+    }
 
-	public String getSite() {
-		return this.site;
-	}
+    public BigDecimal getScheduleTaskCardItem() {
+        return this.scheduleTaskCardItem;
+    }
 
-	public void setSite(String site) {
-		this.site = site;
-	}
+    public void setScheduleTaskCardItem(BigDecimal scheduleTaskCardItem) {
+        this.scheduleTaskCardItem = scheduleTaskCardItem;
+    }
 
-	public String getSkill() {
-		return this.skill;
-	}
+    public String getSdr() {
+        return this.sdr;
+    }
 
-	public void setSkill(String skill) {
-		this.skill = skill;
-	}
+    public void setSdr(String sdr) {
+        this.sdr = sdr;
+    }
 
-	public String getSlats() {
-		return this.slats;
-	}
+    public BigDecimal getSection() {
+        return this.section;
+    }
 
-	public void setSlats(String slats) {
-		this.slats = slats;
-	}
+    public void setSection(BigDecimal section) {
+        this.section = section;
+    }
 
-	public BigDecimal getSortItem() {
-		return this.sortItem;
-	}
+    public BigDecimal getSellLaborAmount() {
+        return this.sellLaborAmount;
+    }
 
-	public void setSortItem(BigDecimal sortItem) {
-		this.sortItem = sortItem;
-	}
+    public void setSellLaborAmount(BigDecimal sellLaborAmount) {
+        this.sellLaborAmount = sellLaborAmount;
+    }
 
-	public String getSortingZone() {
-		return this.sortingZone;
-	}
+    public BigDecimal getSellLaborCurrency() {
+        return this.sellLaborCurrency;
+    }
 
-	public void setSortingZone(String sortingZone) {
-		this.sortingZone = sortingZone;
-	}
+    public void setSellLaborCurrency(BigDecimal sellLaborCurrency) {
+        this.sellLaborCurrency = sellLaborCurrency;
+    }
 
-	public String getSourceCode() {
-		return this.sourceCode;
-	}
+    public String getSellLaborMethod() {
+        return this.sellLaborMethod;
+    }
 
-	public void setSourceCode(String sourceCode) {
-		this.sourceCode = sourceCode;
-	}
+    public void setSellLaborMethod(String sellLaborMethod) {
+        this.sellLaborMethod = sellLaborMethod;
+    }
 
-	public String getSplitFrom() {
-		return this.splitFrom;
-	}
+    public BigDecimal getSellMaterialAmount() {
+        return this.sellMaterialAmount;
+    }
 
-	public void setSplitFrom(String splitFrom) {
-		this.splitFrom = splitFrom;
-	}
+    public void setSellMaterialAmount(BigDecimal sellMaterialAmount) {
+        this.sellMaterialAmount = sellMaterialAmount;
+    }
 
-	public String getSpoilers() {
-		return this.spoilers;
-	}
+    public BigDecimal getSellMaterialCurrency() {
+        return this.sellMaterialCurrency;
+    }
 
-	public void setSpoilers(String spoilers) {
-		this.spoilers = spoilers;
-	}
+    public void setSellMaterialCurrency(BigDecimal sellMaterialCurrency) {
+        this.sellMaterialCurrency = sellMaterialCurrency;
+    }
 
-	public String getSr() {
-		return this.sr;
-	}
+    public String getSellMaterialMethod() {
+        return this.sellMaterialMethod;
+    }
 
-	public void setSr(String sr) {
-		this.sr = sr;
-	}
+    public void setSellMaterialMethod(String sellMaterialMethod) {
+        this.sellMaterialMethod = sellMaterialMethod;
+    }
 
-	public String getSsid() {
-		return this.ssid;
-	}
+    public BigDecimal getSellOtherAmount() {
+        return this.sellOtherAmount;
+    }
 
-	public void setSsid(String ssid) {
-		this.ssid = ssid;
-	}
+    public void setSellOtherAmount(BigDecimal sellOtherAmount) {
+        this.sellOtherAmount = sellOtherAmount;
+    }
 
-	public String getStatus() {
-		return this.status;
-	}
+    public String getSellOtherMethod() {
+        return this.sellOtherMethod;
+    }
 
-	public void setStatus(String status) {
-		this.status = status;
-	}
+    public void setSellOtherMethod(String sellOtherMethod) {
+        this.sellOtherMethod = sellOtherMethod;
+    }
 
-	public String getStatusCategory() {
-		return this.statusCategory;
-	}
+    public String getSentUta() {
+        return this.sentUta;
+    }
 
-	public void setStatusCategory(String statusCategory) {
-		this.statusCategory = statusCategory;
-	}
+    public void setSentUta(String sentUta) {
+        this.sentUta = sentUta;
+    }
 
-	public String getStatusReason() {
-		return this.statusReason;
-	}
+    public String getService() {
+        return this.service;
+    }
 
-	public void setStatusReason(String statusReason) {
-		this.statusReason = statusReason;
-	}
+    public void setService(String service) {
+        this.service = service;
+    }
 
-	public String getStatusReasonPn() {
-		return this.statusReasonPn;
-	}
+    public String getSite() {
+        return this.site;
+    }
 
-	public void setStatusReasonPn(String statusReasonPn) {
-		this.statusReasonPn = statusReasonPn;
-	}
+    public void setSite(String site) {
+        this.site = site;
+    }
 
-	public String getStowageBinRemoval() {
-		return this.stowageBinRemoval;
-	}
+    public String getSkill() {
+        return this.skill;
+    }
 
-	public void setStowageBinRemoval(String stowageBinRemoval) {
-		this.stowageBinRemoval = stowageBinRemoval;
-	}
+    public void setSkill(String skill) {
+        this.skill = skill;
+    }
 
-	public String getStructure() {
-		return this.structure;
-	}
+    public String getSlats() {
+        return this.slats;
+    }
 
-	public void setStructure(String structure) {
-		this.structure = structure;
-	}
+    public void setSlats(String slats) {
+        this.slats = slats;
+    }
 
-	public String getStructureRepair() {
-		return this.structureRepair;
-	}
+    public BigDecimal getSortItem() {
+        return this.sortItem;
+    }
 
-	public void setStructureRepair(String structureRepair) {
-		this.structureRepair = structureRepair;
-	}
+    public void setSortItem(BigDecimal sortItem) {
+        this.sortItem = sortItem;
+    }
 
-	public String getStructureRepairClass() {
-		return this.structureRepairClass;
-	}
+    public String getSortingZone() {
+        return this.sortingZone;
+    }
 
-	public void setStructureRepairClass(String structureRepairClass) {
-		this.structureRepairClass = structureRepairClass;
-	}
+    public void setSortingZone(String sortingZone) {
+        this.sortingZone = sortingZone;
+    }
 
-	public Date getStylesheetModifiedDate() {
-		return this.stylesheetModifiedDate;
-	}
+    public String getSourceCode() {
+        return this.sourceCode;
+    }
 
-	public void setStylesheetModifiedDate(Date stylesheetModifiedDate) {
-		this.stylesheetModifiedDate = stylesheetModifiedDate;
-	}
+    public void setSourceCode(String sourceCode) {
+        this.sourceCode = sourceCode;
+    }
 
-	public String getSubSubSysCode() {
-		return this.subSubSysCode;
-	}
+    public String getSplitFrom() {
+        return this.splitFrom;
+    }
 
-	public void setSubSubSysCode(String subSubSysCode) {
-		this.subSubSysCode = subSubSysCode;
-	}
+    public void setSplitFrom(String splitFrom) {
+        this.splitFrom = splitFrom;
+    }
 
-	public String getSubSysCode() {
-		return this.subSysCode;
-	}
+    public String getSpoilers() {
+        return this.spoilers;
+    }
 
-	public void setSubSysCode(String subSysCode) {
-		this.subSysCode = subSysCode;
-	}
+    public void setSpoilers(String spoilers) {
+        this.spoilers = spoilers;
+    }
 
-	public String getSupervisorAuthBy() {
-		return this.supervisorAuthBy;
-	}
+    public String getSr() {
+        return this.sr;
+    }
 
-	public void setSupervisorAuthBy(String supervisorAuthBy) {
-		this.supervisorAuthBy = supervisorAuthBy;
-	}
+    public void setSr(String sr) {
+        this.sr = sr;
+    }
 
-	public Date getSupervisorAuthDate() {
-		return this.supervisorAuthDate;
-	}
+    public String getSsid() {
+        return this.ssid;
+    }
 
-	public void setSupervisorAuthDate(Date supervisorAuthDate) {
-		this.supervisorAuthDate = supervisorAuthDate;
-	}
+    public void setSsid(String ssid) {
+        this.ssid = ssid;
+    }
 
-	public String getSystemCode() {
-		return this.systemCode;
-	}
+    public String getStatus() {
+        return this.status;
+    }
 
-	public void setSystemCode(String systemCode) {
-		this.systemCode = systemCode;
-	}
+    public void setStatus(String status) {
+        this.status = status;
+    }
 
-	public String getTaskCardCategory() {
-		return this.taskCardCategory;
-	}
+    public String getStatusCategory() {
+        return this.statusCategory;
+    }
 
-	public void setTaskCardCategory(String taskCardCategory) {
-		this.taskCardCategory = taskCardCategory;
-	}
+    public void setStatusCategory(String statusCategory) {
+        this.statusCategory = statusCategory;
+    }
 
-	public String getTaskCardDescription() {
-		return this.taskCardDescription;
-	}
+    public String getStatusReason() {
+        return this.statusReason;
+    }
 
-	public void setTaskCardDescription(String taskCardDescription) {
-		this.taskCardDescription = taskCardDescription;
-	}
+    public void setStatusReason(String statusReason) {
+        this.statusReason = statusReason;
+    }
 
-	public BigDecimal getTaskCardNumberingSystem() {
-		return this.taskCardNumberingSystem;
-	}
+    public String getStatusReasonPn() {
+        return this.statusReasonPn;
+    }
 
-	public void setTaskCardNumberingSystem(BigDecimal taskCardNumberingSystem) {
-		this.taskCardNumberingSystem = taskCardNumberingSystem;
-	}
+    public void setStatusReasonPn(String statusReasonPn) {
+        this.statusReasonPn = statusReasonPn;
+    }
 
-	public byte[] getTaskCardPdf() {
-		return this.taskCardPdf;
-	}
+    public String getStowageBinRemoval() {
+        return this.stowageBinRemoval;
+    }
 
-	public void setTaskCardPdf(byte[] taskCardPdf) {
-		this.taskCardPdf = taskCardPdf;
-	}
+    public void setStowageBinRemoval(String stowageBinRemoval) {
+        this.stowageBinRemoval = stowageBinRemoval;
+    }
 
-	public String getTechLevel() {
-		return this.techLevel;
-	}
+    public String getStructure() {
+        return this.structure;
+    }
 
-	public void setTechLevel(String techLevel) {
-		this.techLevel = techLevel;
-	}
+    public void setStructure(String structure) {
+        this.structure = structure;
+    }
 
-	public String getTemporaryId() {
-		return this.temporaryId;
-	}
+    public String getStructureRepair() {
+        return this.structureRepair;
+    }
 
-	public void setTemporaryId(String temporaryId) {
-		this.temporaryId = temporaryId;
-	}
+    public void setStructureRepair(String structureRepair) {
+        this.structureRepair = structureRepair;
+    }
 
-	public String getTestFlight() {
-		return this.testFlight;
-	}
+    public String getStructureRepairClass() {
+        return this.structureRepairClass;
+    }
 
-	public void setTestFlight(String testFlight) {
-		this.testFlight = testFlight;
-	}
+    public void setStructureRepairClass(String structureRepairClass) {
+        this.structureRepairClass = structureRepairClass;
+    }
 
-	public BigDecimal getTotalMoment() {
-		return this.totalMoment;
-	}
+    public Date getStylesheetModifiedDate() {
+        return this.stylesheetModifiedDate;
+    }
 
-	public void setTotalMoment(BigDecimal totalMoment) {
-		this.totalMoment = totalMoment;
-	}
+    public void setStylesheetModifiedDate(Date stylesheetModifiedDate) {
+        this.stylesheetModifiedDate = stylesheetModifiedDate;
+    }
 
-	public BigDecimal getTraxdocNo() {
-		return this.traxdocNo;
-	}
+    public String getSubSubSysCode() {
+        return this.subSubSysCode;
+    }
 
-	public void setTraxdocNo(BigDecimal traxdocNo) {
-		this.traxdocNo = traxdocNo;
-	}
+    public void setSubSubSysCode(String subSubSysCode) {
+        this.subSubSysCode = subSubSysCode;
+    }
 
-	public String getType() {
-		return this.type;
-	}
+    public String getSubSysCode() {
+        return this.subSysCode;
+    }
 
-	public void setType(String type) {
-		this.type = type;
-	}
+    public void setSubSysCode(String subSysCode) {
+        this.subSysCode = subSysCode;
+    }
 
-	public String getUt() {
-		return this.ut;
-	}
+    public String getSupervisorAuthBy() {
+        return this.supervisorAuthBy;
+    }
 
-	public void setUt(String ut) {
-		this.ut = ut;
-	}
+    public void setSupervisorAuthBy(String supervisorAuthBy) {
+        this.supervisorAuthBy = supervisorAuthBy;
+    }
 
-	public String getVerified() {
-		return this.verified;
-	}
+    public Date getSupervisorAuthDate() {
+        return this.supervisorAuthDate;
+    }
 
-	public void setVerified(String verified) {
-		this.verified = verified;
-	}
+    public void setSupervisorAuthDate(Date supervisorAuthDate) {
+        this.supervisorAuthDate = supervisorAuthDate;
+    }
 
-	public String getVerifiedBy() {
-		return this.verifiedBy;
-	}
+    public String getSystemCode() {
+        return this.systemCode;
+    }
 
-	public void setVerifiedBy(String verifiedBy) {
-		this.verifiedBy = verifiedBy;
-	}
+    public void setSystemCode(String systemCode) {
+        this.systemCode = systemCode;
+    }
 
-	public Date getVerifiedDate() {
-		return this.verifiedDate;
-	}
+    public String getTaskCardCategory() {
+        return this.taskCardCategory;
+    }
 
-	public void setVerifiedDate(Date verifiedDate) {
-		this.verifiedDate = verifiedDate;
-	}
+    public void setTaskCardCategory(String taskCardCategory) {
+        this.taskCardCategory = taskCardCategory;
+    }
 
-	public String getVibrationCheck() {
-		return this.vibrationCheck;
-	}
+    public String getTaskCardDescription() {
+        return this.taskCardDescription;
+    }
 
-	public void setVibrationCheck(String vibrationCheck) {
-		this.vibrationCheck = vibrationCheck;
-	}
+    public void setTaskCardDescription(String taskCardDescription) {
+        this.taskCardDescription = taskCardDescription;
+    }
 
-	public String getWarranty() {
-		return this.warranty;
-	}
+    public BigDecimal getTaskCardNumberingSystem() {
+        return this.taskCardNumberingSystem;
+    }
 
-	public void setWarranty(String warranty) {
-		this.warranty = warranty;
-	}
+    public void setTaskCardNumberingSystem(BigDecimal taskCardNumberingSystem) {
+        this.taskCardNumberingSystem = taskCardNumberingSystem;
+    }
 
-	public String getWeighing() {
-		return this.weighing;
-	}
+    public byte[] getTaskCardPdf() {
+        return this.taskCardPdf;
+    }
 
-	public void setWeighing(String weighing) {
-		this.weighing = weighing;
-	}
+    public void setTaskCardPdf(byte[] taskCardPdf) {
+        this.taskCardPdf = taskCardPdf;
+    }
 
-	public String getWeightBalance() {
-		return this.weightBalance;
-	}
+    public String getTechLevel() {
+        return this.techLevel;
+    }
 
-	public void setWeightBalance(String weightBalance) {
-		this.weightBalance = weightBalance;
-	}
+    public void setTechLevel(String techLevel) {
+        this.techLevel = techLevel;
+    }
 
-	public String getWeightChg() {
-		return this.weightChg;
-	}
+    public String getTemporaryId() {
+        return this.temporaryId;
+    }
 
-	public void setWeightChg(String weightChg) {
-		this.weightChg = weightChg;
-	}
+    public void setTemporaryId(String temporaryId) {
+        this.temporaryId = temporaryId;
+    }
 
-	public BigDecimal getWeightChgNo() {
-		return this.weightChgNo;
-	}
+    public String getTestFlight() {
+        return this.testFlight;
+    }
 
-	public void setWeightChgNo(BigDecimal weightChgNo) {
-		this.weightChgNo = weightChgNo;
-	}
+    public void setTestFlight(String testFlight) {
+        this.testFlight = testFlight;
+    }
 
-	public BigDecimal getWeightOff() {
-		return this.weightOff;
-	}
+    public BigDecimal getTotalMoment() {
+        return this.totalMoment;
+    }
 
-	public void setWeightOff(BigDecimal weightOff) {
-		this.weightOff = weightOff;
-	}
+    public void setTotalMoment(BigDecimal totalMoment) {
+        this.totalMoment = totalMoment;
+    }
 
-	public BigDecimal getWeightOn() {
-		return this.weightOn;
-	}
+    public BigDecimal getTraxdocNo() {
+        return this.traxdocNo;
+    }
 
-	public void setWeightOn(BigDecimal weightOn) {
-		this.weightOn = weightOn;
-	}
+    public void setTraxdocNo(BigDecimal traxdocNo) {
+        this.traxdocNo = traxdocNo;
+    }
 
-	public String getWoTaskCardXml() {
-		return this.woTaskCardXml;
-	}
+    public String getType() {
+        return this.type;
+    }
 
-	public void setWoTaskCardXml(String woTaskCardXml) {
-		this.woTaskCardXml = woTaskCardXml;
-	}
+    public void setType(String type) {
+        this.type = type;
+    }
 
-	public String getWorkAccomplished() {
-		return this.workAccomplished;
-	}
+    public String getUt() {
+        return this.ut;
+    }
 
-	public void setWorkAccomplished(String workAccomplished) {
-		this.workAccomplished = workAccomplished;
-	}
+    public void setUt(String ut) {
+        this.ut = ut;
+    }
 
-	public String getWorkAccomplishedStatus() {
-		return this.workAccomplishedStatus;
-	}
+    public String getVerified() {
+        return this.verified;
+    }
 
-	public void setWorkAccomplishedStatus(String workAccomplishedStatus) {
-		this.workAccomplishedStatus = workAccomplishedStatus;
-	}
+    public void setVerified(String verified) {
+        this.verified = verified;
+    }
 
-	public String getWorkArea() {
-		return this.workArea;
-	}
+    public String getVerifiedBy() {
+        return this.verifiedBy;
+    }
 
-	public void setWorkArea(String workArea) {
-		this.workArea = workArea;
-	}
+    public void setVerifiedBy(String verifiedBy) {
+        this.verifiedBy = verifiedBy;
+    }
 
-	public String getXRay() {
-		return this.xRay;
-	}
+    public Date getVerifiedDate() {
+        return this.verifiedDate;
+    }
 
-	public void setXRay(String xRay) {
-		this.xRay = xRay;
-	}
+    public void setVerifiedDate(Date verifiedDate) {
+        this.verifiedDate = verifiedDate;
+    }
 
-	public String getXmlStatus() {
-		return this.xmlStatus;
-	}
+    public String getVibrationCheck() {
+        return this.vibrationCheck;
+    }
 
-	public void setXmlStatus(String xmlStatus) {
-		this.xmlStatus = xmlStatus;
-	}
+    public void setVibrationCheck(String vibrationCheck) {
+        this.vibrationCheck = vibrationCheck;
+    }
 
-	public String getZonal() {
-		return this.zonal;
-	}
+    public String getWarranty() {
+        return this.warranty;
+    }
 
-	public void setZonal(String zonal) {
-		this.zonal = zonal;
-	}
+    public void setWarranty(String warranty) {
+        this.warranty = warranty;
+    }
 
-	public List<WoTaskCardAcModPlan> getWoTaskCardAcModPlans() {
-		return this.woTaskCardAcModPlans;
-	}
+    public String getWeighing() {
+        return this.weighing;
+    }
 
-	public void setWoTaskCardAcModPlans(List<WoTaskCardAcModPlan> woTaskCardAcModPlans) {
-		this.woTaskCardAcModPlans = woTaskCardAcModPlans;
-	}
+    public void setWeighing(String weighing) {
+        this.weighing = weighing;
+    }
 
-	public WoTaskCardAcModPlan addWoTaskCardAcModPlan(WoTaskCardAcModPlan woTaskCardAcModPlan) {
-		getWoTaskCardAcModPlans().add(woTaskCardAcModPlan);
-		woTaskCardAcModPlan.setWoTaskCard(this);
+    public String getWeightBalance() {
+        return this.weightBalance;
+    }
 
-		return woTaskCardAcModPlan;
-	}
+    public void setWeightBalance(String weightBalance) {
+        this.weightBalance = weightBalance;
+    }
 
-	public WoTaskCardAcModPlan removeWoTaskCardAcModPlan(WoTaskCardAcModPlan woTaskCardAcModPlan) {
-		getWoTaskCardAcModPlans().remove(woTaskCardAcModPlan);
-		woTaskCardAcModPlan.setWoTaskCard(null);
+    public String getWeightChg() {
+        return this.weightChg;
+    }
 
-		return woTaskCardAcModPlan;
-	}
+    public void setWeightChg(String weightChg) {
+        this.weightChg = weightChg;
+    }
 
-	public List<WoTaskCardBust> getWoTaskCardBusts() {
-		return this.woTaskCardBusts;
-	}
+    public BigDecimal getWeightChgNo() {
+        return this.weightChgNo;
+    }
 
-	public void setWoTaskCardBusts(List<WoTaskCardBust> woTaskCardBusts) {
-		this.woTaskCardBusts = woTaskCardBusts;
-	}
+    public void setWeightChgNo(BigDecimal weightChgNo) {
+        this.weightChgNo = weightChgNo;
+    }
 
-	public WoTaskCardBust addWoTaskCardBust(WoTaskCardBust woTaskCardBust) {
-		getWoTaskCardBusts().add(woTaskCardBust);
-		woTaskCardBust.setWoTaskCard(this);
+    public BigDecimal getWeightOff() {
+        return this.weightOff;
+    }
 
-		return woTaskCardBust;
-	}
+    public void setWeightOff(BigDecimal weightOff) {
+        this.weightOff = weightOff;
+    }
 
-	public WoTaskCardBust removeWoTaskCardBust(WoTaskCardBust woTaskCardBust) {
-		getWoTaskCardBusts().remove(woTaskCardBust);
-		woTaskCardBust.setWoTaskCard(null);
+    public BigDecimal getWeightOn() {
+        return this.weightOn;
+    }
 
-		return woTaskCardBust;
-	}
+    public void setWeightOn(BigDecimal weightOn) {
+        this.weightOn = weightOn;
+    }
 
-	public List<WoTaskCardItem> getWoTaskCardItems() {
-		return this.woTaskCardItems;
-	}
+    public String getWoTaskCardXml() {
+        return this.woTaskCardXml;
+    }
 
-	public void setWoTaskCardItems(List<WoTaskCardItem> woTaskCardItems) {
-		this.woTaskCardItems = woTaskCardItems;
-	}
+    public void setWoTaskCardXml(String woTaskCardXml) {
+        this.woTaskCardXml = woTaskCardXml;
+    }
 
-	public WoTaskCardItem addWoTaskCardItem(WoTaskCardItem woTaskCardItem) {
-		getWoTaskCardItems().add(woTaskCardItem);
-		woTaskCardItem.setWoTaskCard(this);
+    public String getWorkAccomplished() {
+        return this.workAccomplished;
+    }
 
-		return woTaskCardItem;
-	}
+    public void setWorkAccomplished(String workAccomplished) {
+        this.workAccomplished = workAccomplished;
+    }
 
-	public WoTaskCardItem removeWoTaskCardItem(WoTaskCardItem woTaskCardItem) {
-		getWoTaskCardItems().remove(woTaskCardItem);
-		woTaskCardItem.setWoTaskCard(null);
+    public String getWorkAccomplishedStatus() {
+        return this.workAccomplishedStatus;
+    }
 
-		return woTaskCardItem;
-	}
+    public void setWorkAccomplishedStatus(String workAccomplishedStatus) {
+        this.workAccomplishedStatus = workAccomplishedStatus;
+    }
 
-	public List<WoTaskCardKeyword> getWoTaskCardKeywords() {
-		return this.woTaskCardKeywords;
-	}
+    public String getWorkArea() {
+        return this.workArea;
+    }
 
-	public void setWoTaskCardKeywords(List<WoTaskCardKeyword> woTaskCardKeywords) {
-		this.woTaskCardKeywords = woTaskCardKeywords;
-	}
+    public void setWorkArea(String workArea) {
+        this.workArea = workArea;
+    }
 
-	public WoTaskCardKeyword addWoTaskCardKeyword(WoTaskCardKeyword woTaskCardKeyword) {
-		getWoTaskCardKeywords().add(woTaskCardKeyword);
-		woTaskCardKeyword.setWoTaskCard(this);
+    public String getXRay() {
+        return this.xRay;
+    }
 
-		return woTaskCardKeyword;
-	}
+    public void setXRay(String xRay) {
+        this.xRay = xRay;
+    }
 
-	public WoTaskCardKeyword removeWoTaskCardKeyword(WoTaskCardKeyword woTaskCardKeyword) {
-		getWoTaskCardKeywords().remove(woTaskCardKeyword);
-		woTaskCardKeyword.setWoTaskCard(null);
+    public String getXmlStatus() {
+        return this.xmlStatus;
+    }
 
-		return woTaskCardKeyword;
-	}
+    public void setXmlStatus(String xmlStatus) {
+        this.xmlStatus = xmlStatus;
+    }
 
-	public List<WoTaskCardSignedPdf> getWoTaskCardSignedPdfs() {
-		return this.woTaskCardSignedPdfs;
-	}
+    public String getZonal() {
+        return this.zonal;
+    }
 
-	public void setWoTaskCardSignedPdfs(List<WoTaskCardSignedPdf> woTaskCardSignedPdfs) {
-		this.woTaskCardSignedPdfs = woTaskCardSignedPdfs;
-	}
+    public void setZonal(String zonal) {
+        this.zonal = zonal;
+    }
 
-	public WoTaskCardSignedPdf addWoTaskCardSignedPdf(WoTaskCardSignedPdf woTaskCardSignedPdf) {
-		getWoTaskCardSignedPdfs().add(woTaskCardSignedPdf);
-		woTaskCardSignedPdf.setWoTaskCard(this);
+    public List<WoTaskCardAcModPlan> getWoTaskCardAcModPlans() {
+        return this.woTaskCardAcModPlans;
+    }
 
-		return woTaskCardSignedPdf;
-	}
+    public void setWoTaskCardAcModPlans(List<WoTaskCardAcModPlan> woTaskCardAcModPlans) {
+        this.woTaskCardAcModPlans = woTaskCardAcModPlans;
+    }
 
-	public WoTaskCardSignedPdf removeWoTaskCardSignedPdf(WoTaskCardSignedPdf woTaskCardSignedPdf) {
-		getWoTaskCardSignedPdfs().remove(woTaskCardSignedPdf);
-		woTaskCardSignedPdf.setWoTaskCard(null);
+    public WoTaskCardAcModPlan addWoTaskCardAcModPlan(WoTaskCardAcModPlan woTaskCardAcModPlan) {
+        getWoTaskCardAcModPlans().add(woTaskCardAcModPlan);
+        woTaskCardAcModPlan.setWoTaskCard(this);
 
-		return woTaskCardSignedPdf;
-	}
+        return woTaskCardAcModPlan;
+    }
 
-	public List<WoTaskCardSurvey> getWoTaskCardSurveys() {
-		return this.woTaskCardSurveys;
-	}
+    public WoTaskCardAcModPlan removeWoTaskCardAcModPlan(WoTaskCardAcModPlan woTaskCardAcModPlan) {
+        getWoTaskCardAcModPlans().remove(woTaskCardAcModPlan);
+        woTaskCardAcModPlan.setWoTaskCard(null);
 
-	public void setWoTaskCardSurveys(List<WoTaskCardSurvey> woTaskCardSurveys) {
-		this.woTaskCardSurveys = woTaskCardSurveys;
-	}
+        return woTaskCardAcModPlan;
+    }
 
-	public WoTaskCardSurvey addWoTaskCardSurvey(WoTaskCardSurvey woTaskCardSurvey) {
-		getWoTaskCardSurveys().add(woTaskCardSurvey);
-		woTaskCardSurvey.setWoTaskCard(this);
+    public List<WoTaskCardBust> getWoTaskCardBusts() {
+        return this.woTaskCardBusts;
+    }
 
-		return woTaskCardSurvey;
-	}
+    public void setWoTaskCardBusts(List<WoTaskCardBust> woTaskCardBusts) {
+        this.woTaskCardBusts = woTaskCardBusts;
+    }
 
-	public WoTaskCardSurvey removeWoTaskCardSurvey(WoTaskCardSurvey woTaskCardSurvey) {
-		getWoTaskCardSurveys().remove(woTaskCardSurvey);
-		woTaskCardSurvey.setWoTaskCard(null);
+    public WoTaskCardBust addWoTaskCardBust(WoTaskCardBust woTaskCardBust) {
+        getWoTaskCardBusts().add(woTaskCardBust);
+        woTaskCardBust.setWoTaskCard(this);
 
-		return woTaskCardSurvey;
-	}
+        return woTaskCardBust;
+    }
 
-	public List<WoTaskCardWorkInProgress> getWoTaskCardWorkInProgresses() {
-		return this.woTaskCardWorkInProgresses;
-	}
+    public WoTaskCardBust removeWoTaskCardBust(WoTaskCardBust woTaskCardBust) {
+        getWoTaskCardBusts().remove(woTaskCardBust);
+        woTaskCardBust.setWoTaskCard(null);
 
-	public void setWoTaskCardWorkInProgresses(List<WoTaskCardWorkInProgress> woTaskCardWorkInProgresses) {
-		this.woTaskCardWorkInProgresses = woTaskCardWorkInProgresses;
-	}
+        return woTaskCardBust;
+    }
 
-	public WoTaskCardWorkInProgress addWoTaskCardWorkInProgress(WoTaskCardWorkInProgress woTaskCardWorkInProgress) {
-		getWoTaskCardWorkInProgresses().add(woTaskCardWorkInProgress);
-		woTaskCardWorkInProgress.setWoTaskCard(this);
+    public List<WoTaskCardItem> getWoTaskCardItems() {
+        return this.woTaskCardItems;
+    }
 
-		return woTaskCardWorkInProgress;
-	}
+    public void setWoTaskCardItems(List<WoTaskCardItem> woTaskCardItems) {
+        this.woTaskCardItems = woTaskCardItems;
+    }
 
-	public WoTaskCardWorkInProgress removeWoTaskCardWorkInProgress(WoTaskCardWorkInProgress woTaskCardWorkInProgress) {
-		getWoTaskCardWorkInProgresses().remove(woTaskCardWorkInProgress);
-		woTaskCardWorkInProgress.setWoTaskCard(null);
+    public WoTaskCardItem addWoTaskCardItem(WoTaskCardItem woTaskCardItem) {
+        getWoTaskCardItems().add(woTaskCardItem);
+        woTaskCardItem.setWoTaskCard(this);
 
-		return woTaskCardWorkInProgress;
-	}
+        return woTaskCardItem;
+    }
 
-	public String getFunctionalLocation() {
-		return functionalLocation;
-	}
+    public WoTaskCardItem removeWoTaskCardItem(WoTaskCardItem woTaskCardItem) {
+        getWoTaskCardItems().remove(woTaskCardItem);
+        woTaskCardItem.setWoTaskCard(null);
 
-	public void setFunctionalLocation(String functionalLocation) {
-		this.functionalLocation = functionalLocation;
-	}
+        return woTaskCardItem;
+    }
 
-	public String getEqptNo() {
-		return eqptNo;
-	}
+    public List<WoTaskCardKeyword> getWoTaskCardKeywords() {
+        return this.woTaskCardKeywords;
+    }
 
-	public void setEqptNo(String eqptNo) {
-		this.eqptNo = eqptNo;
-	}
-	
-	public List<WoTaskCardCustomer> getWoTaskCardCustomers() {
-		return this.woTaskCardCustomers;
-	}
+    public void setWoTaskCardKeywords(List<WoTaskCardKeyword> woTaskCardKeywords) {
+        this.woTaskCardKeywords = woTaskCardKeywords;
+    }
 
-	public void setWoTaskCardCustomers(List<WoTaskCardCustomer> woTaskCardCustomers) {
-		this.woTaskCardCustomers = woTaskCardCustomers;
-	}
+    public WoTaskCardKeyword addWoTaskCardKeyword(WoTaskCardKeyword woTaskCardKeyword) {
+        getWoTaskCardKeywords().add(woTaskCardKeyword);
+        woTaskCardKeyword.setWoTaskCard(this);
 
-	public WoTaskCardCustomer addWoTaskCardCustomer(WoTaskCardCustomer woTaskCardCustomer) {
-		getWoTaskCardCustomers().add(woTaskCardCustomer);
-		woTaskCardCustomer.setWoTaskCard(this);
+        return woTaskCardKeyword;
+    }
 
-		return woTaskCardCustomer;
-	}
+    public WoTaskCardKeyword removeWoTaskCardKeyword(WoTaskCardKeyword woTaskCardKeyword) {
+        getWoTaskCardKeywords().remove(woTaskCardKeyword);
+        woTaskCardKeyword.setWoTaskCard(null);
 
-	public WoTaskCardCustomer removeWoTaskCardCustomer(WoTaskCardCustomer woTaskCardCustomer) {
-		getWoTaskCardCustomers().remove(woTaskCardCustomer);
-		woTaskCardCustomer.setWoTaskCard(null);
+        return woTaskCardKeyword;
+    }
 
-		return woTaskCardCustomer;
-	}
+    public List<WoTaskCardSignedPdf> getWoTaskCardSignedPdfs() {
+        return this.woTaskCardSignedPdfs;
+    }
 
-	public Date getInterfaceTransferredDate() {
-		return interfaceTransferredDate;
-	}
+    public void setWoTaskCardSignedPdfs(List<WoTaskCardSignedPdf> woTaskCardSignedPdfs) {
+        this.woTaskCardSignedPdfs = woTaskCardSignedPdfs;
+    }
 
-	public void setInterfaceTransferredDate(Date interfaceTransferredDate) {
-		this.interfaceTransferredDate = interfaceTransferredDate;
-	}
+    public WoTaskCardSignedPdf addWoTaskCardSignedPdf(WoTaskCardSignedPdf woTaskCardSignedPdf) {
+        getWoTaskCardSignedPdfs().add(woTaskCardSignedPdf);
+        woTaskCardSignedPdf.setWoTaskCard(this);
 
-	public String getTdSvo() {
-		return tdSvo;
-	}
+        return woTaskCardSignedPdf;
+    }
 
-	public void setTdSvo(String tdSvo) {
-		this.tdSvo = tdSvo;
-	}
+    public WoTaskCardSignedPdf removeWoTaskCardSignedPdf(WoTaskCardSignedPdf woTaskCardSignedPdf) {
+        getWoTaskCardSignedPdfs().remove(woTaskCardSignedPdf);
+        woTaskCardSignedPdf.setWoTaskCard(null);
 
-	public String getTdRevision() {
-		return tdRevision;
-	}
+        return woTaskCardSignedPdf;
+    }
 
-	public void setTdRevision(String tdRevision) {
-		this.tdRevision = tdRevision;
-	}
+    public List<WoTaskCardSurvey> getWoTaskCardSurveys() {
+        return this.woTaskCardSurveys;
+    }
 
-	public String getTdIssueNbr() {
-		return tdIssueNbr;
-	}
+    public void setWoTaskCardSurveys(List<WoTaskCardSurvey> woTaskCardSurveys) {
+        this.woTaskCardSurveys = woTaskCardSurveys;
+    }
 
-	public void setTdIssueNbr(String tdIssueNbr) {
-		this.tdIssueNbr = tdIssueNbr;
-	}
+    public WoTaskCardSurvey addWoTaskCardSurvey(WoTaskCardSurvey woTaskCardSurvey) {
+        getWoTaskCardSurveys().add(woTaskCardSurvey);
+        woTaskCardSurvey.setWoTaskCard(this);
 
-	public String getTdIssueDate() {
-		return tdIssueDate;
-	}
+        return woTaskCardSurvey;
+    }
 
-	public void setTdIssueDate(String tdIssueDate) {
-		this.tdIssueDate = tdIssueDate;
-	}
+    public WoTaskCardSurvey removeWoTaskCardSurvey(WoTaskCardSurvey woTaskCardSurvey) {
+        getWoTaskCardSurveys().remove(woTaskCardSurvey);
+        woTaskCardSurvey.setWoTaskCard(null);
 
-	public String getTdTradeIbl() {
-		return tdTradeIbl;
-	}
+        return woTaskCardSurvey;
+    }
 
-	public void setTdTradeIbl(String tdTradeIbl) {
-		this.tdTradeIbl = tdTradeIbl;
-	}
+    public List<WoTaskCardWorkInProgress> getWoTaskCardWorkInProgresses() {
+        return this.woTaskCardWorkInProgresses;
+    }
+
+    public void setWoTaskCardWorkInProgresses(List<WoTaskCardWorkInProgress> woTaskCardWorkInProgresses) {
+        this.woTaskCardWorkInProgresses = woTaskCardWorkInProgresses;
+    }
+
+    public WoTaskCardWorkInProgress addWoTaskCardWorkInProgress(WoTaskCardWorkInProgress woTaskCardWorkInProgress) {
+        getWoTaskCardWorkInProgresses().add(woTaskCardWorkInProgress);
+        woTaskCardWorkInProgress.setWoTaskCard(this);
+
+        return woTaskCardWorkInProgress;
+    }
+
+    public WoTaskCardWorkInProgress removeWoTaskCardWorkInProgress(WoTaskCardWorkInProgress woTaskCardWorkInProgress) {
+        getWoTaskCardWorkInProgresses().remove(woTaskCardWorkInProgress);
+        woTaskCardWorkInProgress.setWoTaskCard(null);
+
+        return woTaskCardWorkInProgress;
+    }
+
+    public String getFunctionalLocation() {
+        return functionalLocation;
+    }
+
+    public void setFunctionalLocation(String functionalLocation) {
+        this.functionalLocation = functionalLocation;
+    }
+
+    public String getEqptNo() {
+        return eqptNo;
+    }
+
+    public void setEqptNo(String eqptNo) {
+        this.eqptNo = eqptNo;
+    }
+
+    public List<WoTaskCardCustomer> getWoTaskCardCustomers() {
+        return this.woTaskCardCustomers;
+    }
+
+    public void setWoTaskCardCustomers(List<WoTaskCardCustomer> woTaskCardCustomers) {
+        this.woTaskCardCustomers = woTaskCardCustomers;
+    }
+
+    public WoTaskCardCustomer addWoTaskCardCustomer(WoTaskCardCustomer woTaskCardCustomer) {
+        getWoTaskCardCustomers().add(woTaskCardCustomer);
+        woTaskCardCustomer.setWoTaskCard(this);
+
+        return woTaskCardCustomer;
+    }
+
+    public WoTaskCardCustomer removeWoTaskCardCustomer(WoTaskCardCustomer woTaskCardCustomer) {
+        getWoTaskCardCustomers().remove(woTaskCardCustomer);
+        woTaskCardCustomer.setWoTaskCard(null);
+
+        return woTaskCardCustomer;
+    }
+
+    public Date getInterfaceTransferredDate() {
+        return interfaceTransferredDate;
+    }
+
+    public void setInterfaceTransferredDate(Date interfaceTransferredDate) {
+        this.interfaceTransferredDate = interfaceTransferredDate;
+    }
+
+    public String getTdSvo() {
+        return tdSvo;
+    }
+
+    public void setTdSvo(String tdSvo) {
+        this.tdSvo = tdSvo;
+    }
+
+    public String getTdRevision() {
+        return tdRevision;
+    }
+
+    public void setTdRevision(String tdRevision) {
+        this.tdRevision = tdRevision;
+    }
+
+    public String getTdIssueNbr() {
+        return tdIssueNbr;
+    }
+
+    public void setTdIssueNbr(String tdIssueNbr) {
+        this.tdIssueNbr = tdIssueNbr;
+    }
+
+    public String getTdIssueDate() {
+        return tdIssueDate;
+    }
+
+    public void setTdIssueDate(String tdIssueDate) {
+        this.tdIssueDate = tdIssueDate;
+    }
+
+    public String getTdTradeIbl() {
+        return tdTradeIbl;
+    }
+
+    public void setTdTradeIbl(String tdTradeIbl) {
+        this.tdTradeIbl = tdTradeIbl;
+    }
 
 	/*
 	public String getGate() {

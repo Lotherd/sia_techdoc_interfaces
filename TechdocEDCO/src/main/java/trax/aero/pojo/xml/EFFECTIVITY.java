@@ -8,9 +8,9 @@ import javax.xml.bind.annotation.XmlType;
 
 /**
  * <p>Java class for anonymous complex type.
- * 
+ *
  * <p>The following schema fragment specifies the expected content contained within this class.
- * 
+ *
  * <pre>
  * &lt;complexType>
  *   &lt;complexContent>
@@ -165,15 +165,12 @@ import javax.xml.bind.annotation.XmlType;
  *   &lt;/complexContent>
  * &lt;/complexType>
  * </pre>
- * 
- * 
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "", propOrder = {
-    "jobcard"
+        "jobcard"
 })
 public class EFFECTIVITY {
-
 
 
     @XmlElement(name = "JOBCARD")
@@ -185,11 +182,9 @@ public class EFFECTIVITY {
 
     /**
      * Gets the value of the jobcard property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link JOBCARD }
-     *     
+     *
+     * @return possible object is
+     * {@link JOBCARD }
      */
     public JOBCARD getJOBCARD() {
         return jobcard;
@@ -197,11 +192,9 @@ public class EFFECTIVITY {
 
     /**
      * Sets the value of the jobcard property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link JOBCARD }
-     *     
+     *
+     * @param value allowed object is
+     *              {@link JOBCARD }
      */
     public void setJOBCARD(JOBCARD value) {
         this.jobcard = value;
@@ -209,11 +202,9 @@ public class EFFECTIVITY {
 
     /**
      * Gets the value of the regnbr property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link String }
-     *     
+     *
+     * @return possible object is
+     * {@link String }
      */
     public String getREGNBR() {
         return regnbr;
@@ -221,11 +212,9 @@ public class EFFECTIVITY {
 
     /**
      * Sets the value of the regnbr property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *     
+     *
+     * @param value allowed object is
+     *              {@link String }
      */
     public void setREGNBR(String value) {
         this.regnbr = value;
@@ -233,11 +222,9 @@ public class EFFECTIVITY {
 
     /**
      * Gets the value of the config property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link String }
-     *     
+     *
+     * @return possible object is
+     * {@link String }
      */
     public String getCONFIG() {
         return config;
@@ -245,18 +232,13 @@ public class EFFECTIVITY {
 
     /**
      * Sets the value of the config property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *     
+     *
+     * @param value allowed object is
+     *              {@link String }
      */
     public void setCONFIG(String value) {
         this.config = value;
     }
-
-
-    
 
 
 }

@@ -8,2245 +8,2244 @@ import java.util.Date;
 
 /**
  * The persistent class for the PN_MASTER database table.
- * 
  */
 @Entity
-@Table(name="PN_MASTER")
-@NamedQuery(name="PnMaster.findAll", query="SELECT p FROM PnMaster p")
+@Table(name = "PN_MASTER")
+@NamedQuery(name = "PnMaster.findAll", query = "SELECT p FROM PnMaster p")
 public class PnMaster implements Serializable {
-	private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 1L;
 
-	@Id
-	private String pn;
+    @Id
+    private String pn;
 
-	@Column(name="ADDITIONAL_INFORMATION")
-	private String additionalInformation;
+    @Column(name = "ADDITIONAL_INFORMATION")
+    private String additionalInformation;
 
-	@Column(name="ALERT_CATEGORY")
-	private String alertCategory;
+    @Column(name = "ALERT_CATEGORY")
+    private String alertCategory;
 
-	@Column(name="ALERT_CATEGORY_NO_OF")
-	private BigDecimal alertCategoryNoOf;
+    @Column(name = "ALERT_CATEGORY_NO_OF")
+    private BigDecimal alertCategoryNoOf;
 
-	@Column(name="ALERT_LEVEL")
-	private BigDecimal alertLevel;
+    @Column(name = "ALERT_LEVEL")
+    private BigDecimal alertLevel;
 
-	@Column(name="ALERT_LEVEL_SECOND")
-	private BigDecimal alertLevelSecond;
+    @Column(name = "ALERT_LEVEL_SECOND")
+    private BigDecimal alertLevelSecond;
 
-	@Column(name="ALERT_NO_OF_REMOVAL")
-	private BigDecimal alertNoOfRemoval;
+    @Column(name = "ALERT_NO_OF_REMOVAL")
+    private BigDecimal alertNoOfRemoval;
 
-	@Column(name="ALT_PN_DESCRIPTION")
-	private String altPnDescription;
+    @Column(name = "ALT_PN_DESCRIPTION")
+    private String altPnDescription;
 
-	private String apu;
+    private String apu;
 
-	@Column(name="APU_READING")
-	private String apuReading;
+    @Column(name = "APU_READING")
+    private String apuReading;
 
-	@Column(name="AUDIT_PROCESSED")
-	private String auditProcessed;
+    @Column(name = "AUDIT_PROCESSED")
+    private String auditProcessed;
 
-	@Column(name="AUTO_INSTALL_POSITION")
-	private String autoInstallPosition;
+    @Column(name = "AUTO_INSTALL_POSITION")
+    private String autoInstallPosition;
 
-	@Column(name="AUTO_INSTALLED")
-	private String autoInstalled;
+    @Column(name = "AUTO_INSTALLED")
+    private String autoInstalled;
 
-	@Column(name="AUTO_SN_CREATE")
-	private String autoSnCreate;
+    @Column(name = "AUTO_SN_CREATE")
+    private String autoSnCreate;
 
-	@Column(name="AUTO_SN_PREFIX")
-	private String autoSnPrefix;
+    @Column(name = "AUTO_SN_PREFIX")
+    private String autoSnPrefix;
 
-	@Column(name="AUTOMATED_WAREHOUSE_CAPABLE")
-	private String automatedWarehouseCapable;
+    @Column(name = "AUTOMATED_WAREHOUSE_CAPABLE")
+    private String automatedWarehouseCapable;
 
-	@Column(name="AVERAGE_COST")
-	private BigDecimal averageCost;
+    @Column(name = "AVERAGE_COST")
+    private BigDecimal averageCost;
 
-	@Column(name="AVIONIC_PART")
-	private String avionicPart;
+    @Column(name = "AVIONIC_PART")
+    private String avionicPart;
 
-	@Column(name="AXIAL_WEIGHT")
-	private String axialWeight;
+    @Column(name = "AXIAL_WEIGHT")
+    private String axialWeight;
 
-	@Column(name="BIN_CAT")
-	private String binCat;
+    @Column(name = "BIN_CAT")
+    private String binCat;
 
-	@Column(name="BIN_CAT2")
-	private String binCat2;
+    @Column(name = "BIN_CAT2")
+    private String binCat2;
 
-	@Column(name="BIN_ORIENTATION")
-	private String binOrientation;
+    @Column(name = "BIN_ORIENTATION")
+    private String binOrientation;
 
-	@Column(name="BLOB_NO")
-	private BigDecimal blobNo;
+    @Column(name = "BLOB_NO")
+    private BigDecimal blobNo;
 
-	@Column(name="CARRYING_COST_FACTOR")
-	private BigDecimal carryingCostFactor;
+    @Column(name = "CARRYING_COST_FACTOR")
+    private BigDecimal carryingCostFactor;
 
-	@Column(name="CAT_RATING")
-	private String catRating;
+    @Column(name = "CAT_RATING")
+    private String catRating;
 
-	private String category;
+    private String category;
 
-	@Column(name="CC_REFERENCE")
-	private String ccReference;
+    @Column(name = "CC_REFERENCE")
+    private String ccReference;
 
-	private BigDecimal chapter;
+    private BigDecimal chapter;
 
-	@Column(name="CHECK_L")
-	private String checkL;
+    @Column(name = "CHECK_L")
+    private String checkL;
 
-	@Column(name="CHEMICAL_GUIDE_BLOB")
-	private BigDecimal chemicalGuideBlob;
+    @Column(name = "CHEMICAL_GUIDE_BLOB")
+    private BigDecimal chemicalGuideBlob;
 
-	@Column(name="CHEMICAL_GUIDE_DOC_NO")
-	private BigDecimal chemicalGuideDocNo;
+    @Column(name = "CHEMICAL_GUIDE_DOC_NO")
+    private BigDecimal chemicalGuideDocNo;
 
-	@Column(name="CHEMICAL_GUIDE_SHEET")
-	private String chemicalGuideSheet;
+    @Column(name = "CHEMICAL_GUIDE_SHEET")
+    private String chemicalGuideSheet;
 
-	@Column(name="CLASS_DIVISION")
-	private String classDivision;
+    @Column(name = "CLASS_DIVISION")
+    private String classDivision;
 
-	@Column(name="CLIMATE_CONTROLLED")
-	private String climateControlled;
+    @Column(name = "CLIMATE_CONTROLLED")
+    private String climateControlled;
 
-	@Column(name="CREATED_BY")
-	private String createdBy;
+    @Column(name = "CREATED_BY")
+    private String createdBy;
 
-	@Column(name="CREATED_DATE")
-	private Date createdDate;
+    @Column(name = "CREATED_DATE")
+    private Date createdDate;
 
-	@Column(name="CREATED_FROM_TRI")
-	private BigDecimal createdFromTri;
+    @Column(name = "CREATED_FROM_TRI")
+    private BigDecimal createdFromTri;
 
-	@Column(name="CRITICAL_LEVEL")
-	private String criticalLevel;
+    @Column(name = "CRITICAL_LEVEL")
+    private String criticalLevel;
 
-	@Column(name="CUSTOM_DUTY")
-	private String customDuty;
+    @Column(name = "CUSTOM_DUTY")
+    private String customDuty;
 
-	@Column(name="CUSTOM_DUTY_DOCUMENT")
-	private String customDutyDocument;
+    @Column(name = "CUSTOM_DUTY_DOCUMENT")
+    private String customDutyDocument;
 
-	@Column(name="CYCLE_COUNT_CODE")
-	private String cycleCountCode;
+    @Column(name = "CYCLE_COUNT_CODE")
+    private String cycleCountCode;
 
-	@Column(name="DAY_SPEC_REQUIRED")
-	private String daySpecRequired;
+    @Column(name = "DAY_SPEC_REQUIRED")
+    private String daySpecRequired;
 
-	@Column(name="DIM_CONTROL_AT_BATCH_LEVEL")
-	private String dimControlAtBatchLevel;
+    @Column(name = "DIM_CONTROL_AT_BATCH_LEVEL")
+    private String dimControlAtBatchLevel;
 
-	@Column(name="\"DISK\"")
-	private String disk;
+    @Column(name = "\"DISK\"")
+    private String disk;
 
-	@Column(name="DOCUMENT_NO")
-	private BigDecimal documentNo;
+    @Column(name = "DOCUMENT_NO")
+    private BigDecimal documentNo;
 
-	private String ectm;
+    private String ectm;
 
-	@Column(name="EFFECTIVITY_PN_INTERCHANGEABLE")
-	private String effectivityPnInterchangeable;
+    @Column(name = "EFFECTIVITY_PN_INTERCHANGEABLE")
+    private String effectivityPnInterchangeable;
 
-	@Lob
-	private String efftext;
+    @Lob
+    private String efftext;
 
-	private String engine;
+    private String engine;
 
-	@Column(name="ESSENTIALITY_CODE")
-	private String essentialityCode;
+    @Column(name = "ESSENTIALITY_CODE")
+    private String essentialityCode;
 
-	private String etops;
+    private String etops;
 
-	@Column(name="ETOPS_FLAG")
-	private String etopsFlag;
+    @Column(name = "ETOPS_FLAG")
+    private String etopsFlag;
 
-	@Column(name="ETOPS_NOTE")
-	private String etopsNote;
+    @Column(name = "ETOPS_NOTE")
+    private String etopsNote;
 
-	@Column(name="EX_GL")
-	private String exGl;
+    @Column(name = "EX_GL")
+    private String exGl;
 
-	@Column(name="EX_GL_2")
-	private String exGl2;
+    @Column(name = "EX_GL_2")
+    private String exGl2;
 
-	@Column(name="EX_GL_COMPANY")
-	private String exGlCompany;
+    @Column(name = "EX_GL_COMPANY")
+    private String exGlCompany;
 
-	@Column(name="EX_GL_COMPANY_2")
-	private String exGlCompany2;
+    @Column(name = "EX_GL_COMPANY_2")
+    private String exGlCompany2;
 
-	@Column(name="EX_GL_COST_CENTER")
-	private String exGlCostCenter;
+    @Column(name = "EX_GL_COST_CENTER")
+    private String exGlCostCenter;
 
-	@Column(name="EX_GL_COST_CENTER_2")
-	private String exGlCostCenter2;
+    @Column(name = "EX_GL_COST_CENTER_2")
+    private String exGlCostCenter2;
 
-	@Column(name="EX_GL_EXPENDITURE")
-	private String exGlExpenditure;
+    @Column(name = "EX_GL_EXPENDITURE")
+    private String exGlExpenditure;
 
-	@Column(name="EX_GL_EXPENDITURE_2")
-	private String exGlExpenditure2;
+    @Column(name = "EX_GL_EXPENDITURE_2")
+    private String exGlExpenditure2;
 
-	@Column(name="EXCHANGE_ORDER_NOTES")
-	private BigDecimal exchangeOrderNotes;
+    @Column(name = "EXCHANGE_ORDER_NOTES")
+    private BigDecimal exchangeOrderNotes;
 
-	private String expenditure;
+    private String expenditure;
 
-	@Column(name="FA_DEPRECIATION_CODE")
-	private String faDepreciationCode;
+    @Column(name = "FA_DEPRECIATION_CODE")
+    private String faDepreciationCode;
 
-	@Column(name="FA_NO_MONTH_DEPRECIATION")
-	private BigDecimal faNoMonthDepreciation;
+    @Column(name = "FA_NO_MONTH_DEPRECIATION")
+    private BigDecimal faNoMonthDepreciation;
 
-	@Column(name="FA_RESIDUAL_VALUE_PERCENT")
-	private BigDecimal faResidualValuePercent;
+    @Column(name = "FA_RESIDUAL_VALUE_PERCENT")
+    private BigDecimal faResidualValuePercent;
 
-	@Column(name="FACTOR_CONTROL")
-	private BigDecimal factorControl;
+    @Column(name = "FACTOR_CONTROL")
+    private BigDecimal factorControl;
 
-	@Column(name="FACTOR_CONTROL_CYCLES")
-	private BigDecimal factorControlCycles;
+    @Column(name = "FACTOR_CONTROL_CYCLES")
+    private BigDecimal factorControlCycles;
 
-	@Column(name="FCC_FORM")
-	private String fccForm;
+    @Column(name = "FCC_FORM")
+    private String fccForm;
 
-	private String gl;
+    private String gl;
 
-	@Column(name="GL_2")
-	private String gl2;
+    @Column(name = "GL_2")
+    private String gl2;
 
-	@Column(name="GL_COMPANY")
-	private String glCompany;
+    @Column(name = "GL_COMPANY")
+    private String glCompany;
 
-	@Column(name="GL_COMPANY_2")
-	private String glCompany2;
+    @Column(name = "GL_COMPANY_2")
+    private String glCompany2;
 
-	@Column(name="GL_COST_CENTER")
-	private String glCostCenter;
+    @Column(name = "GL_COST_CENTER")
+    private String glCostCenter;
 
-	@Column(name="GL_COST_CENTER_2")
-	private String glCostCenter2;
+    @Column(name = "GL_COST_CENTER_2")
+    private String glCostCenter2;
 
-	@Column(name="GL_EXPENDITURE")
-	private String glExpenditure;
+    @Column(name = "GL_EXPENDITURE")
+    private String glExpenditure;
 
-	@Column(name="GL_EXPENDITURE_2")
-	private String glExpenditure2;
+    @Column(name = "GL_EXPENDITURE_2")
+    private String glExpenditure2;
 
-	@Column(name="HANDLING_NOTES")
-	private BigDecimal handlingNotes;
+    @Column(name = "HANDLING_NOTES")
+    private BigDecimal handlingNotes;
 
-	@Column(name="HAZARDOUS_MATERIAL")
-	private String hazardousMaterial;
+    @Column(name = "HAZARDOUS_MATERIAL")
+    private String hazardousMaterial;
 
-	@Column(name="HAZARDOUS_MATERIAL_AT_REMOVAL")
-	private String hazardousMaterialAtRemoval;
+    @Column(name = "HAZARDOUS_MATERIAL_AT_REMOVAL")
+    private String hazardousMaterialAtRemoval;
 
-	@Column(name="HAZARDOUS_MATERIAL_HYPERLINK")
-	private String hazardousMaterialHyperlink;
+    @Column(name = "HAZARDOUS_MATERIAL_HYPERLINK")
+    private String hazardousMaterialHyperlink;
 
-	@Column(name="HAZARDOUS_MATERIAL_NO")
-	private String hazardousMaterialNo;
+    @Column(name = "HAZARDOUS_MATERIAL_NO")
+    private String hazardousMaterialNo;
 
-	@Column(name="HAZARDOUS_SUBSTANCE")
-	private String hazardousSubstance;
+    @Column(name = "HAZARDOUS_SUBSTANCE")
+    private String hazardousSubstance;
 
-	@Column(name="HAZARDOUS_SUBSTANCE_AT_REMOVAL")
-	private String hazardousSubstanceAtRemoval;
+    @Column(name = "HAZARDOUS_SUBSTANCE_AT_REMOVAL")
+    private String hazardousSubstanceAtRemoval;
 
-	@Column(name="HAZARDOUS_SUBSTANCE_HYPERLINK")
-	private String hazardousSubstanceHyperlink;
+    @Column(name = "HAZARDOUS_SUBSTANCE_HYPERLINK")
+    private String hazardousSubstanceHyperlink;
 
-	@Column(name="HEALTH_SAFETY")
-	private String healthSafety;
+    @Column(name = "HEALTH_SAFETY")
+    private String healthSafety;
 
-	@Column(name="HEALTH_SAFETY_CLASS")
-	private String healthSafetyClass;
+    @Column(name = "HEALTH_SAFETY_CLASS")
+    private String healthSafetyClass;
 
-	@Column(name="HEALTH_SAFETY_HYPERLINK")
-	private String healthSafetyHyperlink;
+    @Column(name = "HEALTH_SAFETY_HYPERLINK")
+    private String healthSafetyHyperlink;
 
-	private BigDecimal height;
+    private BigDecimal height;
 
-	@Column(name="HEIGHT_UNITS")
-	private String heightUnits;
+    @Column(name = "HEIGHT_UNITS")
+    private String heightUnits;
 
-	@Column(name="IFACE_BAXTER_MAT_TRANSFER_DATE")
-	private Date ifaceBaxterMatTransferDate;
+    @Column(name = "IFACE_BAXTER_MAT_TRANSFER_DATE")
+    private Date ifaceBaxterMatTransferDate;
 
-	@Column(name="IFACE_BAXTER_MATFLD_XFER_DATE")
-	private Date ifaceBaxterMatfldXferDate;
+    @Column(name = "IFACE_BAXTER_MATFLD_XFER_DATE")
+    private Date ifaceBaxterMatfldXferDate;
 
-	@Column(name="INTERCHANGEABILITY_CLASS")
-	private String interchangeabilityClass;
+    @Column(name = "INTERCHANGEABILITY_CLASS")
+    private String interchangeabilityClass;
 
-	@Column(name="INTERNAL_SHOW_CAPABILITY")
-	private String internalShowCapability;
+    @Column(name = "INTERNAL_SHOW_CAPABILITY")
+    private String internalShowCapability;
 
-	@Column(name="INVENTORY_MONITORED")
-	private String inventoryMonitored;
+    @Column(name = "INVENTORY_MONITORED")
+    private String inventoryMonitored;
 
-	@Column(name="INVENTORY_TYPE")
-	private String inventoryType;
+    @Column(name = "INVENTORY_TYPE")
+    private String inventoryType;
 
-	private String ipc;
+    private String ipc;
 
-	@Column(name="ISSUED_NOTES")
-	private BigDecimal issuedNotes;
+    @Column(name = "ISSUED_NOTES")
+    private BigDecimal issuedNotes;
 
-	@Column(name="ITAR_CONTROLLED")
-	private String itarControlled;
+    @Column(name = "ITAR_CONTROLLED")
+    private String itarControlled;
 
-	@Column(name="K1_FACTOR")
-	private BigDecimal k1Factor;
+    @Column(name = "K1_FACTOR")
+    private BigDecimal k1Factor;
 
-	@Column(name="K2_FACTOR")
-	private BigDecimal k2Factor;
+    @Column(name = "K2_FACTOR")
+    private BigDecimal k2Factor;
 
-	@Column(name="K3_FACTOR")
-	private BigDecimal k3Factor;
+    @Column(name = "K3_FACTOR")
+    private BigDecimal k3Factor;
 
-	private BigDecimal lenght;
+    private BigDecimal lenght;
 
-	@Column(name="LENGHT_UNITS")
-	private String lenghtUnits;
+    @Column(name = "LENGHT_UNITS")
+    private String lenghtUnits;
 
-	private String line;
+    private String line;
 
-	@Column(name="LOT_CONTROL")
-	private String lotControl;
+    @Column(name = "LOT_CONTROL")
+    private String lotControl;
 
-	private String lru;
+    private String lru;
 
-	@Column(name="MAINTENANCE_CONTROL")
-	private String maintenanceControl;
+    @Column(name = "MAINTENANCE_CONTROL")
+    private String maintenanceControl;
 
-	@Column(name="MAINTENANCE_PROGRAM")
-	private String maintenanceProgram;
+    @Column(name = "MAINTENANCE_PROGRAM")
+    private String maintenanceProgram;
 
-	@Column(name="MANUF_AFFIDAVIT")
-	private String manufAffidavit;
+    @Column(name = "MANUF_AFFIDAVIT")
+    private String manufAffidavit;
 
-	@Column(name="MARKET_VALUE_UNIT_COST")
-	private BigDecimal marketValueUnitCost;
+    @Column(name = "MARKET_VALUE_UNIT_COST")
+    private BigDecimal marketValueUnitCost;
 
-	private String mel;
+    private String mel;
 
-	@Column(name="MINIMUM_SHELF_LIFE")
-	private BigDecimal minimumShelfLife;
+    @Column(name = "MINIMUM_SHELF_LIFE")
+    private BigDecimal minimumShelfLife;
 
-	@Column(name="MOD_STATUS")
-	private String modStatus;
+    @Column(name = "MOD_STATUS")
+    private String modStatus;
 
-	@Column(name="MODIFIED_BY")
-	private String modifiedBy;
+    @Column(name = "MODIFIED_BY")
+    private String modifiedBy;
 
-	@Column(name="MODIFIED_DATE")
-	private Date modifiedDate;
+    @Column(name = "MODIFIED_DATE")
+    private Date modifiedDate;
 
-	@Column(name="\"MODULE\"")
-	private String module;
+    @Column(name = "\"MODULE\"")
+    private String module;
 
-	@Column(name="MRO_SUPPLIED_PART")
-	private String mroSuppliedPart;
+    @Column(name = "MRO_SUPPLIED_PART")
+    private String mroSuppliedPart;
 
-	@Column(name="NON_EXCHANGEABLE_PART")
-	private String nonExchangeablePart;
+    @Column(name = "NON_EXCHANGEABLE_PART")
+    private String nonExchangeablePart;
 
-	@Column(name="NON_REPAIRABLE_PART")
-	private String nonRepairablePart;
+    @Column(name = "NON_REPAIRABLE_PART")
+    private String nonRepairablePart;
 
-	@Column(name="NOT_ALLOW_ON_CUST_ORDER_FLAG")
-	private String notAllowOnCustOrderFlag;
+    @Column(name = "NOT_ALLOW_ON_CUST_ORDER_FLAG")
+    private String notAllowOnCustOrderFlag;
 
-	private BigDecimal notes;
-	
-	@Column(name="INTERFACE_TRANSFERRED_DATE")
-	private Date interfaceTransferredDate;
+    private BigDecimal notes;
 
-	@Column(name="ORDER_NOTES")
-	private BigDecimal orderNotes;
+    @Column(name = "INTERFACE_TRANSFERRED_DATE")
+    private Date interfaceTransferredDate;
 
-	@Column(name="ORDER_RCV_NOTES")
-	private BigDecimal orderRcvNotes;
+    @Column(name = "ORDER_NOTES")
+    private BigDecimal orderNotes;
 
-	@Column(name="OVER_NIGHT")
-	private String overNight;
+    @Column(name = "ORDER_RCV_NOTES")
+    private BigDecimal orderRcvNotes;
 
-	@Column(name="PACKING_GROUP")
-	private String packingGroup;
+    @Column(name = "OVER_NIGHT")
+    private String overNight;
 
-	private BigDecimal paragraph;
+    @Column(name = "PACKING_GROUP")
+    private String packingGroup;
 
-	@Column(name="PHYSICAL_COUNT_BY")
-	private String physicalCountBy;
+    private BigDecimal paragraph;
 
-	@Column(name="PHYSICAL_COUNT_DATE")
-	private String physicalCountDate;
+    @Column(name = "PHYSICAL_COUNT_BY")
+    private String physicalCountBy;
 
-	@Column(name="PN_DESCRIPTION")
-	private String pnDescription;
+    @Column(name = "PHYSICAL_COUNT_DATE")
+    private String physicalCountDate;
 
-	@Column(name="PN_OS_REFERENCE")
-	private String pnOsReference;
+    @Column(name = "PN_DESCRIPTION")
+    private String pnDescription;
 
-	@Column(name="PN_SUPERSEDE")
-	private String pnSupersede;
+    @Column(name = "PN_OS_REFERENCE")
+    private String pnOsReference;
 
-	@Column(name="PN_SUPERSEDE_NOTES")
-	private BigDecimal pnSupersedeNotes;
+    @Column(name = "PN_SUPERSEDE")
+    private String pnSupersede;
 
-	@Column(name="PN_TOTAL_TIMES_FLAG")
-	private String pnTotalTimesFlag;
+    @Column(name = "PN_SUPERSEDE_NOTES")
+    private BigDecimal pnSupersedeNotes;
 
-	@Column(name="POISSON_FACTOR")
-	private String poissonFactor;
+    @Column(name = "PN_TOTAL_TIMES_FLAG")
+    private String pnTotalTimesFlag;
 
-	private String preventupdatebytraxdoc;
+    @Column(name = "POISSON_FACTOR")
+    private String poissonFactor;
 
-	@Column(name="PRINT_NOTE_RECEIVING_FLAG")
-	private String printNoteReceivingFlag;
+    private String preventupdatebytraxdoc;
 
-	private String processed;
+    @Column(name = "PRINT_NOTE_RECEIVING_FLAG")
+    private String printNoteReceivingFlag;
 
-	@Column(name="PRORATED_FLAG")
-	private String proratedFlag;
+    private String processed;
 
-	@Column(name="PS_DOCUMENT_NO")
-	private BigDecimal psDocumentNo;
+    @Column(name = "PRORATED_FLAG")
+    private String proratedFlag;
 
-	@Column(name="QTY_ASRS")
-	private BigDecimal qtyAsrs;
+    @Column(name = "PS_DOCUMENT_NO")
+    private BigDecimal psDocumentNo;
 
-	@Column(name="RADIAL_WEIGHT")
-	private String radialWeight;
+    @Column(name = "QTY_ASRS")
+    private BigDecimal qtyAsrs;
 
-	@Column(name="REFERENCE_DOCUMENT")
-	private String referenceDocument;
+    @Column(name = "RADIAL_WEIGHT")
+    private String radialWeight;
 
-	@Column(name="REFERENCE_DOCUMENT_REVISION")
-	private String referenceDocumentRevision;
+    @Column(name = "REFERENCE_DOCUMENT")
+    private String referenceDocument;
 
-	@Column(name="RELIABILITY_MONITORED")
-	private String reliabilityMonitored;
+    @Column(name = "REFERENCE_DOCUMENT_REVISION")
+    private String referenceDocumentRevision;
 
-	@Column(name="REMOVAL_INSTALLATION_AUDIT")
-	private String removalInstallationAudit;
+    @Column(name = "RELIABILITY_MONITORED")
+    private String reliabilityMonitored;
 
-	@Column(name="REPAIR_ORDER_NOTES")
-	private BigDecimal repairOrderNotes;
+    @Column(name = "REMOVAL_INSTALLATION_AUDIT")
+    private String removalInstallationAudit;
 
-	@Column(name="REPLENISHMENT_COST_FACTOR")
-	private BigDecimal replenishmentCostFactor;
+    @Column(name = "REPAIR_ORDER_NOTES")
+    private BigDecimal repairOrderNotes;
 
-	@Column(name="REQUIRE_TOOL_CALIBRATION_NO")
-	private String requireToolCalibrationNo;
+    @Column(name = "REPLENISHMENT_COST_FACTOR")
+    private BigDecimal replenishmentCostFactor;
 
-	@Column(name="REQUISITION_NOTES")
-	private BigDecimal requisitionNotes;
+    @Column(name = "REQUIRE_TOOL_CALIBRATION_NO")
+    private String requireToolCalibrationNo;
 
-	@Column(name="RI_FLAG")
-	private String riFlag;
+    @Column(name = "REQUISITION_NOTES")
+    private BigDecimal requisitionNotes;
 
-	@Column(name="RI_NOTES")
-	private BigDecimal riNotes;
+    @Column(name = "RI_FLAG")
+    private String riFlag;
 
-	@Column(name="RO_GL")
-	private String roGl;
+    @Column(name = "RI_NOTES")
+    private BigDecimal riNotes;
 
-	@Column(name="RO_GL_2")
-	private String roGl2;
+    @Column(name = "RO_GL")
+    private String roGl;
 
-	@Column(name="RO_GL_COMPANY")
-	private String roGlCompany;
+    @Column(name = "RO_GL_2")
+    private String roGl2;
 
-	@Column(name="RO_GL_COMPANY_2")
-	private String roGlCompany2;
+    @Column(name = "RO_GL_COMPANY")
+    private String roGlCompany;
 
-	@Column(name="RO_GL_COST_CENTER")
-	private String roGlCostCenter;
+    @Column(name = "RO_GL_COMPANY_2")
+    private String roGlCompany2;
 
-	@Column(name="RO_GL_COST_CENTER_2")
-	private String roGlCostCenter2;
+    @Column(name = "RO_GL_COST_CENTER")
+    private String roGlCostCenter;
 
-	@Column(name="RO_GL_EXPENDITURE")
-	private String roGlExpenditure;
+    @Column(name = "RO_GL_COST_CENTER_2")
+    private String roGlCostCenter2;
 
-	@Column(name="RO_GL_EXPENDITURE_2")
-	private String roGlExpenditure2;
+    @Column(name = "RO_GL_EXPENDITURE")
+    private String roGlExpenditure;
 
-	@Column(name="RVSM_CODE")
-	private String rvsmCode;
+    @Column(name = "RO_GL_EXPENDITURE_2")
+    private String roGlExpenditure2;
 
-	@Column(name="RVSM_FLAG")
-	private String rvsmFlag;
+    @Column(name = "RVSM_CODE")
+    private String rvsmCode;
 
-	@Column(name="SECONDARY_COST")
-	private BigDecimal secondaryCost;
+    @Column(name = "RVSM_FLAG")
+    private String rvsmFlag;
 
-	@Column(name="\"SECTION\"")
-	private BigDecimal section;
+    @Column(name = "SECONDARY_COST")
+    private BigDecimal secondaryCost;
 
-	@Column(name="SHELF_LIFE_DAYS")
-	private BigDecimal shelfLifeDays;
+    @Column(name = "\"SECTION\"")
+    private BigDecimal section;
 
-	@Column(name="SHELF_LIFE_EOM")
-	private String shelfLifeEom;
+    @Column(name = "SHELF_LIFE_DAYS")
+    private BigDecimal shelfLifeDays;
 
-	@Column(name="SHELF_LIFE_FLAG")
-	private String shelfLifeFlag;
+    @Column(name = "SHELF_LIFE_EOM")
+    private String shelfLifeEom;
 
-	@Column(name="SHELF_LIFE_NOTES")
-	private BigDecimal shelfLifeNotes;
+    @Column(name = "SHELF_LIFE_FLAG")
+    private String shelfLifeFlag;
 
-	@Column(name="SHIPPING_NOTES")
-	private BigDecimal shippingNotes;
+    @Column(name = "SHELF_LIFE_NOTES")
+    private BigDecimal shelfLifeNotes;
 
-	@Column(name="SHOCK_WATCH")
-	private String shockWatch;
+    @Column(name = "SHIPPING_NOTES")
+    private BigDecimal shippingNotes;
 
-	private String software;
+    @Column(name = "SHOCK_WATCH")
+    private String shockWatch;
 
-	@Column(name="SOS_ELIGIBLE_PART")
-	private String sosEligiblePart;
+    private String software;
 
-	@Column(name="SPEC_NUMBER")
-	private String specNumber;
+    @Column(name = "SOS_ELIGIBLE_PART")
+    private String sosEligiblePart;
 
-	@Column(name="STANDARD_COST")
-	private BigDecimal standardCost;
+    @Column(name = "SPEC_NUMBER")
+    private String specNumber;
 
-	@Column(name="STATIC_SENSITIVE_PART")
-	private String staticSensitivePart;
+    @Column(name = "STANDARD_COST")
+    private BigDecimal standardCost;
 
-	private String status;
+    @Column(name = "STATIC_SENSITIVE_PART")
+    private String staticSensitivePart;
 
-	@Column(name="STOCK_UOM")
-	private String stockUom;
+    private String status;
 
-	@Column(name="STORE_EXCEPTION")
-	private String storeException;
+    @Column(name = "STOCK_UOM")
+    private String stockUom;
 
-	@Column(name="STORE_EXCEPTION_SHC_1")
-	private String storeExceptionShc1;
+    @Column(name = "STORE_EXCEPTION")
+    private String storeException;
 
-	@Column(name="STORE_EXCEPTION_SHC_2")
-	private String storeExceptionShc2;
+    @Column(name = "STORE_EXCEPTION_SHC_1")
+    private String storeExceptionShc1;
 
-	@Column(name="STORE_EXCEPTION_SHC_ID")
-	private String storeExceptionShcId;
+    @Column(name = "STORE_EXCEPTION_SHC_2")
+    private String storeExceptionShc2;
 
-	@Column(name="SUB_CATEGORY")
-	private String subCategory;
+    @Column(name = "STORE_EXCEPTION_SHC_ID")
+    private String storeExceptionShcId;
 
-	@Column(name="T_PED")
-	private String tPed;
+    @Column(name = "SUB_CATEGORY")
+    private String subCategory;
 
-	@Column(name="TANGENTIAL_WEIGHT")
-	private String tangentialWeight;
+    @Column(name = "T_PED")
+    private String tPed;
 
-	private String taxable;
+    @Column(name = "TANGENTIAL_WEIGHT")
+    private String tangentialWeight;
 
-	@Column(name="TOOL_CALIBRATION_DESCRIPTION")
-	private String toolCalibrationDescription;
+    private String taxable;
 
-	@Column(name="TOOL_CALIBRATION_FLAG")
-	private String toolCalibrationFlag;
+    @Column(name = "TOOL_CALIBRATION_DESCRIPTION")
+    private String toolCalibrationDescription;
 
-	@Column(name="TOOL_CONTROL_ITEM")
-	private String toolControlItem;
+    @Column(name = "TOOL_CALIBRATION_FLAG")
+    private String toolCalibrationFlag;
 
-	@Column(name="TOOL_LIFE_DAYS")
-	private BigDecimal toolLifeDays;
+    @Column(name = "TOOL_CONTROL_ITEM")
+    private String toolControlItem;
 
-	@Column(name="TOOL_LIFE_EOM")
-	private String toolLifeEom;
+    @Column(name = "TOOL_LIFE_DAYS")
+    private BigDecimal toolLifeDays;
 
-	@Column(name="TRANSACTION_DOCUMENT_NO")
-	private BigDecimal transactionDocumentNo;
+    @Column(name = "TOOL_LIFE_EOM")
+    private String toolLifeEom;
 
-	@Column(name="TRAXDOC_CREATED_DATE")
-	private Date traxdocCreatedDate;
+    @Column(name = "TRANSACTION_DOCUMENT_NO")
+    private BigDecimal transactionDocumentNo;
 
-	@Column(name="TRAXDOC_FILE_NAME_PATH")
-	private String traxdocFileNamePath;
+    @Column(name = "TRAXDOC_CREATED_DATE")
+    private Date traxdocCreatedDate;
 
-	@Column(name="TRAXDOC_ROW_ID")
-	private BigDecimal traxdocRowId;
+    @Column(name = "TRAXDOC_FILE_NAME_PATH")
+    private String traxdocFileNamePath;
 
-	@Column(name="TRAXDOC_ROW_ID_FATHER")
-	private BigDecimal traxdocRowIdFather;
+    @Column(name = "TRAXDOC_ROW_ID")
+    private BigDecimal traxdocRowId;
 
-	@Column(name="TRAY_TYPE")
-	private String trayType;
+    @Column(name = "TRAXDOC_ROW_ID_FATHER")
+    private BigDecimal traxdocRowIdFather;
 
-	private String turn;
+    @Column(name = "TRAY_TYPE")
+    private String trayType;
 
-	@Column(name="UNLIMITED_SHELF_LIFE_FLAG")
-	private String unlimitedShelfLifeFlag;
+    private String turn;
 
-	private String vendor;
+    @Column(name = "UNLIMITED_SHELF_LIFE_FLAG")
+    private String unlimitedShelfLifeFlag;
 
-	private BigDecimal weight;
+    private String vendor;
 
-	@Column(name="WEIGHT_CONTROL_AT_BATCH_LEVEL")
-	private String weightControlAtBatchLevel;
+    private BigDecimal weight;
 
-	@Column(name="WEIGHT_UNIT")
-	private String weightUnit;
+    @Column(name = "WEIGHT_CONTROL_AT_BATCH_LEVEL")
+    private String weightControlAtBatchLevel;
 
-	private BigDecimal width;
+    @Column(name = "WEIGHT_UNIT")
+    private String weightUnit;
 
-	@Column(name="WIDTH_UNITS")
-	private String widthUnits;
+    private BigDecimal width;
 
-	public PnMaster() {
-	}
+    @Column(name = "WIDTH_UNITS")
+    private String widthUnits;
 
-	public String getPn() {
-		return this.pn;
-	}
+    public PnMaster() {
+    }
 
-	public void setPn(String pn) {
-		this.pn = pn;
-	}
+    public String getPn() {
+        return this.pn;
+    }
 
-	public String getAdditionalInformation() {
-		return this.additionalInformation;
-	}
+    public void setPn(String pn) {
+        this.pn = pn;
+    }
 
-	public void setAdditionalInformation(String additionalInformation) {
-		this.additionalInformation = additionalInformation;
-	}
+    public String getAdditionalInformation() {
+        return this.additionalInformation;
+    }
 
-	public String getAlertCategory() {
-		return this.alertCategory;
-	}
+    public void setAdditionalInformation(String additionalInformation) {
+        this.additionalInformation = additionalInformation;
+    }
 
-	public void setAlertCategory(String alertCategory) {
-		this.alertCategory = alertCategory;
-	}
+    public String getAlertCategory() {
+        return this.alertCategory;
+    }
 
-	public BigDecimal getAlertCategoryNoOf() {
-		return this.alertCategoryNoOf;
-	}
+    public void setAlertCategory(String alertCategory) {
+        this.alertCategory = alertCategory;
+    }
 
-	public void setAlertCategoryNoOf(BigDecimal alertCategoryNoOf) {
-		this.alertCategoryNoOf = alertCategoryNoOf;
-	}
+    public BigDecimal getAlertCategoryNoOf() {
+        return this.alertCategoryNoOf;
+    }
 
-	public BigDecimal getAlertLevel() {
-		return this.alertLevel;
-	}
+    public void setAlertCategoryNoOf(BigDecimal alertCategoryNoOf) {
+        this.alertCategoryNoOf = alertCategoryNoOf;
+    }
 
-	public void setAlertLevel(BigDecimal alertLevel) {
-		this.alertLevel = alertLevel;
-	}
+    public BigDecimal getAlertLevel() {
+        return this.alertLevel;
+    }
 
-	public BigDecimal getAlertLevelSecond() {
-		return this.alertLevelSecond;
-	}
+    public void setAlertLevel(BigDecimal alertLevel) {
+        this.alertLevel = alertLevel;
+    }
 
-	public void setAlertLevelSecond(BigDecimal alertLevelSecond) {
-		this.alertLevelSecond = alertLevelSecond;
-	}
+    public BigDecimal getAlertLevelSecond() {
+        return this.alertLevelSecond;
+    }
 
-	public BigDecimal getAlertNoOfRemoval() {
-		return this.alertNoOfRemoval;
-	}
+    public void setAlertLevelSecond(BigDecimal alertLevelSecond) {
+        this.alertLevelSecond = alertLevelSecond;
+    }
 
-	public void setAlertNoOfRemoval(BigDecimal alertNoOfRemoval) {
-		this.alertNoOfRemoval = alertNoOfRemoval;
-	}
+    public BigDecimal getAlertNoOfRemoval() {
+        return this.alertNoOfRemoval;
+    }
 
-	public String getAltPnDescription() {
-		return this.altPnDescription;
-	}
+    public void setAlertNoOfRemoval(BigDecimal alertNoOfRemoval) {
+        this.alertNoOfRemoval = alertNoOfRemoval;
+    }
 
-	public void setAltPnDescription(String altPnDescription) {
-		this.altPnDescription = altPnDescription;
-	}
+    public String getAltPnDescription() {
+        return this.altPnDescription;
+    }
 
-	public String getApu() {
-		return this.apu;
-	}
+    public void setAltPnDescription(String altPnDescription) {
+        this.altPnDescription = altPnDescription;
+    }
 
-	public void setApu(String apu) {
-		this.apu = apu;
-	}
+    public String getApu() {
+        return this.apu;
+    }
 
-	public String getApuReading() {
-		return this.apuReading;
-	}
+    public void setApu(String apu) {
+        this.apu = apu;
+    }
 
-	public void setApuReading(String apuReading) {
-		this.apuReading = apuReading;
-	}
+    public String getApuReading() {
+        return this.apuReading;
+    }
 
-	public String getAuditProcessed() {
-		return this.auditProcessed;
-	}
+    public void setApuReading(String apuReading) {
+        this.apuReading = apuReading;
+    }
 
-	public void setAuditProcessed(String auditProcessed) {
-		this.auditProcessed = auditProcessed;
-	}
+    public String getAuditProcessed() {
+        return this.auditProcessed;
+    }
 
-	public String getAutoInstallPosition() {
-		return this.autoInstallPosition;
-	}
+    public void setAuditProcessed(String auditProcessed) {
+        this.auditProcessed = auditProcessed;
+    }
 
-	public void setAutoInstallPosition(String autoInstallPosition) {
-		this.autoInstallPosition = autoInstallPosition;
-	}
+    public String getAutoInstallPosition() {
+        return this.autoInstallPosition;
+    }
 
-	public String getAutoInstalled() {
-		return this.autoInstalled;
-	}
+    public void setAutoInstallPosition(String autoInstallPosition) {
+        this.autoInstallPosition = autoInstallPosition;
+    }
 
-	public void setAutoInstalled(String autoInstalled) {
-		this.autoInstalled = autoInstalled;
-	}
+    public String getAutoInstalled() {
+        return this.autoInstalled;
+    }
 
-	public String getAutoSnCreate() {
-		return this.autoSnCreate;
-	}
+    public void setAutoInstalled(String autoInstalled) {
+        this.autoInstalled = autoInstalled;
+    }
 
-	public void setAutoSnCreate(String autoSnCreate) {
-		this.autoSnCreate = autoSnCreate;
-	}
+    public String getAutoSnCreate() {
+        return this.autoSnCreate;
+    }
 
-	public String getAutoSnPrefix() {
-		return this.autoSnPrefix;
-	}
+    public void setAutoSnCreate(String autoSnCreate) {
+        this.autoSnCreate = autoSnCreate;
+    }
 
-	public void setAutoSnPrefix(String autoSnPrefix) {
-		this.autoSnPrefix = autoSnPrefix;
-	}
+    public String getAutoSnPrefix() {
+        return this.autoSnPrefix;
+    }
 
-	public String getAutomatedWarehouseCapable() {
-		return this.automatedWarehouseCapable;
-	}
+    public void setAutoSnPrefix(String autoSnPrefix) {
+        this.autoSnPrefix = autoSnPrefix;
+    }
 
-	public void setAutomatedWarehouseCapable(String automatedWarehouseCapable) {
-		this.automatedWarehouseCapable = automatedWarehouseCapable;
-	}
+    public String getAutomatedWarehouseCapable() {
+        return this.automatedWarehouseCapable;
+    }
 
-	public BigDecimal getAverageCost() {
-		return this.averageCost;
-	}
+    public void setAutomatedWarehouseCapable(String automatedWarehouseCapable) {
+        this.automatedWarehouseCapable = automatedWarehouseCapable;
+    }
 
-	public void setAverageCost(BigDecimal averageCost) {
-		this.averageCost = averageCost;
-	}
+    public BigDecimal getAverageCost() {
+        return this.averageCost;
+    }
 
-	public String getAvionicPart() {
-		return this.avionicPart;
-	}
+    public void setAverageCost(BigDecimal averageCost) {
+        this.averageCost = averageCost;
+    }
 
-	public void setAvionicPart(String avionicPart) {
-		this.avionicPart = avionicPart;
-	}
+    public String getAvionicPart() {
+        return this.avionicPart;
+    }
 
-	public String getAxialWeight() {
-		return this.axialWeight;
-	}
+    public void setAvionicPart(String avionicPart) {
+        this.avionicPart = avionicPart;
+    }
 
-	public void setAxialWeight(String axialWeight) {
-		this.axialWeight = axialWeight;
-	}
+    public String getAxialWeight() {
+        return this.axialWeight;
+    }
 
-	public String getBinCat() {
-		return this.binCat;
-	}
+    public void setAxialWeight(String axialWeight) {
+        this.axialWeight = axialWeight;
+    }
 
-	public void setBinCat(String binCat) {
-		this.binCat = binCat;
-	}
+    public String getBinCat() {
+        return this.binCat;
+    }
 
-	public String getBinCat2() {
-		return this.binCat2;
-	}
+    public void setBinCat(String binCat) {
+        this.binCat = binCat;
+    }
 
-	public void setBinCat2(String binCat2) {
-		this.binCat2 = binCat2;
-	}
+    public String getBinCat2() {
+        return this.binCat2;
+    }
 
-	public String getBinOrientation() {
-		return this.binOrientation;
-	}
+    public void setBinCat2(String binCat2) {
+        this.binCat2 = binCat2;
+    }
 
-	public void setBinOrientation(String binOrientation) {
-		this.binOrientation = binOrientation;
-	}
+    public String getBinOrientation() {
+        return this.binOrientation;
+    }
 
-	public BigDecimal getBlobNo() {
-		return this.blobNo;
-	}
+    public void setBinOrientation(String binOrientation) {
+        this.binOrientation = binOrientation;
+    }
 
-	public void setBlobNo(BigDecimal blobNo) {
-		this.blobNo = blobNo;
-	}
+    public BigDecimal getBlobNo() {
+        return this.blobNo;
+    }
 
-	public BigDecimal getCarryingCostFactor() {
-		return this.carryingCostFactor;
-	}
+    public void setBlobNo(BigDecimal blobNo) {
+        this.blobNo = blobNo;
+    }
 
-	public void setCarryingCostFactor(BigDecimal carryingCostFactor) {
-		this.carryingCostFactor = carryingCostFactor;
-	}
+    public BigDecimal getCarryingCostFactor() {
+        return this.carryingCostFactor;
+    }
 
-	public String getCatRating() {
-		return this.catRating;
-	}
+    public void setCarryingCostFactor(BigDecimal carryingCostFactor) {
+        this.carryingCostFactor = carryingCostFactor;
+    }
 
-	public void setCatRating(String catRating) {
-		this.catRating = catRating;
-	}
+    public String getCatRating() {
+        return this.catRating;
+    }
 
-	public String getCategory() {
-		return this.category;
-	}
+    public void setCatRating(String catRating) {
+        this.catRating = catRating;
+    }
 
-	public void setCategory(String category) {
-		this.category = category;
-	}
+    public String getCategory() {
+        return this.category;
+    }
 
-	public String getCcReference() {
-		return this.ccReference;
-	}
+    public void setCategory(String category) {
+        this.category = category;
+    }
 
-	public void setCcReference(String ccReference) {
-		this.ccReference = ccReference;
-	}
+    public String getCcReference() {
+        return this.ccReference;
+    }
 
-	public BigDecimal getChapter() {
-		return this.chapter;
-	}
+    public void setCcReference(String ccReference) {
+        this.ccReference = ccReference;
+    }
 
-	public void setChapter(BigDecimal chapter) {
-		this.chapter = chapter;
-	}
+    public BigDecimal getChapter() {
+        return this.chapter;
+    }
 
-	public String getCheckL() {
-		return this.checkL;
-	}
+    public void setChapter(BigDecimal chapter) {
+        this.chapter = chapter;
+    }
 
-	public void setCheckL(String checkL) {
-		this.checkL = checkL;
-	}
+    public String getCheckL() {
+        return this.checkL;
+    }
 
-	public BigDecimal getChemicalGuideBlob() {
-		return this.chemicalGuideBlob;
-	}
+    public void setCheckL(String checkL) {
+        this.checkL = checkL;
+    }
 
-	public void setChemicalGuideBlob(BigDecimal chemicalGuideBlob) {
-		this.chemicalGuideBlob = chemicalGuideBlob;
-	}
+    public BigDecimal getChemicalGuideBlob() {
+        return this.chemicalGuideBlob;
+    }
 
-	public BigDecimal getChemicalGuideDocNo() {
-		return this.chemicalGuideDocNo;
-	}
+    public void setChemicalGuideBlob(BigDecimal chemicalGuideBlob) {
+        this.chemicalGuideBlob = chemicalGuideBlob;
+    }
 
-	public void setChemicalGuideDocNo(BigDecimal chemicalGuideDocNo) {
-		this.chemicalGuideDocNo = chemicalGuideDocNo;
-	}
+    public BigDecimal getChemicalGuideDocNo() {
+        return this.chemicalGuideDocNo;
+    }
 
-	public String getChemicalGuideSheet() {
-		return this.chemicalGuideSheet;
-	}
+    public void setChemicalGuideDocNo(BigDecimal chemicalGuideDocNo) {
+        this.chemicalGuideDocNo = chemicalGuideDocNo;
+    }
 
-	public void setChemicalGuideSheet(String chemicalGuideSheet) {
-		this.chemicalGuideSheet = chemicalGuideSheet;
-	}
+    public String getChemicalGuideSheet() {
+        return this.chemicalGuideSheet;
+    }
 
-	public String getClassDivision() {
-		return this.classDivision;
-	}
+    public void setChemicalGuideSheet(String chemicalGuideSheet) {
+        this.chemicalGuideSheet = chemicalGuideSheet;
+    }
 
-	public void setClassDivision(String classDivision) {
-		this.classDivision = classDivision;
-	}
+    public String getClassDivision() {
+        return this.classDivision;
+    }
 
-	public String getClimateControlled() {
-		return this.climateControlled;
-	}
+    public void setClassDivision(String classDivision) {
+        this.classDivision = classDivision;
+    }
 
-	public void setClimateControlled(String climateControlled) {
-		this.climateControlled = climateControlled;
-	}
+    public String getClimateControlled() {
+        return this.climateControlled;
+    }
 
-	public String getCreatedBy() {
-		return this.createdBy;
-	}
+    public void setClimateControlled(String climateControlled) {
+        this.climateControlled = climateControlled;
+    }
 
-	public void setCreatedBy(String createdBy) {
-		this.createdBy = createdBy;
-	}
+    public String getCreatedBy() {
+        return this.createdBy;
+    }
 
-	public Date getCreatedDate() {
-		return this.createdDate;
-	}
+    public void setCreatedBy(String createdBy) {
+        this.createdBy = createdBy;
+    }
 
-	public void setCreatedDate(Date createdDate) {
-		this.createdDate = createdDate;
-	}
+    public Date getCreatedDate() {
+        return this.createdDate;
+    }
 
-	public BigDecimal getCreatedFromTri() {
-		return this.createdFromTri;
-	}
+    public void setCreatedDate(Date createdDate) {
+        this.createdDate = createdDate;
+    }
 
-	public void setCreatedFromTri(BigDecimal createdFromTri) {
-		this.createdFromTri = createdFromTri;
-	}
+    public BigDecimal getCreatedFromTri() {
+        return this.createdFromTri;
+    }
 
-	public String getCriticalLevel() {
-		return this.criticalLevel;
-	}
+    public void setCreatedFromTri(BigDecimal createdFromTri) {
+        this.createdFromTri = createdFromTri;
+    }
 
-	public void setCriticalLevel(String criticalLevel) {
-		this.criticalLevel = criticalLevel;
-	}
+    public String getCriticalLevel() {
+        return this.criticalLevel;
+    }
 
-	public String getCustomDuty() {
-		return this.customDuty;
-	}
+    public void setCriticalLevel(String criticalLevel) {
+        this.criticalLevel = criticalLevel;
+    }
 
-	public void setCustomDuty(String customDuty) {
-		this.customDuty = customDuty;
-	}
+    public String getCustomDuty() {
+        return this.customDuty;
+    }
 
-	public String getCustomDutyDocument() {
-		return this.customDutyDocument;
-	}
+    public void setCustomDuty(String customDuty) {
+        this.customDuty = customDuty;
+    }
 
-	public void setCustomDutyDocument(String customDutyDocument) {
-		this.customDutyDocument = customDutyDocument;
-	}
+    public String getCustomDutyDocument() {
+        return this.customDutyDocument;
+    }
 
-	public String getCycleCountCode() {
-		return this.cycleCountCode;
-	}
+    public void setCustomDutyDocument(String customDutyDocument) {
+        this.customDutyDocument = customDutyDocument;
+    }
 
-	public void setCycleCountCode(String cycleCountCode) {
-		this.cycleCountCode = cycleCountCode;
-	}
+    public String getCycleCountCode() {
+        return this.cycleCountCode;
+    }
 
-	public String getDaySpecRequired() {
-		return this.daySpecRequired;
-	}
+    public void setCycleCountCode(String cycleCountCode) {
+        this.cycleCountCode = cycleCountCode;
+    }
 
-	public void setDaySpecRequired(String daySpecRequired) {
-		this.daySpecRequired = daySpecRequired;
-	}
+    public String getDaySpecRequired() {
+        return this.daySpecRequired;
+    }
 
-	public String getDimControlAtBatchLevel() {
-		return this.dimControlAtBatchLevel;
-	}
+    public void setDaySpecRequired(String daySpecRequired) {
+        this.daySpecRequired = daySpecRequired;
+    }
 
-	public void setDimControlAtBatchLevel(String dimControlAtBatchLevel) {
-		this.dimControlAtBatchLevel = dimControlAtBatchLevel;
-	}
+    public String getDimControlAtBatchLevel() {
+        return this.dimControlAtBatchLevel;
+    }
 
-	public String getDisk() {
-		return this.disk;
-	}
+    public void setDimControlAtBatchLevel(String dimControlAtBatchLevel) {
+        this.dimControlAtBatchLevel = dimControlAtBatchLevel;
+    }
 
-	public void setDisk(String disk) {
-		this.disk = disk;
-	}
+    public String getDisk() {
+        return this.disk;
+    }
 
-	public BigDecimal getDocumentNo() {
-		return this.documentNo;
-	}
+    public void setDisk(String disk) {
+        this.disk = disk;
+    }
 
-	public void setDocumentNo(BigDecimal documentNo) {
-		this.documentNo = documentNo;
-	}
+    public BigDecimal getDocumentNo() {
+        return this.documentNo;
+    }
 
-	public String getEctm() {
-		return this.ectm;
-	}
+    public void setDocumentNo(BigDecimal documentNo) {
+        this.documentNo = documentNo;
+    }
 
-	public void setEctm(String ectm) {
-		this.ectm = ectm;
-	}
+    public String getEctm() {
+        return this.ectm;
+    }
 
-	public String getEffectivityPnInterchangeable() {
-		return this.effectivityPnInterchangeable;
-	}
+    public void setEctm(String ectm) {
+        this.ectm = ectm;
+    }
 
-	public void setEffectivityPnInterchangeable(String effectivityPnInterchangeable) {
-		this.effectivityPnInterchangeable = effectivityPnInterchangeable;
-	}
+    public String getEffectivityPnInterchangeable() {
+        return this.effectivityPnInterchangeable;
+    }
 
-	public String getEfftext() {
-		return this.efftext;
-	}
+    public void setEffectivityPnInterchangeable(String effectivityPnInterchangeable) {
+        this.effectivityPnInterchangeable = effectivityPnInterchangeable;
+    }
 
-	public void setEfftext(String efftext) {
-		this.efftext = efftext;
-	}
+    public String getEfftext() {
+        return this.efftext;
+    }
 
-	public String getEngine() {
-		return this.engine;
-	}
+    public void setEfftext(String efftext) {
+        this.efftext = efftext;
+    }
 
-	public void setEngine(String engine) {
-		this.engine = engine;
-	}
+    public String getEngine() {
+        return this.engine;
+    }
 
-	public String getEssentialityCode() {
-		return this.essentialityCode;
-	}
+    public void setEngine(String engine) {
+        this.engine = engine;
+    }
 
-	public void setEssentialityCode(String essentialityCode) {
-		this.essentialityCode = essentialityCode;
-	}
+    public String getEssentialityCode() {
+        return this.essentialityCode;
+    }
 
-	public String getEtops() {
-		return this.etops;
-	}
+    public void setEssentialityCode(String essentialityCode) {
+        this.essentialityCode = essentialityCode;
+    }
 
-	public void setEtops(String etops) {
-		this.etops = etops;
-	}
+    public String getEtops() {
+        return this.etops;
+    }
 
-	public String getEtopsFlag() {
-		return this.etopsFlag;
-	}
+    public void setEtops(String etops) {
+        this.etops = etops;
+    }
 
-	public void setEtopsFlag(String etopsFlag) {
-		this.etopsFlag = etopsFlag;
-	}
+    public String getEtopsFlag() {
+        return this.etopsFlag;
+    }
 
-	public String getEtopsNote() {
-		return this.etopsNote;
-	}
+    public void setEtopsFlag(String etopsFlag) {
+        this.etopsFlag = etopsFlag;
+    }
 
-	public void setEtopsNote(String etopsNote) {
-		this.etopsNote = etopsNote;
-	}
+    public String getEtopsNote() {
+        return this.etopsNote;
+    }
 
-	public String getExGl() {
-		return this.exGl;
-	}
+    public void setEtopsNote(String etopsNote) {
+        this.etopsNote = etopsNote;
+    }
 
-	public void setExGl(String exGl) {
-		this.exGl = exGl;
-	}
+    public String getExGl() {
+        return this.exGl;
+    }
 
-	public String getExGl2() {
-		return this.exGl2;
-	}
+    public void setExGl(String exGl) {
+        this.exGl = exGl;
+    }
 
-	public void setExGl2(String exGl2) {
-		this.exGl2 = exGl2;
-	}
+    public String getExGl2() {
+        return this.exGl2;
+    }
 
-	public String getExGlCompany() {
-		return this.exGlCompany;
-	}
+    public void setExGl2(String exGl2) {
+        this.exGl2 = exGl2;
+    }
 
-	public void setExGlCompany(String exGlCompany) {
-		this.exGlCompany = exGlCompany;
-	}
+    public String getExGlCompany() {
+        return this.exGlCompany;
+    }
 
-	public String getExGlCompany2() {
-		return this.exGlCompany2;
-	}
+    public void setExGlCompany(String exGlCompany) {
+        this.exGlCompany = exGlCompany;
+    }
 
-	public void setExGlCompany2(String exGlCompany2) {
-		this.exGlCompany2 = exGlCompany2;
-	}
+    public String getExGlCompany2() {
+        return this.exGlCompany2;
+    }
 
-	public String getExGlCostCenter() {
-		return this.exGlCostCenter;
-	}
+    public void setExGlCompany2(String exGlCompany2) {
+        this.exGlCompany2 = exGlCompany2;
+    }
 
-	public void setExGlCostCenter(String exGlCostCenter) {
-		this.exGlCostCenter = exGlCostCenter;
-	}
+    public String getExGlCostCenter() {
+        return this.exGlCostCenter;
+    }
 
-	public String getExGlCostCenter2() {
-		return this.exGlCostCenter2;
-	}
+    public void setExGlCostCenter(String exGlCostCenter) {
+        this.exGlCostCenter = exGlCostCenter;
+    }
 
-	public void setExGlCostCenter2(String exGlCostCenter2) {
-		this.exGlCostCenter2 = exGlCostCenter2;
-	}
+    public String getExGlCostCenter2() {
+        return this.exGlCostCenter2;
+    }
 
-	public String getExGlExpenditure() {
-		return this.exGlExpenditure;
-	}
+    public void setExGlCostCenter2(String exGlCostCenter2) {
+        this.exGlCostCenter2 = exGlCostCenter2;
+    }
 
-	public void setExGlExpenditure(String exGlExpenditure) {
-		this.exGlExpenditure = exGlExpenditure;
-	}
+    public String getExGlExpenditure() {
+        return this.exGlExpenditure;
+    }
 
-	public String getExGlExpenditure2() {
-		return this.exGlExpenditure2;
-	}
+    public void setExGlExpenditure(String exGlExpenditure) {
+        this.exGlExpenditure = exGlExpenditure;
+    }
 
-	public void setExGlExpenditure2(String exGlExpenditure2) {
-		this.exGlExpenditure2 = exGlExpenditure2;
-	}
+    public String getExGlExpenditure2() {
+        return this.exGlExpenditure2;
+    }
 
-	public BigDecimal getExchangeOrderNotes() {
-		return this.exchangeOrderNotes;
-	}
+    public void setExGlExpenditure2(String exGlExpenditure2) {
+        this.exGlExpenditure2 = exGlExpenditure2;
+    }
 
-	public void setExchangeOrderNotes(BigDecimal exchangeOrderNotes) {
-		this.exchangeOrderNotes = exchangeOrderNotes;
-	}
+    public BigDecimal getExchangeOrderNotes() {
+        return this.exchangeOrderNotes;
+    }
 
-	public String getExpenditure() {
-		return this.expenditure;
-	}
+    public void setExchangeOrderNotes(BigDecimal exchangeOrderNotes) {
+        this.exchangeOrderNotes = exchangeOrderNotes;
+    }
 
-	public void setExpenditure(String expenditure) {
-		this.expenditure = expenditure;
-	}
+    public String getExpenditure() {
+        return this.expenditure;
+    }
 
-	public String getFaDepreciationCode() {
-		return this.faDepreciationCode;
-	}
+    public void setExpenditure(String expenditure) {
+        this.expenditure = expenditure;
+    }
 
-	public void setFaDepreciationCode(String faDepreciationCode) {
-		this.faDepreciationCode = faDepreciationCode;
-	}
+    public String getFaDepreciationCode() {
+        return this.faDepreciationCode;
+    }
 
-	public BigDecimal getFaNoMonthDepreciation() {
-		return this.faNoMonthDepreciation;
-	}
+    public void setFaDepreciationCode(String faDepreciationCode) {
+        this.faDepreciationCode = faDepreciationCode;
+    }
 
-	public void setFaNoMonthDepreciation(BigDecimal faNoMonthDepreciation) {
-		this.faNoMonthDepreciation = faNoMonthDepreciation;
-	}
+    public BigDecimal getFaNoMonthDepreciation() {
+        return this.faNoMonthDepreciation;
+    }
 
-	public BigDecimal getFaResidualValuePercent() {
-		return this.faResidualValuePercent;
-	}
+    public void setFaNoMonthDepreciation(BigDecimal faNoMonthDepreciation) {
+        this.faNoMonthDepreciation = faNoMonthDepreciation;
+    }
 
-	public void setFaResidualValuePercent(BigDecimal faResidualValuePercent) {
-		this.faResidualValuePercent = faResidualValuePercent;
-	}
+    public BigDecimal getFaResidualValuePercent() {
+        return this.faResidualValuePercent;
+    }
 
-	public BigDecimal getFactorControl() {
-		return this.factorControl;
-	}
+    public void setFaResidualValuePercent(BigDecimal faResidualValuePercent) {
+        this.faResidualValuePercent = faResidualValuePercent;
+    }
 
-	public void setFactorControl(BigDecimal factorControl) {
-		this.factorControl = factorControl;
-	}
+    public BigDecimal getFactorControl() {
+        return this.factorControl;
+    }
 
-	public BigDecimal getFactorControlCycles() {
-		return this.factorControlCycles;
-	}
+    public void setFactorControl(BigDecimal factorControl) {
+        this.factorControl = factorControl;
+    }
 
-	public void setFactorControlCycles(BigDecimal factorControlCycles) {
-		this.factorControlCycles = factorControlCycles;
-	}
+    public BigDecimal getFactorControlCycles() {
+        return this.factorControlCycles;
+    }
 
-	public String getFccForm() {
-		return this.fccForm;
-	}
+    public void setFactorControlCycles(BigDecimal factorControlCycles) {
+        this.factorControlCycles = factorControlCycles;
+    }
 
-	public void setFccForm(String fccForm) {
-		this.fccForm = fccForm;
-	}
+    public String getFccForm() {
+        return this.fccForm;
+    }
 
-	public String getGl() {
-		return this.gl;
-	}
+    public void setFccForm(String fccForm) {
+        this.fccForm = fccForm;
+    }
 
-	public void setGl(String gl) {
-		this.gl = gl;
-	}
+    public String getGl() {
+        return this.gl;
+    }
 
-	public String getGl2() {
-		return this.gl2;
-	}
+    public void setGl(String gl) {
+        this.gl = gl;
+    }
 
-	public void setGl2(String gl2) {
-		this.gl2 = gl2;
-	}
+    public String getGl2() {
+        return this.gl2;
+    }
 
-	public String getGlCompany() {
-		return this.glCompany;
-	}
+    public void setGl2(String gl2) {
+        this.gl2 = gl2;
+    }
 
-	public void setGlCompany(String glCompany) {
-		this.glCompany = glCompany;
-	}
+    public String getGlCompany() {
+        return this.glCompany;
+    }
 
-	public String getGlCompany2() {
-		return this.glCompany2;
-	}
+    public void setGlCompany(String glCompany) {
+        this.glCompany = glCompany;
+    }
 
-	public void setGlCompany2(String glCompany2) {
-		this.glCompany2 = glCompany2;
-	}
+    public String getGlCompany2() {
+        return this.glCompany2;
+    }
 
-	public String getGlCostCenter() {
-		return this.glCostCenter;
-	}
+    public void setGlCompany2(String glCompany2) {
+        this.glCompany2 = glCompany2;
+    }
 
-	public void setGlCostCenter(String glCostCenter) {
-		this.glCostCenter = glCostCenter;
-	}
+    public String getGlCostCenter() {
+        return this.glCostCenter;
+    }
 
-	public String getGlCostCenter2() {
-		return this.glCostCenter2;
-	}
+    public void setGlCostCenter(String glCostCenter) {
+        this.glCostCenter = glCostCenter;
+    }
 
-	public void setGlCostCenter2(String glCostCenter2) {
-		this.glCostCenter2 = glCostCenter2;
-	}
+    public String getGlCostCenter2() {
+        return this.glCostCenter2;
+    }
 
-	public String getGlExpenditure() {
-		return this.glExpenditure;
-	}
+    public void setGlCostCenter2(String glCostCenter2) {
+        this.glCostCenter2 = glCostCenter2;
+    }
 
-	public void setGlExpenditure(String glExpenditure) {
-		this.glExpenditure = glExpenditure;
-	}
+    public String getGlExpenditure() {
+        return this.glExpenditure;
+    }
 
-	public String getGlExpenditure2() {
-		return this.glExpenditure2;
-	}
+    public void setGlExpenditure(String glExpenditure) {
+        this.glExpenditure = glExpenditure;
+    }
 
-	public void setGlExpenditure2(String glExpenditure2) {
-		this.glExpenditure2 = glExpenditure2;
-	}
+    public String getGlExpenditure2() {
+        return this.glExpenditure2;
+    }
 
-	public BigDecimal getHandlingNotes() {
-		return this.handlingNotes;
-	}
+    public void setGlExpenditure2(String glExpenditure2) {
+        this.glExpenditure2 = glExpenditure2;
+    }
 
-	public void setHandlingNotes(BigDecimal handlingNotes) {
-		this.handlingNotes = handlingNotes;
-	}
+    public BigDecimal getHandlingNotes() {
+        return this.handlingNotes;
+    }
 
-	public String getHazardousMaterial() {
-		return this.hazardousMaterial;
-	}
+    public void setHandlingNotes(BigDecimal handlingNotes) {
+        this.handlingNotes = handlingNotes;
+    }
 
-	public void setHazardousMaterial(String hazardousMaterial) {
-		this.hazardousMaterial = hazardousMaterial;
-	}
+    public String getHazardousMaterial() {
+        return this.hazardousMaterial;
+    }
 
-	public String getHazardousMaterialAtRemoval() {
-		return this.hazardousMaterialAtRemoval;
-	}
+    public void setHazardousMaterial(String hazardousMaterial) {
+        this.hazardousMaterial = hazardousMaterial;
+    }
 
-	public void setHazardousMaterialAtRemoval(String hazardousMaterialAtRemoval) {
-		this.hazardousMaterialAtRemoval = hazardousMaterialAtRemoval;
-	}
+    public String getHazardousMaterialAtRemoval() {
+        return this.hazardousMaterialAtRemoval;
+    }
 
-	public String getHazardousMaterialHyperlink() {
-		return this.hazardousMaterialHyperlink;
-	}
+    public void setHazardousMaterialAtRemoval(String hazardousMaterialAtRemoval) {
+        this.hazardousMaterialAtRemoval = hazardousMaterialAtRemoval;
+    }
 
-	public void setHazardousMaterialHyperlink(String hazardousMaterialHyperlink) {
-		this.hazardousMaterialHyperlink = hazardousMaterialHyperlink;
-	}
+    public String getHazardousMaterialHyperlink() {
+        return this.hazardousMaterialHyperlink;
+    }
 
-	public String getHazardousMaterialNo() {
-		return this.hazardousMaterialNo;
-	}
+    public void setHazardousMaterialHyperlink(String hazardousMaterialHyperlink) {
+        this.hazardousMaterialHyperlink = hazardousMaterialHyperlink;
+    }
 
-	public void setHazardousMaterialNo(String hazardousMaterialNo) {
-		this.hazardousMaterialNo = hazardousMaterialNo;
-	}
+    public String getHazardousMaterialNo() {
+        return this.hazardousMaterialNo;
+    }
 
-	public String getHazardousSubstance() {
-		return this.hazardousSubstance;
-	}
+    public void setHazardousMaterialNo(String hazardousMaterialNo) {
+        this.hazardousMaterialNo = hazardousMaterialNo;
+    }
 
-	public void setHazardousSubstance(String hazardousSubstance) {
-		this.hazardousSubstance = hazardousSubstance;
-	}
+    public String getHazardousSubstance() {
+        return this.hazardousSubstance;
+    }
 
-	public String getHazardousSubstanceAtRemoval() {
-		return this.hazardousSubstanceAtRemoval;
-	}
+    public void setHazardousSubstance(String hazardousSubstance) {
+        this.hazardousSubstance = hazardousSubstance;
+    }
 
-	public void setHazardousSubstanceAtRemoval(String hazardousSubstanceAtRemoval) {
-		this.hazardousSubstanceAtRemoval = hazardousSubstanceAtRemoval;
-	}
+    public String getHazardousSubstanceAtRemoval() {
+        return this.hazardousSubstanceAtRemoval;
+    }
 
-	public String getHazardousSubstanceHyperlink() {
-		return this.hazardousSubstanceHyperlink;
-	}
+    public void setHazardousSubstanceAtRemoval(String hazardousSubstanceAtRemoval) {
+        this.hazardousSubstanceAtRemoval = hazardousSubstanceAtRemoval;
+    }
 
-	public void setHazardousSubstanceHyperlink(String hazardousSubstanceHyperlink) {
-		this.hazardousSubstanceHyperlink = hazardousSubstanceHyperlink;
-	}
+    public String getHazardousSubstanceHyperlink() {
+        return this.hazardousSubstanceHyperlink;
+    }
 
-	public String getHealthSafety() {
-		return this.healthSafety;
-	}
+    public void setHazardousSubstanceHyperlink(String hazardousSubstanceHyperlink) {
+        this.hazardousSubstanceHyperlink = hazardousSubstanceHyperlink;
+    }
 
-	public void setHealthSafety(String healthSafety) {
-		this.healthSafety = healthSafety;
-	}
+    public String getHealthSafety() {
+        return this.healthSafety;
+    }
 
-	public String getHealthSafetyClass() {
-		return this.healthSafetyClass;
-	}
+    public void setHealthSafety(String healthSafety) {
+        this.healthSafety = healthSafety;
+    }
 
-	public void setHealthSafetyClass(String healthSafetyClass) {
-		this.healthSafetyClass = healthSafetyClass;
-	}
+    public String getHealthSafetyClass() {
+        return this.healthSafetyClass;
+    }
 
-	public String getHealthSafetyHyperlink() {
-		return this.healthSafetyHyperlink;
-	}
+    public void setHealthSafetyClass(String healthSafetyClass) {
+        this.healthSafetyClass = healthSafetyClass;
+    }
 
-	public void setHealthSafetyHyperlink(String healthSafetyHyperlink) {
-		this.healthSafetyHyperlink = healthSafetyHyperlink;
-	}
+    public String getHealthSafetyHyperlink() {
+        return this.healthSafetyHyperlink;
+    }
 
-	public BigDecimal getHeight() {
-		return this.height;
-	}
+    public void setHealthSafetyHyperlink(String healthSafetyHyperlink) {
+        this.healthSafetyHyperlink = healthSafetyHyperlink;
+    }
 
-	public void setHeight(BigDecimal height) {
-		this.height = height;
-	}
+    public BigDecimal getHeight() {
+        return this.height;
+    }
 
-	public String getHeightUnits() {
-		return this.heightUnits;
-	}
+    public void setHeight(BigDecimal height) {
+        this.height = height;
+    }
 
-	public void setHeightUnits(String heightUnits) {
-		this.heightUnits = heightUnits;
-	}
+    public String getHeightUnits() {
+        return this.heightUnits;
+    }
 
-	public Date getIfaceBaxterMatTransferDate() {
-		return this.ifaceBaxterMatTransferDate;
-	}
+    public void setHeightUnits(String heightUnits) {
+        this.heightUnits = heightUnits;
+    }
 
-	public void setIfaceBaxterMatTransferDate(Date ifaceBaxterMatTransferDate) {
-		this.ifaceBaxterMatTransferDate = ifaceBaxterMatTransferDate;
-	}
+    public Date getIfaceBaxterMatTransferDate() {
+        return this.ifaceBaxterMatTransferDate;
+    }
 
-	public Date getIfaceBaxterMatfldXferDate() {
-		return this.ifaceBaxterMatfldXferDate;
-	}
+    public void setIfaceBaxterMatTransferDate(Date ifaceBaxterMatTransferDate) {
+        this.ifaceBaxterMatTransferDate = ifaceBaxterMatTransferDate;
+    }
 
-	public void setIfaceBaxterMatfldXferDate(Date ifaceBaxterMatfldXferDate) {
-		this.ifaceBaxterMatfldXferDate = ifaceBaxterMatfldXferDate;
-	}
+    public Date getIfaceBaxterMatfldXferDate() {
+        return this.ifaceBaxterMatfldXferDate;
+    }
 
-	public String getInterchangeabilityClass() {
-		return this.interchangeabilityClass;
-	}
+    public void setIfaceBaxterMatfldXferDate(Date ifaceBaxterMatfldXferDate) {
+        this.ifaceBaxterMatfldXferDate = ifaceBaxterMatfldXferDate;
+    }
 
-	public void setInterchangeabilityClass(String interchangeabilityClass) {
-		this.interchangeabilityClass = interchangeabilityClass;
-	}
+    public String getInterchangeabilityClass() {
+        return this.interchangeabilityClass;
+    }
 
-	public String getInternalShowCapability() {
-		return this.internalShowCapability;
-	}
+    public void setInterchangeabilityClass(String interchangeabilityClass) {
+        this.interchangeabilityClass = interchangeabilityClass;
+    }
 
-	public void setInternalShowCapability(String internalShowCapability) {
-		this.internalShowCapability = internalShowCapability;
-	}
+    public String getInternalShowCapability() {
+        return this.internalShowCapability;
+    }
 
-	public String getInventoryMonitored() {
-		return this.inventoryMonitored;
-	}
+    public void setInternalShowCapability(String internalShowCapability) {
+        this.internalShowCapability = internalShowCapability;
+    }
 
-	public void setInventoryMonitored(String inventoryMonitored) {
-		this.inventoryMonitored = inventoryMonitored;
-	}
+    public String getInventoryMonitored() {
+        return this.inventoryMonitored;
+    }
 
-	public String getInventoryType() {
-		return this.inventoryType;
-	}
+    public void setInventoryMonitored(String inventoryMonitored) {
+        this.inventoryMonitored = inventoryMonitored;
+    }
 
-	public void setInventoryType(String inventoryType) {
-		this.inventoryType = inventoryType;
-	}
+    public String getInventoryType() {
+        return this.inventoryType;
+    }
 
-	public String getIpc() {
-		return this.ipc;
-	}
+    public void setInventoryType(String inventoryType) {
+        this.inventoryType = inventoryType;
+    }
 
-	public void setIpc(String ipc) {
-		this.ipc = ipc;
-	}
+    public String getIpc() {
+        return this.ipc;
+    }
 
-	public BigDecimal getIssuedNotes() {
-		return this.issuedNotes;
-	}
+    public void setIpc(String ipc) {
+        this.ipc = ipc;
+    }
 
-	public void setIssuedNotes(BigDecimal issuedNotes) {
-		this.issuedNotes = issuedNotes;
-	}
+    public BigDecimal getIssuedNotes() {
+        return this.issuedNotes;
+    }
 
-	public String getItarControlled() {
-		return this.itarControlled;
-	}
+    public void setIssuedNotes(BigDecimal issuedNotes) {
+        this.issuedNotes = issuedNotes;
+    }
 
-	public void setItarControlled(String itarControlled) {
-		this.itarControlled = itarControlled;
-	}
+    public String getItarControlled() {
+        return this.itarControlled;
+    }
 
-	public BigDecimal getK1Factor() {
-		return this.k1Factor;
-	}
+    public void setItarControlled(String itarControlled) {
+        this.itarControlled = itarControlled;
+    }
 
-	public void setK1Factor(BigDecimal k1Factor) {
-		this.k1Factor = k1Factor;
-	}
+    public BigDecimal getK1Factor() {
+        return this.k1Factor;
+    }
 
-	public BigDecimal getK2Factor() {
-		return this.k2Factor;
-	}
+    public void setK1Factor(BigDecimal k1Factor) {
+        this.k1Factor = k1Factor;
+    }
 
-	public void setK2Factor(BigDecimal k2Factor) {
-		this.k2Factor = k2Factor;
-	}
+    public BigDecimal getK2Factor() {
+        return this.k2Factor;
+    }
 
-	public BigDecimal getK3Factor() {
-		return this.k3Factor;
-	}
+    public void setK2Factor(BigDecimal k2Factor) {
+        this.k2Factor = k2Factor;
+    }
 
-	public void setK3Factor(BigDecimal k3Factor) {
-		this.k3Factor = k3Factor;
-	}
+    public BigDecimal getK3Factor() {
+        return this.k3Factor;
+    }
 
-	public BigDecimal getLenght() {
-		return this.lenght;
-	}
+    public void setK3Factor(BigDecimal k3Factor) {
+        this.k3Factor = k3Factor;
+    }
 
-	public void setLenght(BigDecimal lenght) {
-		this.lenght = lenght;
-	}
+    public BigDecimal getLenght() {
+        return this.lenght;
+    }
 
-	public String getLenghtUnits() {
-		return this.lenghtUnits;
-	}
+    public void setLenght(BigDecimal lenght) {
+        this.lenght = lenght;
+    }
 
-	public void setLenghtUnits(String lenghtUnits) {
-		this.lenghtUnits = lenghtUnits;
-	}
+    public String getLenghtUnits() {
+        return this.lenghtUnits;
+    }
 
-	public String getLine() {
-		return this.line;
-	}
+    public void setLenghtUnits(String lenghtUnits) {
+        this.lenghtUnits = lenghtUnits;
+    }
 
-	public void setLine(String line) {
-		this.line = line;
-	}
+    public String getLine() {
+        return this.line;
+    }
 
-	public String getLotControl() {
-		return this.lotControl;
-	}
+    public void setLine(String line) {
+        this.line = line;
+    }
 
-	public void setLotControl(String lotControl) {
-		this.lotControl = lotControl;
-	}
+    public String getLotControl() {
+        return this.lotControl;
+    }
 
-	public String getLru() {
-		return this.lru;
-	}
+    public void setLotControl(String lotControl) {
+        this.lotControl = lotControl;
+    }
 
-	public void setLru(String lru) {
-		this.lru = lru;
-	}
+    public String getLru() {
+        return this.lru;
+    }
 
-	public String getMaintenanceControl() {
-		return this.maintenanceControl;
-	}
+    public void setLru(String lru) {
+        this.lru = lru;
+    }
 
-	public void setMaintenanceControl(String maintenanceControl) {
-		this.maintenanceControl = maintenanceControl;
-	}
+    public String getMaintenanceControl() {
+        return this.maintenanceControl;
+    }
 
-	public String getMaintenanceProgram() {
-		return this.maintenanceProgram;
-	}
+    public void setMaintenanceControl(String maintenanceControl) {
+        this.maintenanceControl = maintenanceControl;
+    }
 
-	public void setMaintenanceProgram(String maintenanceProgram) {
-		this.maintenanceProgram = maintenanceProgram;
-	}
+    public String getMaintenanceProgram() {
+        return this.maintenanceProgram;
+    }
 
-	public String getManufAffidavit() {
-		return this.manufAffidavit;
-	}
+    public void setMaintenanceProgram(String maintenanceProgram) {
+        this.maintenanceProgram = maintenanceProgram;
+    }
 
-	public void setManufAffidavit(String manufAffidavit) {
-		this.manufAffidavit = manufAffidavit;
-	}
+    public String getManufAffidavit() {
+        return this.manufAffidavit;
+    }
 
-	public BigDecimal getMarketValueUnitCost() {
-		return this.marketValueUnitCost;
-	}
+    public void setManufAffidavit(String manufAffidavit) {
+        this.manufAffidavit = manufAffidavit;
+    }
 
-	public void setMarketValueUnitCost(BigDecimal marketValueUnitCost) {
-		this.marketValueUnitCost = marketValueUnitCost;
-	}
+    public BigDecimal getMarketValueUnitCost() {
+        return this.marketValueUnitCost;
+    }
 
-	public String getMel() {
-		return this.mel;
-	}
+    public void setMarketValueUnitCost(BigDecimal marketValueUnitCost) {
+        this.marketValueUnitCost = marketValueUnitCost;
+    }
 
-	public void setMel(String mel) {
-		this.mel = mel;
-	}
+    public String getMel() {
+        return this.mel;
+    }
 
-	public BigDecimal getMinimumShelfLife() {
-		return this.minimumShelfLife;
-	}
+    public void setMel(String mel) {
+        this.mel = mel;
+    }
 
-	public void setMinimumShelfLife(BigDecimal minimumShelfLife) {
-		this.minimumShelfLife = minimumShelfLife;
-	}
+    public BigDecimal getMinimumShelfLife() {
+        return this.minimumShelfLife;
+    }
 
-	public String getModStatus() {
-		return this.modStatus;
-	}
+    public void setMinimumShelfLife(BigDecimal minimumShelfLife) {
+        this.minimumShelfLife = minimumShelfLife;
+    }
 
-	public void setModStatus(String modStatus) {
-		this.modStatus = modStatus;
-	}
+    public String getModStatus() {
+        return this.modStatus;
+    }
 
-	public String getModifiedBy() {
-		return this.modifiedBy;
-	}
+    public void setModStatus(String modStatus) {
+        this.modStatus = modStatus;
+    }
 
-	public void setModifiedBy(String modifiedBy) {
-		this.modifiedBy = modifiedBy;
-	}
+    public String getModifiedBy() {
+        return this.modifiedBy;
+    }
 
-	public Date getModifiedDate() {
-		return this.modifiedDate;
-	}
+    public void setModifiedBy(String modifiedBy) {
+        this.modifiedBy = modifiedBy;
+    }
 
-	public void setModifiedDate(Date modifiedDate) {
-		this.modifiedDate = modifiedDate;
-	}
+    public Date getModifiedDate() {
+        return this.modifiedDate;
+    }
 
-	public String getModule() {
-		return this.module;
-	}
+    public void setModifiedDate(Date modifiedDate) {
+        this.modifiedDate = modifiedDate;
+    }
 
-	public void setModule(String module) {
-		this.module = module;
-	}
+    public String getModule() {
+        return this.module;
+    }
 
-	public String getMroSuppliedPart() {
-		return this.mroSuppliedPart;
-	}
+    public void setModule(String module) {
+        this.module = module;
+    }
 
-	public void setMroSuppliedPart(String mroSuppliedPart) {
-		this.mroSuppliedPart = mroSuppliedPart;
-	}
+    public String getMroSuppliedPart() {
+        return this.mroSuppliedPart;
+    }
 
-	public String getNonExchangeablePart() {
-		return this.nonExchangeablePart;
-	}
+    public void setMroSuppliedPart(String mroSuppliedPart) {
+        this.mroSuppliedPart = mroSuppliedPart;
+    }
 
-	public void setNonExchangeablePart(String nonExchangeablePart) {
-		this.nonExchangeablePart = nonExchangeablePart;
-	}
+    public String getNonExchangeablePart() {
+        return this.nonExchangeablePart;
+    }
 
-	public String getNonRepairablePart() {
-		return this.nonRepairablePart;
-	}
+    public void setNonExchangeablePart(String nonExchangeablePart) {
+        this.nonExchangeablePart = nonExchangeablePart;
+    }
 
-	public void setNonRepairablePart(String nonRepairablePart) {
-		this.nonRepairablePart = nonRepairablePart;
-	}
+    public String getNonRepairablePart() {
+        return this.nonRepairablePart;
+    }
 
-	public String getNotAllowOnCustOrderFlag() {
-		return this.notAllowOnCustOrderFlag;
-	}
+    public void setNonRepairablePart(String nonRepairablePart) {
+        this.nonRepairablePart = nonRepairablePart;
+    }
 
-	public void setNotAllowOnCustOrderFlag(String notAllowOnCustOrderFlag) {
-		this.notAllowOnCustOrderFlag = notAllowOnCustOrderFlag;
-	}
+    public String getNotAllowOnCustOrderFlag() {
+        return this.notAllowOnCustOrderFlag;
+    }
 
-	public BigDecimal getNotes() {
-		return this.notes;
-	}
+    public void setNotAllowOnCustOrderFlag(String notAllowOnCustOrderFlag) {
+        this.notAllowOnCustOrderFlag = notAllowOnCustOrderFlag;
+    }
 
-	public void setNotes(BigDecimal notes) {
-		this.notes = notes;
-	}
+    public BigDecimal getNotes() {
+        return this.notes;
+    }
 
-	public BigDecimal getOrderNotes() {
-		return this.orderNotes;
-	}
+    public void setNotes(BigDecimal notes) {
+        this.notes = notes;
+    }
 
-	public void setOrderNotes(BigDecimal orderNotes) {
-		this.orderNotes = orderNotes;
-	}
+    public BigDecimal getOrderNotes() {
+        return this.orderNotes;
+    }
 
-	public BigDecimal getOrderRcvNotes() {
-		return this.orderRcvNotes;
-	}
+    public void setOrderNotes(BigDecimal orderNotes) {
+        this.orderNotes = orderNotes;
+    }
 
-	public void setOrderRcvNotes(BigDecimal orderRcvNotes) {
-		this.orderRcvNotes = orderRcvNotes;
-	}
+    public BigDecimal getOrderRcvNotes() {
+        return this.orderRcvNotes;
+    }
 
-	public String getOverNight() {
-		return this.overNight;
-	}
+    public void setOrderRcvNotes(BigDecimal orderRcvNotes) {
+        this.orderRcvNotes = orderRcvNotes;
+    }
 
-	public void setOverNight(String overNight) {
-		this.overNight = overNight;
-	}
+    public String getOverNight() {
+        return this.overNight;
+    }
 
-	public String getPackingGroup() {
-		return this.packingGroup;
-	}
+    public void setOverNight(String overNight) {
+        this.overNight = overNight;
+    }
 
-	public void setPackingGroup(String packingGroup) {
-		this.packingGroup = packingGroup;
-	}
+    public String getPackingGroup() {
+        return this.packingGroup;
+    }
 
-	public BigDecimal getParagraph() {
-		return this.paragraph;
-	}
+    public void setPackingGroup(String packingGroup) {
+        this.packingGroup = packingGroup;
+    }
 
-	public void setParagraph(BigDecimal paragraph) {
-		this.paragraph = paragraph;
-	}
+    public BigDecimal getParagraph() {
+        return this.paragraph;
+    }
 
-	public String getPhysicalCountBy() {
-		return this.physicalCountBy;
-	}
+    public void setParagraph(BigDecimal paragraph) {
+        this.paragraph = paragraph;
+    }
 
-	public void setPhysicalCountBy(String physicalCountBy) {
-		this.physicalCountBy = physicalCountBy;
-	}
+    public String getPhysicalCountBy() {
+        return this.physicalCountBy;
+    }
 
-	public String getPhysicalCountDate() {
-		return this.physicalCountDate;
-	}
+    public void setPhysicalCountBy(String physicalCountBy) {
+        this.physicalCountBy = physicalCountBy;
+    }
 
-	public void setPhysicalCountDate(String physicalCountDate) {
-		this.physicalCountDate = physicalCountDate;
-	}
+    public String getPhysicalCountDate() {
+        return this.physicalCountDate;
+    }
 
-	public String getPnDescription() {
-		return this.pnDescription;
-	}
+    public void setPhysicalCountDate(String physicalCountDate) {
+        this.physicalCountDate = physicalCountDate;
+    }
 
-	public void setPnDescription(String pnDescription) {
-		this.pnDescription = pnDescription;
-	}
+    public String getPnDescription() {
+        return this.pnDescription;
+    }
 
-	public String getPnOsReference() {
-		return this.pnOsReference;
-	}
+    public void setPnDescription(String pnDescription) {
+        this.pnDescription = pnDescription;
+    }
 
-	public void setPnOsReference(String pnOsReference) {
-		this.pnOsReference = pnOsReference;
-	}
+    public String getPnOsReference() {
+        return this.pnOsReference;
+    }
 
-	public String getPnSupersede() {
-		return this.pnSupersede;
-	}
+    public void setPnOsReference(String pnOsReference) {
+        this.pnOsReference = pnOsReference;
+    }
 
-	public void setPnSupersede(String pnSupersede) {
-		this.pnSupersede = pnSupersede;
-	}
+    public String getPnSupersede() {
+        return this.pnSupersede;
+    }
 
-	public BigDecimal getPnSupersedeNotes() {
-		return this.pnSupersedeNotes;
-	}
+    public void setPnSupersede(String pnSupersede) {
+        this.pnSupersede = pnSupersede;
+    }
 
-	public void setPnSupersedeNotes(BigDecimal pnSupersedeNotes) {
-		this.pnSupersedeNotes = pnSupersedeNotes;
-	}
+    public BigDecimal getPnSupersedeNotes() {
+        return this.pnSupersedeNotes;
+    }
 
-	public String getPnTotalTimesFlag() {
-		return this.pnTotalTimesFlag;
-	}
+    public void setPnSupersedeNotes(BigDecimal pnSupersedeNotes) {
+        this.pnSupersedeNotes = pnSupersedeNotes;
+    }
 
-	public void setPnTotalTimesFlag(String pnTotalTimesFlag) {
-		this.pnTotalTimesFlag = pnTotalTimesFlag;
-	}
+    public String getPnTotalTimesFlag() {
+        return this.pnTotalTimesFlag;
+    }
 
-	public String getPoissonFactor() {
-		return this.poissonFactor;
-	}
+    public void setPnTotalTimesFlag(String pnTotalTimesFlag) {
+        this.pnTotalTimesFlag = pnTotalTimesFlag;
+    }
 
-	public void setPoissonFactor(String poissonFactor) {
-		this.poissonFactor = poissonFactor;
-	}
+    public String getPoissonFactor() {
+        return this.poissonFactor;
+    }
 
-	public String getPreventupdatebytraxdoc() {
-		return this.preventupdatebytraxdoc;
-	}
+    public void setPoissonFactor(String poissonFactor) {
+        this.poissonFactor = poissonFactor;
+    }
 
-	public void setPreventupdatebytraxdoc(String preventupdatebytraxdoc) {
-		this.preventupdatebytraxdoc = preventupdatebytraxdoc;
-	}
+    public String getPreventupdatebytraxdoc() {
+        return this.preventupdatebytraxdoc;
+    }
 
-	public String getPrintNoteReceivingFlag() {
-		return this.printNoteReceivingFlag;
-	}
+    public void setPreventupdatebytraxdoc(String preventupdatebytraxdoc) {
+        this.preventupdatebytraxdoc = preventupdatebytraxdoc;
+    }
 
-	public void setPrintNoteReceivingFlag(String printNoteReceivingFlag) {
-		this.printNoteReceivingFlag = printNoteReceivingFlag;
-	}
+    public String getPrintNoteReceivingFlag() {
+        return this.printNoteReceivingFlag;
+    }
 
-	public String getProcessed() {
-		return this.processed;
-	}
+    public void setPrintNoteReceivingFlag(String printNoteReceivingFlag) {
+        this.printNoteReceivingFlag = printNoteReceivingFlag;
+    }
 
-	public void setProcessed(String processed) {
-		this.processed = processed;
-	}
+    public String getProcessed() {
+        return this.processed;
+    }
 
-	public String getProratedFlag() {
-		return this.proratedFlag;
-	}
+    public void setProcessed(String processed) {
+        this.processed = processed;
+    }
 
-	public void setProratedFlag(String proratedFlag) {
-		this.proratedFlag = proratedFlag;
-	}
+    public String getProratedFlag() {
+        return this.proratedFlag;
+    }
 
-	public BigDecimal getPsDocumentNo() {
-		return this.psDocumentNo;
-	}
+    public void setProratedFlag(String proratedFlag) {
+        this.proratedFlag = proratedFlag;
+    }
 
-	public void setPsDocumentNo(BigDecimal psDocumentNo) {
-		this.psDocumentNo = psDocumentNo;
-	}
+    public BigDecimal getPsDocumentNo() {
+        return this.psDocumentNo;
+    }
 
-	public BigDecimal getQtyAsrs() {
-		return this.qtyAsrs;
-	}
+    public void setPsDocumentNo(BigDecimal psDocumentNo) {
+        this.psDocumentNo = psDocumentNo;
+    }
 
-	public void setQtyAsrs(BigDecimal qtyAsrs) {
-		this.qtyAsrs = qtyAsrs;
-	}
+    public BigDecimal getQtyAsrs() {
+        return this.qtyAsrs;
+    }
 
-	public String getRadialWeight() {
-		return this.radialWeight;
-	}
+    public void setQtyAsrs(BigDecimal qtyAsrs) {
+        this.qtyAsrs = qtyAsrs;
+    }
 
-	public void setRadialWeight(String radialWeight) {
-		this.radialWeight = radialWeight;
-	}
+    public String getRadialWeight() {
+        return this.radialWeight;
+    }
 
-	public String getReferenceDocument() {
-		return this.referenceDocument;
-	}
+    public void setRadialWeight(String radialWeight) {
+        this.radialWeight = radialWeight;
+    }
 
-	public void setReferenceDocument(String referenceDocument) {
-		this.referenceDocument = referenceDocument;
-	}
+    public String getReferenceDocument() {
+        return this.referenceDocument;
+    }
 
-	public String getReferenceDocumentRevision() {
-		return this.referenceDocumentRevision;
-	}
+    public void setReferenceDocument(String referenceDocument) {
+        this.referenceDocument = referenceDocument;
+    }
 
-	public void setReferenceDocumentRevision(String referenceDocumentRevision) {
-		this.referenceDocumentRevision = referenceDocumentRevision;
-	}
+    public String getReferenceDocumentRevision() {
+        return this.referenceDocumentRevision;
+    }
 
-	public String getReliabilityMonitored() {
-		return this.reliabilityMonitored;
-	}
+    public void setReferenceDocumentRevision(String referenceDocumentRevision) {
+        this.referenceDocumentRevision = referenceDocumentRevision;
+    }
 
-	public void setReliabilityMonitored(String reliabilityMonitored) {
-		this.reliabilityMonitored = reliabilityMonitored;
-	}
+    public String getReliabilityMonitored() {
+        return this.reliabilityMonitored;
+    }
 
-	public String getRemovalInstallationAudit() {
-		return this.removalInstallationAudit;
-	}
+    public void setReliabilityMonitored(String reliabilityMonitored) {
+        this.reliabilityMonitored = reliabilityMonitored;
+    }
 
-	public void setRemovalInstallationAudit(String removalInstallationAudit) {
-		this.removalInstallationAudit = removalInstallationAudit;
-	}
+    public String getRemovalInstallationAudit() {
+        return this.removalInstallationAudit;
+    }
 
-	public BigDecimal getRepairOrderNotes() {
-		return this.repairOrderNotes;
-	}
+    public void setRemovalInstallationAudit(String removalInstallationAudit) {
+        this.removalInstallationAudit = removalInstallationAudit;
+    }
 
-	public void setRepairOrderNotes(BigDecimal repairOrderNotes) {
-		this.repairOrderNotes = repairOrderNotes;
-	}
+    public BigDecimal getRepairOrderNotes() {
+        return this.repairOrderNotes;
+    }
 
-	public BigDecimal getReplenishmentCostFactor() {
-		return this.replenishmentCostFactor;
-	}
+    public void setRepairOrderNotes(BigDecimal repairOrderNotes) {
+        this.repairOrderNotes = repairOrderNotes;
+    }
 
-	public void setReplenishmentCostFactor(BigDecimal replenishmentCostFactor) {
-		this.replenishmentCostFactor = replenishmentCostFactor;
-	}
+    public BigDecimal getReplenishmentCostFactor() {
+        return this.replenishmentCostFactor;
+    }
 
-	public String getRequireToolCalibrationNo() {
-		return this.requireToolCalibrationNo;
-	}
+    public void setReplenishmentCostFactor(BigDecimal replenishmentCostFactor) {
+        this.replenishmentCostFactor = replenishmentCostFactor;
+    }
 
-	public void setRequireToolCalibrationNo(String requireToolCalibrationNo) {
-		this.requireToolCalibrationNo = requireToolCalibrationNo;
-	}
+    public String getRequireToolCalibrationNo() {
+        return this.requireToolCalibrationNo;
+    }
 
-	public BigDecimal getRequisitionNotes() {
-		return this.requisitionNotes;
-	}
+    public void setRequireToolCalibrationNo(String requireToolCalibrationNo) {
+        this.requireToolCalibrationNo = requireToolCalibrationNo;
+    }
 
-	public void setRequisitionNotes(BigDecimal requisitionNotes) {
-		this.requisitionNotes = requisitionNotes;
-	}
+    public BigDecimal getRequisitionNotes() {
+        return this.requisitionNotes;
+    }
 
-	public String getRiFlag() {
-		return this.riFlag;
-	}
+    public void setRequisitionNotes(BigDecimal requisitionNotes) {
+        this.requisitionNotes = requisitionNotes;
+    }
 
-	public void setRiFlag(String riFlag) {
-		this.riFlag = riFlag;
-	}
+    public String getRiFlag() {
+        return this.riFlag;
+    }
 
-	public BigDecimal getRiNotes() {
-		return this.riNotes;
-	}
+    public void setRiFlag(String riFlag) {
+        this.riFlag = riFlag;
+    }
 
-	public void setRiNotes(BigDecimal riNotes) {
-		this.riNotes = riNotes;
-	}
+    public BigDecimal getRiNotes() {
+        return this.riNotes;
+    }
 
-	public String getRoGl() {
-		return this.roGl;
-	}
+    public void setRiNotes(BigDecimal riNotes) {
+        this.riNotes = riNotes;
+    }
 
-	public void setRoGl(String roGl) {
-		this.roGl = roGl;
-	}
+    public String getRoGl() {
+        return this.roGl;
+    }
 
-	public String getRoGl2() {
-		return this.roGl2;
-	}
+    public void setRoGl(String roGl) {
+        this.roGl = roGl;
+    }
 
-	public void setRoGl2(String roGl2) {
-		this.roGl2 = roGl2;
-	}
+    public String getRoGl2() {
+        return this.roGl2;
+    }
 
-	public String getRoGlCompany() {
-		return this.roGlCompany;
-	}
+    public void setRoGl2(String roGl2) {
+        this.roGl2 = roGl2;
+    }
 
-	public void setRoGlCompany(String roGlCompany) {
-		this.roGlCompany = roGlCompany;
-	}
+    public String getRoGlCompany() {
+        return this.roGlCompany;
+    }
 
-	public String getRoGlCompany2() {
-		return this.roGlCompany2;
-	}
+    public void setRoGlCompany(String roGlCompany) {
+        this.roGlCompany = roGlCompany;
+    }
 
-	public void setRoGlCompany2(String roGlCompany2) {
-		this.roGlCompany2 = roGlCompany2;
-	}
+    public String getRoGlCompany2() {
+        return this.roGlCompany2;
+    }
 
-	public String getRoGlCostCenter() {
-		return this.roGlCostCenter;
-	}
+    public void setRoGlCompany2(String roGlCompany2) {
+        this.roGlCompany2 = roGlCompany2;
+    }
 
-	public void setRoGlCostCenter(String roGlCostCenter) {
-		this.roGlCostCenter = roGlCostCenter;
-	}
+    public String getRoGlCostCenter() {
+        return this.roGlCostCenter;
+    }
 
-	public String getRoGlCostCenter2() {
-		return this.roGlCostCenter2;
-	}
+    public void setRoGlCostCenter(String roGlCostCenter) {
+        this.roGlCostCenter = roGlCostCenter;
+    }
 
-	public void setRoGlCostCenter2(String roGlCostCenter2) {
-		this.roGlCostCenter2 = roGlCostCenter2;
-	}
+    public String getRoGlCostCenter2() {
+        return this.roGlCostCenter2;
+    }
 
-	public String getRoGlExpenditure() {
-		return this.roGlExpenditure;
-	}
+    public void setRoGlCostCenter2(String roGlCostCenter2) {
+        this.roGlCostCenter2 = roGlCostCenter2;
+    }
 
-	public void setRoGlExpenditure(String roGlExpenditure) {
-		this.roGlExpenditure = roGlExpenditure;
-	}
+    public String getRoGlExpenditure() {
+        return this.roGlExpenditure;
+    }
 
-	public String getRoGlExpenditure2() {
-		return this.roGlExpenditure2;
-	}
+    public void setRoGlExpenditure(String roGlExpenditure) {
+        this.roGlExpenditure = roGlExpenditure;
+    }
 
-	public void setRoGlExpenditure2(String roGlExpenditure2) {
-		this.roGlExpenditure2 = roGlExpenditure2;
-	}
+    public String getRoGlExpenditure2() {
+        return this.roGlExpenditure2;
+    }
 
-	public String getRvsmCode() {
-		return this.rvsmCode;
-	}
+    public void setRoGlExpenditure2(String roGlExpenditure2) {
+        this.roGlExpenditure2 = roGlExpenditure2;
+    }
 
-	public void setRvsmCode(String rvsmCode) {
-		this.rvsmCode = rvsmCode;
-	}
+    public String getRvsmCode() {
+        return this.rvsmCode;
+    }
 
-	public String getRvsmFlag() {
-		return this.rvsmFlag;
-	}
+    public void setRvsmCode(String rvsmCode) {
+        this.rvsmCode = rvsmCode;
+    }
 
-	public void setRvsmFlag(String rvsmFlag) {
-		this.rvsmFlag = rvsmFlag;
-	}
+    public String getRvsmFlag() {
+        return this.rvsmFlag;
+    }
 
-	public BigDecimal getSecondaryCost() {
-		return this.secondaryCost;
-	}
+    public void setRvsmFlag(String rvsmFlag) {
+        this.rvsmFlag = rvsmFlag;
+    }
 
-	public void setSecondaryCost(BigDecimal secondaryCost) {
-		this.secondaryCost = secondaryCost;
-	}
+    public BigDecimal getSecondaryCost() {
+        return this.secondaryCost;
+    }
 
-	public BigDecimal getSection() {
-		return this.section;
-	}
+    public void setSecondaryCost(BigDecimal secondaryCost) {
+        this.secondaryCost = secondaryCost;
+    }
 
-	public void setSection(BigDecimal section) {
-		this.section = section;
-	}
+    public BigDecimal getSection() {
+        return this.section;
+    }
 
-	public BigDecimal getShelfLifeDays() {
-		return this.shelfLifeDays;
-	}
+    public void setSection(BigDecimal section) {
+        this.section = section;
+    }
 
-	public void setShelfLifeDays(BigDecimal shelfLifeDays) {
-		this.shelfLifeDays = shelfLifeDays;
-	}
+    public BigDecimal getShelfLifeDays() {
+        return this.shelfLifeDays;
+    }
 
-	public String getShelfLifeEom() {
-		return this.shelfLifeEom;
-	}
+    public void setShelfLifeDays(BigDecimal shelfLifeDays) {
+        this.shelfLifeDays = shelfLifeDays;
+    }
 
-	public void setShelfLifeEom(String shelfLifeEom) {
-		this.shelfLifeEom = shelfLifeEom;
-	}
+    public String getShelfLifeEom() {
+        return this.shelfLifeEom;
+    }
 
-	public String getShelfLifeFlag() {
-		return this.shelfLifeFlag;
-	}
+    public void setShelfLifeEom(String shelfLifeEom) {
+        this.shelfLifeEom = shelfLifeEom;
+    }
 
-	public void setShelfLifeFlag(String shelfLifeFlag) {
-		this.shelfLifeFlag = shelfLifeFlag;
-	}
+    public String getShelfLifeFlag() {
+        return this.shelfLifeFlag;
+    }
 
-	public BigDecimal getShelfLifeNotes() {
-		return this.shelfLifeNotes;
-	}
+    public void setShelfLifeFlag(String shelfLifeFlag) {
+        this.shelfLifeFlag = shelfLifeFlag;
+    }
 
-	public void setShelfLifeNotes(BigDecimal shelfLifeNotes) {
-		this.shelfLifeNotes = shelfLifeNotes;
-	}
+    public BigDecimal getShelfLifeNotes() {
+        return this.shelfLifeNotes;
+    }
 
-	public BigDecimal getShippingNotes() {
-		return this.shippingNotes;
-	}
+    public void setShelfLifeNotes(BigDecimal shelfLifeNotes) {
+        this.shelfLifeNotes = shelfLifeNotes;
+    }
 
-	public void setShippingNotes(BigDecimal shippingNotes) {
-		this.shippingNotes = shippingNotes;
-	}
+    public BigDecimal getShippingNotes() {
+        return this.shippingNotes;
+    }
 
-	public String getShockWatch() {
-		return this.shockWatch;
-	}
+    public void setShippingNotes(BigDecimal shippingNotes) {
+        this.shippingNotes = shippingNotes;
+    }
 
-	public void setShockWatch(String shockWatch) {
-		this.shockWatch = shockWatch;
-	}
+    public String getShockWatch() {
+        return this.shockWatch;
+    }
 
-	public String getSoftware() {
-		return this.software;
-	}
+    public void setShockWatch(String shockWatch) {
+        this.shockWatch = shockWatch;
+    }
 
-	public void setSoftware(String software) {
-		this.software = software;
-	}
+    public String getSoftware() {
+        return this.software;
+    }
 
-	public String getSosEligiblePart() {
-		return this.sosEligiblePart;
-	}
+    public void setSoftware(String software) {
+        this.software = software;
+    }
 
-	public void setSosEligiblePart(String sosEligiblePart) {
-		this.sosEligiblePart = sosEligiblePart;
-	}
+    public String getSosEligiblePart() {
+        return this.sosEligiblePart;
+    }
 
-	public String getSpecNumber() {
-		return this.specNumber;
-	}
+    public void setSosEligiblePart(String sosEligiblePart) {
+        this.sosEligiblePart = sosEligiblePart;
+    }
 
-	public void setSpecNumber(String specNumber) {
-		this.specNumber = specNumber;
-	}
+    public String getSpecNumber() {
+        return this.specNumber;
+    }
 
-	public BigDecimal getStandardCost() {
-		return this.standardCost;
-	}
+    public void setSpecNumber(String specNumber) {
+        this.specNumber = specNumber;
+    }
 
-	public void setStandardCost(BigDecimal standardCost) {
-		this.standardCost = standardCost;
-	}
+    public BigDecimal getStandardCost() {
+        return this.standardCost;
+    }
 
-	public String getStaticSensitivePart() {
-		return this.staticSensitivePart;
-	}
+    public void setStandardCost(BigDecimal standardCost) {
+        this.standardCost = standardCost;
+    }
 
-	public void setStaticSensitivePart(String staticSensitivePart) {
-		this.staticSensitivePart = staticSensitivePart;
-	}
+    public String getStaticSensitivePart() {
+        return this.staticSensitivePart;
+    }
 
-	public String getStatus() {
-		return this.status;
-	}
+    public void setStaticSensitivePart(String staticSensitivePart) {
+        this.staticSensitivePart = staticSensitivePart;
+    }
 
-	public void setStatus(String status) {
-		this.status = status;
-	}
+    public String getStatus() {
+        return this.status;
+    }
 
-	public String getStockUom() {
-		return this.stockUom;
-	}
+    public void setStatus(String status) {
+        this.status = status;
+    }
 
-	public void setStockUom(String stockUom) {
-		this.stockUom = stockUom;
-	}
+    public String getStockUom() {
+        return this.stockUom;
+    }
 
-	public String getStoreException() {
-		return this.storeException;
-	}
+    public void setStockUom(String stockUom) {
+        this.stockUom = stockUom;
+    }
 
-	public void setStoreException(String storeException) {
-		this.storeException = storeException;
-	}
+    public String getStoreException() {
+        return this.storeException;
+    }
 
-	public String getStoreExceptionShc1() {
-		return this.storeExceptionShc1;
-	}
+    public void setStoreException(String storeException) {
+        this.storeException = storeException;
+    }
 
-	public void setStoreExceptionShc1(String storeExceptionShc1) {
-		this.storeExceptionShc1 = storeExceptionShc1;
-	}
+    public String getStoreExceptionShc1() {
+        return this.storeExceptionShc1;
+    }
 
-	public String getStoreExceptionShc2() {
-		return this.storeExceptionShc2;
-	}
+    public void setStoreExceptionShc1(String storeExceptionShc1) {
+        this.storeExceptionShc1 = storeExceptionShc1;
+    }
 
-	public void setStoreExceptionShc2(String storeExceptionShc2) {
-		this.storeExceptionShc2 = storeExceptionShc2;
-	}
+    public String getStoreExceptionShc2() {
+        return this.storeExceptionShc2;
+    }
 
-	public String getStoreExceptionShcId() {
-		return this.storeExceptionShcId;
-	}
+    public void setStoreExceptionShc2(String storeExceptionShc2) {
+        this.storeExceptionShc2 = storeExceptionShc2;
+    }
 
-	public void setStoreExceptionShcId(String storeExceptionShcId) {
-		this.storeExceptionShcId = storeExceptionShcId;
-	}
+    public String getStoreExceptionShcId() {
+        return this.storeExceptionShcId;
+    }
 
-	public String getSubCategory() {
-		return this.subCategory;
-	}
+    public void setStoreExceptionShcId(String storeExceptionShcId) {
+        this.storeExceptionShcId = storeExceptionShcId;
+    }
 
-	public void setSubCategory(String subCategory) {
-		this.subCategory = subCategory;
-	}
+    public String getSubCategory() {
+        return this.subCategory;
+    }
 
-	public String getTPed() {
-		return this.tPed;
-	}
+    public void setSubCategory(String subCategory) {
+        this.subCategory = subCategory;
+    }
 
-	public void setTPed(String tPed) {
-		this.tPed = tPed;
-	}
+    public String getTPed() {
+        return this.tPed;
+    }
 
-	public String getTangentialWeight() {
-		return this.tangentialWeight;
-	}
+    public void setTPed(String tPed) {
+        this.tPed = tPed;
+    }
 
-	public void setTangentialWeight(String tangentialWeight) {
-		this.tangentialWeight = tangentialWeight;
-	}
+    public String getTangentialWeight() {
+        return this.tangentialWeight;
+    }
 
-	public String getTaxable() {
-		return this.taxable;
-	}
+    public void setTangentialWeight(String tangentialWeight) {
+        this.tangentialWeight = tangentialWeight;
+    }
 
-	public void setTaxable(String taxable) {
-		this.taxable = taxable;
-	}
+    public String getTaxable() {
+        return this.taxable;
+    }
 
-	public String getToolCalibrationDescription() {
-		return this.toolCalibrationDescription;
-	}
+    public void setTaxable(String taxable) {
+        this.taxable = taxable;
+    }
 
-	public void setToolCalibrationDescription(String toolCalibrationDescription) {
-		this.toolCalibrationDescription = toolCalibrationDescription;
-	}
+    public String getToolCalibrationDescription() {
+        return this.toolCalibrationDescription;
+    }
 
-	public String getToolCalibrationFlag() {
-		return this.toolCalibrationFlag;
-	}
+    public void setToolCalibrationDescription(String toolCalibrationDescription) {
+        this.toolCalibrationDescription = toolCalibrationDescription;
+    }
 
-	public void setToolCalibrationFlag(String toolCalibrationFlag) {
-		this.toolCalibrationFlag = toolCalibrationFlag;
-	}
+    public String getToolCalibrationFlag() {
+        return this.toolCalibrationFlag;
+    }
 
-	public String getToolControlItem() {
-		return this.toolControlItem;
-	}
+    public void setToolCalibrationFlag(String toolCalibrationFlag) {
+        this.toolCalibrationFlag = toolCalibrationFlag;
+    }
 
-	public void setToolControlItem(String toolControlItem) {
-		this.toolControlItem = toolControlItem;
-	}
+    public String getToolControlItem() {
+        return this.toolControlItem;
+    }
 
-	public BigDecimal getToolLifeDays() {
-		return this.toolLifeDays;
-	}
+    public void setToolControlItem(String toolControlItem) {
+        this.toolControlItem = toolControlItem;
+    }
 
-	public void setToolLifeDays(BigDecimal toolLifeDays) {
-		this.toolLifeDays = toolLifeDays;
-	}
+    public BigDecimal getToolLifeDays() {
+        return this.toolLifeDays;
+    }
 
-	public String getToolLifeEom() {
-		return this.toolLifeEom;
-	}
+    public void setToolLifeDays(BigDecimal toolLifeDays) {
+        this.toolLifeDays = toolLifeDays;
+    }
 
-	public void setToolLifeEom(String toolLifeEom) {
-		this.toolLifeEom = toolLifeEom;
-	}
+    public String getToolLifeEom() {
+        return this.toolLifeEom;
+    }
 
-	public BigDecimal getTransactionDocumentNo() {
-		return this.transactionDocumentNo;
-	}
+    public void setToolLifeEom(String toolLifeEom) {
+        this.toolLifeEom = toolLifeEom;
+    }
 
-	public void setTransactionDocumentNo(BigDecimal transactionDocumentNo) {
-		this.transactionDocumentNo = transactionDocumentNo;
-	}
+    public BigDecimal getTransactionDocumentNo() {
+        return this.transactionDocumentNo;
+    }
 
-	public Date getTraxdocCreatedDate() {
-		return this.traxdocCreatedDate;
-	}
+    public void setTransactionDocumentNo(BigDecimal transactionDocumentNo) {
+        this.transactionDocumentNo = transactionDocumentNo;
+    }
 
-	public void setTraxdocCreatedDate(Date traxdocCreatedDate) {
-		this.traxdocCreatedDate = traxdocCreatedDate;
-	}
+    public Date getTraxdocCreatedDate() {
+        return this.traxdocCreatedDate;
+    }
 
-	public String getTraxdocFileNamePath() {
-		return this.traxdocFileNamePath;
-	}
+    public void setTraxdocCreatedDate(Date traxdocCreatedDate) {
+        this.traxdocCreatedDate = traxdocCreatedDate;
+    }
 
-	public void setTraxdocFileNamePath(String traxdocFileNamePath) {
-		this.traxdocFileNamePath = traxdocFileNamePath;
-	}
+    public String getTraxdocFileNamePath() {
+        return this.traxdocFileNamePath;
+    }
 
-	public BigDecimal getTraxdocRowId() {
-		return this.traxdocRowId;
-	}
+    public void setTraxdocFileNamePath(String traxdocFileNamePath) {
+        this.traxdocFileNamePath = traxdocFileNamePath;
+    }
 
-	public void setTraxdocRowId(BigDecimal traxdocRowId) {
-		this.traxdocRowId = traxdocRowId;
-	}
+    public BigDecimal getTraxdocRowId() {
+        return this.traxdocRowId;
+    }
 
-	public BigDecimal getTraxdocRowIdFather() {
-		return this.traxdocRowIdFather;
-	}
+    public void setTraxdocRowId(BigDecimal traxdocRowId) {
+        this.traxdocRowId = traxdocRowId;
+    }
 
-	public void setTraxdocRowIdFather(BigDecimal traxdocRowIdFather) {
-		this.traxdocRowIdFather = traxdocRowIdFather;
-	}
+    public BigDecimal getTraxdocRowIdFather() {
+        return this.traxdocRowIdFather;
+    }
 
-	public String getTrayType() {
-		return this.trayType;
-	}
+    public void setTraxdocRowIdFather(BigDecimal traxdocRowIdFather) {
+        this.traxdocRowIdFather = traxdocRowIdFather;
+    }
 
-	public void setTrayType(String trayType) {
-		this.trayType = trayType;
-	}
+    public String getTrayType() {
+        return this.trayType;
+    }
 
-	public String getTurn() {
-		return this.turn;
-	}
+    public void setTrayType(String trayType) {
+        this.trayType = trayType;
+    }
 
-	public void setTurn(String turn) {
-		this.turn = turn;
-	}
+    public String getTurn() {
+        return this.turn;
+    }
 
-	public String getUnlimitedShelfLifeFlag() {
-		return this.unlimitedShelfLifeFlag;
-	}
+    public void setTurn(String turn) {
+        this.turn = turn;
+    }
 
-	public void setUnlimitedShelfLifeFlag(String unlimitedShelfLifeFlag) {
-		this.unlimitedShelfLifeFlag = unlimitedShelfLifeFlag;
-	}
+    public String getUnlimitedShelfLifeFlag() {
+        return this.unlimitedShelfLifeFlag;
+    }
 
-	public String getVendor() {
-		return this.vendor;
-	}
+    public void setUnlimitedShelfLifeFlag(String unlimitedShelfLifeFlag) {
+        this.unlimitedShelfLifeFlag = unlimitedShelfLifeFlag;
+    }
 
-	public void setVendor(String vendor) {
-		this.vendor = vendor;
-	}
+    public String getVendor() {
+        return this.vendor;
+    }
 
-	public BigDecimal getWeight() {
-		return this.weight;
-	}
+    public void setVendor(String vendor) {
+        this.vendor = vendor;
+    }
 
-	public void setWeight(BigDecimal weight) {
-		this.weight = weight;
-	}
+    public BigDecimal getWeight() {
+        return this.weight;
+    }
 
-	public String getWeightControlAtBatchLevel() {
-		return this.weightControlAtBatchLevel;
-	}
+    public void setWeight(BigDecimal weight) {
+        this.weight = weight;
+    }
 
-	public void setWeightControlAtBatchLevel(String weightControlAtBatchLevel) {
-		this.weightControlAtBatchLevel = weightControlAtBatchLevel;
-	}
+    public String getWeightControlAtBatchLevel() {
+        return this.weightControlAtBatchLevel;
+    }
 
-	public String getWeightUnit() {
-		return this.weightUnit;
-	}
+    public void setWeightControlAtBatchLevel(String weightControlAtBatchLevel) {
+        this.weightControlAtBatchLevel = weightControlAtBatchLevel;
+    }
 
-	public void setWeightUnit(String weightUnit) {
-		this.weightUnit = weightUnit;
-	}
+    public String getWeightUnit() {
+        return this.weightUnit;
+    }
 
-	public BigDecimal getWidth() {
-		return this.width;
-	}
+    public void setWeightUnit(String weightUnit) {
+        this.weightUnit = weightUnit;
+    }
 
-	public void setWidth(BigDecimal width) {
-		this.width = width;
-	}
+    public BigDecimal getWidth() {
+        return this.width;
+    }
 
-	public String getWidthUnits() {
-		return this.widthUnits;
-	}
+    public void setWidth(BigDecimal width) {
+        this.width = width;
+    }
 
-	public void setWidthUnits(String widthUnits) {
-		this.widthUnits = widthUnits;
-	}
+    public String getWidthUnits() {
+        return this.widthUnits;
+    }
 
-	public Date getInterfaceTransferredDate() {
-		return interfaceTransferredDate;
-	}
+    public void setWidthUnits(String widthUnits) {
+        this.widthUnits = widthUnits;
+    }
 
-	public void setInterfaceTransferredDate(Date interfaceTransferredDate) {
-		this.interfaceTransferredDate = interfaceTransferredDate;
-	}
+    public Date getInterfaceTransferredDate() {
+        return interfaceTransferredDate;
+    }
+
+    public void setInterfaceTransferredDate(Date interfaceTransferredDate) {
+        this.interfaceTransferredDate = interfaceTransferredDate;
+    }
 
 }
