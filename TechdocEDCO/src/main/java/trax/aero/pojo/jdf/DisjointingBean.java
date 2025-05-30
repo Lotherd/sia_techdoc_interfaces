@@ -16,32 +16,34 @@ import java.util.List;
 import javax.xml.bind.annotation.XmlElement;
 
 
-
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import javax.xml.bind.annotation.*;
+
 import com.fasterxml.jackson.annotation.*;
 
 
-
-
 public class DisjointingBean {
-    String offsetDirection="";
+    String offsetDirection = "";
     String textContent;
-  public void setOffsetDirection(String offsetDirection) { 
-		this.offsetDirection=offsetDirection;
-	} 
+
     @XmlAttribute(name = "OffsetDirection")
-    public String getOffsetDirection() { 
-		return offsetDirection;
-	} 
-  public void setTextContent(String textContent) { 
-		this.textContent=textContent;
-	} 
+    public String getOffsetDirection() {
+        return offsetDirection;
+    }
+
+    public void setOffsetDirection(String offsetDirection) {
+        this.offsetDirection = offsetDirection;
+    }
+
     @XmlAttribute(name = "TextContent")
-    public String getTextContent() { 
-		return textContent;
-	} 
+    public String getTextContent() {
+        return textContent;
+    }
+
+    public void setTextContent(String textContent) {
+        this.textContent = textContent;
+    }
 
 }

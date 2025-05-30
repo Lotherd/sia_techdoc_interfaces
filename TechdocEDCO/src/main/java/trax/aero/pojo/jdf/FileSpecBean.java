@@ -16,40 +16,44 @@ import java.util.List;
 import javax.xml.bind.annotation.XmlElement;
 
 
-
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import javax.xml.bind.annotation.*;
+
 import com.fasterxml.jackson.annotation.*;
 
 
-
-
 public class FileSpecBean {
-    String mimeType="";
-    String uRL="";
+    String mimeType = "";
+    String uRL = "";
     String textContent;
-  public void setMimeType(String mimeType) { 
-		this.mimeType=mimeType;
-	} 
+
     @XmlAttribute(name = "MimeType")
-    public String getMimeType() { 
-		return mimeType;
-	} 
-  public void setURL(String uRL) { 
-		this.uRL=uRL;
-	} 
+    public String getMimeType() {
+        return mimeType;
+    }
+
+    public void setMimeType(String mimeType) {
+        this.mimeType = mimeType;
+    }
+
     @XmlAttribute(name = "URL")
-    public String getURL() { 
-		return uRL;
-	} 
-  public void setTextContent(String textContent) { 
-		this.textContent=textContent;
-	} 
+    public String getURL() {
+        return uRL;
+    }
+
+    public void setURL(String uRL) {
+        this.uRL = uRL;
+    }
+
     @XmlAttribute(name = "TextContent")
-    public String getTextContent() { 
-		return textContent;
-	} 
+    public String getTextContent() {
+        return textContent;
+    }
+
+    public void setTextContent(String textContent) {
+        this.textContent = textContent;
+    }
 
 }

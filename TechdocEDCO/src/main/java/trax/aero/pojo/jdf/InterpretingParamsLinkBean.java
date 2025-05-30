@@ -16,40 +16,44 @@ import java.util.List;
 import javax.xml.bind.annotation.XmlElement;
 
 
-
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import javax.xml.bind.annotation.*;
+
 import com.fasterxml.jackson.annotation.*;
 
 
-
-
 public class InterpretingParamsLinkBean {
-    String usage="";
-    String rRef="";
+    String usage = "";
+    String rRef = "";
     String textContent;
-  public void setUsage(String usage) { 
-		this.usage=usage;
-	} 
+
     @XmlAttribute(name = "Usage")
-    public String getUsage() { 
-		return usage;
-	} 
-  public void setRRef(String rRef) { 
-		this.rRef=rRef;
-	} 
+    public String getUsage() {
+        return usage;
+    }
+
+    public void setUsage(String usage) {
+        this.usage = usage;
+    }
+
     @XmlAttribute(name = "rRef")
-    public String getRRef() { 
-		return rRef;
-	} 
-  public void setTextContent(String textContent) { 
-		this.textContent=textContent;
-	} 
+    public String getRRef() {
+        return rRef;
+    }
+
+    public void setRRef(String rRef) {
+        this.rRef = rRef;
+    }
+
     @XmlAttribute(name = "TextContent")
-    public String getTextContent() { 
-		return textContent;
-	} 
+    public String getTextContent() {
+        return textContent;
+    }
+
+    public void setTextContent(String textContent) {
+        this.textContent = textContent;
+    }
 
 }

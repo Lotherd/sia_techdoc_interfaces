@@ -16,56 +16,64 @@ import java.util.List;
 import javax.xml.bind.annotation.XmlElement;
 
 
-
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import javax.xml.bind.annotation.*;
+
 import com.fasterxml.jackson.annotation.*;
 
 
-
-
 public class ComponentBean {
-    String Class="";
-    String componentType="";
-    String iD="";
-    String status="";
+    String Class = "";
+    String componentType = "";
+    String iD = "";
+    String status = "";
     String textContent;
-  public void setClass(String Class) { 
-		this.Class=Class;
-	} 
+
+    public void setClass(String Class) {
+        this.Class = Class;
+    }
+
     @XmlAttribute(name = "Class")
-    public String getClasS() { 
-		return Class;
-	} 
-  public void setComponentType(String componentType) { 
-		this.componentType=componentType;
-	} 
+    public String getClasS() {
+        return Class;
+    }
+
     @XmlAttribute(name = "ComponentType")
-    public String getComponentType() { 
-		return componentType;
-	} 
-  public void setID(String iD) { 
-		this.iD=iD;
-	} 
+    public String getComponentType() {
+        return componentType;
+    }
+
+    public void setComponentType(String componentType) {
+        this.componentType = componentType;
+    }
+
     @XmlAttribute(name = "ID")
-    public String getID() { 
-		return iD;
-	} 
-  public void setStatus(String status) { 
-		this.status=status;
-	} 
+    public String getID() {
+        return iD;
+    }
+
+    public void setID(String iD) {
+        this.iD = iD;
+    }
+
     @XmlAttribute(name = "Status")
-    public String getStatus() { 
-		return status;
-	} 
-  public void setTextContent(String textContent) { 
-		this.textContent=textContent;
-	} 
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
     @XmlAttribute(name = "TextContent")
-    public String getTextContent() { 
-		return textContent;
-	} 
+    public String getTextContent() {
+        return textContent;
+    }
+
+    public void setTextContent(String textContent) {
+        this.textContent = textContent;
+    }
 
 }

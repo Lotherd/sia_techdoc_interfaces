@@ -16,33 +16,35 @@ import java.util.List;
 import javax.xml.bind.annotation.XmlElement;
 
 
-
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import javax.xml.bind.annotation.*;
+
 import com.fasterxml.jackson.annotation.*;
-
-
 
 
 public class PageCellBean {
     String textContent;
-    ImageShiftBean imageShiftBean ;
-  public void setTextContent(String textContent) { 
-		this.textContent=textContent;
-	} 
+    ImageShiftBean imageShiftBean;
+
     @XmlAttribute(name = "TextContent")
-    public String getTextContent() { 
-		return textContent;
-	} 
+    public String getTextContent() {
+        return textContent;
+    }
+
+    public void setTextContent(String textContent) {
+        this.textContent = textContent;
+    }
+
     @XmlElement(name = "ImageShift")
-    public ImageShiftBean getImageShiftBean() { 
-		if(imageShiftBean==null) imageShiftBean=new ImageShiftBean(); 
-		return imageShiftBean;
-	} 
-  public void setImageShiftBean( ImageShiftBean imageShiftBean ) { 
-		this.imageShiftBean=imageShiftBean;
-	} 
+    public ImageShiftBean getImageShiftBean() {
+        if (imageShiftBean == null) imageShiftBean = new ImageShiftBean();
+        return imageShiftBean;
+    }
+
+    public void setImageShiftBean(ImageShiftBean imageShiftBean) {
+        this.imageShiftBean = imageShiftBean;
+    }
 
 }

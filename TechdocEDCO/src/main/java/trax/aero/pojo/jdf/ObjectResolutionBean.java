@@ -16,32 +16,34 @@ import java.util.List;
 import javax.xml.bind.annotation.XmlElement;
 
 
-
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import javax.xml.bind.annotation.*;
+
 import com.fasterxml.jackson.annotation.*;
 
 
-
-
 public class ObjectResolutionBean {
-    String resolution="";
+    String resolution = "";
     String textContent;
-  public void setResolution(String resolution) { 
-		this.resolution=resolution;
-	} 
+
     @XmlAttribute(name = "Resolution")
-    public String getResolution() { 
-		return resolution;
-	} 
-  public void setTextContent(String textContent) { 
-		this.textContent=textContent;
-	} 
+    public String getResolution() {
+        return resolution;
+    }
+
+    public void setResolution(String resolution) {
+        this.resolution = resolution;
+    }
+
     @XmlAttribute(name = "TextContent")
-    public String getTextContent() { 
-		return textContent;
-	} 
+    public String getTextContent() {
+        return textContent;
+    }
+
+    public void setTextContent(String textContent) {
+        this.textContent = textContent;
+    }
 
 }

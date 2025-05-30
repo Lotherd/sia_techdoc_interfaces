@@ -16,32 +16,34 @@ import java.util.List;
 import javax.xml.bind.annotation.XmlElement;
 
 
-
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import javax.xml.bind.annotation.*;
+
 import com.fasterxml.jackson.annotation.*;
 
 
-
-
 public class ContactRefBean {
-    String rRef="";
+    String rRef = "";
     String textContent;
-  public void setRRef(String rRef) { 
-		this.rRef=rRef;
-	} 
+
     @XmlAttribute(name = "rRef")
-    public String getRRef() { 
-		return rRef;
-	} 
-  public void setTextContent(String textContent) { 
-		this.textContent=textContent;
-	} 
+    public String getRRef() {
+        return rRef;
+    }
+
+    public void setRRef(String rRef) {
+        this.rRef = rRef;
+    }
+
     @XmlAttribute(name = "TextContent")
-    public String getTextContent() { 
-		return textContent;
-	} 
+    public String getTextContent() {
+        return textContent;
+    }
+
+    public void setTextContent(String textContent) {
+        this.textContent = textContent;
+    }
 
 }

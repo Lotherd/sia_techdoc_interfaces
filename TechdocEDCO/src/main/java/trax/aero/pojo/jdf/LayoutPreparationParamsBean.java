@@ -16,40 +16,44 @@ import java.util.List;
 import javax.xml.bind.annotation.XmlElement;
 
 
-
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import javax.xml.bind.annotation.*;
+
 import com.fasterxml.jackson.annotation.*;
 
 
-
-
 public class LayoutPreparationParamsBean {
-    String runIndex="";
-    String sides="";
+    String runIndex = "";
+    String sides = "";
     String textContent;
-  public void setRunIndex(String runIndex) { 
-		this.runIndex=runIndex;
-	} 
+
     @XmlAttribute(name = "RunIndex")
-    public String getRunIndex() { 
-		return runIndex;
-	} 
-  public void setSides(String sides) { 
-		this.sides=sides;
-	} 
+    public String getRunIndex() {
+        return runIndex;
+    }
+
+    public void setRunIndex(String runIndex) {
+        this.runIndex = runIndex;
+    }
+
     @XmlAttribute(name = "Sides")
-    public String getSides() { 
-		return sides;
-	} 
-  public void setTextContent(String textContent) { 
-		this.textContent=textContent;
-	} 
+    public String getSides() {
+        return sides;
+    }
+
+    public void setSides(String sides) {
+        this.sides = sides;
+    }
+
     @XmlAttribute(name = "TextContent")
-    public String getTextContent() { 
-		return textContent;
-	} 
+    public String getTextContent() {
+        return textContent;
+    }
+
+    public void setTextContent(String textContent) {
+        this.textContent = textContent;
+    }
 
 }

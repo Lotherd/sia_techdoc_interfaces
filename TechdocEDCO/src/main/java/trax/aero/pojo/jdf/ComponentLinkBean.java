@@ -16,64 +16,74 @@ import java.util.List;
 import javax.xml.bind.annotation.XmlElement;
 
 
-
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import javax.xml.bind.annotation.*;
+
 import com.fasterxml.jackson.annotation.*;
 
 
-
-
 public class ComponentLinkBean {
-    String combinedProcessIndex="";
-    String amount="";
-    String orientation="";
-    String usage="";
-    String rRef="";
+    String combinedProcessIndex = "";
+    String amount = "";
+    String orientation = "";
+    String usage = "";
+    String rRef = "";
     String textContent;
-  public void setCombinedProcessIndex(String combinedProcessIndex) { 
-		this.combinedProcessIndex=combinedProcessIndex;
-	} 
+
     @XmlAttribute(name = "CombinedProcessIndex")
-    public String getCombinedProcessIndex() { 
-		return combinedProcessIndex;
-	} 
-  public void setOrientation(String orientation) { 
-		this.orientation=orientation;
-	} 
+    public String getCombinedProcessIndex() {
+        return combinedProcessIndex;
+    }
+
+    public void setCombinedProcessIndex(String combinedProcessIndex) {
+        this.combinedProcessIndex = combinedProcessIndex;
+    }
+
     @XmlAttribute(name = "Orientation")
-    public String getOrientation() { 
-		return orientation;
-	} 
-  public void setUsage(String usage) { 
-		this.usage=usage;
-	} 
+    public String getOrientation() {
+        return orientation;
+    }
+
+    public void setOrientation(String orientation) {
+        this.orientation = orientation;
+    }
+
     @XmlAttribute(name = "Usage")
-    public String getUsage() { 
-		return usage;
-	} 
-  public void setRRef(String rRef) { 
-		this.rRef=rRef;
-	} 
+    public String getUsage() {
+        return usage;
+    }
+
+    public void setUsage(String usage) {
+        this.usage = usage;
+    }
+
     @XmlAttribute(name = "rRef")
-    public String getRRef() { 
-		return rRef;
-	} 
-  public void setTextContent(String textContent) { 
-		this.textContent=textContent;
-	} 
+    public String getRRef() {
+        return rRef;
+    }
+
+    public void setRRef(String rRef) {
+        this.rRef = rRef;
+    }
+
     @XmlAttribute(name = "TextContent")
-    public String getTextContent() { 
-		return textContent;
-	}
+    public String getTextContent() {
+        return textContent;
+    }
+
+    public void setTextContent(String textContent) {
+        this.textContent = textContent;
+    }
+
     @XmlAttribute(name = "Amount")
-	public String getAmount() {
-		return amount;
-	}
-	public void setAmount(String amount) {
-		this.amount = amount;
-	} 
+    public String getAmount() {
+        return amount;
+    }
+
+    public void setAmount(String amount) {
+        this.amount = amount;
+    }
 
 }

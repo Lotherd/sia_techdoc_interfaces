@@ -16,57 +16,65 @@ import java.util.List;
 import javax.xml.bind.annotation.XmlElement;
 
 
-
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import javax.xml.bind.annotation.*;
+
 import com.fasterxml.jackson.annotation.*;
 
 
-
-
 public class RenderingParamsBean {
-    String Class="";
-    String iD="";
-    String status="";
+    String Class = "";
+    String iD = "";
+    String status = "";
     String textContent;
-    ObjectResolutionBean objectResolutionBean ;
-  public void setClass(String Class) { 
-		this.Class=Class;
-	} 
+    ObjectResolutionBean objectResolutionBean;
+
+    public void setClass(String Class) {
+        this.Class = Class;
+    }
+
     @XmlAttribute(name = "Class")
-    public String getClasS() { 
-		return Class;
-	} 
-  public void setID(String iD) { 
-		this.iD=iD;
-	} 
+    public String getClasS() {
+        return Class;
+    }
+
     @XmlAttribute(name = "ID")
-    public String getID() { 
-		return iD;
-	} 
-  public void setStatus(String status) { 
-		this.status=status;
-	} 
+    public String getID() {
+        return iD;
+    }
+
+    public void setID(String iD) {
+        this.iD = iD;
+    }
+
     @XmlAttribute(name = "Status")
-    public String getStatus() { 
-		return status;
-	} 
-  public void setTextContent(String textContent) { 
-		this.textContent=textContent;
-	} 
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
     @XmlAttribute(name = "TextContent")
-    public String getTextContent() { 
-		return textContent;
-	} 
+    public String getTextContent() {
+        return textContent;
+    }
+
+    public void setTextContent(String textContent) {
+        this.textContent = textContent;
+    }
+
     @XmlElement(name = "ObjectResolution")
-    public ObjectResolutionBean getObjectResolutionBean() { 
-		if(objectResolutionBean==null) objectResolutionBean=new ObjectResolutionBean(); 
-		return objectResolutionBean;
-	} 
-  public void setObjectResolutionBean( ObjectResolutionBean objectResolutionBean ) { 
-		this.objectResolutionBean=objectResolutionBean;
-	} 
+    public ObjectResolutionBean getObjectResolutionBean() {
+        if (objectResolutionBean == null) objectResolutionBean = new ObjectResolutionBean();
+        return objectResolutionBean;
+    }
+
+    public void setObjectResolutionBean(ObjectResolutionBean objectResolutionBean) {
+        this.objectResolutionBean = objectResolutionBean;
+    }
 
 }
