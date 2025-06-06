@@ -125,8 +125,6 @@ public class MqUtilities {
             queueSender = queueSession.createSender(queueSession.createQueue(QUEUE_NAME_SENDER));
             queueSender.send(textMessage);
 
-            /*After sending a message we get message id */
-            Logger.info("after sending a message we get message id " + textMessage.getJMSMessageID());
             return true;
         } catch (JMSException e) {
             Logger.error(e);

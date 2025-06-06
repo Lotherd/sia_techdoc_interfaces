@@ -348,12 +348,16 @@ public class ModelData implements IModelData {
 
                 PrinterUtilities.sendPrint(printer, print.getPath(), side, tray);
             }
+            sendPrintStatusAcknowledgement(input, "P", "SUCCESSFULLY PRINTED");
             if (ack != null && !ack.isEmpty()) {
                 throw new Exception("Missing Attachment found");
             }
-            sendPrintStatusAcknowledgement(input, "P", "SUCCESSFULLY PRINTED");
+           
         } catch (Exception e) {
-            sendPrintStatusAcknowledgement(input, "E", "ERROR " + e.getMessage());
+        	Logger.error(e);
+        	if(!"Missing Attachment found".contains(e.getMessage())) {
+            	sendPrintStatusAcknowledgement(input, "E", "ERROR " + e.getMessage());
+            }
             date = filterADDATTR(input.getEFFECTIVITY().getJOBCARD().getJOBI().getPLI().getADDATTR(), "IDOC-DATE");
             revision = input.getEFFECTIVITY().getJOBCARD().getWPNBR();
             time = filterADDATTR(input.getEFFECTIVITY().getJOBCARD().getJOBI().getPLI().getADDATTR(), "IDOC-TIME");
@@ -384,7 +388,7 @@ public class ModelData implements IModelData {
             }
 
 
-            Logger.error(e);
+            
         } finally {
             // deletes wo and wo task card
             if (System.getProperty("Techdoc_DELETE") != null
@@ -568,7 +572,6 @@ public class ModelData implements IModelData {
     @SuppressWarnings("unchecked")
     public void processBatFile() {
         try {
-            Logger.info(" processBatFile  Start ");
             List<InterfaceAudit> interfaceAudits = em.createQuery("SELECT p FROM InterfaceAudit p WHERE p.transactionObject = :obj "
                             + "and p.messageNeedsToBeSent = :tas ")
                     .setParameter("obj", "SAP_TC")
@@ -603,8 +606,6 @@ public class ModelData implements IModelData {
             }
         } catch (Exception e) {
             Logger.error(e);
-        } finally {
-            Logger.info(" processBatFile  End ");
         }
     }
 
