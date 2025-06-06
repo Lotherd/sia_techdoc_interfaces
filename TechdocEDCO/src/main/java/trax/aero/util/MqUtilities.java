@@ -1,39 +1,28 @@
 package trax.aero.util;
 
-import java.io.FileInputStream;
-import java.security.KeyStore;
-
-import javax.jms.DeliveryMode;
-import javax.jms.JMSException;
-import javax.jms.Message;
-import javax.jms.Queue;
-import javax.jms.QueueConnection;
-import javax.jms.QueueReceiver;
-import javax.jms.QueueSender;
-import javax.jms.QueueSession;
-import javax.jms.Session;
-import javax.jms.TextMessage;
-import javax.net.ssl.KeyManagerFactory;
-import javax.net.ssl.SSLContext;
-import javax.net.ssl.SSLSocketFactory;
-import javax.net.ssl.TrustManagerFactory;
-
-import org.apache.commons.lang3.exception.ExceptionUtils;
-import org.tinylog.Logger;
-
 import com.ibm.mq.jms.MQQueueConnectionFactory;
 import com.ibm.msg.client.wmq.WMQConstants;
 import com.ibm.msg.client.wmq.compat.jms.internal.JMSC;
-
+import org.apache.commons.lang3.exception.ExceptionUtils;
+import org.jboss.logging.Logger;
 import trax.aero.controller.ModelController;
+
+import javax.jms.*;
+import javax.net.ssl.KeyManagerFactory;
+import javax.net.ssl.SSLContext;
+import javax.net.ssl.SSLSocketFactory;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.security.KeyStore;
 
 public class MqUtilities {
 
+    private static final Logger logger = Logger.getLogger(MqUtilities.class);
     private static final String HOST = System.getProperty("Techdoc_host"); // Host name or IP address
-    private static final int PORT = Integer.valueOf(System.getProperty("Techdoc_port")).intValue(); // Listener port for your queue manager
+    private static final int PORT = Integer.parseInt(System.getProperty("Techdoc_port")); // Listener port for your queue manager
     private static final String CHANNEL = System.getProperty("Techdoc_channel"); // Channel name
     private static final String QMGR = System.getProperty("Techdoc_qmgr"); // Queue manager name
-    private static final String APP_USER = System.getProperty("Techdoc_user"); // User name that application uses to connect to MQ
+    private static final String APP_USER = System.getProperty("Techdoc_user"); // Username that application uses to connect to MQ
     private static final String APP_PASSWORD = System.getProperty("Techdoc_password"); // Password that the application uses to connect to MQ
     private static final String QUEUE_NAME_SENDER = System.getProperty("Techdoc_send"); // Queue that the application uses to put and get messages to and from
     private static final String QUEUE_NAME_RECEIVE = System.getProperty("Techdoc_receive"); // Queue that the application uses to put and get messages to and from
@@ -71,7 +60,7 @@ public class MqUtilities {
 
         KeyStore ks = KeyStore.getInstance("JKS");
 
-        ks.load(new FileInputStream(JKS_LOCATION), KSPW);
+        ks.load(Files.newInputStream(Paths.get(JKS_LOCATION)), KSPW);
         // Logger.info("Number of keys on JKS: "  + Integer.toString(ks.size()));
 
         KeyManagerFactory keyManagerFactory = KeyManagerFactory.getInstance(KeyManagerFactory.getDefaultAlgorithm());
@@ -92,9 +81,8 @@ public class MqUtilities {
         sslContext.init(keyManagerFactory.getKeyManagers(), null, null);
 
         // Get an SSLSocketFactory to pass to WMQ
-        SSLSocketFactory sslSocketFactory = sslContext.getSocketFactory();
 
-        return sslSocketFactory;
+        return sslContext.getSocketFactory();
     }
 
 
@@ -126,10 +114,8 @@ public class MqUtilities {
             queueSender.send(textMessage);
 
             return true;
-        } catch (JMSException e) {
-            Logger.error(e);
         } catch (Exception e) {
-            Logger.error(e);
+            logger.error("ERROR", e);
         } finally {
             queueSender.close();
             queueSession.close();
@@ -163,10 +149,9 @@ public class MqUtilities {
             /*Receive the message from*/
             Message message = queueReceiver.receive(60 * 1000);
             if (message != null) {
-                String responseMsg = ((TextMessage) message).getText();
                 //Logger.info("JMSCorrelationID: "+ message.getJMSCorrelationID() + " JMSMessageID: " + message.getJMSMessageID()  );
 
-                return responseMsg;
+                return ((TextMessage) message).getText();
             }
 
 
@@ -174,11 +159,15 @@ public class MqUtilities {
             if (sendEmail) {
                 ModelController.sendEmailMQ(ExceptionUtils.getStackTrace(e));
             }
-            Logger.error(e);
+            logger.error("ERROR", e);
         } finally {
-            queueReceiver.close();
-            queueSession.close();
-            queueConnection.close();
+        	try {
+	            queueReceiver.close();
+	            queueSession.close();
+	            queueConnection.close();
+        	}catch (Exception e) {
+				logger.error(e);
+			}
         }
         return null;
     }

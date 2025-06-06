@@ -1,17 +1,16 @@
 package trax.aero.util;
 
-import java.sql.Connection;
+import org.jboss.logging.Logger;
 
-import javax.lang.model.type.ErrorType;
 import javax.naming.Context;
 import javax.naming.InitialContext;
 import javax.sql.DataSource;
-
-import org.tinylog.Logger;
+import java.sql.Connection;
 
 
 public class DataSourceClient {
 
+    private static final Logger logger = Logger.getLogger(DataSourceClient.class);
 
     public static Connection getConnection() throws Exception {
         Connection connection;
@@ -27,7 +26,7 @@ public class DataSourceClient {
                 ds = (DataSource) ctx.lookup("TechdocDS");
             connection = ds.getConnection();
         } catch (Exception e) {
-            Logger.error("An error ocurred trying connect to the DataSource: TraxStandaloneDS");
+            logger.error("An error occurred trying connect to the DataSource: TraxStandaloneDS");
             throw new Exception("\nGetting error trying to connect to the datasource. " + "\n error: " + e.getMessage());
         }
         return connection;

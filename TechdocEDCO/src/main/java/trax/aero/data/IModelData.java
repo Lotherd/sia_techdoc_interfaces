@@ -1,22 +1,13 @@
-package trax.aero.interfaces;
+package trax.aero.data;
 
-import java.math.BigDecimal;
-import java.net.InetAddress;
-import java.net.UnknownHostException;
-import java.sql.Connection;
-import java.time.Duration;
-import java.time.LocalDateTime;
-import java.time.ZoneId;
-import java.util.Date;
-import java.util.List;
-
-import org.tinylog.Logger;
-
-import trax.aero.model.InterfaceLockMaster;
 import trax.aero.model.Wo;
 import trax.aero.pojo.Print;
 import trax.aero.pojo.xml.ADDATTR;
 import trax.aero.pojo.xml.MODEL;
+
+import java.math.BigDecimal;
+import java.sql.Connection;
+import java.util.List;
 
 public interface IModelData {
 

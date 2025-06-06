@@ -6,7 +6,7 @@ import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.pdmodel.PDPage;
 import org.apache.pdfbox.pdmodel.PDPageContentStream;
 import org.apache.pdfbox.pdmodel.font.PDType1Font;
-import org.tinylog.Logger;
+import org.jboss.logging.Logger;
 import software.amazon.awssdk.core.sync.RequestBody;
 import software.amazon.awssdk.services.s3.S3Client;
 import software.amazon.awssdk.services.s3.model.HeadObjectRequest;
@@ -29,6 +29,8 @@ import java.util.List;
 
 public class S3Utilities {
 
+    private static final Logger logger = Logger.getLogger(S3Utilities.class);
+
     private static final String bucketNameTrax = System.getProperty("Techdoc_Traxbucket");
 
     private static final String bucketNamePrint = System.getProperty("Techdoc_Printbucket");
@@ -49,14 +51,12 @@ public class S3Utilities {
 
     protected static void putS3Object(File file, String key, String bucketName) throws Exception {
 
-        S3Client s3 = null;
-        try {
+        try (S3Client s3 = S3Client.builder().build()) {
             //Path targetPath  = Paths.get(key+File.separator+file.getName());
             //if (Files.notExists(targetPath )) {
             //    Files.createDirectories(targetPath.getParent());
             //}
             //Files.move(file.toPath(), new File(key+File.separator+file.getName()).toPath(), StandardCopyOption.REPLACE_EXISTING);
-            s3 = S3Client.builder().build();
             if (file.getName().contains("index") || file.getName().contains("footer")) {
                 HeadObjectRequest headObjectRequest = HeadObjectRequest.builder()
                         .bucket(bucketName)
@@ -66,10 +66,10 @@ public class S3Utilities {
                 try {
                     @SuppressWarnings("unused")
                     HeadObjectResponse headObjectResponse = s3.headObject(headObjectRequest);
-                    Logger.info("File exists in the bucket: " + key + file.getName());
+                    logger.info("File exists in the bucket: " + key + file.getName());
                     return;
                 } catch (Exception e) {
-                    Logger.info("File does not exists in the bucket: " + key + file.getName());
+                    logger.info("File does not exists in the bucket: " + key + file.getName());
                 }
 
             }
@@ -81,13 +81,10 @@ public class S3Utilities {
                     .build();
             s3.putObject(request, RequestBody.fromFile(file));
 
-            Logger.info("Successfully placed " + key + file.getName() + " into bucket " + bucketName);
+            logger.info("Successfully placed " + key + file.getName() + " into bucket " + bucketName);
         } catch (Exception e) {
-            Logger.error(e);
+            logger.error("ERROR", e);
             throw e;
-        } finally {
-            if (s3 != null)
-                s3.close();
         }
     }
 
@@ -124,11 +121,11 @@ public class S3Utilities {
                 }
             }
 
-            json.setATTACHMENT(new ArrayList<ATTACHMENT>());
+            json.setATTACHMENT(new ArrayList<>());
             json.setFILENAME(pdfName);
 
         } catch (Exception e) {
-            Logger.error(e);
+            logger.error("ERROR", e);
             throw e;
         }
 
@@ -149,7 +146,7 @@ public class S3Utilities {
             if (!theDir.exists()) {
                 theDir.mkdirs();
             }
-            Logger.info("MOVE " + print.toPath() + " TO "
+            logger.info("MOVE " + print.toPath() + " TO "
                     + fileLocOut + File.separator + FilenameUtils.removeExtension(print.getName()) + File.separator + pdfName);
             Files.move(print.toPath(), new File(fileLocOut + File.separator + FilenameUtils.removeExtension(print.getName())
                     + File.separator + pdfName).toPath(), StandardCopyOption.REPLACE_EXISTING);
@@ -179,7 +176,7 @@ public class S3Utilities {
                 contentStreamHeader.setFont(PDType1Font.HELVETICA_BOLD, 9);
 
                 for (String linesheader : headerTxt) {
-                    Logger.info(linesheader);
+                    logger.info(linesheader);
                     contentStreamHeader.showText(linesheader);
                     contentStreamHeader.newLine();
 
@@ -204,7 +201,7 @@ public class S3Utilities {
                 contentStreamFooter.setFont(PDType1Font.HELVETICA_BOLD, 9);
 
                 for (String linesFooter : footerTxt) {
-                    Logger.info(linesFooter);
+                    logger.info(linesFooter);
 
                     contentStreamFooter.showText(linesFooter);
                     contentStreamFooter.newLine();
@@ -244,14 +241,14 @@ public class S3Utilities {
                         try {
                             Thread.sleep(1000); // Wait for 1 second
                         } catch (InterruptedException e) {
-                            Logger.error(e);
+                            logger.error("ERROR", e);
                         }
                     }
                     putS3Object(p, pathS3Trax + folder + File.separator, bucketNameTrax);
                 }
             }
         } catch (Exception e) {
-            Logger.error(e);
+            logger.error("ERROR", e);
             throw e;
         }
         return xml;
@@ -266,7 +263,7 @@ public class S3Utilities {
             if (!theDir.exists()) {
                 theDir.mkdirs();
             }
-            Logger.info("MOVE " + print.toPath() + " TO "
+            logger.info("MOVE " + print.toPath() + " TO "
                     + fileLocOut + File.separator + FilenameUtils.removeExtension(print.getName()) + File.separator + pdfName);
             Files.move(print.toPath(), new File(fileLocOut + File.separator + FilenameUtils.removeExtension(print.getName())
                     + File.separator + pdfName).toPath(), StandardCopyOption.REPLACE_EXISTING);
@@ -292,7 +289,7 @@ public class S3Utilities {
                 contentStreamHeader.setFont(PDType1Font.HELVETICA_BOLD, 9);
 
                 for (String linesheader : headerTxt) {
-                    Logger.info(linesheader);
+                    logger.info(linesheader);
                     contentStreamHeader.showText(linesheader);
                     contentStreamHeader.newLine();
 
@@ -318,7 +315,7 @@ public class S3Utilities {
                 contentStreamFooter.setFont(PDType1Font.HELVETICA_BOLD, 9);
 
                 for (String linesFooter : footerTxt) {
-                    Logger.info(linesFooter);
+                    logger.info(linesFooter);
 
                     contentStreamFooter.showText(linesFooter);
                     contentStreamFooter.newLine();
@@ -352,7 +349,7 @@ public class S3Utilities {
                         try {
                             Thread.sleep(1000); // Wait for 1 second
                         } catch (InterruptedException e) {
-                            Logger.error(e);
+                            logger.error("ERROR", e);
                         }
                     }
                     putS3Object(p, pathS3Print + folder + File.separator, bucketNamePrint);
@@ -360,7 +357,7 @@ public class S3Utilities {
             }
 
         } catch (Exception e) {
-            Logger.error(e);
+            logger.error("ERROR", e);
             throw e;
         }
     }

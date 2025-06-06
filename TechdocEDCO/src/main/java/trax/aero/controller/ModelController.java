@@ -4,7 +4,7 @@ import org.apache.commons.mail.Email;
 import org.apache.commons.mail.EmailAttachment;
 import org.apache.commons.mail.HtmlEmail;
 import org.apache.commons.mail.SimpleEmail;
-import org.tinylog.Logger;
+import org.jboss.logging.Logger;
 import trax.aero.model.InterfaceData;
 
 import javax.mail.util.ByteArrayDataSource;
@@ -17,12 +17,12 @@ public class ModelController {
     private static final String[] headersPDF = {"Name of PDF Attachment", "SAP Service Order", "Jobcard Number", "JC Title", "SAP Group Number", "Task Type", "TRAX WO Number", "Attachment", "Attachment ID"};
     private static final String[] headersCOVER = {"SAP Service Order", "Jobcard Number", "JC Title", "SAP Group Number", "Task Type", "TRAX WO Number", "Attachment", "Attachment ID"};
     private static final String[] acType = {"380", "350", "737", "747", "777", "777F", "737NG", "737Max", "330", "789", "290", "744", "738",};
+    private static final Logger logger = Logger.getLogger(ModelController.class);
     static String errors = "";
 
     public ModelController() {
 
     }
-
 
     //MOD 19
     public static void sendEmailTrax(String wo,
@@ -31,7 +31,7 @@ public class ModelController {
                                      String time,
                                      String pAcks, String printer, String stringHeader) {
         try {
-            String[] headers = null;
+            String[] headers;
             if (stringHeader.equalsIgnoreCase("Attachment Missing")) {
                 headers = headersPDF;
             } else {
@@ -43,12 +43,12 @@ public class ModelController {
             String port = System.getProperty("fromPort");
             String toEmail = System.getProperty("Techdoc_TRAXtoEmail");
 
-            ArrayList<String> emailsList = new ArrayList<String>(Arrays.asList(toEmail.split(",")));
+            ArrayList<String> emailsList = new ArrayList<>(Arrays.asList(toEmail.split(",")));
 
 
             HtmlEmail email = new HtmlEmail();
             email.setHostName(host);
-            email.setSmtpPort(Integer.valueOf(port));
+            email.setSmtpPort(Integer.parseInt(port));
             email.setFrom(fromEmail);
             email.setSubject("TECHDOC 2 - TRAX - PRINT FAILURE [" + printer + "] - PDF attachment not printed[" + wo + "] - ALERT");
             for (String emails : emailsList) {
@@ -86,10 +86,10 @@ public class ModelController {
                     print);
 
             email.send();
-            Logger.info("SUCCESS EMAIL SENT");
+            logger.info("SUCCESS EMAIL SENT");
         } catch (Exception e) {
 
-            Logger.error(e, "Email not found");
+            logger.error("Email not found", e);
 
         } finally {
             errors = "";
@@ -104,7 +104,7 @@ public class ModelController {
                                      String time,
                                      String pAcks, String printer, String stringHeader) {
         try {
-            String[] headers = null;
+            String[] headers;
             if (stringHeader.equalsIgnoreCase("Attachment Missing")) {
                 headers = headersPDF;
             } else {
@@ -116,12 +116,12 @@ public class ModelController {
             String port = System.getProperty("fromPort");
             String toEmail = System.getProperty("Techdoc_EDCOtoEmail");
 
-            ArrayList<String> emailsList = new ArrayList<String>(Arrays.asList(toEmail.split(",")));
+            ArrayList<String> emailsList = new ArrayList<>(Arrays.asList(toEmail.split(",")));
 
 
             HtmlEmail email = new HtmlEmail();
             email.setHostName(host);
-            email.setSmtpPort(Integer.valueOf(port));
+            email.setSmtpPort(Integer.parseInt(port));
             email.setFrom(fromEmail);
             email.setSubject("TECHDOC 2 - EDCO - PRINT FAILURE [" + printer + "] - EDCO attachment not printed[" + wo + "] - ALERT");
             for (String emails : emailsList) {
@@ -159,10 +159,10 @@ public class ModelController {
                     print);
 
             email.send();
-            Logger.info("SUCCESS EMAIL SENT");
+            logger.info("SUCCESS EMAIL SENT");
         } catch (Exception e) {
 
-            Logger.error(e, "Email not found");
+            logger.error("Email not found", e);
 
         } finally {
             errors = "";
@@ -177,12 +177,12 @@ public class ModelController {
             String port = System.getProperty("fromPort");
             String toEmail = System.getProperty("Techdoc_MQtoEmail");
 
-            ArrayList<String> emailsList = new ArrayList<String>(Arrays.asList(toEmail.split(",")));
+            ArrayList<String> emailsList = new ArrayList<>(Arrays.asList(toEmail.split(",")));
 
 
             Email email = new SimpleEmail();
             email.setHostName(host);
-            email.setSmtpPort(Integer.valueOf(port));
+            email.setSmtpPort(Integer.parseInt(port));
             email.setFrom(fromEmail);
             email.setSubject("TECHDOC 2 - MQ - Connection Error");
             for (String emails : emailsList) {
@@ -195,10 +195,10 @@ public class ModelController {
                     error);
 
             email.send();
-            Logger.info("SUCCESS EMAIL SENT");
+            logger.info("SUCCESS EMAIL SENT");
         } catch (Exception e) {
 
-            Logger.error(e, "Email not found");
+            logger.error("Email not found", e);
 
         } finally {
             errors = "";
@@ -211,7 +211,7 @@ public class ModelController {
                                       String time,
                                       String pAcks, String printer, String stringHeader) {
         try {
-            String[] headers = null;
+            String[] headers;
             if (stringHeader.equalsIgnoreCase("Attachment Missing")) {
                 headers = headersPDF;
             } else {
@@ -223,12 +223,12 @@ public class ModelController {
             String port = System.getProperty("fromPort");
             String toEmail = System.getProperty("Techdoc_PrinttoEmail");
 
-            ArrayList<String> emailsList = new ArrayList<String>(Arrays.asList(toEmail.split(",")));
+            ArrayList<String> emailsList = new ArrayList<>(Arrays.asList(toEmail.split(",")));
 
 
             HtmlEmail email = new HtmlEmail();
             email.setHostName(host);
-            email.setSmtpPort(Integer.valueOf(port));
+            email.setSmtpPort(Integer.parseInt(port));
             email.setFrom(fromEmail);
             email.setSubject("TECHDOC 2 - PRINT - PRINT FAILURE [" + printer + "] - attachment not printed[" + wo + "] - ALERT");
             for (String emails : emailsList) {
@@ -267,10 +267,10 @@ public class ModelController {
                     print);
 
             email.send();
-            Logger.info("SUCCESS EMAIL SENT");
+            logger.info("SUCCESS EMAIL SENT");
         } catch (Exception e) {
 
-            Logger.error(e, "Email not found");
+            logger.error("Email not found", e);
 
         } finally {
             errors = "";
@@ -282,11 +282,11 @@ public class ModelController {
         try {
             String fleet = "";
             try {
-                ArrayList<String> fileName = new ArrayList<String>(Arrays.asList(ids.get(0).getFileName().split("-")));
+                ArrayList<String> fileName = new ArrayList<>(Arrays.asList(ids.get(0).getFileName().split("-")));
                 fleet = fileName.get(1);
             } catch (Exception e) {
-                Logger.error(e);
-                Logger.info("File Name: " + ids.get(0).getFileName());
+                logger.error("ERROR", e);
+                logger.info("File Name: " + ids.get(0).getFileName());
                 for (String type : acType) {
                     if (ids.get(0).getFileName().contains(type)) {
                         fleet = type;
@@ -301,12 +301,12 @@ public class ModelController {
             String port = System.getProperty("fromPort");
             String toEmail = System.getProperty(fleet);
 
-            ArrayList<String> emailsList = new ArrayList<String>(Arrays.asList(toEmail.split(",")));
+            ArrayList<String> emailsList = new ArrayList<>(Arrays.asList(toEmail.split(",")));
 
 
             HtmlEmail email = new HtmlEmail();
             email.setHostName(host);
-            email.setSmtpPort(Integer.valueOf(port));
+            email.setSmtpPort(Integer.parseInt(port));
             email.setFrom(fromEmail);
             email.setSubject("New " + fleet + " Attachments Loaded in CDM. Requires Follow-up action. Techdoc 2");
             for (String emails : emailsList) {
@@ -318,13 +318,13 @@ public class ModelController {
                 email.attach(new ByteArrayDataSource(id.getClobDocument().getBytes(), "text/plain"),
                         id.getFileName() + ".dat", id.getFileName() + ".dat", EmailAttachment.ATTACHMENT);
             }
-            String emails = "";
+            StringBuilder emails = new StringBuilder();
             for (String e : emailsList) {
-                emails += e + ", ";
+                emails.append(e).append(", ");
             }
-            emails = emails.trim(); // Remove trailing spaces
-            if (emails.endsWith(",")) {
-                emails = emails.substring(0, emails.length() - 1);
+            emails = new StringBuilder(emails.toString().trim()); // Remove trailing spaces
+            if (emails.toString().endsWith(",")) {
+                emails = new StringBuilder(emails.substring(0, emails.length() - 1));
             }
 
             String message = "**********************************************************\r\n" +
@@ -342,10 +342,10 @@ public class ModelController {
             email.setMsg(message);
 
             email.send();
-            Logger.info("SUCCESS EMAIL SENT");
+            logger.info("SUCCESS EMAIL SENT");
         } catch (Exception e) {
 
-            Logger.error(e, "Email not found");
+            logger.error("Email not found", e);
 
         } finally {
             errors = "";

@@ -1,7 +1,7 @@
 package trax.aero.util;
 
 import org.apache.commons.io.FilenameUtils;
-import org.tinylog.Logger;
+import org.jboss.logging.Logger;
 import trax.aero.pojo.Dw_Wo_Pack_Print;
 import trax.types.PrintQueueJob;
 
@@ -20,7 +20,7 @@ import java.util.Arrays;
 
 public class PrinterUtilities {
 
-
+    private static final Logger logger = Logger.getLogger(PrinterUtilities.class);
     static ArrayList<String> heavyPrinters = new ArrayList<>(Arrays.asList("EC61", "EC62", "EC63", "SINW", "SIO1", "EC1O", "SIOP"));
     static ArrayList<String> heavyPrintersRicoh = new ArrayList<>(Arrays.asList("EC1O", "SIOP"));
     static ArrayList<String> heavyPrintersOcepdf = new ArrayList<>(Arrays.asList("EC61", "EC62", "EC63", "SINW", "SIO1"));
@@ -50,30 +50,30 @@ public class PrinterUtilities {
         propJob.setPrintParameters(xml.getBytes());
         propJob.setUser("ADM");
 
-        addJobToJMSQueue(propJob, "Y");
+        addJobToJMSQueue(propJob);
 
-        Logger.info("Print Job " + dwSel.getRow().getWo() + " Has been successfuly sent to the print queue");
+        logger.info("Print Job " + dwSel.getRow().getWo() + " Has been successfuly sent to the print queue");
 
 
         return job;
     }
 
-    private static void addJobToJMSQueue(PrintQueueJob propJob, String isWPP) {
-        propJob.setIsWPP(isWPP);
+    private static void addJobToJMSQueue(PrintQueueJob propJob) {
+        propJob.setIsWPP("Y");
 
 
-        String url = "Y".equals(isWPP) ? System.getProperty("Trax_Print_WPP_URL") + "rest/print/printwpp"
+        String url = "Y".equals("Y") ? System.getProperty("Trax_Print_WPP_URL") + "rest/print/printwpp"
                 : System.getProperty("Trax_Print_URL") + "rest/print/print";
         Client client = null;
 
         try {
 
             client = ClientBuilder.newClient();
-            Logger.info("Calling Print web service : " + "'" + url + "'");
+            logger.info("Calling Print web service : " + "'" + url + "'");
 
             client.target(url).request().post(Entity.entity(propJob, MediaType.APPLICATION_JSON));
 
-            Logger.info("After Print web service ");
+            logger.info("After Print web service ");
 
         } finally {
             if (client != null)
@@ -84,7 +84,7 @@ public class PrinterUtilities {
     public static void sendToPrinterHeavyLP(String printService, File file, String side, String tray) throws Exception {
 
         if (file != null && printService != null && file.exists() && file.isFile()) {
-            Logger.info("Job received for printer: " + printService + " tray: " + tray + " side: " + side);
+            logger.info("Job received for printer: " + printService + " tray: " + tray + " side: " + side);
             try {
                 String ricohCommands = "";
                 String oceCommands = "";
@@ -137,7 +137,7 @@ public class PrinterUtilities {
                 }
                 // Command to print the document with duplex and tray options using lp on Linux
                 String command = "lp -d " + printService + oceCommands + ricohCommands + " " + file.getAbsolutePath();
-                Logger.info("Command: " + command);
+                logger.info("Command: " + command);
                 // Create the process builder
                 ProcessBuilder processBuilder = new ProcessBuilder(command.split(" "));
 
@@ -147,12 +147,12 @@ public class PrinterUtilities {
                 // Wait for the process to finish
                 int exitCode = process.waitFor();
                 if (exitCode == 0) {
-                    Logger.info("Print job submitted successfully.");
+                    logger.info("Print job submitted successfully.");
                 } else {
-                    Logger.error("Error occurred during printing: " + exitCode);
+                    logger.error("Error occurred during printing: " + exitCode);
                 }
             } catch (Exception e) {
-                Logger.error("Exception printing JOB ", e);
+                logger.error("Exception printing JOB ", e);
                 throw e;
             }
         }
@@ -171,10 +171,9 @@ public class PrinterUtilities {
 
             File theDir = new File(fileLocOut + File.separator + FilenameUtils.removeExtension(print.getName()));
             if (!theDir.exists()) {
-                theDir.mkdirs();
+                logger.info(theDir.mkdirs());
             }
-            Logger.info("MOVE " + print.toPath() + " TO "
-                    + fileLocOut + File.separator + FilenameUtils.removeExtension(print.getName()) + File.separator + print.getName());
+            logger.info(String.format("MOVE %s TO %s%s%s%s%s", print.toPath(), fileLocOut, File.separator, FilenameUtils.removeExtension(print.getName()), File.separator, print.getName()));
             Files.move(print.toPath(), new File(fileLocOut + File.separator + FilenameUtils.removeExtension(print.getName())
                     + File.separator + print.getName()).toPath(), StandardCopyOption.REPLACE_EXISTING);
 
@@ -187,7 +186,7 @@ public class PrinterUtilities {
                 sendToPrinterLP(printer, localPrint);
             }
         } catch (Exception e) {
-            Logger.error(e);
+            logger.error("ERROR", e);
             throw e;
         }
     }
@@ -203,14 +202,14 @@ public class PrinterUtilities {
             // Wait for the process to complete
             int exitCode = process.waitFor();
             if (exitCode == 0) {
-                Logger.info("Printing completed successfully!");
+                logger.info("Printing completed successfully!");
             } else {
-                Logger.info("Error occurred while printing. Exit code: " + exitCode);
+                logger.info("Error occurred while printing. Exit code: " + exitCode);
                 throw new Exception("Error occurred while printing. Exit code: " + exitCode);
             }
         } catch (Exception exc) {
-            Logger.info("Exception printing JOB***************************");
-            Logger.error(exc);
+            logger.info("Exception printing JOB***************************");
+            logger.error(exc);
             throw exc;
         }
 

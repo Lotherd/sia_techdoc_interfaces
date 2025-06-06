@@ -1,7 +1,8 @@
 package trax.aero.model;
 
+import javax.persistence.Column;
+import javax.persistence.Embeddable;
 import java.io.Serializable;
-import javax.persistence.*;
 
 /**
  * The primary key class for the WO_TASK_CARD_CONTROL database table.

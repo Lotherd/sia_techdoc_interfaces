@@ -1,8 +1,8 @@
 package trax.aero.application;
 
 
-import org.tinylog.Logger;
-import trax.aero.interfaces.IModelData;
+import org.jboss.logging.Logger;
+import trax.aero.data.IModelData;
 import trax.aero.model.Wo;
 import trax.aero.pojo.Print;
 import trax.aero.pojo.xml.MODEL;
@@ -27,6 +27,7 @@ import java.math.BigDecimal;
 @Path("/Service")
 public class Service {
 
+    private static final Logger logger = Logger.getLogger(Service.class);
     @EJB
     IModelData data;
 
@@ -38,7 +39,7 @@ public class Service {
         try {
             MqUtilities.sendMqText(input);
         } catch (Exception e) {
-            Logger.error(e);
+            logger.error("ERROR", e);
         }
         return Response.ok().build();
     }
@@ -49,16 +50,16 @@ public class Service {
     @Produces(MediaType.TEXT_PLAIN)
     public Response print(Print input) {
         try {
-            Logger.info("Print WO:" + input.getWo() + ", PATH:" + input.getPath());
+            logger.info("Print WO:" + input.getWo() + ", PATH:" + input.getPath());
             data.sendPrintToOutBound(input);
         } catch (Exception e) {
-            Logger.error(e);
+            logger.error("ERROR", e);
         } finally {
             try {
                 if (data.getCon() != null && !data.getCon().isClosed()) {
                     data.getCon().close();
                 }
-            } catch (Exception e) {
+            } catch (Exception ignored) {
             }
         }
         return Response.ok().build();
@@ -69,7 +70,6 @@ public class Service {
     @Consumes(MediaType.TEXT_PLAIN)
     @Produces(MediaType.TEXT_PLAIN)
     public Response issue(String message) {
-        String printer = null;
 
 
         try {
@@ -77,24 +77,24 @@ public class Service {
             Unmarshaller unmarshaller = jc.createUnmarshaller();
             message = "<ROOT>" + message + "</ROOT>";
 
-            ROOT root = null;
+            ROOT root;
             StringReader sr = new StringReader(message);
 
             root = (ROOT) unmarshaller.unmarshal(sr);
             //TODO create parent WO
             BigDecimal COUNT = new BigDecimal(data.filterADDATTR(root.getMODELS().get(0).getEFFECTIVITY().getJOBCARD().getJOBI().getPLI().getADDATTR(), "COUNT"));
-            printer = data.filterADDATTR(root.getMODELS().get(0).getEFFECTIVITY().getJOBCARD().getJOBI().getPLI().getADDATTR(), "PRINTER-NAME");
+            data.filterADDATTR(root.getMODELS().get(0).getEFFECTIVITY().getJOBCARD().getJOBI().getPLI().getADDATTR(), "PRINTER-NAME");
             //SAVE TRAX WO NUMBER
-            //AS ISSUE TO TRAX IS SEPRATE REQUESTS
-            Wo parent = null;
+            //AS ISSUE TO TRAX IS SEPARATE REQUESTS
+            Wo parent;
             String idocID = data.filterADDATTR(root.getMODELS().get(0).getEFFECTIVITY().getJOBCARD().getJOBI().getPLI().getADDATTR(), "USER-NAME") +
                     data.filterADDATTR(root.getMODELS().get(0).getEFFECTIVITY().getJOBCARD().getJOBI().getPLI().getADDATTR(), "IDOC-DATE") +
                     data.filterADDATTR(root.getMODELS().get(0).getEFFECTIVITY().getJOBCARD().getJOBI().getPLI().getADDATTR(), "IDOC-TIME");
             parent = data.createParentWo(COUNT, idocID);
-            Logger.info("Size: " + parent.getDocumentNo().intValue());
+            logger.info("Size: " + parent.getDocumentNo().intValue());
 
             for (MODEL model : root.getMODELS()) {
-                printer = data.filterADDATTR(model.getEFFECTIVITY().getJOBCARD().getJOBI().getPLI().getADDATTR(), "PRINTER-NAME");
+                data.filterADDATTR(model.getEFFECTIVITY().getJOBCARD().getJOBI().getPLI().getADDATTR(), "PRINTER-NAME");
                 jc = JAXBContext.newInstance(MODEL.class);
                 Marshaller marshaller = jc.createMarshaller();
                 marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, Boolean.TRUE);
@@ -115,18 +115,18 @@ public class Service {
                     if (data.getCon() != null && !data.getCon().isClosed())
                         data.getCon().close();
                 } catch (Exception e) {
-                    Logger.error(e);
+                    logger.error("ERROR", e);
                 }
 
             }
         } catch (Exception e) {
-            Logger.error(e);
+            logger.error("ERROR", e);
         } finally {
             try {
                 if (data.getCon() != null && !data.getCon().isClosed())
                     data.getCon().close();
             } catch (Exception e) {
-                Logger.error(e);
+                logger.error("ERROR", e);
             }
         }
         return Response.ok().build();

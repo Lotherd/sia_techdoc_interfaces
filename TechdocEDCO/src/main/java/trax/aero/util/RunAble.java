@@ -1,7 +1,7 @@
 package trax.aero.util;
 
-import org.tinylog.Logger;
-import trax.aero.interfaces.IModelData;
+import org.jboss.logging.Logger;
+import trax.aero.data.IModelData;
 import trax.aero.model.Wo;
 import trax.aero.pojo.xml.MODEL;
 import trax.aero.pojo.xml.ROOT;
@@ -17,6 +17,7 @@ import java.math.BigDecimal;
 
 public class RunAble implements Runnable {
 
+    private static final Logger logger = Logger.getLogger(RunAble.class);
     //Variables
     @EJB
     IModelData data;
@@ -29,7 +30,7 @@ public class RunAble implements Runnable {
 
     private void process() throws Exception {
 
-        String message = null;
+        String message;
         JAXBContext jc = JAXBContext.newInstance(ROOT.class);
         Unmarshaller unmarshaller = jc.createUnmarshaller();
 
@@ -45,24 +46,24 @@ public class RunAble implements Runnable {
 
             if (message != null) {
 
-                Logger.info(message);
+                logger.info(message);
                 try {
 
                     message = "<ROOT>" + message + "</ROOT>";
 
-                    ROOT root = null;
+                    ROOT root;
                     StringReader sr = new StringReader(message);
 
                     root = (ROOT) unmarshaller.unmarshal(sr);
                     BigDecimal COUNT = new BigDecimal(data.filterADDATTR(root.getMODELS().get(0).getEFFECTIVITY().getJOBCARD().getJOBI().getPLI().getADDATTR(), "COUNT"));
                     //SAVE TRAX WO NUMBER
-                    //AS ISSUE TO TRAX IS SEPRATE REQUESTS
-                    Wo parent = null;
+                    //AS ISSUE TO TRAX IS SEPARATE REQUESTS
+                    Wo parent;
                     String idocID = data.filterADDATTR(root.getMODELS().get(0).getEFFECTIVITY().getJOBCARD().getJOBI().getPLI().getADDATTR(), "USER-NAME") +
                             data.filterADDATTR(root.getMODELS().get(0).getEFFECTIVITY().getJOBCARD().getJOBI().getPLI().getADDATTR(), "IDOC-DATE") +
                             data.filterADDATTR(root.getMODELS().get(0).getEFFECTIVITY().getJOBCARD().getJOBI().getPLI().getADDATTR(), "IDOC-TIME");
                     parent = data.createParentWo(COUNT, idocID);
-                    Logger.info("Size: " + parent.getDocumentNo().intValue());
+                    logger.info("Size: " + parent.getDocumentNo().intValue());
 
                     for (MODEL model : root.getMODELS()) {
                         jc = JAXBContext.newInstance(MODEL.class);
@@ -85,15 +86,15 @@ public class RunAble implements Runnable {
                             if (data.getCon() != null && !data.getCon().isClosed())
                                 data.getCon().close();
                         } catch (Exception e) {
-                            Logger.error(e);
+                            logger.error("ERROR", e);
                         }
                     }
                 } catch (Exception e) {
-                    Logger.error(e);
+                    logger.error("ERROR", e);
                 }
             }
         } catch (Exception e) {
-            Logger.error(e);
+            logger.error("ERROR", e);
         } finally {
             sendEmail = false;
         }
@@ -110,7 +111,7 @@ public class RunAble implements Runnable {
                 data.unlockTable("TD2");
             }
         } catch (Exception e) {
-            Logger.error(e);
+            logger.error("ERROR", e);
         }
     }
 }
