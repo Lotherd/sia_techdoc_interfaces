@@ -1,6 +1,5 @@
 package trax.aero.start;
 
-import org.jboss.logging.Logger;
 import trax.aero.data.IModelData;
 import trax.aero.util.RunAble;
 
@@ -17,7 +16,6 @@ import java.util.concurrent.TimeUnit;
 @Singleton
 public class Start {
 
-    private static final Logger logger = Logger.getLogger(Start.class);
     RunAble timer = null;
     @EJB
     IModelData data;
@@ -29,10 +27,9 @@ public class Start {
 
         if (scheduledServ == null) {
             int scheduledPoolSize = 1;
-            logger.info(String.format("Creating default Scheduled Executor Service [poolSize =%d]", scheduledPoolSize));
             this.scheduledServ = Executors.newScheduledThreadPool(scheduledPoolSize);
         }
-       // scheduledServ.scheduleAtFixedRate(timer, 30, Long.parseLong(System.getProperty("Techdoc_interval")), TimeUnit.SECONDS);
+        scheduledServ.scheduleAtFixedRate(timer, 30, Long.parseLong(System.getProperty("Techdoc_interval")), TimeUnit.SECONDS);
 
     }
 

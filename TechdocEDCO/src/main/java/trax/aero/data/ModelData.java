@@ -4,7 +4,8 @@ import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.text.PDFTextStripper;
-import org.jboss.logging.Logger;
+import org.tinylog.Logger;
+
 import trax.aero.controller.ModelController;
 import trax.aero.model.*;
 import trax.aero.pojo.Dw_Wo_Pack_Print;
@@ -56,7 +57,6 @@ import java.util.List;
 @Stateless(name = "ModelData", mappedName = "ModelData")
 public class ModelData implements IModelData {
 
-    private static final Logger logger = Logger.getLogger(ModelData.class);
 
     ArrayList<String> scoot = new ArrayList<>(Arrays.asList("300275", "300276", "101821"));
     ArrayList<String> siaec = new ArrayList<>(Arrays.asList("319", "320"));
@@ -108,7 +108,7 @@ public class ModelData implements IModelData {
 
             return w;
         } catch (Exception e) {
-            logger.error("ERROR", e);
+            Logger.error(e);
             status = 1;
             error = e.getMessage();
         }
@@ -203,9 +203,9 @@ public class ModelData implements IModelData {
 
             emailBlob = getTempBlobText(parent.getBlobNo(), "EMAIL");
 
-            logger.info("Sub Wo" + child.getDocumentNo().intValue() + " Parent Wo: " + parent.getDocumentNo().intValue());
+            Logger.info("Sub Wo" + child.getDocumentNo().intValue() + " Parent Wo: " + parent.getDocumentNo().intValue());
             if (parent.getDocumentNo().intValue() == child.getDocumentNo().intValue()) {
-                logger.info("Final print found " + child.getDocumentNo().intValue());
+                Logger.info("Final print found " + child.getDocumentNo().intValue());
                 sendFinal = true;
             }
 
@@ -354,7 +354,7 @@ public class ModelData implements IModelData {
             }
 
         } catch (Exception e) {
-            logger.error("ERROR", e);
+            Logger.error(e);
             if (!"Missing Attachment found".contains(e.getMessage())) {
                 sendPrintStatusAcknowledgement(input, "E", "ERROR " + e.getMessage());
             }
@@ -455,7 +455,7 @@ public class ModelData implements IModelData {
         BlobTable emailBlob = getTempBlobText(parent.getBlobNo(), "EMAIL");
 
         if (parent.getDocumentNo().intValue() == w.getDocumentNo().intValue()) {
-            logger.info("Final print found " + w.getDocumentNo().intValue());
+            Logger.info("Final print found " + w.getDocumentNo().intValue());
             sendFinal = true;
         }
 
@@ -468,18 +468,18 @@ public class ModelData implements IModelData {
             //call wo pack print with flag
 
         } catch (Exception e) {
-            logger.error("ERROR", e);
+            Logger.error(e);
             status = 1;
             error = e.getMessage();
         }
         try {
             status = sendWorkPackPrintJob(w);
         } catch (Exception e) {
-            logger.error("ERROR", e);
+            Logger.error(e);
             status = 1;
             error = e.getMessage();
         }
-        logger.info("status " +status);
+        Logger.info("status " +status);
         if (status != 0) {
             sendPrintStatusAcknowledgement(input, "E", "ERROR " + error);
             date = filterADDATTR(input.getEFFECTIVITY().getJOBCARD().getJOBI().getPLI().getADDATTR(), "IDOC-DATE");
@@ -578,10 +578,10 @@ public class ModelData implements IModelData {
                     .setParameter("tas", "Y")
                     .getResultList();
             if (interfaceAudits != null && !interfaceAudits.isEmpty()) {
-                logger.info("Interface Audit SIZE " + interfaceAudits.size());
+                Logger.info("Interface Audit SIZE " + interfaceAudits.size());
                 for (InterfaceAudit i : interfaceAudits) {
                     try {
-                        logger.info("Interface Audit PROCESSING " + i.getTransaction());
+                        Logger.info("Interface Audit PROCESSING " + i.getTransaction());
                         try {
                             for (InterfaceData id : i.getInterfaceData()) {
                                 S3Utilities.setDatFile(id.getClobDocument(), id.getFileName(), String.valueOf(i.getTransaction()));
@@ -594,18 +594,18 @@ public class ModelData implements IModelData {
                                 ModelController.sendEmailDat(i.getInterfaceData());
                             }
                         } catch (Exception e) {
-                            logger.error("ERROR", e);
+                            Logger.error(e);
                         }
                         em.refresh(i);
                         i.setMessageNeedsToBeSent("N");
                         insertData(i);
                     } catch (Exception e) {
-                        logger.error("ERROR", e);
+                        Logger.error(e);
                     }
                 }
             }
         } catch (Exception e) {
-            logger.error("ERROR", e);
+            Logger.error(e);
         }
     }
 
@@ -620,7 +620,7 @@ public class ModelData implements IModelData {
             if (text.contains(searchString)) {
 
             } else {
-                logger.info("String " + searchString + " not found in the PDF!");
+                Logger.info("String " + searchString + " not found in the PDF!");
                 return false;
 
             }
@@ -778,14 +778,14 @@ public class ModelData implements IModelData {
 
         ArrayList<String> taskCards = getTaskCards(input.getEFFECTIVITY().getJOBCARD().getJOBI().getPLI().getATTACHMENT(), w.getAc());
         if(taskCards == null) {
-        	logger.warn("NO ENG TASK CARD FOUND");
+        	Logger.warn("NO ENG TASK CARD FOUND");
         	return;
         }
-        logger.info("ENG TASK CARD size: " + taskCards.size());
+        Logger.info("ENG TASK CARD size: " + taskCards.size());
 
         if (this.con == null || this.con.isClosed()) {
             this.con = trax.aero.util.DataSourceClient.getConnection();
-            logger.info("The connection was stablished successfully with status: " + !this.con.isClosed());
+            Logger.info("The connection was stablished successfully with status: " + !this.con.isClosed());
         }
 
         try {
@@ -836,7 +836,7 @@ public class ModelData implements IModelData {
 
             ArrayList<String> taskCardStrings = new ArrayList<String>();
             for (ATTACHMENT subTaskId : list) {
-                logger.info("SUB TASK CARD: " + subTaskId.getID() + " TYPE: " + subTaskId.getATTTYPE());
+                Logger.info("SUB TASK CARD: " + subTaskId.getID() + " TYPE: " + subTaskId.getATTTYPE());
                 //get all tcs from tc sub fields
                 try {
                     List<TaskCard> cards = em.createQuery("Select t From TaskCard t , TaskCardEffectivityHead teh where t.taskCard = teh.id.taskCard and t.tcSub =:sub"
@@ -851,18 +851,18 @@ public class ModelData implements IModelData {
                         throw new Exception("No Task Card found for Effectivity " + type + " " + series);
                     }
                     for (TaskCard tc : cards) {
-                        logger.info("ENG TASK CARD: " + tc.getTaskCard());
+                        Logger.info("ENG TASK CARD: " + tc.getTaskCard());
 
                         taskCardStrings.add(tc.getTaskCard());
                     }
                 } catch (Exception e) {
-                    logger.error("NO ENG TASK CARD FOUND FOR " + subTaskId.getID());
+                    Logger.error("NO ENG TASK CARD FOUND FOR " + subTaskId.getID());
                     throw e;
                 }
             }
             return taskCardStrings;
         } catch (Exception e) {
-            logger.error("ERROR", e);
+            Logger.error(e);
             return null;
         }
     }
@@ -893,7 +893,7 @@ public class ModelData implements IModelData {
         blob.getId().setBlobNo(((getTransactionNo("BLOB").longValue())));
         w.setBlobNo(new BigDecimal(blob.getId().getBlobNo()));
 
-        logger.info("INSERTING TEMP Blob : " + blob.getId().getBlobNo());
+        Logger.info("INSERTING TEMP Blob : " + blob.getId().getBlobNo());
 
         insertData(blob);
         insertData(w);
@@ -927,7 +927,7 @@ public class ModelData implements IModelData {
 
             blob.setBlobDescription(Description);
             blob.setCustomDescription(Description);
-            logger.info("INSERTING TEMP Blob : " + blob.getId().getBlobNo() + " " + blob.getId().getBlobLine());
+            Logger.info("INSERTING TEMP Blob : " + blob.getId().getBlobNo() + " " + blob.getId().getBlobLine());
             insertData(blob);
             insertData(w);
         }
@@ -970,7 +970,7 @@ public class ModelData implements IModelData {
         wo.setFlight(jc.getMANHRS().substring(0, 9));
         wo.setAmpMs(filterADDATTR(jc.getJOBI().getPLI().getADDATTR(), "BUSR12"));
         wo.setAuthorizationDate(convertStringToDate(jc.getWPDATE()));
-        wo.setStatus("OPEN");
+        wo.setStatus("TECHDOC");
         wo.setOrderType("W/O");
         wo.setModule("PRODUCTION");
         wo.setPaperChecked("NO");
@@ -1011,7 +1011,7 @@ public class ModelData implements IModelData {
         //TD BUSR06
         wo.setTdApuSn(filterADDATTR(jc.getJOBI().getPLI().getADDATTR(), "BUSR06"));
 
-        logger.info("INSERTING TEMP WO: " + wo.getWo());
+        Logger.info("INSERTING TEMP WO: " + wo.getWo());
 
         insertData(wo);
 
@@ -1021,7 +1021,7 @@ public class ModelData implements IModelData {
 
 
     private trax.aero.pojo.json.OUTPUT convertXmlToJson(MODEL input) throws Exception {
-        logger.info("Converting XML to JSON");
+        Logger.info("Converting XML to JSON");
 
         trax.aero.pojo.json.OUTPUT json = new trax.aero.pojo.json.OUTPUT();
         json.setMODEL(new trax.aero.pojo.json.MODEL());
@@ -1257,14 +1257,14 @@ public class ModelData implements IModelData {
             StringWriter sw = new StringWriter();
             marshaller.marshal(ack, sw);
 
-            logger.info("Input: " + sw);
+            Logger.info("Input: " + sw);
             String text = sw.toString();
 
 
             return MqUtilities.sendMqText(text);
 
         } catch (Exception e) {
-            logger.error("ERROR", e);
+            Logger.error(e);
             return false;
         }
     }
@@ -1275,7 +1275,7 @@ public class ModelData implements IModelData {
             em.merge(data);
             em.flush();
         } catch (Exception e) {
-            logger.error("ERROR", e);
+            Logger.error(e);
             throw e;
         }
     }
@@ -1285,7 +1285,7 @@ public class ModelData implements IModelData {
             em.remove(data);
             em.flush();
         } catch (Exception e) {
-            logger.error("ERROR", e);
+            Logger.error(e);
             throw e;
         }
     }
@@ -1313,8 +1313,8 @@ public class ModelData implements IModelData {
                         i++;
                     }
                 } catch (Exception e) {
-                    logger.error("Error getting WO.");
-                    logger.error(e.toString());
+                    Logger.error("Error getting WO.");
+                    Logger.error(e.toString());
                     throw e;
                 }
             } else {
@@ -1324,7 +1324,7 @@ public class ModelData implements IModelData {
                 return acctBal;
             }
         } catch (Exception e) {
-            logger.error("An unexpected error occurred getting the sequence. " + "\nmessage: " + e);
+            Logger.error("An unexpected error occurred getting the sequence. " + "\nmessage: " + e);
         }
 
         return null;
@@ -1342,34 +1342,34 @@ public class ModelData implements IModelData {
         Wo parent = em.find(Wo.class, w.getNhWo().longValue());
 
         for (WoTaskCard t : taskCards) {
-            logger.info("DELETING TEMP Task Card: " + t.getId().getTaskCard());
+            Logger.info("DELETING TEMP Task Card: " + t.getId().getTaskCard());
             deleteData(em.find(WoTaskCard.class, t.getId()));
         }
-        logger.info("DELETING TEMP WO TaskCard Item: " + w.getWo());
+        Logger.info("DELETING TEMP WO TaskCard Item: " + w.getWo());
         deleteWoTaskCardItem(String.valueOf(w.getWo()));
 
-        logger.info("DELETING TEMP WO TaskCard Pn: " + w.getWo());
+        Logger.info("DELETING TEMP WO TaskCard Pn: " + w.getWo());
         deleteWoTaskCardPn(String.valueOf(w.getWo()));
 
-        logger.info("DELETING TEMP WO Task Card Trax Doc Ref: " + w.getWo());
+        Logger.info("DELETING TEMP WO Task Card Trax Doc Ref: " + w.getWo());
         deleteWoTaskCardTraxDocRef(String.valueOf(w.getWo()));
 
-        logger.info("DELETING TEMP Trace WO Task Card: " + w.getWo());
+        Logger.info("DELETING TEMP Trace WO Task Card: " + w.getWo());
         deleteTraceWoTaskCard(String.valueOf(w.getWo()));
 
-        logger.info("DELETING TEMP Engineering Pending Release: " + w.getWo());
+        Logger.info("DELETING TEMP Engineering Pending Release: " + w.getWo());
         deleteEngineeringPendingRelease(String.valueOf(w.getWo()));
 
-        logger.info("DELETING TEMP Wo Task Card Control: " + w.getWo());
+        Logger.info("DELETING TEMP Wo Task Card Control: " + w.getWo());
         deleteWoTaskCardControl(String.valueOf(w.getWo()));
 
-        logger.info("DELETING TEMP Task Card Item Form: " + w.getWo());
+        Logger.info("DELETING TEMP Task Card Item Form: " + w.getWo());
         deleteTaskCardItemForm(String.valueOf(w.getWo()));
 
-        logger.info("DELETING TEMP BLOB: " + blob.getId().getBlobNo());
+        Logger.info("DELETING TEMP BLOB: " + blob.getId().getBlobNo());
         deleteData(em.find(BlobTable.class, blob.getId()));
 
-        logger.info("DELETING TEMP WO: " + w.getWo());
+        Logger.info("DELETING TEMP WO: " + w.getWo());
         deleteData(em.find(Wo.class, w.getWo()));
 
         if (parent != null &&
@@ -1377,13 +1377,13 @@ public class ModelData implements IModelData {
             BlobTable email = getTempBlobText(parent.getBlobNo(), "EMAIL");
             BlobTable report = getTempBlobText(parent.getBlobNo(), "REPORT");
 
-            logger.info("DELETING TEMP WO PARENT: " + parent.getWo());
+            Logger.info("DELETING TEMP WO PARENT: " + parent.getWo());
             deleteData(em.find(Wo.class, parent.getWo()));
 
-            logger.info("DELETING TEMP BLOB EMAIL: " + email.getId().getBlobNo());
+            Logger.info("DELETING TEMP BLOB EMAIL: " + email.getId().getBlobNo());
             deleteData(em.find(BlobTable.class, email.getId()));
 
-            logger.info("DELETING TEMP BLOB REPORT: " + report.getId().getBlobNo());
+            Logger.info("DELETING TEMP BLOB REPORT: " + report.getId().getBlobNo());
             deleteData(em.find(BlobTable.class, report.getId()));
 
         }
@@ -1397,7 +1397,7 @@ public class ModelData implements IModelData {
                     .getSingleResult();
             return w;
         } catch (Exception e) {
-            logger.error("ERROR", e);
+            Logger.error(e);
             return null;
         }
     }
@@ -1411,7 +1411,7 @@ public class ModelData implements IModelData {
                     .getSingleResult();
             return blob;
         } catch (Exception e) {
-            logger.error("ERROR", e);
+            Logger.error(e);
             return null;
         }
     }
@@ -1424,7 +1424,7 @@ public class ModelData implements IModelData {
                     .getSingleResult();
             return blob;
         } catch (Exception e) {
-            logger.error("ERROR", e);
+            Logger.error(e);
             return null;
         }
     }
@@ -1440,7 +1440,7 @@ public class ModelData implements IModelData {
                     .getSingleResult();
 
             String xml = new String(blob.getBlobItem(), StandardCharsets.UTF_8);
-            logger.info(xml);
+            Logger.info(xml);
 
             JAXBContext jc = JAXBContext.newInstance(MODEL.class);
             Unmarshaller unmarshaller = jc.createUnmarshaller();
@@ -1448,7 +1448,7 @@ public class ModelData implements IModelData {
 
             return (MODEL) unmarshaller.unmarshal(sr);
         } catch (Exception e) {
-            logger.error("ERROR", e);
+            Logger.error(e);
             return null;
         }
     }
@@ -1457,7 +1457,7 @@ public class ModelData implements IModelData {
         try {
             return new SimpleDateFormat("yyyyMMdd").parse(string);
         } catch (Exception e) {
-            logger.error("ERROR", e);
+            Logger.error(e);
             return null;
         }
     }
@@ -1493,7 +1493,7 @@ public class ModelData implements IModelData {
             journalEntriesExpenditure.setExpenditureUse("PRODUCTION");
 
 
-            logger.info("INSERTING CODE: " + journalEntriesExpenditure.getId().getCategoryCode());
+            Logger.info("INSERTING CODE: " + journalEntriesExpenditure.getId().getCategoryCode());
             insertData(journalEntriesExpenditure);
         }
         return journalEntriesExpenditure.getId().getCategoryCode();
@@ -1558,7 +1558,7 @@ public class ModelData implements IModelData {
             wo.setFormNo(BigDecimal.ZERO);
         }
         wo.setWoDescription(wpTitle);
-        logger.info("INSERTING TEMP WO PARENT: " + wo.getWo());
+        Logger.info("INSERTING TEMP WO PARENT: " + wo.getWo());
 
         insertData(wo);
 
@@ -1573,7 +1573,7 @@ public class ModelData implements IModelData {
 
         w.setNhWo(new BigDecimal(parent.getWo()));
         w.setDocumentNo(count);
-        logger.info("LINKING TEMP WO: " + w.getWo() + " TO PARENT TEMP WO: " + parent.getWo() + " COUNT: " + w.getDocumentNo().intValue());
+        Logger.info("LINKING TEMP WO: " + w.getWo() + " TO PARENT TEMP WO: " + parent.getWo() + " COUNT: " + w.getDocumentNo().intValue());
         insertData(w);
     }
 
@@ -1582,17 +1582,17 @@ public class ModelData implements IModelData {
             BigDecimal l_count = parent.getFormNo();
             l_count = l_count.add(BigDecimal.ONE);
             parent.setFormNo(l_count);
-            logger.info("PARENT TEMP WO: " + parent.getWo() + " COUNT F:" + parent.getFormNo().intValue());
+            Logger.info("PARENT TEMP WO: " + parent.getWo() + " COUNT F:" + parent.getFormNo().intValue());
             insertData(parent);
             if (w.getDocumentNo().intValue() != l_count.intValue()) {
                 w.setDocumentNo(l_count);
             } else {
                 return;
             }
-            logger.info("TEMP WO: " + w.getWo() + " TO PARENT TEMP WO: " + parent.getWo() + " COUNT: " + w.getDocumentNo().intValue());
+            Logger.info("TEMP WO: " + w.getWo() + " TO PARENT TEMP WO: " + parent.getWo() + " COUNT: " + w.getDocumentNo().intValue());
             insertData(w);
         } catch (Exception e) {
-            logger.error("ERROR", e);
+            Logger.error(e);
         }
     }
 
@@ -1669,7 +1669,7 @@ public class ModelData implements IModelData {
         InterfaceLockMaster lock = em.createQuery("SELECT i FROM InterfaceLockMaster i where i.interfaceType = :type", InterfaceLockMaster.class)
                 .setParameter("type", notificationType).getSingleResult();
         em.refresh(lock);
-        //logger.info("lock " + lock.getLocked());
+        //Logger.info("lock " + lock.getLocked());
         if (lock.getLocked().intValue() == 1) {
             LocalDateTime today = LocalDateTime.now();
             LocalDateTime locked = LocalDateTime.ofInstant(lock.getLockedDate().toInstant(), ZoneId.systemDefault());
@@ -1700,7 +1700,7 @@ public class ModelData implements IModelData {
             address = InetAddress.getLocalHost();
         } catch (UnknownHostException e) {
 
-            logger.error("ERROR", e);
+            Logger.error(e);
         }
         lock.setCurrentServer(address.getHostName());
         insertData(lock);
@@ -1762,7 +1762,7 @@ public class ModelData implements IModelData {
 
             em.flush();
         } catch (Exception e) {
-            logger.error("ERROR", e);
+            Logger.error(e);
         }
     }
 
@@ -1796,7 +1796,7 @@ public class ModelData implements IModelData {
             return rev;
 
         } catch (Exception e) {
-            logger.error("ERROR", e);
+            Logger.error(e);
             return "";
         }
 

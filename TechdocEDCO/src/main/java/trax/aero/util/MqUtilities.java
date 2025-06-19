@@ -4,7 +4,8 @@ import com.ibm.mq.jms.MQQueueConnectionFactory;
 import com.ibm.msg.client.wmq.WMQConstants;
 import com.ibm.msg.client.wmq.compat.jms.internal.JMSC;
 import org.apache.commons.lang3.exception.ExceptionUtils;
-import org.jboss.logging.Logger;
+import org.tinylog.Logger;
+
 import trax.aero.controller.ModelController;
 
 import javax.jms.*;
@@ -17,7 +18,6 @@ import java.security.KeyStore;
 
 public class MqUtilities {
 
-    private static final Logger logger = Logger.getLogger(MqUtilities.class);
     private static final String HOST = System.getProperty("Techdoc_host"); // Host name or IP address
     private static final int PORT = Integer.parseInt(System.getProperty("Techdoc_port")); // Listener port for your queue manager
     private static final String CHANNEL = System.getProperty("Techdoc_channel"); // Channel name
@@ -115,11 +115,14 @@ public class MqUtilities {
 
             return true;
         } catch (Exception e) {
-            logger.error("ERROR", e);
+        	Logger.error(e);
         } finally {
-            queueSender.close();
-            queueSession.close();
-            queueConnection.close();
+        	if(queueSender != null) 
+        		queueSender.close();
+    		if(queueSession != null) 
+	            queueSession.close();
+    		if(queueConnection != null) 
+	            queueConnection.close();
         }
         return false;
     }
@@ -159,14 +162,17 @@ public class MqUtilities {
             if (sendEmail) {
                 ModelController.sendEmailMQ(ExceptionUtils.getStackTrace(e));
             }
-            logger.error("ERROR", e);
+            Logger.error(e);
         } finally {
         	try {
-	            queueReceiver.close();
-	            queueSession.close();
-	            queueConnection.close();
+        		if(queueReceiver != null) 
+		            queueReceiver.close();
+        		if(queueSession != null) 
+		            queueSession.close();
+        		if(queueConnection != null) 
+		            queueConnection.close();
         	}catch (Exception e) {
-				logger.error(e);
+        		Logger.error(e);
 			}
         }
         return null;

@@ -1,14 +1,13 @@
 package trax.aero.util;
 
 import com.jcraft.jsch.*;
-import org.jboss.logging.Logger;
+import org.tinylog.Logger;
 
 import java.io.InputStream;
 
 
 public class SftpUtilities {
 
-    private static final Logger logger = Logger.getLogger(SftpUtilities.class);
     private static String message = "";
 
     // ---------------------------------------------------------------------------- Send File
@@ -24,7 +23,7 @@ public class SftpUtilities {
         ChannelSftp channelSftp = setupJsch(sftpUsername, sftpPassword, sftpRemoteHost, sftpKnownHost);
         channelSftp.connect();
         message = String.format("SFTP is connected: %s", channelSftp.isConnected());
-        logger.info(message);
+        Logger.info(message);
 
         SftpATTRS attrs = null;
         try {
@@ -32,24 +31,24 @@ public class SftpUtilities {
             attrs = channelSftp.stat(sftpDestination);
         } catch (Exception e) {
             message = String.format("SFTP Directory [%s] does no exist.", sftpDestination);
-            logger.info(message);
+            Logger.info(message);
         }
 
         if (attrs != null) {
 
             message = String.format("SFTP Directory [%s] already exists.", sftpDestination);
-            logger.info(message);
+            Logger.info(message);
         } else {
 
             message = String.format("Creating SFTP Directory [%s].", sftpDestination);
-            logger.info(message);
+            Logger.info(message);
             channelSftp.mkdir(sftpDestination);
         }
 
 
         sftpDestination = String.format("%s/%s", sftpDestination, fileName);
         message = String.format("Putting the SFTP file in the following directory [%s].", sftpDestination);
-        logger.info(message);
+        Logger.info(message);
 
 
 //	    Logger.info(sftpDestination);
@@ -68,7 +67,7 @@ public class SftpUtilities {
         jschSession.connect();
 
         message = "Finished setting up the session data. Returning open channel.";
-        logger.info(message);
+        Logger.info(message);
 
         return (ChannelSftp) jschSession.openChannel("sftp");
     }

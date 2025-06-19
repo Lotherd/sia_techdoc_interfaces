@@ -1,7 +1,8 @@
 package trax.aero.util;
 
 import org.apache.commons.io.FilenameUtils;
-import org.jboss.logging.Logger;
+import org.tinylog.Logger;
+
 import trax.aero.pojo.Dw_Wo_Pack_Print;
 import trax.types.PrintQueueJob;
 
@@ -20,7 +21,6 @@ import java.util.Arrays;
 
 public class PrinterUtilities {
 
-    private static final Logger logger = Logger.getLogger(PrinterUtilities.class);
     static ArrayList<String> heavyPrinters = new ArrayList<>(Arrays.asList("EC61", "EC62", "EC63", "SINW", "SIO1", "EC1O", "SIOP"));
     static ArrayList<String> heavyPrintersRicoh = new ArrayList<>(Arrays.asList("EC1O", "SIOP"));
     static ArrayList<String> heavyPrintersOcepdf = new ArrayList<>(Arrays.asList("EC61", "EC62", "EC63", "SINW", "SIO1"));
@@ -52,7 +52,7 @@ public class PrinterUtilities {
 
         addJobToJMSQueue(propJob);
 
-        logger.info("Print Job " + dwSel.getRow().getWo() + " Has been successfuly sent to the print queue");
+        Logger.info("Print Job " + dwSel.getRow().getWo() + " Has been successfuly sent to the print queue");
 
 
         return job;
@@ -69,11 +69,11 @@ public class PrinterUtilities {
         try {
 
             client = ClientBuilder.newClient();
-            logger.info("Calling Print web service : " + "'" + url + "'");
+            Logger.info("Calling Print web service : " + "'" + url + "'");
 
             client.target(url).request().post(Entity.entity(propJob, MediaType.APPLICATION_JSON));
 
-            logger.info("After Print web service ");
+            Logger.info("After Print web service ");
 
         } finally {
             if (client != null)
@@ -84,7 +84,7 @@ public class PrinterUtilities {
     public static void sendToPrinterHeavyLP(String printService, File file, String side, String tray) throws Exception {
 
         if (file != null && printService != null && file.exists() && file.isFile()) {
-            logger.info("Job received for printer: " + printService + " tray: " + tray + " side: " + side);
+            Logger.info("Job received for printer: " + printService + " tray: " + tray + " side: " + side);
             try {
                 String ricohCommands = "";
                 String oceCommands = "";
@@ -137,7 +137,7 @@ public class PrinterUtilities {
                 }
                 // Command to print the document with duplex and tray options using lp on Linux
                 String command = "lp -d " + printService + oceCommands + ricohCommands + " " + file.getAbsolutePath();
-                logger.info("Command: " + command);
+                Logger.info("Command: " + command);
                 // Create the process builder
                 ProcessBuilder processBuilder = new ProcessBuilder(command.split(" "));
 
@@ -147,12 +147,12 @@ public class PrinterUtilities {
                 // Wait for the process to finish
                 int exitCode = process.waitFor();
                 if (exitCode == 0) {
-                    logger.info("Print job submitted successfully.");
+                    Logger.info("Print job submitted successfully.");
                 } else {
-                    logger.error("Error occurred during printing: " + exitCode);
+                    Logger.error("Error occurred during printing: " + exitCode);
                 }
             } catch (Exception e) {
-                logger.error("Exception printing JOB ", e);
+                Logger.error("Exception printing JOB ", e);
                 throw e;
             }
         }
@@ -171,9 +171,9 @@ public class PrinterUtilities {
 
             File theDir = new File(fileLocOut + File.separator + FilenameUtils.removeExtension(print.getName()));
             if (!theDir.exists()) {
-                logger.info(theDir.mkdirs());
+                Logger.info(theDir.mkdirs());
             }
-            logger.info(String.format("MOVE %s TO %s%s%s%s%s", print.toPath(), fileLocOut, File.separator, FilenameUtils.removeExtension(print.getName()), File.separator, print.getName()));
+            Logger.info(String.format("MOVE %s TO %s%s%s%s%s", print.toPath(), fileLocOut, File.separator, FilenameUtils.removeExtension(print.getName()), File.separator, print.getName()));
             Files.move(print.toPath(), new File(fileLocOut + File.separator + FilenameUtils.removeExtension(print.getName())
                     + File.separator + print.getName()).toPath(), StandardCopyOption.REPLACE_EXISTING);
 
@@ -186,7 +186,7 @@ public class PrinterUtilities {
                 sendToPrinterLP(printer, localPrint);
             }
         } catch (Exception e) {
-            logger.error("ERROR", e);
+            Logger.error(e);
             throw e;
         }
     }
@@ -202,14 +202,14 @@ public class PrinterUtilities {
             // Wait for the process to complete
             int exitCode = process.waitFor();
             if (exitCode == 0) {
-                logger.info("Printing completed successfully!");
+                Logger.info("Printing completed successfully!");
             } else {
-                logger.info("Error occurred while printing. Exit code: " + exitCode);
+                Logger.info("Error occurred while printing. Exit code: " + exitCode);
                 throw new Exception("Error occurred while printing. Exit code: " + exitCode);
             }
         } catch (Exception exc) {
-            logger.info("Exception printing JOB***************************");
-            logger.error(exc);
+            Logger.info("Exception printing JOB***************************");
+            Logger.error(exc);
             throw exc;
         }
 

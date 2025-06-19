@@ -1,6 +1,5 @@
 package trax.aero.util;
 
-import org.jboss.logging.Logger;
 import trax.aero.data.IModelData;
 import trax.aero.model.Wo;
 import trax.aero.pojo.xml.MODEL;
@@ -10,6 +9,9 @@ import javax.ejb.EJB;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.Marshaller;
 import javax.xml.bind.Unmarshaller;
+
+import org.tinylog.Logger;
+
 import java.io.StringReader;
 import java.io.StringWriter;
 import java.math.BigDecimal;
@@ -17,7 +19,6 @@ import java.math.BigDecimal;
 
 public class RunAble implements Runnable {
 
-    private static final Logger logger = Logger.getLogger(RunAble.class);
     //Variables
     @EJB
     IModelData data;
@@ -46,7 +47,7 @@ public class RunAble implements Runnable {
 
             if (message != null) {
 
-                logger.info(message);
+                Logger.info(message);
                 try {
 
                     message = "<ROOT>" + message + "</ROOT>";
@@ -63,7 +64,7 @@ public class RunAble implements Runnable {
                             data.filterADDATTR(root.getMODELS().get(0).getEFFECTIVITY().getJOBCARD().getJOBI().getPLI().getADDATTR(), "IDOC-DATE") +
                             data.filterADDATTR(root.getMODELS().get(0).getEFFECTIVITY().getJOBCARD().getJOBI().getPLI().getADDATTR(), "IDOC-TIME");
                     parent = data.createParentWo(COUNT, idocID);
-                    logger.info("Size: " + parent.getDocumentNo().intValue());
+                    Logger.info("Size: " + parent.getDocumentNo().intValue());
 
                     for (MODEL model : root.getMODELS()) {
                         jc = JAXBContext.newInstance(MODEL.class);
@@ -86,15 +87,15 @@ public class RunAble implements Runnable {
                             if (data.getCon() != null && !data.getCon().isClosed())
                                 data.getCon().close();
                         } catch (Exception e) {
-                            logger.error("ERROR", e);
+                            Logger.error(e);
                         }
                     }
                 } catch (Exception e) {
-                    logger.error("ERROR", e);
+                    Logger.error(e);
                 }
             }
         } catch (Exception e) {
-            logger.error("ERROR", e);
+            Logger.error(e);
         } finally {
             sendEmail = false;
         }
@@ -105,13 +106,15 @@ public class RunAble implements Runnable {
         try {
             if (data.lockAvailable("TD2")) {
                 data.lockTable("TD2");
+                Logger.info("Start process");
                 process();
                 data.processBatFile();
-                data.cleanUpTemp();
+                //data.cleanUpTemp();
+                Logger.info("End process");
                 data.unlockTable("TD2");
             }
         } catch (Exception e) {
-            logger.error("ERROR", e);
+            Logger.error(e);
         }
     }
 }

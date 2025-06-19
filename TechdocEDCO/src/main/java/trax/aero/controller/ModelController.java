@@ -4,7 +4,8 @@ import org.apache.commons.mail.Email;
 import org.apache.commons.mail.EmailAttachment;
 import org.apache.commons.mail.HtmlEmail;
 import org.apache.commons.mail.SimpleEmail;
-import org.jboss.logging.Logger;
+import org.tinylog.Logger;
+
 import trax.aero.model.InterfaceData;
 
 import javax.mail.util.ByteArrayDataSource;
@@ -17,7 +18,6 @@ public class ModelController {
     private static final String[] headersPDF = {"Name of PDF Attachment", "SAP Service Order", "Jobcard Number", "JC Title", "SAP Group Number", "Task Type", "TRAX WO Number", "Attachment", "Attachment ID"};
     private static final String[] headersCOVER = {"SAP Service Order", "Jobcard Number", "JC Title", "SAP Group Number", "Task Type", "TRAX WO Number", "Attachment", "Attachment ID"};
     private static final String[] acType = {"380", "350", "737", "747", "777", "777F", "737NG", "737Max", "330", "789", "290", "744", "738",};
-    private static final Logger logger = Logger.getLogger(ModelController.class);
     static String errors = "";
 
     public ModelController() {
@@ -86,10 +86,10 @@ public class ModelController {
                     print);
 
             email.send();
-            logger.info("SUCCESS EMAIL SENT");
+            Logger.info("SUCCESS EMAIL SENT");
         } catch (Exception e) {
 
-            logger.error("Email not found", e);
+            Logger.error("Email not found", e);
 
         } finally {
             errors = "";
@@ -159,10 +159,10 @@ public class ModelController {
                     print);
 
             email.send();
-            logger.info("SUCCESS EMAIL SENT");
+            Logger.info("SUCCESS EMAIL SENT");
         } catch (Exception e) {
 
-            logger.error("Email not found", e);
+            Logger.error("Email not found", e);
 
         } finally {
             errors = "";
@@ -195,10 +195,10 @@ public class ModelController {
                     error);
 
             email.send();
-            logger.info("SUCCESS EMAIL SENT");
+            Logger.info("SUCCESS EMAIL SENT");
         } catch (Exception e) {
 
-            logger.error("Email not found", e);
+            Logger.error("Email not found", e);
 
         } finally {
             errors = "";
@@ -267,10 +267,10 @@ public class ModelController {
                     print);
 
             email.send();
-            logger.info("SUCCESS EMAIL SENT");
+            Logger.info("SUCCESS EMAIL SENT");
         } catch (Exception e) {
 
-            logger.error("Email not found", e);
+            Logger.error("Email not found", e);
 
         } finally {
             errors = "";
@@ -285,8 +285,8 @@ public class ModelController {
                 ArrayList<String> fileName = new ArrayList<>(Arrays.asList(ids.get(0).getFileName().split("-")));
                 fleet = fileName.get(1);
             } catch (Exception e) {
-                logger.error("ERROR", e);
-                logger.info("File Name: " + ids.get(0).getFileName());
+                Logger.error(e);
+                Logger.info("File Name: " + ids.get(0).getFileName());
                 for (String type : acType) {
                     if (ids.get(0).getFileName().contains(type)) {
                         fleet = type;
@@ -342,10 +342,10 @@ public class ModelController {
             email.setMsg(message);
 
             email.send();
-            logger.info("SUCCESS EMAIL SENT");
+            Logger.info("SUCCESS EMAIL SENT");
         } catch (Exception e) {
 
-            logger.error("Email not found", e);
+            Logger.error("Email not found", e);
 
         } finally {
             errors = "";

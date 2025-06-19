@@ -1,7 +1,6 @@
 package trax.aero.application;
 
 
-import org.jboss.logging.Logger;
 import trax.aero.data.IModelData;
 import trax.aero.model.Wo;
 import trax.aero.pojo.Print;
@@ -19,6 +18,9 @@ import javax.ws.rs.core.Response;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.Marshaller;
 import javax.xml.bind.Unmarshaller;
+
+import org.tinylog.Logger;
+
 import java.io.StringReader;
 import java.io.StringWriter;
 import java.math.BigDecimal;
@@ -27,7 +29,6 @@ import java.math.BigDecimal;
 @Path("/Service")
 public class Service {
 
-    private static final Logger logger = Logger.getLogger(Service.class);
     @EJB
     IModelData data;
 
@@ -39,7 +40,7 @@ public class Service {
         try {
             MqUtilities.sendMqText(input);
         } catch (Exception e) {
-            logger.error("ERROR", e);
+            Logger.error(e);
         }
         return Response.ok().build();
     }
@@ -50,10 +51,10 @@ public class Service {
     @Produces(MediaType.TEXT_PLAIN)
     public Response print(Print input) {
         try {
-            logger.info("Print WO:" + input.getWo() + ", PATH:" + input.getPath());
+            Logger.info("Print WO:" + input.getWo() + ", PATH:" + input.getPath());
             data.sendPrintToOutBound(input);
         } catch (Exception e) {
-            logger.error("ERROR", e);
+            Logger.error(e);
         } finally {
             try {
                 if (data.getCon() != null && !data.getCon().isClosed()) {
@@ -91,7 +92,7 @@ public class Service {
                     data.filterADDATTR(root.getMODELS().get(0).getEFFECTIVITY().getJOBCARD().getJOBI().getPLI().getADDATTR(), "IDOC-DATE") +
                     data.filterADDATTR(root.getMODELS().get(0).getEFFECTIVITY().getJOBCARD().getJOBI().getPLI().getADDATTR(), "IDOC-TIME");
             parent = data.createParentWo(COUNT, idocID);
-            logger.info("Size: " + parent.getDocumentNo().intValue());
+            Logger.info("Size: " + parent.getDocumentNo().intValue());
 
             for (MODEL model : root.getMODELS()) {
                 data.filterADDATTR(model.getEFFECTIVITY().getJOBCARD().getJOBI().getPLI().getADDATTR(), "PRINTER-NAME");
@@ -115,18 +116,18 @@ public class Service {
                     if (data.getCon() != null && !data.getCon().isClosed())
                         data.getCon().close();
                 } catch (Exception e) {
-                    logger.error("ERROR", e);
+                    Logger.error(e);
                 }
 
             }
         } catch (Exception e) {
-            logger.error("ERROR", e);
+            Logger.error(e);
         } finally {
             try {
                 if (data.getCon() != null && !data.getCon().isClosed())
                     data.getCon().close();
             } catch (Exception e) {
-                logger.error("ERROR", e);
+                Logger.error(e);
             }
         }
         return Response.ok().build();
