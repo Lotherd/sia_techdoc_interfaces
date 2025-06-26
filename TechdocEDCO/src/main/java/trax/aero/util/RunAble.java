@@ -59,11 +59,11 @@ public class RunAble implements Runnable {
                     BigDecimal COUNT = new BigDecimal(data.filterADDATTR(root.getMODELS().get(0).getEFFECTIVITY().getJOBCARD().getJOBI().getPLI().getADDATTR(), "COUNT"));
                     //SAVE TRAX WO NUMBER
                     //AS ISSUE TO TRAX IS SEPARATE REQUESTS
-                    Wo parent;
                     String idocID = data.filterADDATTR(root.getMODELS().get(0).getEFFECTIVITY().getJOBCARD().getJOBI().getPLI().getADDATTR(), "USER-NAME") +
                             data.filterADDATTR(root.getMODELS().get(0).getEFFECTIVITY().getJOBCARD().getJOBI().getPLI().getADDATTR(), "IDOC-DATE") +
-                            data.filterADDATTR(root.getMODELS().get(0).getEFFECTIVITY().getJOBCARD().getJOBI().getPLI().getADDATTR(), "IDOC-TIME");
-                    parent = data.createParentWo(COUNT, idocID);
+                            data.filterADDATTR(root.getMODELS().get(0).getEFFECTIVITY().getJOBCARD().getJOBI().getPLI().getADDATTR(), "IDOC-TIME") +
+                            data.filterADDATTR(root.getMODELS().get(0).getEFFECTIVITY().getJOBCARD().getJOBI().getPLI().getADDATTR(), "PRINTER-NAME");
+                    Wo parent = data.createParentWo(COUNT, idocID);
                     Logger.info("Size: " + parent.getDocumentNo().intValue());
 
                     for (MODEL model : root.getMODELS()) {
@@ -107,9 +107,9 @@ public class RunAble implements Runnable {
             if (data.lockAvailable("TD2")) {
                 data.lockTable("TD2");
                 Logger.info("Start process");
-                process();
                 data.processBatFile();
-                //data.cleanUpTemp();
+                data.cleanUpTemp();
+                process();
                 Logger.info("End process");
                 data.unlockTable("TD2");
             }

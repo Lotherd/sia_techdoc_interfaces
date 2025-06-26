@@ -82,20 +82,17 @@ public class Service {
             StringReader sr = new StringReader(message);
 
             root = (ROOT) unmarshaller.unmarshal(sr);
-            //TODO create parent WO
+            // create parent WO
             BigDecimal COUNT = new BigDecimal(data.filterADDATTR(root.getMODELS().get(0).getEFFECTIVITY().getJOBCARD().getJOBI().getPLI().getADDATTR(), "COUNT"));
-            data.filterADDATTR(root.getMODELS().get(0).getEFFECTIVITY().getJOBCARD().getJOBI().getPLI().getADDATTR(), "PRINTER-NAME");
             //SAVE TRAX WO NUMBER
             //AS ISSUE TO TRAX IS SEPARATE REQUESTS
-            Wo parent;
             String idocID = data.filterADDATTR(root.getMODELS().get(0).getEFFECTIVITY().getJOBCARD().getJOBI().getPLI().getADDATTR(), "USER-NAME") +
                     data.filterADDATTR(root.getMODELS().get(0).getEFFECTIVITY().getJOBCARD().getJOBI().getPLI().getADDATTR(), "IDOC-DATE") +
-                    data.filterADDATTR(root.getMODELS().get(0).getEFFECTIVITY().getJOBCARD().getJOBI().getPLI().getADDATTR(), "IDOC-TIME");
-            parent = data.createParentWo(COUNT, idocID);
+                    data.filterADDATTR(root.getMODELS().get(0).getEFFECTIVITY().getJOBCARD().getJOBI().getPLI().getADDATTR(), "IDOC-TIME")+
+                    data.filterADDATTR(root.getMODELS().get(0).getEFFECTIVITY().getJOBCARD().getJOBI().getPLI().getADDATTR(), "PRINTER-NAME");
+            Wo parent = data.createParentWo(COUNT, idocID);
             Logger.info("Size: " + parent.getDocumentNo().intValue());
-
             for (MODEL model : root.getMODELS()) {
-                data.filterADDATTR(model.getEFFECTIVITY().getJOBCARD().getJOBI().getPLI().getADDATTR(), "PRINTER-NAME");
                 jc = JAXBContext.newInstance(MODEL.class);
                 Marshaller marshaller = jc.createMarshaller();
                 marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, Boolean.TRUE);

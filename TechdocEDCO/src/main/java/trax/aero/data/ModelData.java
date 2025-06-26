@@ -1522,7 +1522,7 @@ public class ModelData implements IModelData {
             wo.setExpenditure(setExpenditure("General"));
             wo.setPriority("NORMAL");
 
-            wo.setStatus("OPEN");
+            wo.setStatus("TECHDOC");
             wo.setOrderType("W/O");
             wo.setModule("PRODUCTION");
             wo.setPaperChecked("NO");
@@ -1656,7 +1656,7 @@ public class ModelData implements IModelData {
             card.setTdSvo(filterADDATTR(input.getEFFECTIVITY().getJOBCARD().getJOBI().getPLI().getADDATTR(), "TASK-NBR"));
             insertData(card);
             for (WoTaskCardItem item : card.getWoTaskCardItems()) {
-                item.setPhase(input.getEFFECTIVITY().getJOBCARD().getTRADE());
+                item.setPhase(tirmString(input.getEFFECTIVITY().getJOBCARD().getTRADE()));
                 insertData(item);
             }
         }
@@ -1718,25 +1718,25 @@ public class ModelData implements IModelData {
 
 
     public void cleanUpTemp() {
-        String queryWo = "delete from wo where created_by = 'IFACE-SIA' and rownum <= 5 and created_date < SYSDATE - 1";
+        String queryWo = "delete from wo where created_by = 'IFACE-SIA' and rownum <= 5 and created_date < SYSDATE - (3 / 24)";
 
-        String queryWoTaskCard = "delete from wo_task_card where created_by = 'IFACE-SIA' and rownum <= 5 and created_date < SYSDATE - 1";
+        String queryWoTaskCard = "delete from wo_task_card where created_by = 'IFACE-SIA' and rownum <= 5 and created_date < SYSDATE - (3 / 24)";
 
-        String queryWoTaskCardPn = "delete from wo_task_card_pn where created_by = 'IFACE-SIA' and rownum <= 5 and created_date < SYSDATE - 1";
+        String queryWoTaskCardPn = "delete from wo_task_card_pn where created_by = 'IFACE-SIA' and rownum <= 5 and created_date < SYSDATE - (3 / 24)";
 
-        String queryBlobTable = "delete from blob_table where created_by = 'IFACE-SIA' and rownum <= 5 and created_date < SYSDATE - 1";
+        String queryBlobTable = "delete from blob_table where created_by = 'IFACE-SIA' and rownum <= 5 and created_date < SYSDATE - (3 / 24)";
 
-        String queryWoTaskCardItem = "delete from wo_task_card_item where created_by = 'IFACE-SIA' and rownum <= 5 and created_date < SYSDATE - 1";
+        String queryWoTaskCardItem = "delete from wo_task_card_item where created_by = 'IFACE-SIA' and rownum <= 5 and created_date < SYSDATE - (3 / 24)";
 
-        String queryEngineeringPendingRelease = "delete from engineering_pending_release where created_by = 'IFACE-SIA' and rownum <= 5 and created_date < SYSDATE - 1";
+        String queryEngineeringPendingRelease = "delete from engineering_pending_release where created_by = 'IFACE-SIA' and rownum <= 5 and created_date < SYSDATE - (3 / 24)";
 
-        String queryWoTaskCardControl = "delete from wo_task_card_control where created_by = 'IFACE-SIA' and rownum <= 5 and created_date < SYSDATE - 1";
+        String queryWoTaskCardControl = "delete from wo_task_card_control where created_by = 'IFACE-SIA' and rownum <= 5 and created_date < SYSDATE - (3 / 24)";
 
-        String queryWoTaskCardItemForm = "delete from task_card_item_form where created_by = 'IFACE-SIA' and rownum <= 5 and created_date < SYSDATE - 1";
+        String queryWoTaskCardItemForm = "delete from task_card_item_form where created_by = 'IFACE-SIA' and rownum <= 5 and created_date < SYSDATE - (3 / 24)";
 
-        String queryWoTaskCardTraxdocRef = "delete from wo_task_card_traxdoc_ref where created_by = 'IFACE-SIA' and rownum <= 5 and created_date < SYSDATE - 1";
+        String queryWoTaskCardTraxdocRef = "delete from wo_task_card_traxdoc_ref where created_by = 'IFACE-SIA' and rownum <= 5 and created_date < SYSDATE - (3 / 24)";
 
-        String queryTraceWoTaskCard = "delete from trace_wo_task_card where created_by = 'IFACE-SIA' and rownum <= 5 and created_date < SYSDATE - 1";
+        String queryTraceWoTaskCard = "delete from trace_wo_task_card where created_by = 'IFACE-SIA' and rownum <= 5 and created_date < SYSDATE - (3 / 24)";
 
         try {
             em.createNativeQuery(queryWo).executeUpdate();
@@ -1801,5 +1801,13 @@ public class ModelData implements IModelData {
         }
 
 
+    }
+    
+    private String tirmString(String inputString) {
+    	if (inputString == null) {
+            return null;
+        }else {
+        	return inputString.substring(0, Math.min(inputString.length(), 8));
+        }
     }
 }
