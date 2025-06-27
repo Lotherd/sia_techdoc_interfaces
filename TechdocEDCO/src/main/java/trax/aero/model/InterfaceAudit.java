@@ -1,458 +1,453 @@
 package trax.aero.model;
 
-import javax.persistence.*;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
+import javax.persistence.*;
 
-
-/**
- * The persistent class for the INTERFACE_AUDIT database table.
- */
+/** The persistent class for the INTERFACE_AUDIT database table. */
 @Entity
 @Table(name = "INTERFACE_AUDIT")
 @NamedQuery(name = "InterfaceAudit.findAll", query = "SELECT i FROM InterfaceAudit i")
 public class InterfaceAudit implements Serializable {
-    private static final long serialVersionUID = 1L;
+  private static final long serialVersionUID = 1L;
 
-    @Id
-    @Column(name = "\"TRANSACTION\"")
-    private long transaction;
+  @Id
+  @Column(name = "\"TRANSACTION\"")
+  private long transaction;
 
-    @Column(name = "CREATED_BY")
-    private String createdBy;
+  @Column(name = "CREATED_BY")
+  private String createdBy;
 
-    @Temporal(TemporalType.DATE)
-    @Column(name = "CREATED_DATE")
-    private Date createdDate;
+  @Temporal(TemporalType.DATE)
+  @Column(name = "CREATED_DATE")
+  private Date createdDate;
 
-    private String defect;
+  private String defect;
 
-    @Column(name = "DEFECT_ITEM")
-    private BigDecimal defectItem;
+  @Column(name = "DEFECT_ITEM")
+  private BigDecimal defectItem;
 
-    @Column(name = "DEFECT_TYPE")
-    private String defectType;
+  @Column(name = "DEFECT_TYPE")
+  private String defectType;
 
-    private String eo;
+  private String eo;
 
-    @Column(name = "EXCEPTION_BY_TRAX")
-    private String exceptionByTrax;
+  @Column(name = "EXCEPTION_BY_TRAX")
+  private String exceptionByTrax;
 
-    @Column(name = "EXCEPTION_CLASS")
-    private String exceptionClass;
+  @Column(name = "EXCEPTION_CLASS")
+  private String exceptionClass;
 
-    @Column(name = "EXCEPTION_CLASS_TRAX")
-    private String exceptionClassTrax;
+  @Column(name = "EXCEPTION_CLASS_TRAX")
+  private String exceptionClassTrax;
 
-    @Column(name = "EXCEPTION_DETAIL")
-    private String exceptionDetail;
+  @Column(name = "EXCEPTION_DETAIL")
+  private String exceptionDetail;
 
-    @Column(name = "EXCEPTION_ID")
-    private BigDecimal exceptionId;
+  @Column(name = "EXCEPTION_ID")
+  private BigDecimal exceptionId;
 
-    @Column(name = "EXCEPTION_NEEDS_TO_B_PROCESSED")
-    private String exceptionNeedsToBProcessed;
+  @Column(name = "EXCEPTION_NEEDS_TO_B_PROCESSED")
+  private String exceptionNeedsToBProcessed;
 
-    @Column(name = "EXCEPTION_STACK_TRACE")
-    private String exceptionStackTrace;
+  @Column(name = "EXCEPTION_STACK_TRACE")
+  private String exceptionStackTrace;
 
-    @Column(name = "EXCEPTION_WAS_PROCESSED")
-    private String exceptionWasProcessed;
+  @Column(name = "EXCEPTION_WAS_PROCESSED")
+  private String exceptionWasProcessed;
 
-    @Column(name = "MESSAGE_DESCRIPTION")
-    private String messageDescription;
+  @Column(name = "MESSAGE_DESCRIPTION")
+  private String messageDescription;
 
-    @Column(name = "MESSAGE_EXCEPTION_DETAIL")
-    private String messageExceptionDetail;
+  @Column(name = "MESSAGE_EXCEPTION_DETAIL")
+  private String messageExceptionDetail;
 
-    @Column(name = "MESSAGE_EXCEPTION_ID")
-    private BigDecimal messageExceptionId;
+  @Column(name = "MESSAGE_EXCEPTION_ID")
+  private BigDecimal messageExceptionId;
 
-    @Column(name = "MESSAGE_ID")
-    private BigDecimal messageId;
+  @Column(name = "MESSAGE_ID")
+  private BigDecimal messageId;
 
-    @Column(name = "MESSAGE_NEEDS_TO_BE_SENT")
-    private String messageNeedsToBeSent;
+  @Column(name = "MESSAGE_NEEDS_TO_BE_SENT")
+  private String messageNeedsToBeSent;
 
-    @Column(name = "MESSAGE_PROCESSED_BY")
-    private String messageProcessedBy;
+  @Column(name = "MESSAGE_PROCESSED_BY")
+  private String messageProcessedBy;
 
-    @Temporal(TemporalType.DATE)
-    @Column(name = "MESSAGE_PROCESSED_DATE")
-    private Date messageProcessedDate;
+  @Temporal(TemporalType.DATE)
+  @Column(name = "MESSAGE_PROCESSED_DATE")
+  private Date messageProcessedDate;
 
-    @Column(name = "MESSAGE_WAS_SENT")
-    private String messageWasSent;
+  @Column(name = "MESSAGE_WAS_SENT")
+  private String messageWasSent;
 
-    @Column(name = "MODIFIED_BY")
-    private String modifiedBy;
+  @Column(name = "MODIFIED_BY")
+  private String modifiedBy;
 
-    @Temporal(TemporalType.DATE)
-    @Column(name = "MODIFIED_DATE")
-    private Date modifiedDate;
+  @Temporal(TemporalType.DATE)
+  @Column(name = "MODIFIED_DATE")
+  private Date modifiedDate;
 
-    @Column(name = "ORDER_LINE")
-    private BigDecimal orderLine;
+  @Column(name = "ORDER_LINE")
+  private BigDecimal orderLine;
 
-    @Column(name = "ORDER_NUMBER")
-    private BigDecimal orderNumber;
+  @Column(name = "ORDER_NUMBER")
+  private BigDecimal orderNumber;
 
-    @Column(name = "ORDER_NUMBER_REFERENCE")
-    private String orderNumberReference;
+  @Column(name = "ORDER_NUMBER_REFERENCE")
+  private String orderNumberReference;
 
-    @Column(name = "ORDER_TYPE")
-    private String orderType;
+  @Column(name = "ORDER_TYPE")
+  private String orderType;
 
-    @Column(name = "SUB_TRANSACTION")
-    private String subTransaction;
+  @Column(name = "SUB_TRANSACTION")
+  private String subTransaction;
 
-    @Temporal(TemporalType.DATE)
-    @Column(name = "TRANSACTION_DATE")
-    private Date transactionDate;
+  @Temporal(TemporalType.DATE)
+  @Column(name = "TRANSACTION_DATE")
+  private Date transactionDate;
 
-    @Column(name = "TRANSACTION_IN_OUT")
-    private String transactionInOut;
+  @Column(name = "TRANSACTION_IN_OUT")
+  private String transactionInOut;
 
-    @Column(name = "TRANSACTION_METHOD")
-    private String transactionMethod;
+  @Column(name = "TRANSACTION_METHOD")
+  private String transactionMethod;
 
-    @Column(name = "TRANSACTION_OBJECT")
-    private String transactionObject;
+  @Column(name = "TRANSACTION_OBJECT")
+  private String transactionObject;
 
-    @Column(name = "TRANSACTION_QUEUE")
-    private String transactionQueue;
+  @Column(name = "TRANSACTION_QUEUE")
+  private String transactionQueue;
 
-    @Column(name = "TRANSACTION_TYPE")
-    private String transactionType;
+  @Column(name = "TRANSACTION_TYPE")
+  private String transactionType;
 
-    @Column(name = "TRANSACTION_USER")
-    private String transactionUser;
+  @Column(name = "TRANSACTION_USER")
+  private String transactionUser;
 
-    //bi-directional many-to-one association to InterfaceData
-    @OneToMany(mappedBy = "interfaceAudit")
-    private List<InterfaceData> interfaceData;
+  // bi-directional many-to-one association to InterfaceData
+  @OneToMany(mappedBy = "interfaceAudit")
+  private List<InterfaceData> interfaceData;
 
-    public InterfaceAudit() {
-    }
+  public InterfaceAudit() {}
 
-    public long getTransaction() {
-        return this.transaction;
-    }
+  public long getTransaction() {
+    return this.transaction;
+  }
 
-    public void setTransaction(long transaction) {
-        this.transaction = transaction;
-    }
+  public void setTransaction(long transaction) {
+    this.transaction = transaction;
+  }
 
-    public String getCreatedBy() {
-        return this.createdBy;
-    }
+  public String getCreatedBy() {
+    return this.createdBy;
+  }
 
-    public void setCreatedBy(String createdBy) {
-        this.createdBy = createdBy;
-    }
+  public void setCreatedBy(String createdBy) {
+    this.createdBy = createdBy;
+  }
 
-    public Date getCreatedDate() {
-        return this.createdDate;
-    }
+  public Date getCreatedDate() {
+    return this.createdDate;
+  }
 
-    public void setCreatedDate(Date createdDate) {
-        this.createdDate = createdDate;
-    }
+  public void setCreatedDate(Date createdDate) {
+    this.createdDate = createdDate;
+  }
 
-    public String getDefect() {
-        return this.defect;
-    }
+  public String getDefect() {
+    return this.defect;
+  }
 
-    public void setDefect(String defect) {
-        this.defect = defect;
-    }
+  public void setDefect(String defect) {
+    this.defect = defect;
+  }
 
-    public BigDecimal getDefectItem() {
-        return this.defectItem;
-    }
+  public BigDecimal getDefectItem() {
+    return this.defectItem;
+  }
 
-    public void setDefectItem(BigDecimal defectItem) {
-        this.defectItem = defectItem;
-    }
+  public void setDefectItem(BigDecimal defectItem) {
+    this.defectItem = defectItem;
+  }
 
-    public String getDefectType() {
-        return this.defectType;
-    }
+  public String getDefectType() {
+    return this.defectType;
+  }
 
-    public void setDefectType(String defectType) {
-        this.defectType = defectType;
-    }
+  public void setDefectType(String defectType) {
+    this.defectType = defectType;
+  }
 
-    public String getEo() {
-        return this.eo;
-    }
+  public String getEo() {
+    return this.eo;
+  }
 
-    public void setEo(String eo) {
-        this.eo = eo;
-    }
+  public void setEo(String eo) {
+    this.eo = eo;
+  }
 
-    public String getExceptionByTrax() {
-        return this.exceptionByTrax;
-    }
+  public String getExceptionByTrax() {
+    return this.exceptionByTrax;
+  }
 
-    public void setExceptionByTrax(String exceptionByTrax) {
-        this.exceptionByTrax = exceptionByTrax;
-    }
+  public void setExceptionByTrax(String exceptionByTrax) {
+    this.exceptionByTrax = exceptionByTrax;
+  }
 
-    public String getExceptionClass() {
-        return this.exceptionClass;
-    }
+  public String getExceptionClass() {
+    return this.exceptionClass;
+  }
 
-    public void setExceptionClass(String exceptionClass) {
-        this.exceptionClass = exceptionClass;
-    }
+  public void setExceptionClass(String exceptionClass) {
+    this.exceptionClass = exceptionClass;
+  }
 
-    public String getExceptionClassTrax() {
-        return this.exceptionClassTrax;
-    }
+  public String getExceptionClassTrax() {
+    return this.exceptionClassTrax;
+  }
 
-    public void setExceptionClassTrax(String exceptionClassTrax) {
-        this.exceptionClassTrax = exceptionClassTrax;
-    }
+  public void setExceptionClassTrax(String exceptionClassTrax) {
+    this.exceptionClassTrax = exceptionClassTrax;
+  }
 
-    public String getExceptionDetail() {
-        return this.exceptionDetail;
-    }
+  public String getExceptionDetail() {
+    return this.exceptionDetail;
+  }
 
-    public void setExceptionDetail(String exceptionDetail) {
-        this.exceptionDetail = exceptionDetail;
-    }
+  public void setExceptionDetail(String exceptionDetail) {
+    this.exceptionDetail = exceptionDetail;
+  }
 
-    public BigDecimal getExceptionId() {
-        return this.exceptionId;
-    }
+  public BigDecimal getExceptionId() {
+    return this.exceptionId;
+  }
 
-    public void setExceptionId(BigDecimal exceptionId) {
-        this.exceptionId = exceptionId;
-    }
+  public void setExceptionId(BigDecimal exceptionId) {
+    this.exceptionId = exceptionId;
+  }
 
-    public String getExceptionNeedsToBProcessed() {
-        return this.exceptionNeedsToBProcessed;
-    }
+  public String getExceptionNeedsToBProcessed() {
+    return this.exceptionNeedsToBProcessed;
+  }
 
-    public void setExceptionNeedsToBProcessed(String exceptionNeedsToBProcessed) {
-        this.exceptionNeedsToBProcessed = exceptionNeedsToBProcessed;
-    }
+  public void setExceptionNeedsToBProcessed(String exceptionNeedsToBProcessed) {
+    this.exceptionNeedsToBProcessed = exceptionNeedsToBProcessed;
+  }
 
-    public String getExceptionStackTrace() {
-        return this.exceptionStackTrace;
-    }
+  public String getExceptionStackTrace() {
+    return this.exceptionStackTrace;
+  }
 
-    public void setExceptionStackTrace(String exceptionStackTrace) {
-        this.exceptionStackTrace = exceptionStackTrace;
-    }
+  public void setExceptionStackTrace(String exceptionStackTrace) {
+    this.exceptionStackTrace = exceptionStackTrace;
+  }
 
-    public String getExceptionWasProcessed() {
-        return this.exceptionWasProcessed;
-    }
+  public String getExceptionWasProcessed() {
+    return this.exceptionWasProcessed;
+  }
 
-    public void setExceptionWasProcessed(String exceptionWasProcessed) {
-        this.exceptionWasProcessed = exceptionWasProcessed;
-    }
+  public void setExceptionWasProcessed(String exceptionWasProcessed) {
+    this.exceptionWasProcessed = exceptionWasProcessed;
+  }
 
-    public String getMessageDescription() {
-        return this.messageDescription;
-    }
+  public String getMessageDescription() {
+    return this.messageDescription;
+  }
 
-    public void setMessageDescription(String messageDescription) {
-        this.messageDescription = messageDescription;
-    }
+  public void setMessageDescription(String messageDescription) {
+    this.messageDescription = messageDescription;
+  }
 
-    public String getMessageExceptionDetail() {
-        return this.messageExceptionDetail;
-    }
+  public String getMessageExceptionDetail() {
+    return this.messageExceptionDetail;
+  }
 
-    public void setMessageExceptionDetail(String messageExceptionDetail) {
-        this.messageExceptionDetail = messageExceptionDetail;
-    }
+  public void setMessageExceptionDetail(String messageExceptionDetail) {
+    this.messageExceptionDetail = messageExceptionDetail;
+  }
 
-    public BigDecimal getMessageExceptionId() {
-        return this.messageExceptionId;
-    }
+  public BigDecimal getMessageExceptionId() {
+    return this.messageExceptionId;
+  }
 
-    public void setMessageExceptionId(BigDecimal messageExceptionId) {
-        this.messageExceptionId = messageExceptionId;
-    }
+  public void setMessageExceptionId(BigDecimal messageExceptionId) {
+    this.messageExceptionId = messageExceptionId;
+  }
 
-    public BigDecimal getMessageId() {
-        return this.messageId;
-    }
+  public BigDecimal getMessageId() {
+    return this.messageId;
+  }
 
-    public void setMessageId(BigDecimal messageId) {
-        this.messageId = messageId;
-    }
+  public void setMessageId(BigDecimal messageId) {
+    this.messageId = messageId;
+  }
 
-    public String getMessageNeedsToBeSent() {
-        return this.messageNeedsToBeSent;
-    }
+  public String getMessageNeedsToBeSent() {
+    return this.messageNeedsToBeSent;
+  }
 
-    public void setMessageNeedsToBeSent(String messageNeedsToBeSent) {
-        this.messageNeedsToBeSent = messageNeedsToBeSent;
-    }
+  public void setMessageNeedsToBeSent(String messageNeedsToBeSent) {
+    this.messageNeedsToBeSent = messageNeedsToBeSent;
+  }
 
-    public String getMessageProcessedBy() {
-        return this.messageProcessedBy;
-    }
+  public String getMessageProcessedBy() {
+    return this.messageProcessedBy;
+  }
 
-    public void setMessageProcessedBy(String messageProcessedBy) {
-        this.messageProcessedBy = messageProcessedBy;
-    }
+  public void setMessageProcessedBy(String messageProcessedBy) {
+    this.messageProcessedBy = messageProcessedBy;
+  }
 
-    public Date getMessageProcessedDate() {
-        return this.messageProcessedDate;
-    }
+  public Date getMessageProcessedDate() {
+    return this.messageProcessedDate;
+  }
 
-    public void setMessageProcessedDate(Date messageProcessedDate) {
-        this.messageProcessedDate = messageProcessedDate;
-    }
+  public void setMessageProcessedDate(Date messageProcessedDate) {
+    this.messageProcessedDate = messageProcessedDate;
+  }
 
-    public String getMessageWasSent() {
-        return this.messageWasSent;
-    }
+  public String getMessageWasSent() {
+    return this.messageWasSent;
+  }
 
-    public void setMessageWasSent(String messageWasSent) {
-        this.messageWasSent = messageWasSent;
-    }
+  public void setMessageWasSent(String messageWasSent) {
+    this.messageWasSent = messageWasSent;
+  }
 
-    public String getModifiedBy() {
-        return this.modifiedBy;
-    }
+  public String getModifiedBy() {
+    return this.modifiedBy;
+  }
 
-    public void setModifiedBy(String modifiedBy) {
-        this.modifiedBy = modifiedBy;
-    }
+  public void setModifiedBy(String modifiedBy) {
+    this.modifiedBy = modifiedBy;
+  }
 
-    public Date getModifiedDate() {
-        return this.modifiedDate;
-    }
+  public Date getModifiedDate() {
+    return this.modifiedDate;
+  }
 
-    public void setModifiedDate(Date modifiedDate) {
-        this.modifiedDate = modifiedDate;
-    }
+  public void setModifiedDate(Date modifiedDate) {
+    this.modifiedDate = modifiedDate;
+  }
 
-    public BigDecimal getOrderLine() {
-        return this.orderLine;
-    }
+  public BigDecimal getOrderLine() {
+    return this.orderLine;
+  }
 
-    public void setOrderLine(BigDecimal orderLine) {
-        this.orderLine = orderLine;
-    }
+  public void setOrderLine(BigDecimal orderLine) {
+    this.orderLine = orderLine;
+  }
 
-    public BigDecimal getOrderNumber() {
-        return this.orderNumber;
-    }
+  public BigDecimal getOrderNumber() {
+    return this.orderNumber;
+  }
 
-    public void setOrderNumber(BigDecimal orderNumber) {
-        this.orderNumber = orderNumber;
-    }
+  public void setOrderNumber(BigDecimal orderNumber) {
+    this.orderNumber = orderNumber;
+  }
 
-    public String getOrderNumberReference() {
-        return this.orderNumberReference;
-    }
+  public String getOrderNumberReference() {
+    return this.orderNumberReference;
+  }
 
-    public void setOrderNumberReference(String orderNumberReference) {
-        this.orderNumberReference = orderNumberReference;
-    }
+  public void setOrderNumberReference(String orderNumberReference) {
+    this.orderNumberReference = orderNumberReference;
+  }
 
-    public String getOrderType() {
-        return this.orderType;
-    }
+  public String getOrderType() {
+    return this.orderType;
+  }
 
-    public void setOrderType(String orderType) {
-        this.orderType = orderType;
-    }
+  public void setOrderType(String orderType) {
+    this.orderType = orderType;
+  }
 
-    public String getSubTransaction() {
-        return this.subTransaction;
-    }
+  public String getSubTransaction() {
+    return this.subTransaction;
+  }
 
-    public void setSubTransaction(String subTransaction) {
-        this.subTransaction = subTransaction;
-    }
+  public void setSubTransaction(String subTransaction) {
+    this.subTransaction = subTransaction;
+  }
 
-    public Date getTransactionDate() {
-        return this.transactionDate;
-    }
+  public Date getTransactionDate() {
+    return this.transactionDate;
+  }
 
-    public void setTransactionDate(Date transactionDate) {
-        this.transactionDate = transactionDate;
-    }
+  public void setTransactionDate(Date transactionDate) {
+    this.transactionDate = transactionDate;
+  }
 
-    public String getTransactionInOut() {
-        return this.transactionInOut;
-    }
+  public String getTransactionInOut() {
+    return this.transactionInOut;
+  }
 
-    public void setTransactionInOut(String transactionInOut) {
-        this.transactionInOut = transactionInOut;
-    }
+  public void setTransactionInOut(String transactionInOut) {
+    this.transactionInOut = transactionInOut;
+  }
 
-    public String getTransactionMethod() {
-        return this.transactionMethod;
-    }
+  public String getTransactionMethod() {
+    return this.transactionMethod;
+  }
 
-    public void setTransactionMethod(String transactionMethod) {
-        this.transactionMethod = transactionMethod;
-    }
+  public void setTransactionMethod(String transactionMethod) {
+    this.transactionMethod = transactionMethod;
+  }
 
-    public String getTransactionObject() {
-        return this.transactionObject;
-    }
+  public String getTransactionObject() {
+    return this.transactionObject;
+  }
 
-    public void setTransactionObject(String transactionObject) {
-        this.transactionObject = transactionObject;
-    }
+  public void setTransactionObject(String transactionObject) {
+    this.transactionObject = transactionObject;
+  }
 
-    public String getTransactionQueue() {
-        return this.transactionQueue;
-    }
+  public String getTransactionQueue() {
+    return this.transactionQueue;
+  }
 
-    public void setTransactionQueue(String transactionQueue) {
-        this.transactionQueue = transactionQueue;
-    }
+  public void setTransactionQueue(String transactionQueue) {
+    this.transactionQueue = transactionQueue;
+  }
 
-    public String getTransactionType() {
-        return this.transactionType;
-    }
+  public String getTransactionType() {
+    return this.transactionType;
+  }
 
-    public void setTransactionType(String transactionType) {
-        this.transactionType = transactionType;
-    }
+  public void setTransactionType(String transactionType) {
+    this.transactionType = transactionType;
+  }
 
-    public String getTransactionUser() {
-        return this.transactionUser;
-    }
+  public String getTransactionUser() {
+    return this.transactionUser;
+  }
 
-    public void setTransactionUser(String transactionUser) {
-        this.transactionUser = transactionUser;
-    }
+  public void setTransactionUser(String transactionUser) {
+    this.transactionUser = transactionUser;
+  }
 
-    public List<InterfaceData> getInterfaceData() {
-        return this.interfaceData;
-    }
+  public List<InterfaceData> getInterfaceData() {
+    return this.interfaceData;
+  }
 
-    public void setInterfaceData(List<InterfaceData> interfaceData) {
-        this.interfaceData = interfaceData;
-    }
+  public void setInterfaceData(List<InterfaceData> interfaceData) {
+    this.interfaceData = interfaceData;
+  }
 
-    public InterfaceData addInterfaceData(InterfaceData interfaceData) {
-        getInterfaceData().add(interfaceData);
-        interfaceData.setInterfaceAudit(this);
+  public InterfaceData addInterfaceData(InterfaceData interfaceData) {
+    getInterfaceData().add(interfaceData);
+    interfaceData.setInterfaceAudit(this);
 
-        return interfaceData;
-    }
+    return interfaceData;
+  }
 
-    public InterfaceData removeInterfaceData(InterfaceData interfaceData) {
-        getInterfaceData().remove(interfaceData);
-        interfaceData.setInterfaceAudit(null);
+  public InterfaceData removeInterfaceData(InterfaceData interfaceData) {
+    getInterfaceData().remove(interfaceData);
+    interfaceData.setInterfaceAudit(null);
 
-        return interfaceData;
-    }
-
+    return interfaceData;
+  }
 }

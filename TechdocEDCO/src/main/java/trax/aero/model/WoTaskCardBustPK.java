@@ -1,100 +1,96 @@
 package trax.aero.model;
 
+import java.io.Serializable;
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
-import java.io.Serializable;
 
-/**
- * The primary key class for the WO_TASK_CARD_BUST database table.
- */
+/** The primary key class for the WO_TASK_CARD_BUST database table. */
 @Embeddable
 public class WoTaskCardBustPK implements Serializable {
-    //default serial version id, required for serializable classes.
-    private static final long serialVersionUID = 1L;
+  // default serial version id, required for serializable classes.
+  private static final long serialVersionUID = 1L;
 
-    @Column(insertable = false, updatable = false)
-    private long wo;
+  @Column(insertable = false, updatable = false)
+  private long wo;
 
-    @Column(name = "TASK_CARD", insertable = false, updatable = false)
-    private String taskCard;
+  @Column(name = "TASK_CARD", insertable = false, updatable = false)
+  private String taskCard;
 
-    @Column(insertable = false, updatable = false)
-    private String ac;
+  @Column(insertable = false, updatable = false)
+  private String ac;
 
-    @Column(name = "TASK_CARD_PN", insertable = false, updatable = false)
-    private String taskCardPn;
+  @Column(name = "TASK_CARD_PN", insertable = false, updatable = false)
+  private String taskCardPn;
 
-    @Column(name = "TASK_CARD_PN_SN", insertable = false, updatable = false)
-    private String taskCardPnSn;
+  @Column(name = "TASK_CARD_PN_SN", insertable = false, updatable = false)
+  private String taskCardPnSn;
 
-    public WoTaskCardBustPK() {
+  public WoTaskCardBustPK() {}
+
+  public long getWo() {
+    return this.wo;
+  }
+
+  public void setWo(long wo) {
+    this.wo = wo;
+  }
+
+  public String getTaskCard() {
+    return this.taskCard;
+  }
+
+  public void setTaskCard(String taskCard) {
+    this.taskCard = taskCard;
+  }
+
+  public String getAc() {
+    return this.ac;
+  }
+
+  public void setAc(String ac) {
+    this.ac = ac;
+  }
+
+  public String getTaskCardPn() {
+    return this.taskCardPn;
+  }
+
+  public void setTaskCardPn(String taskCardPn) {
+    this.taskCardPn = taskCardPn;
+  }
+
+  public String getTaskCardPnSn() {
+    return this.taskCardPnSn;
+  }
+
+  public void setTaskCardPnSn(String taskCardPnSn) {
+    this.taskCardPnSn = taskCardPnSn;
+  }
+
+  public boolean equals(Object other) {
+    if (this == other) {
+      return true;
     }
-
-    public long getWo() {
-        return this.wo;
+    if (!(other instanceof WoTaskCardBustPK)) {
+      return false;
     }
+    WoTaskCardBustPK castOther = (WoTaskCardBustPK) other;
+    return (this.wo == castOther.wo)
+        && this.taskCard.equals(castOther.taskCard)
+        && this.ac.equals(castOther.ac)
+        && this.taskCardPn.equals(castOther.taskCardPn)
+        && this.taskCardPnSn.equals(castOther.taskCardPnSn);
+  }
 
-    public void setWo(long wo) {
-        this.wo = wo;
-    }
+  public int hashCode() {
+    final int prime = 31;
+    int hash = 17;
+    hash = hash * prime + ((int) (this.wo ^ (this.wo >>> 32)));
+    hash = hash * prime + this.taskCard.hashCode();
+    hash = hash * prime + this.ac.hashCode();
+    hash = hash * prime + this.taskCardPn.hashCode();
+    hash = hash * prime + this.taskCardPnSn.hashCode();
 
-    public String getTaskCard() {
-        return this.taskCard;
-    }
-
-    public void setTaskCard(String taskCard) {
-        this.taskCard = taskCard;
-    }
-
-    public String getAc() {
-        return this.ac;
-    }
-
-    public void setAc(String ac) {
-        this.ac = ac;
-    }
-
-    public String getTaskCardPn() {
-        return this.taskCardPn;
-    }
-
-    public void setTaskCardPn(String taskCardPn) {
-        this.taskCardPn = taskCardPn;
-    }
-
-    public String getTaskCardPnSn() {
-        return this.taskCardPnSn;
-    }
-
-    public void setTaskCardPnSn(String taskCardPnSn) {
-        this.taskCardPnSn = taskCardPnSn;
-    }
-
-    public boolean equals(Object other) {
-        if (this == other) {
-            return true;
-        }
-        if (!(other instanceof WoTaskCardBustPK)) {
-            return false;
-        }
-        WoTaskCardBustPK castOther = (WoTaskCardBustPK) other;
-        return
-                (this.wo == castOther.wo)
-                        && this.taskCard.equals(castOther.taskCard)
-                        && this.ac.equals(castOther.ac)
-                        && this.taskCardPn.equals(castOther.taskCardPn)
-                        && this.taskCardPnSn.equals(castOther.taskCardPnSn);
-    }
-
-    public int hashCode() {
-        final int prime = 31;
-        int hash = 17;
-        hash = hash * prime + ((int) (this.wo ^ (this.wo >>> 32)));
-        hash = hash * prime + this.taskCard.hashCode();
-        hash = hash * prime + this.ac.hashCode();
-        hash = hash * prime + this.taskCardPn.hashCode();
-        hash = hash * prime + this.taskCardPnSn.hashCode();
-
-        return hash;
-    }
+    return hash;
+  }
 }

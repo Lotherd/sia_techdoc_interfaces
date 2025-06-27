@@ -1,1345 +1,1336 @@
 package trax.aero.model;
 
-import javax.persistence.*;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
+import javax.persistence.*;
 
-
-/**
- * The persistent class for the WO database table.
- */
+/** The persistent class for the WO database table. */
 @Entity
 @NamedQuery(name = "Wo.findAll", query = "SELECT w FROM Wo w")
 public class Wo implements Serializable {
-    private static final long serialVersionUID = 1L;
+  private static final long serialVersionUID = 1L;
 
-    @Id
-    private long wo;
+  @Id private long wo;
 
-    private String ac;
+  private String ac;
 
-    @Column(name = "AC_SERIES")
-    private String acSeries;
+  @Column(name = "AC_SERIES")
+  private String acSeries;
 
-    @Column(name = "AC_SN")
-    private String acSn;
+  @Column(name = "AC_SN")
+  private String acSn;
 
-    @Column(name = "AC_TYPE")
-    private String acType;
+  @Column(name = "AC_TYPE")
+  private String acType;
 
-    @Column(name = "ACTUAL_START_DATE")
-    private Date actualStartDate;
+  @Column(name = "ACTUAL_START_DATE")
+  private Date actualStartDate;
 
-    @Column(name = "ACTUAL_START_HOUR")
-    private BigDecimal actualStartHour;
+  @Column(name = "ACTUAL_START_HOUR")
+  private BigDecimal actualStartHour;
 
-    @Column(name = "ACTUAL_START_MINUTE")
-    private BigDecimal actualStartMinute;
+  @Column(name = "ACTUAL_START_MINUTE")
+  private BigDecimal actualStartMinute;
 
-    @Column(name = "AMP_MS")
-    private String ampMs;
+  @Column(name = "AMP_MS")
+  private String ampMs;
 
-    @Column(name = "AMP_REV_DATE")
-    private Date ampRevDate;
+  @Column(name = "AMP_REV_DATE")
+  private Date ampRevDate;
 
-    @Column(name = "AMP_REVISION")
-    private String ampRevision;
+  @Column(name = "AMP_REVISION")
+  private String ampRevision;
 
-    @Column(name = "AMP_TEMP_REV")
-    private String ampTempRev;
+  @Column(name = "AMP_TEMP_REV")
+  private String ampTempRev;
 
-    private String approval;
+  private String approval;
 
-    @Column(name = "APPROVED_CERTIFICATE")
-    private String approvedCertificate;
+  @Column(name = "APPROVED_CERTIFICATE")
+  private String approvedCertificate;
 
-    @Column(name = "\"AUTHORIZATION\"")
-    private String authorization;
+  @Column(name = "\"AUTHORIZATION\"")
+  private String authorization;
 
-    @Column(name = "AUTHORIZATION_BY")
-    private String authorizationBy;
+  @Column(name = "AUTHORIZATION_BY")
+  private String authorizationBy;
 
-    @Column(name = "AUTHORIZATION_DATE")
-    private Date authorizationDate;
+  @Column(name = "AUTHORIZATION_DATE")
+  private Date authorizationDate;
 
-    @Column(name = "BLOB_NO")
-    private BigDecimal blobNo;
+  @Column(name = "BLOB_NO")
+  private BigDecimal blobNo;
 
-    @Column(name = "CLOSED_BY")
-    private String closedBy;
+  @Column(name = "CLOSED_BY")
+  private String closedBy;
 
-    @Column(name = "CLOSED_DATE")
-    private Date closedDate;
+  @Column(name = "CLOSED_DATE")
+  private Date closedDate;
 
-    @Column(name = "COMPLETED_BY")
-    private String completedBy;
+  @Column(name = "COMPLETED_BY")
+  private String completedBy;
 
-    @Column(name = "COMPLETION_DATE")
-    private Date completionDate;
+  @Column(name = "COMPLETION_DATE")
+  private Date completionDate;
 
-    @Column(name = "COMPLETION_TIME")
-    private Date completionTime;
+  @Column(name = "COMPLETION_TIME")
+  private Date completionTime;
 
-    private String cosl;
+  private String cosl;
 
-    @Column(name = "CREATED_BY")
-    private String createdBy;
+  @Column(name = "CREATED_BY")
+  private String createdBy;
 
-    @Column(name = "CREATED_DATE")
-    private Date createdDate;
+  @Column(name = "CREATED_DATE")
+  private Date createdDate;
 
-    @Column(name = "CUSTOMER_WO")
-    private String customerWo;
+  @Column(name = "CUSTOMER_WO")
+  private String customerWo;
 
-    @Column(name = "DAMAGE_INDICATOR")
-    private String damageIndicator;
+  @Column(name = "DAMAGE_INDICATOR")
+  private String damageIndicator;
 
-    private String defect;
+  private String defect;
 
-    @Column(name = "DEFECT_AUTO_WO")
-    private String defectAutoWo;
+  @Column(name = "DEFECT_AUTO_WO")
+  private String defectAutoWo;
 
-    @Column(name = "REOPEN_REASON")
-    private String reopenReason;
+  @Column(name = "REOPEN_REASON")
+  private String reopenReason;
 
-    @Column(name = "DEFECT_ITEM")
-    private BigDecimal defectItem;
+  @Column(name = "DEFECT_ITEM")
+  private BigDecimal defectItem;
 
-    @Column(name = "DEFECT_TYPE")
-    private String defectType;
+  @Column(name = "DEFECT_TYPE")
+  private String defectType;
 
-    @Column(name = "DOCUMENT_NO")
-    private BigDecimal documentNo;
+  @Column(name = "DOCUMENT_NO")
+  private BigDecimal documentNo;
 
-    @Column(name = "EXCLUDE_MH_PLANNER")
-    private String excludeMhPlanner;
+  @Column(name = "EXCLUDE_MH_PLANNER")
+  private String excludeMhPlanner;
 
-    private String expenditure;
+  private String expenditure;
 
-    @Column(name = "EXTERNAL_REFERENCE")
-    private String externalReference;
+  @Column(name = "EXTERNAL_REFERENCE")
+  private String externalReference;
 
-    @Column(name = "FIELD_TRIP_INDICATOR")
-    private String fieldTripIndicator;
+  @Column(name = "FIELD_TRIP_INDICATOR")
+  private String fieldTripIndicator;
 
-    private String flight;
+  private String flight;
 
-    @Column(name = "FLIGHT_ID")
-    private BigDecimal flightId;
+  @Column(name = "FLIGHT_ID")
+  private BigDecimal flightId;
 
-    @Column(name = "FORM_NO")
-    private BigDecimal formNo;
+  @Column(name = "FORM_NO")
+  private BigDecimal formNo;
 
-    @Column(name = "GE_MODIFIED_DATE")
-    private Date geModifiedDate;
+  @Column(name = "GE_MODIFIED_DATE")
+  private Date geModifiedDate;
 
-    @Column(name = "GE_TRANSFERRED_DATE")
-    private Date geTransferredDate;
+  @Column(name = "GE_TRANSFERRED_DATE")
+  private Date geTransferredDate;
 
-    @Column(name = "GL_COMPANY")
-    private String glCompany;
+  @Column(name = "GL_COMPANY")
+  private String glCompany;
 
-    @Column(name = "IN_PROGRESS")
-    private String inProgress;
+  @Column(name = "IN_PROGRESS")
+  private String inProgress;
 
-    @Column(name = "INSURANCE_CLAIM")
-    private String insuranceClaim;
+  @Column(name = "INSURANCE_CLAIM")
+  private String insuranceClaim;
 
-    @Column(name = "INSURANCE_CLAIM_NUMBER")
-    private String insuranceClaimNumber;
+  @Column(name = "INSURANCE_CLAIM_NUMBER")
+  private String insuranceClaimNumber;
 
-    @Column(name = "INTERFACE_CREATED_DATE")
-    private Date interfaceCreatedDate;
+  @Column(name = "INTERFACE_CREATED_DATE")
+  private Date interfaceCreatedDate;
 
-    @Column(name = "INTERFACE_MODIFIED_DATE")
-    private Date interfaceModifiedDate;
+  @Column(name = "INTERFACE_MODIFIED_DATE")
+  private Date interfaceModifiedDate;
 
-    @Column(name = "INTERFACE_TRANSFER_BY")
-    private String interfaceTransferBy;
+  @Column(name = "INTERFACE_TRANSFER_BY")
+  private String interfaceTransferBy;
 
-    @Column(name = "INTERFACE_TRANSFER_DATE")
-    private Date interfaceTransferDate;
+  @Column(name = "INTERFACE_TRANSFER_DATE")
+  private Date interfaceTransferDate;
 
-    private String location;
+  private String location;
 
-    @Column(name = "LONG_TERM_EVENT")
-    private String longTermEvent;
+  @Column(name = "LONG_TERM_EVENT")
+  private String longTermEvent;
 
-    @Column(name = "MANUFACTURE_ORDER")
-    private String manufactureOrder;
+  @Column(name = "MANUFACTURE_ORDER")
+  private String manufactureOrder;
 
-    @Column(name = "MM_REVISION")
-    private String mmRevision;
+  @Column(name = "MM_REVISION")
+  private String mmRevision;
 
-    @Column(name = "MODIFIED_BY")
-    private String modifiedBy;
+  @Column(name = "MODIFIED_BY")
+  private String modifiedBy;
 
-    @Column(name = "MODIFIED_DATE")
-    private Date modifiedDate;
+  @Column(name = "MODIFIED_DATE")
+  private Date modifiedDate;
 
-    @Column(name = "\"MODULE\"")
-    private String module;
+  @Column(name = "\"MODULE\"")
+  private String module;
 
-    @Column(name = "MTC_ALERT")
-    private String mtcAlert;
+  @Column(name = "MTC_ALERT")
+  private String mtcAlert;
 
-    @Column(name = "MTC_CONTACTED")
-    private String mtcContacted;
+  @Column(name = "MTC_CONTACTED")
+  private String mtcContacted;
 
-    @Column(name = "NH_WO")
-    private BigDecimal nhWo;
+  @Column(name = "NH_WO")
+  private BigDecimal nhWo;
 
-    private BigDecimal notes;
+  private BigDecimal notes;
 
-    @Column(name = "NOTES_FORM1")
-    private BigDecimal notesForm1;
+  @Column(name = "NOTES_FORM1")
+  private BigDecimal notesForm1;
 
-    @Column(name = "NR_ALLOW")
-    private String nrAllow;
+  @Column(name = "NR_ALLOW")
+  private String nrAllow;
 
-    @Column(name = "NR_CONTROL")
-    private BigDecimal nrControl;
+  @Column(name = "NR_CONTROL")
+  private BigDecimal nrControl;
 
-    @Column(name = "NR_REQ_ITEM")
-    private String nrReqItem;
+  @Column(name = "NR_REQ_ITEM")
+  private String nrReqItem;
 
-    @Column(name = "OPS_LINE")
-    private String opsLine;
+  @Column(name = "OPS_LINE")
+  private String opsLine;
 
-    @Column(name = "ORDER_TYPE")
-    private String orderType;
+  @Column(name = "ORDER_TYPE")
+  private String orderType;
 
-    @Column(name = "PACK_PAGES")
-    private BigDecimal packPages;
+  @Column(name = "PACK_PAGES")
+  private BigDecimal packPages;
 
-    @Column(name = "PAPER_CHECKED")
-    private String paperChecked;
+  @Column(name = "PAPER_CHECKED")
+  private String paperChecked;
 
-    @Column(name = "PAPER_CHECKED_BY")
-    private String paperCheckedBy;
+  @Column(name = "PAPER_CHECKED_BY")
+  private String paperCheckedBy;
 
-    @Column(name = "PAPER_CHECKED_DATE")
-    private Date paperCheckedDate;
+  @Column(name = "PAPER_CHECKED_DATE")
+  private Date paperCheckedDate;
 
-    @Column(name = "PAPER_STORE_BIN")
-    private String paperStoreBin;
+  @Column(name = "PAPER_STORE_BIN")
+  private String paperStoreBin;
 
-    @Column(name = "PAPER_STORE_LOCATION")
-    private String paperStoreLocation;
+  @Column(name = "PAPER_STORE_LOCATION")
+  private String paperStoreLocation;
 
-    private String pn;
+  private String pn;
 
-    @Column(name = "PN_CONDITION")
-    private String pnCondition;
+  @Column(name = "PN_CONDITION")
+  private String pnCondition;
 
-    @Column(name = "PN_DESCRIPTION")
-    private String pnDescription;
+  @Column(name = "PN_DESCRIPTION")
+  private String pnDescription;
 
-    @Column(name = "PN_QTY")
-    private BigDecimal pnQty;
+  @Column(name = "PN_QTY")
+  private BigDecimal pnQty;
 
-    @Column(name = "PN_SN")
-    private String pnSn;
+  @Column(name = "PN_SN")
+  private String pnSn;
 
-    @Column(name = "POSTCOMPLETED_BY")
-    private String postcompletedBy;
+  @Column(name = "POSTCOMPLETED_BY")
+  private String postcompletedBy;
 
-    @Column(name = "POSTCOMPLETED_DATE")
-    private Date postcompletedDate;
+  @Column(name = "POSTCOMPLETED_DATE")
+  private Date postcompletedDate;
 
-    @Column(name = "PREVIOUS_INTERFACE_TRANSACTION")
-    private BigDecimal previousInterfaceTransaction;
+  @Column(name = "PREVIOUS_INTERFACE_TRANSACTION")
+  private BigDecimal previousInterfaceTransaction;
 
-    private String priority;
+  private String priority;
 
-    private String project;
+  private String project;
 
-    @Column(name = "REFURBISHMENT_ORDER")
-    private String refurbishmentOrder;
+  @Column(name = "REFURBISHMENT_ORDER")
+  private String refurbishmentOrder;
 
-    @Column(name = "RELEASE_FOR_AUTHORIZATION")
-    private String releaseForAuthorization;
+  @Column(name = "RELEASE_FOR_AUTHORIZATION")
+  private String releaseForAuthorization;
 
-    @Column(name = "RELEASE_FOR_AUTHORIZATION_ON")
-    private Date releaseForAuthorizationOn;
+  @Column(name = "RELEASE_FOR_AUTHORIZATION_ON")
+  private Date releaseForAuthorizationOn;
 
-    @Column(name = "RESTRICT_ACTUAL")
-    private String restrictActual;
+  @Column(name = "RESTRICT_ACTUAL")
+  private String restrictActual;
 
-    @Column(name = "SABRE_MESSAGE_NUMBER")
-    private BigDecimal sabreMessageNumber;
+  @Column(name = "SABRE_MESSAGE_NUMBER")
+  private BigDecimal sabreMessageNumber;
 
-    @Column(name = "SCHEDULE_COMPLETION_DATE")
-    private Date scheduleCompletionDate;
+  @Column(name = "SCHEDULE_COMPLETION_DATE")
+  private Date scheduleCompletionDate;
 
-    @Column(name = "SCHEDULE_COMPLETION_HOUR")
-    private BigDecimal scheduleCompletionHour;
+  @Column(name = "SCHEDULE_COMPLETION_HOUR")
+  private BigDecimal scheduleCompletionHour;
 
-    @Column(name = "SCHEDULE_COMPLETION_MINUTE")
-    private BigDecimal scheduleCompletionMinute;
+  @Column(name = "SCHEDULE_COMPLETION_MINUTE")
+  private BigDecimal scheduleCompletionMinute;
 
-    @Column(name = "SCHEDULE_ORG_COMPLETION_DATE")
-    private Date scheduleOrgCompletionDate;
+  @Column(name = "SCHEDULE_ORG_COMPLETION_DATE")
+  private Date scheduleOrgCompletionDate;
 
-    @Column(name = "SCHEDULE_ORG_COMPLETION_HOUR")
-    private BigDecimal scheduleOrgCompletionHour;
+  @Column(name = "SCHEDULE_ORG_COMPLETION_HOUR")
+  private BigDecimal scheduleOrgCompletionHour;
 
-    @Column(name = "SCHEDULE_ORG_COMPLETION_MINUTE")
-    private BigDecimal scheduleOrgCompletionMinute;
+  @Column(name = "SCHEDULE_ORG_COMPLETION_MINUTE")
+  private BigDecimal scheduleOrgCompletionMinute;
 
-    @Column(name = "SCHEDULE_START_DATE")
-    private Date scheduleStartDate;
+  @Column(name = "SCHEDULE_START_DATE")
+  private Date scheduleStartDate;
 
-    @Column(name = "SCHEDULE_START_HOUR")
-    private BigDecimal scheduleStartHour;
+  @Column(name = "SCHEDULE_START_HOUR")
+  private BigDecimal scheduleStartHour;
 
-    @Column(name = "SCHEDULE_START_MINUTE")
-    private BigDecimal scheduleStartMinute;
+  @Column(name = "SCHEDULE_START_MINUTE")
+  private BigDecimal scheduleStartMinute;
 
-    @Column(name = "SCHEDULE_TIMESTAMP")
-    private Date scheduleTimestamp;
+  @Column(name = "SCHEDULE_TIMESTAMP")
+  private Date scheduleTimestamp;
 
-    @Column(name = "SHELF_LIFE_EXPIRATION")
-    private Date shelfLifeExpiration;
+  @Column(name = "SHELF_LIFE_EXPIRATION")
+  private Date shelfLifeExpiration;
 
-    private String site;
+  private String site;
 
-    private String status;
+  private String status;
 
-    @Column(name = "STATUS_PRIOR_TO_HD")
-    private String statusPriorToHd;
+  @Column(name = "STATUS_PRIOR_TO_HD")
+  private String statusPriorToHd;
 
-    @Column(name = "TASK_CARD_NUMBERING_SYSTEM")
-    private BigDecimal taskCardNumberingSystem;
+  @Column(name = "TASK_CARD_NUMBERING_SYSTEM")
+  private BigDecimal taskCardNumberingSystem;
 
-    @Column(name = "TEMPLATE_ID")
-    private BigDecimal templateId;
+  @Column(name = "TEMPLATE_ID")
+  private BigDecimal templateId;
 
-    @Column(name = "THIRD_PARTY_WO")
-    private String thirdPartyWo;
+  @Column(name = "THIRD_PARTY_WO")
+  private String thirdPartyWo;
 
-    private String vendor;
+  private String vendor;
 
-    @Column(name = "WARRANTY_INDICATOR")
-    private String warrantyIndicator;
+  @Column(name = "WARRANTY_INDICATOR")
+  private String warrantyIndicator;
 
-    @Column(name = "WO_CATEGORY")
-    private String woCategory;
+  @Column(name = "WO_CATEGORY")
+  private String woCategory;
 
-    @Column(name = "WO_CLOSING")
-    private String woClosing;
+  @Column(name = "WO_CLOSING")
+  private String woClosing;
 
-    @Column(name = "WO_CLOSING_STATUS")
-    private String woClosingStatus;
+  @Column(name = "WO_CLOSING_STATUS")
+  private String woClosingStatus;
 
-    @Column(name = "WO_DESCRIPTION")
-    private String woDescription;
+  @Column(name = "WO_DESCRIPTION")
+  private String woDescription;
 
-    @Column(name = "WO_INITIAL_INSTALL")
-    private String woInitialInstall;
+  @Column(name = "WO_INITIAL_INSTALL")
+  private String woInitialInstall;
 
-    @Column(name = "WO_INPROGRESS_STATUS")
-    private String woInprogressStatus;
+  @Column(name = "WO_INPROGRESS_STATUS")
+  private String woInprogressStatus;
 
+  @Column(name = "WO_INPROGRESS_STATUS_BY")
+  private String woInprogressStatusBy;
 
-    @Column(name = "WO_INPROGRESS_STATUS_BY")
-    private String woInprogressStatusBy;
+  @Column(name = "WO_INPROGRESS_STATUS_DATE")
+  private Date woInprogressStatusDate;
 
-    @Column(name = "WO_INPROGRESS_STATUS_DATE")
-    private Date woInprogressStatusDate;
+  @Column(name = "WORK_STARTED")
+  private String workStarted;
 
-    @Column(name = "WORK_STARTED")
-    private String workStarted;
+  @Column(name = "TD_ENGINE_POS")
+  private String tdEnginePos;
 
-    @Column(name = "TD_ENGINE_POS")
-    private String tdEnginePos;
+  @Column(name = "TD_APU_SN")
+  private String tdApuSn;
 
-    @Column(name = "TD_APU_SN")
-    private String tdApuSn;
+  // bi-directional many-to-one association to WoTaskCard
+  @OneToMany(mappedBy = "woBean")
+  private List<WoTaskCard> woTaskCards;
 
-    //bi-directional many-to-one association to WoTaskCard
-    @OneToMany(mappedBy = "woBean")
-    private List<WoTaskCard> woTaskCards;
+  public Wo() {}
 
+  public long getWo() {
+    return this.wo;
+  }
 
-    public Wo() {
-    }
+  public void setWo(long wo) {
+    this.wo = wo;
+  }
 
-    public long getWo() {
-        return this.wo;
-    }
+  public String getAc() {
+    return this.ac;
+  }
 
-    public void setWo(long wo) {
-        this.wo = wo;
-    }
+  public void setAc(String ac) {
+    this.ac = ac;
+  }
 
-    public String getAc() {
-        return this.ac;
-    }
+  public String getAcSeries() {
+    return this.acSeries;
+  }
 
-    public void setAc(String ac) {
-        this.ac = ac;
-    }
+  public void setAcSeries(String acSeries) {
+    this.acSeries = acSeries;
+  }
 
-    public String getAcSeries() {
-        return this.acSeries;
-    }
+  public String getAcSn() {
+    return this.acSn;
+  }
 
-    public void setAcSeries(String acSeries) {
-        this.acSeries = acSeries;
-    }
+  public void setAcSn(String acSn) {
+    this.acSn = acSn;
+  }
 
-    public String getAcSn() {
-        return this.acSn;
-    }
+  public String getAcType() {
+    return this.acType;
+  }
 
-    public void setAcSn(String acSn) {
-        this.acSn = acSn;
-    }
+  public void setAcType(String acType) {
+    this.acType = acType;
+  }
 
-    public String getAcType() {
-        return this.acType;
-    }
+  public Date getActualStartDate() {
+    return this.actualStartDate;
+  }
 
-    public void setAcType(String acType) {
-        this.acType = acType;
-    }
+  public void setActualStartDate(Date actualStartDate) {
+    this.actualStartDate = actualStartDate;
+  }
 
-    public Date getActualStartDate() {
-        return this.actualStartDate;
-    }
+  public BigDecimal getActualStartHour() {
+    return this.actualStartHour;
+  }
 
-    public void setActualStartDate(Date actualStartDate) {
-        this.actualStartDate = actualStartDate;
-    }
+  public void setActualStartHour(BigDecimal actualStartHour) {
+    this.actualStartHour = actualStartHour;
+  }
 
-    public BigDecimal getActualStartHour() {
-        return this.actualStartHour;
-    }
+  public BigDecimal getActualStartMinute() {
+    return this.actualStartMinute;
+  }
 
-    public void setActualStartHour(BigDecimal actualStartHour) {
-        this.actualStartHour = actualStartHour;
-    }
+  public void setActualStartMinute(BigDecimal actualStartMinute) {
+    this.actualStartMinute = actualStartMinute;
+  }
 
-    public BigDecimal getActualStartMinute() {
-        return this.actualStartMinute;
-    }
+  public String getAmpMs() {
+    return this.ampMs;
+  }
 
-    public void setActualStartMinute(BigDecimal actualStartMinute) {
-        this.actualStartMinute = actualStartMinute;
-    }
+  public void setAmpMs(String ampMs) {
+    this.ampMs = ampMs;
+  }
 
-    public String getAmpMs() {
-        return this.ampMs;
-    }
+  public Date getAmpRevDate() {
+    return this.ampRevDate;
+  }
 
-    public void setAmpMs(String ampMs) {
-        this.ampMs = ampMs;
-    }
+  public void setAmpRevDate(Date ampRevDate) {
+    this.ampRevDate = ampRevDate;
+  }
 
-    public Date getAmpRevDate() {
-        return this.ampRevDate;
-    }
+  public String getAmpRevision() {
+    return this.ampRevision;
+  }
 
-    public void setAmpRevDate(Date ampRevDate) {
-        this.ampRevDate = ampRevDate;
-    }
+  public void setAmpRevision(String ampRevision) {
+    this.ampRevision = ampRevision;
+  }
 
-    public String getAmpRevision() {
-        return this.ampRevision;
-    }
+  public String getAmpTempRev() {
+    return this.ampTempRev;
+  }
 
-    public void setAmpRevision(String ampRevision) {
-        this.ampRevision = ampRevision;
-    }
+  public void setAmpTempRev(String ampTempRev) {
+    this.ampTempRev = ampTempRev;
+  }
 
-    public String getAmpTempRev() {
-        return this.ampTempRev;
-    }
+  public String getApproval() {
+    return this.approval;
+  }
 
-    public void setAmpTempRev(String ampTempRev) {
-        this.ampTempRev = ampTempRev;
-    }
+  public void setApproval(String approval) {
+    this.approval = approval;
+  }
 
-    public String getApproval() {
-        return this.approval;
-    }
+  public String getApprovedCertificate() {
+    return this.approvedCertificate;
+  }
 
-    public void setApproval(String approval) {
-        this.approval = approval;
-    }
+  public void setApprovedCertificate(String approvedCertificate) {
+    this.approvedCertificate = approvedCertificate;
+  }
 
-    public String getApprovedCertificate() {
-        return this.approvedCertificate;
-    }
+  public String getAuthorization() {
+    return this.authorization;
+  }
 
-    public void setApprovedCertificate(String approvedCertificate) {
-        this.approvedCertificate = approvedCertificate;
-    }
+  public void setAuthorization(String authorization) {
+    this.authorization = authorization;
+  }
 
-    public String getAuthorization() {
-        return this.authorization;
-    }
+  public String getAuthorizationBy() {
+    return this.authorizationBy;
+  }
 
-    public void setAuthorization(String authorization) {
-        this.authorization = authorization;
-    }
+  public void setAuthorizationBy(String authorizationBy) {
+    this.authorizationBy = authorizationBy;
+  }
 
-    public String getAuthorizationBy() {
-        return this.authorizationBy;
-    }
+  public Date getAuthorizationDate() {
+    return this.authorizationDate;
+  }
 
-    public void setAuthorizationBy(String authorizationBy) {
-        this.authorizationBy = authorizationBy;
-    }
+  public void setAuthorizationDate(Date authorizationDate) {
+    this.authorizationDate = authorizationDate;
+  }
 
-    public Date getAuthorizationDate() {
-        return this.authorizationDate;
-    }
+  public BigDecimal getBlobNo() {
+    return this.blobNo;
+  }
 
-    public void setAuthorizationDate(Date authorizationDate) {
-        this.authorizationDate = authorizationDate;
-    }
+  public void setBlobNo(BigDecimal blobNo) {
+    this.blobNo = blobNo;
+  }
 
-    public BigDecimal getBlobNo() {
-        return this.blobNo;
-    }
+  public String getClosedBy() {
+    return this.closedBy;
+  }
 
-    public void setBlobNo(BigDecimal blobNo) {
-        this.blobNo = blobNo;
-    }
+  public void setClosedBy(String closedBy) {
+    this.closedBy = closedBy;
+  }
 
-    public String getClosedBy() {
-        return this.closedBy;
-    }
+  public Date getClosedDate() {
+    return this.closedDate;
+  }
 
-    public void setClosedBy(String closedBy) {
-        this.closedBy = closedBy;
-    }
+  public void setClosedDate(Date closedDate) {
+    this.closedDate = closedDate;
+  }
 
-    public Date getClosedDate() {
-        return this.closedDate;
-    }
+  public String getCompletedBy() {
+    return this.completedBy;
+  }
 
-    public void setClosedDate(Date closedDate) {
-        this.closedDate = closedDate;
-    }
+  public void setCompletedBy(String completedBy) {
+    this.completedBy = completedBy;
+  }
 
-    public String getCompletedBy() {
-        return this.completedBy;
-    }
+  public Date getCompletionDate() {
+    return this.completionDate;
+  }
 
-    public void setCompletedBy(String completedBy) {
-        this.completedBy = completedBy;
-    }
+  public void setCompletionDate(Date completionDate) {
+    this.completionDate = completionDate;
+  }
 
-    public Date getCompletionDate() {
-        return this.completionDate;
-    }
+  public Date getCompletionTime() {
+    return this.completionTime;
+  }
 
-    public void setCompletionDate(Date completionDate) {
-        this.completionDate = completionDate;
-    }
+  public void setCompletionTime(Date completionTime) {
+    this.completionTime = completionTime;
+  }
 
-    public Date getCompletionTime() {
-        return this.completionTime;
-    }
+  public String getCosl() {
+    return this.cosl;
+  }
 
-    public void setCompletionTime(Date completionTime) {
-        this.completionTime = completionTime;
-    }
+  public void setCosl(String cosl) {
+    this.cosl = cosl;
+  }
 
-    public String getCosl() {
-        return this.cosl;
-    }
+  public String getCreatedBy() {
+    return this.createdBy;
+  }
 
-    public void setCosl(String cosl) {
-        this.cosl = cosl;
-    }
+  public void setCreatedBy(String createdBy) {
+    this.createdBy = createdBy;
+  }
 
-    public String getCreatedBy() {
-        return this.createdBy;
-    }
+  public Date getCreatedDate() {
+    return this.createdDate;
+  }
 
-    public void setCreatedBy(String createdBy) {
-        this.createdBy = createdBy;
-    }
+  public void setCreatedDate(Date createdDate) {
+    this.createdDate = createdDate;
+  }
 
-    public Date getCreatedDate() {
-        return this.createdDate;
-    }
+  public String getCustomerWo() {
+    return this.customerWo;
+  }
 
-    public void setCreatedDate(Date createdDate) {
-        this.createdDate = createdDate;
-    }
+  public void setCustomerWo(String customerWo) {
+    this.customerWo = customerWo;
+  }
 
-    public String getCustomerWo() {
-        return this.customerWo;
-    }
+  public String getDamageIndicator() {
+    return this.damageIndicator;
+  }
 
-    public void setCustomerWo(String customerWo) {
-        this.customerWo = customerWo;
-    }
+  public void setDamageIndicator(String damageIndicator) {
+    this.damageIndicator = damageIndicator;
+  }
 
-    public String getDamageIndicator() {
-        return this.damageIndicator;
-    }
+  public String getDefect() {
+    return this.defect;
+  }
 
-    public void setDamageIndicator(String damageIndicator) {
-        this.damageIndicator = damageIndicator;
-    }
+  public void setDefect(String defect) {
+    this.defect = defect;
+  }
 
-    public String getDefect() {
-        return this.defect;
-    }
+  public String getDefectAutoWo() {
+    return this.defectAutoWo;
+  }
 
-    public void setDefect(String defect) {
-        this.defect = defect;
-    }
+  public void setDefectAutoWo(String defectAutoWo) {
+    this.defectAutoWo = defectAutoWo;
+  }
 
-    public String getDefectAutoWo() {
-        return this.defectAutoWo;
-    }
+  public BigDecimal getDefectItem() {
+    return this.defectItem;
+  }
 
-    public void setDefectAutoWo(String defectAutoWo) {
-        this.defectAutoWo = defectAutoWo;
-    }
+  public void setDefectItem(BigDecimal defectItem) {
+    this.defectItem = defectItem;
+  }
 
-    public BigDecimal getDefectItem() {
-        return this.defectItem;
-    }
+  public String getDefectType() {
+    return this.defectType;
+  }
 
-    public void setDefectItem(BigDecimal defectItem) {
-        this.defectItem = defectItem;
-    }
+  public void setDefectType(String defectType) {
+    this.defectType = defectType;
+  }
 
-    public String getDefectType() {
-        return this.defectType;
-    }
+  public BigDecimal getDocumentNo() {
+    return this.documentNo;
+  }
 
-    public void setDefectType(String defectType) {
-        this.defectType = defectType;
-    }
+  public void setDocumentNo(BigDecimal documentNo) {
+    this.documentNo = documentNo;
+  }
 
-    public BigDecimal getDocumentNo() {
-        return this.documentNo;
-    }
+  public String getExcludeMhPlanner() {
+    return this.excludeMhPlanner;
+  }
 
-    public void setDocumentNo(BigDecimal documentNo) {
-        this.documentNo = documentNo;
-    }
+  public void setExcludeMhPlanner(String excludeMhPlanner) {
+    this.excludeMhPlanner = excludeMhPlanner;
+  }
 
-    public String getExcludeMhPlanner() {
-        return this.excludeMhPlanner;
-    }
+  public String getExpenditure() {
+    return this.expenditure;
+  }
 
-    public void setExcludeMhPlanner(String excludeMhPlanner) {
-        this.excludeMhPlanner = excludeMhPlanner;
-    }
+  public void setExpenditure(String expenditure) {
+    this.expenditure = expenditure;
+  }
 
-    public String getExpenditure() {
-        return this.expenditure;
-    }
+  public String getExternalReference() {
+    return this.externalReference;
+  }
 
-    public void setExpenditure(String expenditure) {
-        this.expenditure = expenditure;
-    }
+  public void setExternalReference(String externalReference) {
+    this.externalReference = externalReference;
+  }
 
-    public String getExternalReference() {
-        return this.externalReference;
-    }
+  public String getFieldTripIndicator() {
+    return this.fieldTripIndicator;
+  }
 
-    public void setExternalReference(String externalReference) {
-        this.externalReference = externalReference;
-    }
+  public void setFieldTripIndicator(String fieldTripIndicator) {
+    this.fieldTripIndicator = fieldTripIndicator;
+  }
 
-    public String getFieldTripIndicator() {
-        return this.fieldTripIndicator;
-    }
+  public String getFlight() {
+    return this.flight;
+  }
 
-    public void setFieldTripIndicator(String fieldTripIndicator) {
-        this.fieldTripIndicator = fieldTripIndicator;
-    }
+  public void setFlight(String flight) {
+    this.flight = flight;
+  }
 
-    public String getFlight() {
-        return this.flight;
-    }
+  public BigDecimal getFlightId() {
+    return this.flightId;
+  }
 
-    public void setFlight(String flight) {
-        this.flight = flight;
-    }
+  public void setFlightId(BigDecimal flightId) {
+    this.flightId = flightId;
+  }
 
-    public BigDecimal getFlightId() {
-        return this.flightId;
-    }
+  public BigDecimal getFormNo() {
+    return this.formNo;
+  }
 
-    public void setFlightId(BigDecimal flightId) {
-        this.flightId = flightId;
-    }
+  public void setFormNo(BigDecimal formNo) {
+    this.formNo = formNo;
+  }
 
-    public BigDecimal getFormNo() {
-        return this.formNo;
-    }
+  public Date getGeModifiedDate() {
+    return this.geModifiedDate;
+  }
 
-    public void setFormNo(BigDecimal formNo) {
-        this.formNo = formNo;
-    }
+  public void setGeModifiedDate(Date geModifiedDate) {
+    this.geModifiedDate = geModifiedDate;
+  }
 
-    public Date getGeModifiedDate() {
-        return this.geModifiedDate;
-    }
+  public Date getGeTransferredDate() {
+    return this.geTransferredDate;
+  }
 
-    public void setGeModifiedDate(Date geModifiedDate) {
-        this.geModifiedDate = geModifiedDate;
-    }
+  public void setGeTransferredDate(Date geTransferredDate) {
+    this.geTransferredDate = geTransferredDate;
+  }
 
-    public Date getGeTransferredDate() {
-        return this.geTransferredDate;
-    }
+  public String getGlCompany() {
+    return this.glCompany;
+  }
 
-    public void setGeTransferredDate(Date geTransferredDate) {
-        this.geTransferredDate = geTransferredDate;
-    }
+  public void setGlCompany(String glCompany) {
+    this.glCompany = glCompany;
+  }
 
-    public String getGlCompany() {
-        return this.glCompany;
-    }
+  public String getInProgress() {
+    return this.inProgress;
+  }
 
-    public void setGlCompany(String glCompany) {
-        this.glCompany = glCompany;
-    }
+  public void setInProgress(String inProgress) {
+    this.inProgress = inProgress;
+  }
 
-    public String getInProgress() {
-        return this.inProgress;
-    }
+  public String getInsuranceClaim() {
+    return this.insuranceClaim;
+  }
 
-    public void setInProgress(String inProgress) {
-        this.inProgress = inProgress;
-    }
+  public void setInsuranceClaim(String insuranceClaim) {
+    this.insuranceClaim = insuranceClaim;
+  }
 
-    public String getInsuranceClaim() {
-        return this.insuranceClaim;
-    }
+  public String getInsuranceClaimNumber() {
+    return this.insuranceClaimNumber;
+  }
 
-    public void setInsuranceClaim(String insuranceClaim) {
-        this.insuranceClaim = insuranceClaim;
-    }
+  public void setInsuranceClaimNumber(String insuranceClaimNumber) {
+    this.insuranceClaimNumber = insuranceClaimNumber;
+  }
 
-    public String getInsuranceClaimNumber() {
-        return this.insuranceClaimNumber;
-    }
+  public Date getInterfaceCreatedDate() {
+    return this.interfaceCreatedDate;
+  }
 
-    public void setInsuranceClaimNumber(String insuranceClaimNumber) {
-        this.insuranceClaimNumber = insuranceClaimNumber;
-    }
+  public void setInterfaceCreatedDate(Date interfaceCreatedDate) {
+    this.interfaceCreatedDate = interfaceCreatedDate;
+  }
 
-    public Date getInterfaceCreatedDate() {
-        return this.interfaceCreatedDate;
-    }
+  public Date getInterfaceModifiedDate() {
+    return this.interfaceModifiedDate;
+  }
 
-    public void setInterfaceCreatedDate(Date interfaceCreatedDate) {
-        this.interfaceCreatedDate = interfaceCreatedDate;
-    }
+  public void setInterfaceModifiedDate(Date interfaceModifiedDate) {
+    this.interfaceModifiedDate = interfaceModifiedDate;
+  }
 
-    public Date getInterfaceModifiedDate() {
-        return this.interfaceModifiedDate;
-    }
+  public String getInterfaceTransferBy() {
+    return this.interfaceTransferBy;
+  }
 
-    public void setInterfaceModifiedDate(Date interfaceModifiedDate) {
-        this.interfaceModifiedDate = interfaceModifiedDate;
-    }
+  public void setInterfaceTransferBy(String interfaceTransferBy) {
+    this.interfaceTransferBy = interfaceTransferBy;
+  }
 
-    public String getInterfaceTransferBy() {
-        return this.interfaceTransferBy;
-    }
+  public Date getInterfaceTransferDate() {
+    return this.interfaceTransferDate;
+  }
 
-    public void setInterfaceTransferBy(String interfaceTransferBy) {
-        this.interfaceTransferBy = interfaceTransferBy;
-    }
+  public void setInterfaceTransferDate(Date interfaceTransferDate) {
+    this.interfaceTransferDate = interfaceTransferDate;
+  }
 
-    public Date getInterfaceTransferDate() {
-        return this.interfaceTransferDate;
-    }
+  public String getLocation() {
+    return this.location;
+  }
 
-    public void setInterfaceTransferDate(Date interfaceTransferDate) {
-        this.interfaceTransferDate = interfaceTransferDate;
-    }
+  public void setLocation(String location) {
+    this.location = location;
+  }
 
-    public String getLocation() {
-        return this.location;
-    }
+  public String getLongTermEvent() {
+    return this.longTermEvent;
+  }
 
-    public void setLocation(String location) {
-        this.location = location;
-    }
+  public void setLongTermEvent(String longTermEvent) {
+    this.longTermEvent = longTermEvent;
+  }
 
-    public String getLongTermEvent() {
-        return this.longTermEvent;
-    }
+  public String getManufactureOrder() {
+    return this.manufactureOrder;
+  }
 
-    public void setLongTermEvent(String longTermEvent) {
-        this.longTermEvent = longTermEvent;
-    }
+  public void setManufactureOrder(String manufactureOrder) {
+    this.manufactureOrder = manufactureOrder;
+  }
 
-    public String getManufactureOrder() {
-        return this.manufactureOrder;
-    }
+  public String getMmRevision() {
+    return this.mmRevision;
+  }
 
-    public void setManufactureOrder(String manufactureOrder) {
-        this.manufactureOrder = manufactureOrder;
-    }
+  public void setMmRevision(String mmRevision) {
+    this.mmRevision = mmRevision;
+  }
 
-    public String getMmRevision() {
-        return this.mmRevision;
-    }
+  public String getModifiedBy() {
+    return this.modifiedBy;
+  }
 
-    public void setMmRevision(String mmRevision) {
-        this.mmRevision = mmRevision;
-    }
+  public void setModifiedBy(String modifiedBy) {
+    this.modifiedBy = modifiedBy;
+  }
 
-    public String getModifiedBy() {
-        return this.modifiedBy;
-    }
+  public Date getModifiedDate() {
+    return this.modifiedDate;
+  }
 
-    public void setModifiedBy(String modifiedBy) {
-        this.modifiedBy = modifiedBy;
-    }
+  public void setModifiedDate(Date modifiedDate) {
+    this.modifiedDate = modifiedDate;
+  }
 
-    public Date getModifiedDate() {
-        return this.modifiedDate;
-    }
+  public String getModule() {
+    return this.module;
+  }
 
-    public void setModifiedDate(Date modifiedDate) {
-        this.modifiedDate = modifiedDate;
-    }
+  public void setModule(String module) {
+    this.module = module;
+  }
 
-    public String getModule() {
-        return this.module;
-    }
+  public String getMtcAlert() {
+    return this.mtcAlert;
+  }
 
-    public void setModule(String module) {
-        this.module = module;
-    }
+  public void setMtcAlert(String mtcAlert) {
+    this.mtcAlert = mtcAlert;
+  }
 
-    public String getMtcAlert() {
-        return this.mtcAlert;
-    }
+  public String getMtcContacted() {
+    return this.mtcContacted;
+  }
 
-    public void setMtcAlert(String mtcAlert) {
-        this.mtcAlert = mtcAlert;
-    }
+  public void setMtcContacted(String mtcContacted) {
+    this.mtcContacted = mtcContacted;
+  }
 
-    public String getMtcContacted() {
-        return this.mtcContacted;
-    }
+  public BigDecimal getNhWo() {
+    return this.nhWo;
+  }
 
-    public void setMtcContacted(String mtcContacted) {
-        this.mtcContacted = mtcContacted;
-    }
+  public void setNhWo(BigDecimal nhWo) {
+    this.nhWo = nhWo;
+  }
 
-    public BigDecimal getNhWo() {
-        return this.nhWo;
-    }
+  public BigDecimal getNotes() {
+    return this.notes;
+  }
 
-    public void setNhWo(BigDecimal nhWo) {
-        this.nhWo = nhWo;
-    }
+  public void setNotes(BigDecimal notes) {
+    this.notes = notes;
+  }
 
-    public BigDecimal getNotes() {
-        return this.notes;
-    }
+  public BigDecimal getNotesForm1() {
+    return this.notesForm1;
+  }
 
-    public void setNotes(BigDecimal notes) {
-        this.notes = notes;
-    }
+  public void setNotesForm1(BigDecimal notesForm1) {
+    this.notesForm1 = notesForm1;
+  }
 
-    public BigDecimal getNotesForm1() {
-        return this.notesForm1;
-    }
+  public String getNrAllow() {
+    return this.nrAllow;
+  }
 
-    public void setNotesForm1(BigDecimal notesForm1) {
-        this.notesForm1 = notesForm1;
-    }
+  public void setNrAllow(String nrAllow) {
+    this.nrAllow = nrAllow;
+  }
 
-    public String getNrAllow() {
-        return this.nrAllow;
-    }
+  public BigDecimal getNrControl() {
+    return this.nrControl;
+  }
 
-    public void setNrAllow(String nrAllow) {
-        this.nrAllow = nrAllow;
-    }
+  public void setNrControl(BigDecimal nrControl) {
+    this.nrControl = nrControl;
+  }
 
-    public BigDecimal getNrControl() {
-        return this.nrControl;
-    }
+  public String getNrReqItem() {
+    return this.nrReqItem;
+  }
 
-    public void setNrControl(BigDecimal nrControl) {
-        this.nrControl = nrControl;
-    }
+  public void setNrReqItem(String nrReqItem) {
+    this.nrReqItem = nrReqItem;
+  }
 
-    public String getNrReqItem() {
-        return this.nrReqItem;
-    }
+  public String getOpsLine() {
+    return this.opsLine;
+  }
 
-    public void setNrReqItem(String nrReqItem) {
-        this.nrReqItem = nrReqItem;
-    }
+  public void setOpsLine(String opsLine) {
+    this.opsLine = opsLine;
+  }
 
-    public String getOpsLine() {
-        return this.opsLine;
-    }
+  public String getOrderType() {
+    return this.orderType;
+  }
 
-    public void setOpsLine(String opsLine) {
-        this.opsLine = opsLine;
-    }
+  public void setOrderType(String orderType) {
+    this.orderType = orderType;
+  }
 
-    public String getOrderType() {
-        return this.orderType;
-    }
+  public BigDecimal getPackPages() {
+    return this.packPages;
+  }
 
-    public void setOrderType(String orderType) {
-        this.orderType = orderType;
-    }
+  public void setPackPages(BigDecimal packPages) {
+    this.packPages = packPages;
+  }
 
-    public BigDecimal getPackPages() {
-        return this.packPages;
-    }
+  public String getPaperChecked() {
+    return this.paperChecked;
+  }
 
-    public void setPackPages(BigDecimal packPages) {
-        this.packPages = packPages;
-    }
+  public void setPaperChecked(String paperChecked) {
+    this.paperChecked = paperChecked;
+  }
 
-    public String getPaperChecked() {
-        return this.paperChecked;
-    }
+  public String getPaperCheckedBy() {
+    return this.paperCheckedBy;
+  }
 
-    public void setPaperChecked(String paperChecked) {
-        this.paperChecked = paperChecked;
-    }
+  public void setPaperCheckedBy(String paperCheckedBy) {
+    this.paperCheckedBy = paperCheckedBy;
+  }
 
-    public String getPaperCheckedBy() {
-        return this.paperCheckedBy;
-    }
+  public Date getPaperCheckedDate() {
+    return this.paperCheckedDate;
+  }
 
-    public void setPaperCheckedBy(String paperCheckedBy) {
-        this.paperCheckedBy = paperCheckedBy;
-    }
+  public void setPaperCheckedDate(Date paperCheckedDate) {
+    this.paperCheckedDate = paperCheckedDate;
+  }
 
-    public Date getPaperCheckedDate() {
-        return this.paperCheckedDate;
-    }
+  public String getPaperStoreBin() {
+    return this.paperStoreBin;
+  }
 
-    public void setPaperCheckedDate(Date paperCheckedDate) {
-        this.paperCheckedDate = paperCheckedDate;
-    }
+  public void setPaperStoreBin(String paperStoreBin) {
+    this.paperStoreBin = paperStoreBin;
+  }
 
-    public String getPaperStoreBin() {
-        return this.paperStoreBin;
-    }
+  public String getPaperStoreLocation() {
+    return this.paperStoreLocation;
+  }
 
-    public void setPaperStoreBin(String paperStoreBin) {
-        this.paperStoreBin = paperStoreBin;
-    }
+  public void setPaperStoreLocation(String paperStoreLocation) {
+    this.paperStoreLocation = paperStoreLocation;
+  }
 
-    public String getPaperStoreLocation() {
-        return this.paperStoreLocation;
-    }
+  public String getPn() {
+    return this.pn;
+  }
 
-    public void setPaperStoreLocation(String paperStoreLocation) {
-        this.paperStoreLocation = paperStoreLocation;
-    }
+  public void setPn(String pn) {
+    this.pn = pn;
+  }
 
-    public String getPn() {
-        return this.pn;
-    }
+  public String getPnCondition() {
+    return this.pnCondition;
+  }
 
-    public void setPn(String pn) {
-        this.pn = pn;
-    }
+  public void setPnCondition(String pnCondition) {
+    this.pnCondition = pnCondition;
+  }
 
-    public String getPnCondition() {
-        return this.pnCondition;
-    }
+  public String getPnDescription() {
+    return this.pnDescription;
+  }
 
-    public void setPnCondition(String pnCondition) {
-        this.pnCondition = pnCondition;
-    }
+  public void setPnDescription(String pnDescription) {
+    this.pnDescription = pnDescription;
+  }
 
-    public String getPnDescription() {
-        return this.pnDescription;
-    }
+  public BigDecimal getPnQty() {
+    return this.pnQty;
+  }
 
-    public void setPnDescription(String pnDescription) {
-        this.pnDescription = pnDescription;
-    }
+  public void setPnQty(BigDecimal pnQty) {
+    this.pnQty = pnQty;
+  }
 
-    public BigDecimal getPnQty() {
-        return this.pnQty;
-    }
+  public String getPnSn() {
+    return this.pnSn;
+  }
 
-    public void setPnQty(BigDecimal pnQty) {
-        this.pnQty = pnQty;
-    }
+  public void setPnSn(String pnSn) {
+    this.pnSn = pnSn;
+  }
 
-    public String getPnSn() {
-        return this.pnSn;
-    }
+  public String getPostcompletedBy() {
+    return this.postcompletedBy;
+  }
 
-    public void setPnSn(String pnSn) {
-        this.pnSn = pnSn;
-    }
+  public void setPostcompletedBy(String postcompletedBy) {
+    this.postcompletedBy = postcompletedBy;
+  }
 
-    public String getPostcompletedBy() {
-        return this.postcompletedBy;
-    }
+  public Date getPostcompletedDate() {
+    return this.postcompletedDate;
+  }
 
-    public void setPostcompletedBy(String postcompletedBy) {
-        this.postcompletedBy = postcompletedBy;
-    }
+  public void setPostcompletedDate(Date postcompletedDate) {
+    this.postcompletedDate = postcompletedDate;
+  }
 
-    public Date getPostcompletedDate() {
-        return this.postcompletedDate;
-    }
+  public BigDecimal getPreviousInterfaceTransaction() {
+    return this.previousInterfaceTransaction;
+  }
 
-    public void setPostcompletedDate(Date postcompletedDate) {
-        this.postcompletedDate = postcompletedDate;
-    }
+  public void setPreviousInterfaceTransaction(BigDecimal previousInterfaceTransaction) {
+    this.previousInterfaceTransaction = previousInterfaceTransaction;
+  }
 
-    public BigDecimal getPreviousInterfaceTransaction() {
-        return this.previousInterfaceTransaction;
-    }
+  public String getPriority() {
+    return this.priority;
+  }
 
-    public void setPreviousInterfaceTransaction(BigDecimal previousInterfaceTransaction) {
-        this.previousInterfaceTransaction = previousInterfaceTransaction;
-    }
+  public void setPriority(String priority) {
+    this.priority = priority;
+  }
 
-    public String getPriority() {
-        return this.priority;
-    }
+  public String getProject() {
+    return this.project;
+  }
 
-    public void setPriority(String priority) {
-        this.priority = priority;
-    }
+  public void setProject(String project) {
+    this.project = project;
+  }
 
-    public String getProject() {
-        return this.project;
-    }
+  public String getRefurbishmentOrder() {
+    return this.refurbishmentOrder;
+  }
 
-    public void setProject(String project) {
-        this.project = project;
-    }
+  public void setRefurbishmentOrder(String refurbishmentOrder) {
+    this.refurbishmentOrder = refurbishmentOrder;
+  }
 
-    public String getRefurbishmentOrder() {
-        return this.refurbishmentOrder;
-    }
+  public String getReleaseForAuthorization() {
+    return this.releaseForAuthorization;
+  }
 
-    public void setRefurbishmentOrder(String refurbishmentOrder) {
-        this.refurbishmentOrder = refurbishmentOrder;
-    }
+  public void setReleaseForAuthorization(String releaseForAuthorization) {
+    this.releaseForAuthorization = releaseForAuthorization;
+  }
 
-    public String getReleaseForAuthorization() {
-        return this.releaseForAuthorization;
-    }
+  public Date getReleaseForAuthorizationOn() {
+    return this.releaseForAuthorizationOn;
+  }
 
-    public void setReleaseForAuthorization(String releaseForAuthorization) {
-        this.releaseForAuthorization = releaseForAuthorization;
-    }
+  public void setReleaseForAuthorizationOn(Date releaseForAuthorizationOn) {
+    this.releaseForAuthorizationOn = releaseForAuthorizationOn;
+  }
 
-    public Date getReleaseForAuthorizationOn() {
-        return this.releaseForAuthorizationOn;
-    }
+  public String getRestrictActual() {
+    return this.restrictActual;
+  }
 
-    public void setReleaseForAuthorizationOn(Date releaseForAuthorizationOn) {
-        this.releaseForAuthorizationOn = releaseForAuthorizationOn;
-    }
+  public void setRestrictActual(String restrictActual) {
+    this.restrictActual = restrictActual;
+  }
 
-    public String getRestrictActual() {
-        return this.restrictActual;
-    }
+  public BigDecimal getSabreMessageNumber() {
+    return this.sabreMessageNumber;
+  }
 
-    public void setRestrictActual(String restrictActual) {
-        this.restrictActual = restrictActual;
-    }
+  public void setSabreMessageNumber(BigDecimal sabreMessageNumber) {
+    this.sabreMessageNumber = sabreMessageNumber;
+  }
 
-    public BigDecimal getSabreMessageNumber() {
-        return this.sabreMessageNumber;
-    }
+  public Date getScheduleCompletionDate() {
+    return this.scheduleCompletionDate;
+  }
 
-    public void setSabreMessageNumber(BigDecimal sabreMessageNumber) {
-        this.sabreMessageNumber = sabreMessageNumber;
-    }
+  public void setScheduleCompletionDate(Date scheduleCompletionDate) {
+    this.scheduleCompletionDate = scheduleCompletionDate;
+  }
 
-    public Date getScheduleCompletionDate() {
-        return this.scheduleCompletionDate;
-    }
+  public BigDecimal getScheduleCompletionHour() {
+    return this.scheduleCompletionHour;
+  }
 
-    public void setScheduleCompletionDate(Date scheduleCompletionDate) {
-        this.scheduleCompletionDate = scheduleCompletionDate;
-    }
+  public void setScheduleCompletionHour(BigDecimal scheduleCompletionHour) {
+    this.scheduleCompletionHour = scheduleCompletionHour;
+  }
 
-    public BigDecimal getScheduleCompletionHour() {
-        return this.scheduleCompletionHour;
-    }
+  public BigDecimal getScheduleCompletionMinute() {
+    return this.scheduleCompletionMinute;
+  }
 
-    public void setScheduleCompletionHour(BigDecimal scheduleCompletionHour) {
-        this.scheduleCompletionHour = scheduleCompletionHour;
-    }
+  public void setScheduleCompletionMinute(BigDecimal scheduleCompletionMinute) {
+    this.scheduleCompletionMinute = scheduleCompletionMinute;
+  }
 
-    public BigDecimal getScheduleCompletionMinute() {
-        return this.scheduleCompletionMinute;
-    }
+  public Date getScheduleOrgCompletionDate() {
+    return this.scheduleOrgCompletionDate;
+  }
 
-    public void setScheduleCompletionMinute(BigDecimal scheduleCompletionMinute) {
-        this.scheduleCompletionMinute = scheduleCompletionMinute;
-    }
+  public void setScheduleOrgCompletionDate(Date scheduleOrgCompletionDate) {
+    this.scheduleOrgCompletionDate = scheduleOrgCompletionDate;
+  }
 
-    public Date getScheduleOrgCompletionDate() {
-        return this.scheduleOrgCompletionDate;
-    }
+  public BigDecimal getScheduleOrgCompletionHour() {
+    return this.scheduleOrgCompletionHour;
+  }
 
-    public void setScheduleOrgCompletionDate(Date scheduleOrgCompletionDate) {
-        this.scheduleOrgCompletionDate = scheduleOrgCompletionDate;
-    }
+  public void setScheduleOrgCompletionHour(BigDecimal scheduleOrgCompletionHour) {
+    this.scheduleOrgCompletionHour = scheduleOrgCompletionHour;
+  }
 
-    public BigDecimal getScheduleOrgCompletionHour() {
-        return this.scheduleOrgCompletionHour;
-    }
+  public BigDecimal getScheduleOrgCompletionMinute() {
+    return this.scheduleOrgCompletionMinute;
+  }
 
-    public void setScheduleOrgCompletionHour(BigDecimal scheduleOrgCompletionHour) {
-        this.scheduleOrgCompletionHour = scheduleOrgCompletionHour;
-    }
+  public void setScheduleOrgCompletionMinute(BigDecimal scheduleOrgCompletionMinute) {
+    this.scheduleOrgCompletionMinute = scheduleOrgCompletionMinute;
+  }
 
-    public BigDecimal getScheduleOrgCompletionMinute() {
-        return this.scheduleOrgCompletionMinute;
-    }
+  public Date getScheduleStartDate() {
+    return this.scheduleStartDate;
+  }
 
-    public void setScheduleOrgCompletionMinute(BigDecimal scheduleOrgCompletionMinute) {
-        this.scheduleOrgCompletionMinute = scheduleOrgCompletionMinute;
-    }
+  public void setScheduleStartDate(Date scheduleStartDate) {
+    this.scheduleStartDate = scheduleStartDate;
+  }
 
-    public Date getScheduleStartDate() {
-        return this.scheduleStartDate;
-    }
+  public BigDecimal getScheduleStartHour() {
+    return this.scheduleStartHour;
+  }
 
-    public void setScheduleStartDate(Date scheduleStartDate) {
-        this.scheduleStartDate = scheduleStartDate;
-    }
+  public void setScheduleStartHour(BigDecimal scheduleStartHour) {
+    this.scheduleStartHour = scheduleStartHour;
+  }
 
-    public BigDecimal getScheduleStartHour() {
-        return this.scheduleStartHour;
-    }
+  public BigDecimal getScheduleStartMinute() {
+    return this.scheduleStartMinute;
+  }
 
-    public void setScheduleStartHour(BigDecimal scheduleStartHour) {
-        this.scheduleStartHour = scheduleStartHour;
-    }
+  public void setScheduleStartMinute(BigDecimal scheduleStartMinute) {
+    this.scheduleStartMinute = scheduleStartMinute;
+  }
 
-    public BigDecimal getScheduleStartMinute() {
-        return this.scheduleStartMinute;
-    }
+  public Date getScheduleTimestamp() {
+    return this.scheduleTimestamp;
+  }
 
-    public void setScheduleStartMinute(BigDecimal scheduleStartMinute) {
-        this.scheduleStartMinute = scheduleStartMinute;
-    }
+  public void setScheduleTimestamp(Date scheduleTimestamp) {
+    this.scheduleTimestamp = scheduleTimestamp;
+  }
 
-    public Date getScheduleTimestamp() {
-        return this.scheduleTimestamp;
-    }
+  public Date getShelfLifeExpiration() {
+    return this.shelfLifeExpiration;
+  }
 
-    public void setScheduleTimestamp(Date scheduleTimestamp) {
-        this.scheduleTimestamp = scheduleTimestamp;
-    }
+  public void setShelfLifeExpiration(Date shelfLifeExpiration) {
+    this.shelfLifeExpiration = shelfLifeExpiration;
+  }
 
-    public Date getShelfLifeExpiration() {
-        return this.shelfLifeExpiration;
-    }
+  public String getSite() {
+    return this.site;
+  }
 
-    public void setShelfLifeExpiration(Date shelfLifeExpiration) {
-        this.shelfLifeExpiration = shelfLifeExpiration;
-    }
+  public void setSite(String site) {
+    this.site = site;
+  }
 
-    public String getSite() {
-        return this.site;
-    }
+  public String getStatus() {
+    return this.status;
+  }
 
-    public void setSite(String site) {
-        this.site = site;
-    }
+  public void setStatus(String status) {
+    this.status = status;
+  }
 
-    public String getStatus() {
-        return this.status;
-    }
+  public String getStatusPriorToHd() {
+    return this.statusPriorToHd;
+  }
 
-    public void setStatus(String status) {
-        this.status = status;
-    }
+  public void setStatusPriorToHd(String statusPriorToHd) {
+    this.statusPriorToHd = statusPriorToHd;
+  }
 
-    public String getStatusPriorToHd() {
-        return this.statusPriorToHd;
-    }
+  public BigDecimal getTaskCardNumberingSystem() {
+    return this.taskCardNumberingSystem;
+  }
 
-    public void setStatusPriorToHd(String statusPriorToHd) {
-        this.statusPriorToHd = statusPriorToHd;
-    }
+  public void setTaskCardNumberingSystem(BigDecimal taskCardNumberingSystem) {
+    this.taskCardNumberingSystem = taskCardNumberingSystem;
+  }
 
-    public BigDecimal getTaskCardNumberingSystem() {
-        return this.taskCardNumberingSystem;
-    }
+  public BigDecimal getTemplateId() {
+    return this.templateId;
+  }
 
-    public void setTaskCardNumberingSystem(BigDecimal taskCardNumberingSystem) {
-        this.taskCardNumberingSystem = taskCardNumberingSystem;
-    }
+  public void setTemplateId(BigDecimal templateId) {
+    this.templateId = templateId;
+  }
 
-    public BigDecimal getTemplateId() {
-        return this.templateId;
-    }
+  public String getThirdPartyWo() {
+    return this.thirdPartyWo;
+  }
 
-    public void setTemplateId(BigDecimal templateId) {
-        this.templateId = templateId;
-    }
+  public void setThirdPartyWo(String thirdPartyWo) {
+    this.thirdPartyWo = thirdPartyWo;
+  }
 
-    public String getThirdPartyWo() {
-        return this.thirdPartyWo;
-    }
+  public String getVendor() {
+    return this.vendor;
+  }
 
-    public void setThirdPartyWo(String thirdPartyWo) {
-        this.thirdPartyWo = thirdPartyWo;
-    }
+  public void setVendor(String vendor) {
+    this.vendor = vendor;
+  }
 
-    public String getVendor() {
-        return this.vendor;
-    }
+  public String getWarrantyIndicator() {
+    return this.warrantyIndicator;
+  }
 
-    public void setVendor(String vendor) {
-        this.vendor = vendor;
-    }
+  public void setWarrantyIndicator(String warrantyIndicator) {
+    this.warrantyIndicator = warrantyIndicator;
+  }
 
-    public String getWarrantyIndicator() {
-        return this.warrantyIndicator;
-    }
+  public String getWoCategory() {
+    return this.woCategory;
+  }
 
-    public void setWarrantyIndicator(String warrantyIndicator) {
-        this.warrantyIndicator = warrantyIndicator;
-    }
+  public void setWoCategory(String woCategory) {
+    this.woCategory = woCategory;
+  }
 
-    public String getWoCategory() {
-        return this.woCategory;
-    }
+  public String getWoClosing() {
+    return this.woClosing;
+  }
 
-    public void setWoCategory(String woCategory) {
-        this.woCategory = woCategory;
-    }
+  public void setWoClosing(String woClosing) {
+    this.woClosing = woClosing;
+  }
 
-    public String getWoClosing() {
-        return this.woClosing;
-    }
+  public String getWoClosingStatus() {
+    return this.woClosingStatus;
+  }
 
-    public void setWoClosing(String woClosing) {
-        this.woClosing = woClosing;
-    }
+  public void setWoClosingStatus(String woClosingStatus) {
+    this.woClosingStatus = woClosingStatus;
+  }
 
-    public String getWoClosingStatus() {
-        return this.woClosingStatus;
-    }
+  public String getWoDescription() {
+    return this.woDescription;
+  }
 
-    public void setWoClosingStatus(String woClosingStatus) {
-        this.woClosingStatus = woClosingStatus;
-    }
+  public void setWoDescription(String woDescription) {
+    this.woDescription = woDescription;
+  }
 
-    public String getWoDescription() {
-        return this.woDescription;
-    }
+  public String getWoInitialInstall() {
+    return this.woInitialInstall;
+  }
 
-    public void setWoDescription(String woDescription) {
-        this.woDescription = woDescription;
-    }
+  public void setWoInitialInstall(String woInitialInstall) {
+    this.woInitialInstall = woInitialInstall;
+  }
 
-    public String getWoInitialInstall() {
-        return this.woInitialInstall;
-    }
+  public String getWoInprogressStatus() {
+    return this.woInprogressStatus;
+  }
 
-    public void setWoInitialInstall(String woInitialInstall) {
-        this.woInitialInstall = woInitialInstall;
-    }
+  public void setWoInprogressStatus(String woInprogressStatus) {
+    this.woInprogressStatus = woInprogressStatus;
+  }
 
-    public String getWoInprogressStatus() {
-        return this.woInprogressStatus;
-    }
+  public String getWoInprogressStatusBy() {
+    return this.woInprogressStatusBy;
+  }
 
-    public void setWoInprogressStatus(String woInprogressStatus) {
-        this.woInprogressStatus = woInprogressStatus;
-    }
+  public void setWoInprogressStatusBy(String woInprogressStatusBy) {
+    this.woInprogressStatusBy = woInprogressStatusBy;
+  }
 
-    public String getWoInprogressStatusBy() {
-        return this.woInprogressStatusBy;
-    }
+  public Date getWoInprogressStatusDate() {
+    return this.woInprogressStatusDate;
+  }
 
-    public void setWoInprogressStatusBy(String woInprogressStatusBy) {
-        this.woInprogressStatusBy = woInprogressStatusBy;
-    }
+  public void setWoInprogressStatusDate(Date woInprogressStatusDate) {
+    this.woInprogressStatusDate = woInprogressStatusDate;
+  }
 
-    public Date getWoInprogressStatusDate() {
-        return this.woInprogressStatusDate;
-    }
+  public String getWorkStarted() {
+    return this.workStarted;
+  }
 
-    public void setWoInprogressStatusDate(Date woInprogressStatusDate) {
-        this.woInprogressStatusDate = woInprogressStatusDate;
-    }
+  public void setWorkStarted(String workStarted) {
+    this.workStarted = workStarted;
+  }
 
-    public String getWorkStarted() {
-        return this.workStarted;
-    }
+  public List<WoTaskCard> getWoTaskCards() {
+    return this.woTaskCards;
+  }
 
-    public void setWorkStarted(String workStarted) {
-        this.workStarted = workStarted;
-    }
+  public void setWoTaskCards(List<WoTaskCard> woTaskCards) {
+    this.woTaskCards = woTaskCards;
+  }
 
-    public List<WoTaskCard> getWoTaskCards() {
-        return this.woTaskCards;
-    }
+  public WoTaskCard addWoTaskCard(WoTaskCard woTaskCard) {
+    getWoTaskCards().add(woTaskCard);
+    woTaskCard.setWoBean(this);
 
-    public void setWoTaskCards(List<WoTaskCard> woTaskCards) {
-        this.woTaskCards = woTaskCards;
-    }
+    return woTaskCard;
+  }
 
-    public WoTaskCard addWoTaskCard(WoTaskCard woTaskCard) {
-        getWoTaskCards().add(woTaskCard);
-        woTaskCard.setWoBean(this);
+  public WoTaskCard removeWoTaskCard(WoTaskCard woTaskCard) {
+    getWoTaskCards().remove(woTaskCard);
+    woTaskCard.setWoBean(null);
 
-        return woTaskCard;
-    }
+    return woTaskCard;
+  }
 
-    public WoTaskCard removeWoTaskCard(WoTaskCard woTaskCard) {
-        getWoTaskCards().remove(woTaskCard);
-        woTaskCard.setWoBean(null);
+  public String getReopenReason() {
+    return reopenReason;
+  }
 
-        return woTaskCard;
-    }
+  public void setReopenReason(String reopenReason) {
+    this.reopenReason = reopenReason;
+  }
 
-    public String getReopenReason() {
-        return reopenReason;
-    }
+  public String getTdEnginePos() {
+    return tdEnginePos;
+  }
 
-    public void setReopenReason(String reopenReason) {
-        this.reopenReason = reopenReason;
-    }
+  public void setTdEnginePos(String tdEnginePos) {
+    this.tdEnginePos = tdEnginePos;
+  }
 
-    public String getTdEnginePos() {
-        return tdEnginePos;
-    }
+  public String getTdApuSn() {
+    return tdApuSn;
+  }
 
-    public void setTdEnginePos(String tdEnginePos) {
-        this.tdEnginePos = tdEnginePos;
-    }
-
-    public String getTdApuSn() {
-        return tdApuSn;
-    }
-
-    public void setTdApuSn(String tdApuSn) {
-        this.tdApuSn = tdApuSn;
-    }
-
-
+  public void setTdApuSn(String tdApuSn) {
+    this.tdApuSn = tdApuSn;
+  }
 }

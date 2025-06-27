@@ -6,7 +6,7 @@ import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlType;
 
 /**
- * <p>Java class for anonymous complex type.
+ * Java class for anonymous complex type.
  *
  * <p>The following schema fragment specifies the expected content contained within this class.
  *
@@ -25,51 +25,45 @@ import javax.xml.bind.annotation.XmlType;
 @XmlType(name = "")
 public class SIMPLEREFERENCE {
 
+  @XmlAttribute(name = "REFERENCENAME")
+  protected String referencename;
 
-    @XmlAttribute(name = "REFERENCENAME")
-    protected String referencename;
-    @XmlAttribute(name = "REF-TEXT")
-    protected String reftext;
+  @XmlAttribute(name = "REF-TEXT")
+  protected String reftext;
 
-    /**
-     * Gets the value of the referencename property.
-     *
-     * @return possible object is
-     * {@link String }
-     */
-    public String getREFERENCENAME() {
-        return referencename;
-    }
+  /**
+   * Gets the value of the referencename property.
+   *
+   * @return possible object is {@link String }
+   */
+  public String getREFERENCENAME() {
+    return referencename;
+  }
 
-    /**
-     * Sets the value of the referencename property.
-     *
-     * @param value allowed object is
-     *              {@link String }
-     */
-    public void setREFERENCENAME(String value) {
-        this.referencename = value;
-    }
+  /**
+   * Sets the value of the referencename property.
+   *
+   * @param value allowed object is {@link String }
+   */
+  public void setREFERENCENAME(String value) {
+    this.referencename = value;
+  }
 
-    /**
-     * Gets the value of the reftext property.
-     *
-     * @return possible object is
-     * {@link String }
-     */
-    public String getREFTEXT() {
-        return reftext;
-    }
+  /**
+   * Gets the value of the reftext property.
+   *
+   * @return possible object is {@link String }
+   */
+  public String getREFTEXT() {
+    return reftext;
+  }
 
-    /**
-     * Sets the value of the reftext property.
-     *
-     * @param value allowed object is
-     *              {@link String }
-     */
-    public void setREFTEXT(String value) {
-        this.reftext = value;
-    }
-
-
+  /**
+   * Sets the value of the reftext property.
+   *
+   * @param value allowed object is {@link String }
+   */
+  public void setREFTEXT(String value) {
+    this.reftext = value;
+  }
 }

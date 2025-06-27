@@ -6,7 +6,7 @@ import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlType;
 
 /**
- * <p>Java class for anonymous complex type.
+ * Java class for anonymous complex type.
  *
  * <p>The following schema fragment specifies the expected content contained within this class.
  *
@@ -25,62 +25,56 @@ import javax.xml.bind.annotation.XmlType;
 @XmlType(name = "")
 public class ATTACHMENT {
 
+  @XmlAttribute(name = "ATT-TYPE")
+  protected String atttype;
 
-    @XmlAttribute(name = "ATT-TYPE")
-    protected String atttype;
-    @XmlAttribute(name = "ID")
-    protected String id;
+  @XmlAttribute(name = "ID")
+  protected String id;
 
-    @XmlAttribute(name = "NOOFPAGES")
-    protected String noofpages;
+  @XmlAttribute(name = "NOOFPAGES")
+  protected String noofpages;
 
-    /**
-     * Gets the value of the atttype property.
-     *
-     * @return possible object is
-     * {@link String }
-     */
-    public String getATTTYPE() {
-        return atttype;
-    }
+  /**
+   * Gets the value of the atttype property.
+   *
+   * @return possible object is {@link String }
+   */
+  public String getATTTYPE() {
+    return atttype;
+  }
 
-    /**
-     * Sets the value of the atttype property.
-     *
-     * @param value allowed object is
-     *              {@link String }
-     */
-    public void setATTTYPE(String value) {
-        this.atttype = value;
-    }
+  /**
+   * Sets the value of the atttype property.
+   *
+   * @param value allowed object is {@link String }
+   */
+  public void setATTTYPE(String value) {
+    this.atttype = value;
+  }
 
-    /**
-     * Gets the value of the id property.
-     *
-     * @return possible object is
-     * {@link String }
-     */
-    public String getID() {
-        return id;
-    }
+  /**
+   * Gets the value of the id property.
+   *
+   * @return possible object is {@link String }
+   */
+  public String getID() {
+    return id;
+  }
 
-    /**
-     * Sets the value of the id property.
-     *
-     * @param value allowed object is
-     *              {@link String }
-     */
-    public void setID(String value) {
-        this.id = value;
-    }
+  /**
+   * Sets the value of the id property.
+   *
+   * @param value allowed object is {@link String }
+   */
+  public void setID(String value) {
+    this.id = value;
+  }
 
-    public String getNoofpages() {
-        return noofpages;
-    }
+  public String getNoofpages() {
+    return noofpages;
+  }
 
-    public void setNoofpages(String noofpages) {
-        this.noofpages = noofpages;
-    }
-
-
+  public void setNoofpages(String noofpages) {
+    this.noofpages = noofpages;
+  }
 }

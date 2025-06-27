@@ -2,9 +2,8 @@ package trax.aero.pojo.xml;
 
 import javax.xml.bind.annotation.*;
 
-
 /**
- * <p>Java class for anonymous complex type.
+ * Java class for anonymous complex type.
  *
  * <p>The following schema fragment specifies the expected content contained within this class.
  *
@@ -23,78 +22,71 @@ import javax.xml.bind.annotation.*;
  * </pre>
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "", propOrder = {
-        "paneltext"
-})
+@XmlType(
+    name = "",
+    propOrder = {"paneltext"})
 public class PANEL {
 
+  @XmlElement(name = "PANELTEXT")
+  protected String paneltext;
 
-    @XmlElement(name = "PANELTEXT")
-    protected String paneltext;
-    @XmlAttribute(name = "PANEL-NBR")
-    protected String panelnbr;
-    @XmlAttribute(name = "PANEL-STATE")
-    protected String panelstate;
+  @XmlAttribute(name = "PANEL-NBR")
+  protected String panelnbr;
 
-    /**
-     * Gets the value of the paneltext property.
-     *
-     * @return possible object is
-     * {@link String }
-     */
-    public String getPANELTEXT() {
-        return paneltext;
-    }
+  @XmlAttribute(name = "PANEL-STATE")
+  protected String panelstate;
 
-    /**
-     * Sets the value of the paneltext property.
-     *
-     * @param value allowed object is
-     *              {@link String }
-     */
-    public void setPANELTEXT(String value) {
-        this.paneltext = value;
-    }
+  /**
+   * Gets the value of the paneltext property.
+   *
+   * @return possible object is {@link String }
+   */
+  public String getPANELTEXT() {
+    return paneltext;
+  }
 
-    /**
-     * Gets the value of the panelnbr property.
-     *
-     * @return possible object is
-     * {@link String }
-     */
-    public String getPANELNBR() {
-        return panelnbr;
-    }
+  /**
+   * Sets the value of the paneltext property.
+   *
+   * @param value allowed object is {@link String }
+   */
+  public void setPANELTEXT(String value) {
+    this.paneltext = value;
+  }
 
-    /**
-     * Sets the value of the panelnbr property.
-     *
-     * @param value allowed object is
-     *              {@link String }
-     */
-    public void setPANELNBR(String value) {
-        this.panelnbr = value;
-    }
+  /**
+   * Gets the value of the panelnbr property.
+   *
+   * @return possible object is {@link String }
+   */
+  public String getPANELNBR() {
+    return panelnbr;
+  }
 
-    /**
-     * Gets the value of the panelstate property.
-     *
-     * @return possible object is
-     * {@link String }
-     */
-    public String getPANELSTATE() {
-        return panelstate;
-    }
+  /**
+   * Sets the value of the panelnbr property.
+   *
+   * @param value allowed object is {@link String }
+   */
+  public void setPANELNBR(String value) {
+    this.panelnbr = value;
+  }
 
-    /**
-     * Sets the value of the panelstate property.
-     *
-     * @param value allowed object is
-     *              {@link String }
-     */
-    public void setPANELSTATE(String value) {
-        this.panelstate = value;
-    }
+  /**
+   * Gets the value of the panelstate property.
+   *
+   * @return possible object is {@link String }
+   */
+  public String getPANELSTATE() {
+    return panelstate;
+  }
 
-
+  /**
+   * Sets the value of the panelstate property.
+   *
+   * @param value allowed object is {@link String }
+   */
+  public void setPANELSTATE(String value) {
+    this.panelstate = value;
+  }
 }

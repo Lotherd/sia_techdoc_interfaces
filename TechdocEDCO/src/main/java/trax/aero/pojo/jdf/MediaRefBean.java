@@ -2,27 +2,25 @@ package trax.aero.pojo.jdf;
 
 import javax.xml.bind.annotation.XmlAttribute;
 
-
 public class MediaRefBean {
-    String rRef = "";
-    String textContent;
+  String rRef = "";
+  String textContent;
 
-    @XmlAttribute(name = "rRef")
-    public String getRRef() {
-        return rRef;
-    }
+  @XmlAttribute(name = "rRef")
+  public String getRRef() {
+    return rRef;
+  }
 
-    public void setRRef(String rRef) {
-        this.rRef = rRef;
-    }
+  public void setRRef(String rRef) {
+    this.rRef = rRef;
+  }
 
-    @XmlAttribute(name = "TextContent")
-    public String getTextContent() {
-        return textContent;
-    }
+  @XmlAttribute(name = "TextContent")
+  public String getTextContent() {
+    return textContent;
+  }
 
-    public void setTextContent(String textContent) {
-        this.textContent = textContent;
-    }
-
+  public void setTextContent(String textContent) {
+    this.textContent = textContent;
+  }
 }

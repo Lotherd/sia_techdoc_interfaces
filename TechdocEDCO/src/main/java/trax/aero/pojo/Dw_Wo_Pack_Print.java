@@ -6,18 +6,18 @@ import javax.xml.bind.annotation.XmlRootElement;
 @XmlRootElement(name = "dw_wo_pack_print")
 public class Dw_Wo_Pack_Print {
 
-    @XmlElement(name = "row")
-    private Row RowObject;
+  @XmlElement(name = "row")
+  private Row RowObject;
 
-    // Getter Methods
+  // Getter Methods
 
-    public Row getRow() {
-        return RowObject;
-    }
+  public Row getRow() {
+    return RowObject;
+  }
 
-    // Setter Methods
+  // Setter Methods
 
-    public void setRow(Row rowObject) {
-        this.RowObject = rowObject;
-    }
+  public void setRow(Row rowObject) {
+    this.RowObject = rowObject;
+  }
 }

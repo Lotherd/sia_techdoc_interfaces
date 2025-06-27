@@ -6,46 +6,43 @@ import com.amazonaws.services.sqs.AmazonSQSClientBuilder;
 import com.amazonaws.services.sqs.model.SendMessageRequest;
 import com.amazonaws.services.sqs.model.SendMessageResult;
 import com.google.gson.Gson;
-import trax.aero.pojo.json.OUTPUT;
-
 import java.util.UUID;
-
 import org.tinylog.Logger;
+import trax.aero.pojo.json.OUTPUT;
 
 public class SqsUtilities {
 
+  public static void sendResend(OUTPUT resend) throws Exception {
 
-    public static void sendResend(OUTPUT resend) throws Exception {
+    Gson gson = new Gson();
+    String json;
+    String queueUrlTo = System.getProperty("Techdoc_ToSQS");
 
-        Gson gson = new Gson();
-        String json;
-        String queueUrlTo = System.getProperty("Techdoc_ToSQS");
+    Logger.info("Sending JSON To EDCO");
 
-        Logger.info("Sending JSON To EDCO");
+    try {
+      json = gson.toJson(resend);
 
-        try {
-            json = gson.toJson(resend);
+      Logger.info("Request Body: " + json);
+      AmazonSQS sqs =
+          AmazonSQSClientBuilder.standard()
+              .withRegion(Regions.AP_SOUTHEAST_1) // Specify the region here
+              .build();
 
-            Logger.info("Request Body: " + json);
-            AmazonSQS sqs = AmazonSQSClientBuilder.standard()
-                    .withRegion(Regions.AP_SOUTHEAST_1)  // Specify the region here
-                    .build();
+      String queueUrl = sqs.getQueueUrl(queueUrlTo).getQueueUrl();
 
-            String queueUrl = sqs.getQueueUrl(queueUrlTo).getQueueUrl();
+      SendMessageRequest send_msg_request =
+          new SendMessageRequest()
+              .withQueueUrl(queueUrl)
+              .withMessageBody(json)
+              .withMessageGroupId(UUID.randomUUID().toString())
+              .withMessageDeduplicationId(UUID.randomUUID().toString());
+      SendMessageResult result = sqs.sendMessage(send_msg_request);
+      Logger.info("after sending a message we get message id " + result.getMessageId());
 
-            SendMessageRequest send_msg_request = new SendMessageRequest()
-                    .withQueueUrl(queueUrl)
-                    .withMessageBody(json)
-                    .withMessageGroupId(UUID.randomUUID().toString())
-                    .withMessageDeduplicationId(UUID.randomUUID().toString());
-            SendMessageResult result = sqs.sendMessage(send_msg_request);
-            Logger.info("after sending a message we get message id " + result.getMessageId());
-
-        } catch (Exception e) {
-            Logger.error(e);
-            throw e;
-        }
+    } catch (Exception e) {
+      Logger.error(e);
+      throw e;
     }
-
-
+  }
 }

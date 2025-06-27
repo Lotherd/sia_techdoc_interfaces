@@ -5,9 +5,8 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlType;
 
-
 /**
- * <p>Java class for anonymous complex type.
+ * Java class for anonymous complex type.
  *
  * <p>The following schema fragment specifies the expected content contained within this class.
  *
@@ -26,51 +25,45 @@ import javax.xml.bind.annotation.XmlType;
 @XmlType(name = "")
 public class ADDATTR {
 
+  @XmlAttribute(name = "ATTR-NAME")
+  protected String attrname;
 
-    @XmlAttribute(name = "ATTR-NAME")
-    protected String attrname;
-    @XmlAttribute(name = "ATTR-VALUE")
-    protected String attrvalue;
+  @XmlAttribute(name = "ATTR-VALUE")
+  protected String attrvalue;
 
-    /**
-     * Gets the value of the attrname property.
-     *
-     * @return possible object is
-     * {@link String }
-     */
-    public String getATTRNAME() {
-        return attrname;
-    }
+  /**
+   * Gets the value of the attrname property.
+   *
+   * @return possible object is {@link String }
+   */
+  public String getATTRNAME() {
+    return attrname;
+  }
 
-    /**
-     * Sets the value of the attrname property.
-     *
-     * @param value allowed object is
-     *              {@link String }
-     */
-    public void setATTRNAME(String value) {
-        this.attrname = value;
-    }
+  /**
+   * Sets the value of the attrname property.
+   *
+   * @param value allowed object is {@link String }
+   */
+  public void setATTRNAME(String value) {
+    this.attrname = value;
+  }
 
-    /**
-     * Gets the value of the attrvalue property.
-     *
-     * @return possible object is
-     * {@link String }
-     */
-    public String getATTRVALUE() {
-        return attrvalue;
-    }
+  /**
+   * Gets the value of the attrvalue property.
+   *
+   * @return possible object is {@link String }
+   */
+  public String getATTRVALUE() {
+    return attrvalue;
+  }
 
-    /**
-     * Sets the value of the attrvalue property.
-     *
-     * @param value allowed object is
-     *              {@link String }
-     */
-    public void setATTRVALUE(String value) {
-        this.attrvalue = value;
-    }
-
-
+  /**
+   * Sets the value of the attrvalue property.
+   *
+   * @param value allowed object is {@link String }
+   */
+  public void setATTRVALUE(String value) {
+    this.attrvalue = value;
+  }
 }
