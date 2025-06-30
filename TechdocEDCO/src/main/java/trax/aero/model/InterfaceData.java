@@ -1,3 +1,7 @@
+/*
+* This source code file is the intellectual property of TRAX USA Corp.
+* Copyright (c) 2025 TRAX USA Corp. All rights reserved.
+*/
 package trax.aero.model;
 
 import java.io.Serializable;
@@ -8,69 +12,70 @@ import javax.persistence.*;
 @Table(name = "INTERFACE_DATA")
 @NamedQuery(name = "InterfaceData.findAll", query = "SELECT i FROM InterfaceData i")
 public class InterfaceData implements Serializable {
-  private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 1L;
 
-  @EmbeddedId private InterfaceDataPK id;
+    @EmbeddedId
+    private InterfaceDataPK id;
 
-  @Lob
-  @Column(name = "CLOB_DOCUMENT")
-  private String clobDocument;
+    @Lob
+    @Column(name = "CLOB_DOCUMENT")
+    private String clobDocument;
 
-  @Column(name = "XML_DOCUMENT")
-  private String xmlDocument;
+    @Column(name = "XML_DOCUMENT")
+    private String xmlDocument;
 
-  @Column(name = "FILE_NAME")
-  private String fileName;
+    @Column(name = "FILE_NAME")
+    private String fileName;
 
-  // bi-directional many-to-one association to InterfaceAudit
-  @ManyToOne
-  @JoinColumns(
-      @JoinColumn(
-          name = "\"TRANSACTION\"",
-          referencedColumnName = "\"TRANSACTION\"",
-          insertable = false,
-          updatable = false))
-  private InterfaceAudit interfaceAudit;
+    // bi-directional many-to-one association to InterfaceAudit
+    @ManyToOne
+    @JoinColumns(
+            @JoinColumn(
+                    name = "\"TRANSACTION\"",
+                    referencedColumnName = "\"TRANSACTION\"",
+                    insertable = false,
+                    updatable = false))
+    private InterfaceAudit interfaceAudit;
 
-  public InterfaceData() {}
+    public InterfaceData() {}
 
-  public InterfaceDataPK getId() {
-    return this.id;
-  }
+    public InterfaceDataPK getId() {
+        return this.id;
+    }
 
-  public void setId(InterfaceDataPK id) {
-    this.id = id;
-  }
+    public void setId(InterfaceDataPK id) {
+        this.id = id;
+    }
 
-  public String getClobDocument() {
-    return this.clobDocument;
-  }
+    public String getClobDocument() {
+        return this.clobDocument;
+    }
 
-  public void setClobDocument(String clobDocument) {
-    this.clobDocument = clobDocument;
-  }
+    public void setClobDocument(String clobDocument) {
+        this.clobDocument = clobDocument;
+    }
 
-  public String getXmlDocument() {
-    return this.xmlDocument;
-  }
+    public String getXmlDocument() {
+        return this.xmlDocument;
+    }
 
-  public void setXmlDocument(String xmlDocument) {
-    this.xmlDocument = xmlDocument;
-  }
+    public void setXmlDocument(String xmlDocument) {
+        this.xmlDocument = xmlDocument;
+    }
 
-  public InterfaceAudit getInterfaceAudit() {
-    return this.interfaceAudit;
-  }
+    public InterfaceAudit getInterfaceAudit() {
+        return this.interfaceAudit;
+    }
 
-  public void setInterfaceAudit(InterfaceAudit interfaceAudit) {
-    this.interfaceAudit = interfaceAudit;
-  }
+    public void setInterfaceAudit(InterfaceAudit interfaceAudit) {
+        this.interfaceAudit = interfaceAudit;
+    }
 
-  public String getFileName() {
-    return fileName;
-  }
+    public String getFileName() {
+        return fileName;
+    }
 
-  public void setFileName(String fileName) {
-    this.fileName = fileName;
-  }
+    public void setFileName(String fileName) {
+        this.fileName = fileName;
+    }
 }

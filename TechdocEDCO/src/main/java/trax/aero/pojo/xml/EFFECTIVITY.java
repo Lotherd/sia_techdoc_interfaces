@@ -1,3 +1,7 @@
+/*
+* This source code file is the intellectual property of TRAX USA Corp.
+* Copyright (c) 2025 TRAX USA Corp. All rights reserved.
+*/
 package trax.aero.pojo.xml;
 
 import javax.xml.bind.annotation.*;
@@ -164,70 +168,70 @@ import javax.xml.bind.annotation.*;
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(
-    name = "",
-    propOrder = {"jobcard"})
+        name = "",
+        propOrder = {"jobcard"})
 public class EFFECTIVITY {
 
-  @XmlElement(name = "JOBCARD")
-  protected JOBCARD jobcard;
+    @XmlElement(name = "JOBCARD")
+    protected JOBCARD jobcard;
 
-  @XmlAttribute(name = "REGNBR")
-  protected String regnbr;
+    @XmlAttribute(name = "REGNBR")
+    protected String regnbr;
 
-  @XmlAttribute(name = "CONFIG")
-  protected String config;
+    @XmlAttribute(name = "CONFIG")
+    protected String config;
 
-  /**
-   * Gets the value of the jobcard property.
-   *
-   * @return possible object is {@link JOBCARD }
-   */
-  public JOBCARD getJOBCARD() {
-    return jobcard;
-  }
+    /**
+     * Gets the value of the jobcard property.
+     *
+     * @return possible object is {@link JOBCARD }
+     */
+    public JOBCARD getJOBCARD() {
+        return jobcard;
+    }
 
-  /**
-   * Sets the value of the jobcard property.
-   *
-   * @param value allowed object is {@link JOBCARD }
-   */
-  public void setJOBCARD(JOBCARD value) {
-    this.jobcard = value;
-  }
+    /**
+     * Sets the value of the jobcard property.
+     *
+     * @param value allowed object is {@link JOBCARD }
+     */
+    public void setJOBCARD(JOBCARD value) {
+        this.jobcard = value;
+    }
 
-  /**
-   * Gets the value of the regnbr property.
-   *
-   * @return possible object is {@link String }
-   */
-  public String getREGNBR() {
-    return regnbr;
-  }
+    /**
+     * Gets the value of the regnbr property.
+     *
+     * @return possible object is {@link String }
+     */
+    public String getREGNBR() {
+        return regnbr;
+    }
 
-  /**
-   * Sets the value of the regnbr property.
-   *
-   * @param value allowed object is {@link String }
-   */
-  public void setREGNBR(String value) {
-    this.regnbr = value;
-  }
+    /**
+     * Sets the value of the regnbr property.
+     *
+     * @param value allowed object is {@link String }
+     */
+    public void setREGNBR(String value) {
+        this.regnbr = value;
+    }
 
-  /**
-   * Gets the value of the config property.
-   *
-   * @return possible object is {@link String }
-   */
-  public String getCONFIG() {
-    return config;
-  }
+    /**
+     * Gets the value of the config property.
+     *
+     * @return possible object is {@link String }
+     */
+    public String getCONFIG() {
+        return config;
+    }
 
-  /**
-   * Sets the value of the config property.
-   *
-   * @param value allowed object is {@link String }
-   */
-  public void setCONFIG(String value) {
-    this.config = value;
-  }
+    /**
+     * Sets the value of the config property.
+     *
+     * @param value allowed object is {@link String }
+     */
+    public void setCONFIG(String value) {
+        this.config = value;
+    }
 }

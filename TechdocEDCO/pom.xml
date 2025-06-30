@@ -1,20 +1,4 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!--
-  Licensed to the Apache Software Foundation (ASF) under one or more
-   contributor license agreements.  See the NOTICE file distributed with
-   this work for additional information regarding copyright ownership.
-   The ASF licenses this file to You under the Apache License, Version 2.0
-   (the "License"); you may not use this file except in compliance with
-   the License.  You may obtain a copy of the License at
-
-       http://www.apache.org/licenses/LICENSE-2.0
-
-    Unless required by applicable law or agreed to in writing, software
-    distributed under the License is distributed on an "AS IS" BASIS,
-    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-    See the License for the specific language governing permissions and
-    limitations under the License.
--->
 <project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://maven.apache.org/POM/4.0.0"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
@@ -54,21 +38,16 @@
             <artifactId>jsch</artifactId>
             <version>0.1.55</version>
         </dependency>
-        <!-- https://mvnrepository.com/artifact/javax.ejb/ejb-api -->
-
-        <!-- https://mvnrepository.com/artifact/org.glassfish/javax.ejb -->
         <dependency>
             <groupId>org.glassfish</groupId>
             <artifactId>javax.ejb</artifactId>
             <version>10.0-b28</version>
         </dependency>
-
         <dependency>
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-text</artifactId>
             <version>1.10.0</version>
         </dependency>
-        <!-- https://mvnrepository.com/artifact/org.eclipse.persistence/javax.persistence -->
         <dependency>
             <groupId>com.google.code.gson</groupId>
             <artifactId>gson</artifactId>
@@ -82,7 +61,7 @@
         <dependency>
             <groupId>com.amazonaws</groupId>
             <artifactId>aws-java-sdk-sqs</artifactId>
-            <version>1.11.1000</version> <!-- Replace with the latest 1.x version -->
+            <version>1.11.1000</version>
         </dependency>
         <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>
@@ -100,8 +79,6 @@
             <artifactId>s3-transfer-manager</artifactId>
             <version>2.19.6</version>
         </dependency>
-
-        <!-- https://mvnrepository.com/artifact/javax.ws.rs/javax.ws.rs-api -->
         <dependency>
             <groupId>javax.ws.rs</groupId>
             <artifactId>javax.ws.rs-api</artifactId>
@@ -133,13 +110,7 @@
 		    <version>2.7.0</version>
 		</dependency>
     </dependencies>
-
     <build>
-
-        <!--
-        Defines plugin versions for this project
-        and any modules that may be added
-        -->
         <pluginManagement>
             <plugins>
                 <plugin>
@@ -169,8 +140,36 @@
                 </plugin>
             </plugins>
         </pluginManagement>
-
         <plugins>
+         <plugin>
+                <groupId>com.diffplug.spotless</groupId>
+                <artifactId>spotless-maven-plugin</artifactId>
+                <version>2.20.2</version>
+                <executions>
+                    <execution>
+                        <id>spotless-check</id>
+                        <phase>validate</phase>
+                        <goals>
+                            <goal>apply</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <java>
+                        <palantirJavaFormat/>
+                        <removeUnusedImports/>
+                        <licenseHeader>
+                            <content>
+/*
+* This source code file is the intellectual property of TRAX USA Corp.
+* Copyright (c) 2025 TRAX USA Corp. All rights reserved.
+*/
+                            </content>
+                        </licenseHeader>
+                    </java>
+                </configuration>
+            </plugin>
+	       
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
@@ -213,16 +212,13 @@
                     <dependency>
                         <groupId>org.apache.openjpa</groupId>
                         <artifactId>openjpa</artifactId>
-                        <!-- Set this version to be the same as the version used in your runtime -->
                         <version>${version.openjpa}</version>
                     </dependency>
                 </dependencies>
             </plugin>
         </plugins>
         <finalName>TechdocEDCO</finalName>
-
     </build>
-
     <repositories>
         <repository>
             <id>apache-snapshot</id>
@@ -230,5 +226,4 @@
             <url>https://repository.apache.org/content/groups/snapshots/</url>
         </repository>
     </repositories>
-
 </project>

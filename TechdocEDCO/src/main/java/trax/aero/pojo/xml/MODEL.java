@@ -1,3 +1,7 @@
+/*
+* This source code file is the intellectual property of TRAX USA Corp.
+* Copyright (c) 2025 TRAX USA Corp. All rights reserved.
+*/
 package trax.aero.pojo.xml;
 
 import javax.xml.bind.annotation.*;
@@ -175,50 +179,50 @@ import javax.xml.bind.annotation.*;
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(
-    name = "",
-    propOrder = {"effectivity"})
+        name = "",
+        propOrder = {"effectivity"})
 @XmlRootElement(name = "MODEL")
 public class MODEL {
 
-  @XmlElement(name = "EFFECTIVITY")
-  protected EFFECTIVITY effectivity;
+    @XmlElement(name = "EFFECTIVITY")
+    protected EFFECTIVITY effectivity;
 
-  @XmlAttribute(name = "MODELNBR")
-  protected String modelnbr;
+    @XmlAttribute(name = "MODELNBR")
+    protected String modelnbr;
 
-  /**
-   * Gets the value of the effectivity property.
-   *
-   * @return possible object is {@link EFFECTIVITY }
-   */
-  public EFFECTIVITY getEFFECTIVITY() {
-    return effectivity;
-  }
+    /**
+     * Gets the value of the effectivity property.
+     *
+     * @return possible object is {@link EFFECTIVITY }
+     */
+    public EFFECTIVITY getEFFECTIVITY() {
+        return effectivity;
+    }
 
-  /**
-   * Sets the value of the effectivity property.
-   *
-   * @param value allowed object is {@link EFFECTIVITY }
-   */
-  public void setEFFECTIVITY(EFFECTIVITY value) {
-    this.effectivity = value;
-  }
+    /**
+     * Sets the value of the effectivity property.
+     *
+     * @param value allowed object is {@link EFFECTIVITY }
+     */
+    public void setEFFECTIVITY(EFFECTIVITY value) {
+        this.effectivity = value;
+    }
 
-  /**
-   * Gets the value of the modelnbr property.
-   *
-   * @return possible object is {@link String }
-   */
-  public String getMODELNBR() {
-    return modelnbr;
-  }
+    /**
+     * Gets the value of the modelnbr property.
+     *
+     * @return possible object is {@link String }
+     */
+    public String getMODELNBR() {
+        return modelnbr;
+    }
 
-  /**
-   * Sets the value of the modelnbr property.
-   *
-   * @param value allowed object is {@link String }
-   */
-  public void setMODELNBR(String value) {
-    this.modelnbr = value;
-  }
+    /**
+     * Sets the value of the modelnbr property.
+     *
+     * @param value allowed object is {@link String }
+     */
+    public void setMODELNBR(String value) {
+        this.modelnbr = value;
+    }
 }

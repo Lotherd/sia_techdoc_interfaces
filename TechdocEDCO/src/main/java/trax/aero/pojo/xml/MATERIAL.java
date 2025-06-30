@@ -1,3 +1,7 @@
+/*
+* This source code file is the intellectual property of TRAX USA Corp.
+* Copyright (c) 2025 TRAX USA Corp. All rights reserved.
+*/
 package trax.aero.pojo.xml;
 
 import javax.xml.bind.annotation.XmlAccessType;
@@ -27,109 +31,109 @@ import javax.xml.bind.annotation.XmlType;
 @XmlType(name = "")
 public class MATERIAL {
 
-  @XmlAttribute(name = "MPN-NUMBER")
-  protected String mpnnumber;
+    @XmlAttribute(name = "MPN-NUMBER")
+    protected String mpnnumber;
 
-  @XmlAttribute(name = "DESC")
-  protected String desc;
+    @XmlAttribute(name = "DESC")
+    protected String desc;
 
-  @XmlAttribute(name = "QTY")
-  protected String qty;
+    @XmlAttribute(name = "QTY")
+    protected String qty;
 
-  @XmlAttribute(name = "UNIT")
-  protected String unit;
+    @XmlAttribute(name = "UNIT")
+    protected String unit;
 
-  @XmlAttribute(name = "RSNUM")
-  protected String rsnum;
+    @XmlAttribute(name = "RSNUM")
+    protected String rsnum;
 
-  @XmlAttribute(name = "RSPOS")
-  protected String rspos;
+    @XmlAttribute(name = "RSPOS")
+    protected String rspos;
 
-  public String getRsnum() {
-    return rsnum;
-  }
+    public String getRsnum() {
+        return rsnum;
+    }
 
-  public void setRsnum(String value) {
-    this.rsnum = value;
-  }
+    public void setRsnum(String value) {
+        this.rsnum = value;
+    }
 
-  public String getRspos() {
-    return rspos;
-  }
+    public String getRspos() {
+        return rspos;
+    }
 
-  public void setRspos(String value) {
-    this.rspos = value;
-  }
+    public void setRspos(String value) {
+        this.rspos = value;
+    }
 
-  /**
-   * Gets the value of the mpnnumber property.
-   *
-   * @return possible object is {@link String }
-   */
-  public String getMPNNUMBER() {
-    return mpnnumber;
-  }
+    /**
+     * Gets the value of the mpnnumber property.
+     *
+     * @return possible object is {@link String }
+     */
+    public String getMPNNUMBER() {
+        return mpnnumber;
+    }
 
-  /**
-   * Sets the value of the mpnnumber property.
-   *
-   * @param value allowed object is {@link String }
-   */
-  public void setMPNNUMBER(String value) {
-    this.mpnnumber = value;
-  }
+    /**
+     * Sets the value of the mpnnumber property.
+     *
+     * @param value allowed object is {@link String }
+     */
+    public void setMPNNUMBER(String value) {
+        this.mpnnumber = value;
+    }
 
-  /**
-   * Gets the value of the desc property.
-   *
-   * @return possible object is {@link String }
-   */
-  public String getDESC() {
-    return desc;
-  }
+    /**
+     * Gets the value of the desc property.
+     *
+     * @return possible object is {@link String }
+     */
+    public String getDESC() {
+        return desc;
+    }
 
-  /**
-   * Sets the value of the desc property.
-   *
-   * @param value allowed object is {@link String }
-   */
-  public void setDESC(String value) {
-    this.desc = value;
-  }
+    /**
+     * Sets the value of the desc property.
+     *
+     * @param value allowed object is {@link String }
+     */
+    public void setDESC(String value) {
+        this.desc = value;
+    }
 
-  /**
-   * Gets the value of the qty property.
-   *
-   * @return possible object is {@link String }
-   */
-  public String getQTY() {
-    return qty;
-  }
+    /**
+     * Gets the value of the qty property.
+     *
+     * @return possible object is {@link String }
+     */
+    public String getQTY() {
+        return qty;
+    }
 
-  /**
-   * Sets the value of the qty property.
-   *
-   * @param value allowed object is {@link String }
-   */
-  public void setQTY(String value) {
-    this.qty = value;
-  }
+    /**
+     * Sets the value of the qty property.
+     *
+     * @param value allowed object is {@link String }
+     */
+    public void setQTY(String value) {
+        this.qty = value;
+    }
 
-  /**
-   * Gets the value of the unit property.
-   *
-   * @return possible object is {@link String }
-   */
-  public String getUNIT() {
-    return unit;
-  }
+    /**
+     * Gets the value of the unit property.
+     *
+     * @return possible object is {@link String }
+     */
+    public String getUNIT() {
+        return unit;
+    }
 
-  /**
-   * Sets the value of the unit property.
-   *
-   * @param value allowed object is {@link String }
-   */
-  public void setUNIT(String value) {
-    this.unit = value;
-  }
+    /**
+     * Sets the value of the unit property.
+     *
+     * @param value allowed object is {@link String }
+     */
+    public void setUNIT(String value) {
+        this.unit = value;
+    }
 }

@@ -1,3 +1,7 @@
+/*
+* This source code file is the intellectual property of TRAX USA Corp.
+* Copyright (c) 2025 TRAX USA Corp. All rights reserved.
+*/
 package trax.aero.pojo.xml;
 
 import java.util.ArrayList;
@@ -113,200 +117,200 @@ import javax.xml.bind.annotation.*;
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(
-    name = "",
-    propOrder = {"panel", "pli"})
+        name = "",
+        propOrder = {"panel", "pli"})
 public class JOBI {
 
-  @XmlElement(name = "PANEL")
-  protected List<PANEL> panel;
+    @XmlElement(name = "PANEL")
+    protected List<PANEL> panel;
 
-  @XmlElement(name = "PLI")
-  protected PLI pli;
+    @XmlElement(name = "PLI")
+    protected PLI pli;
 
-  @XmlAttribute(name = "JOBINBR")
-  protected String jobinbr;
+    @XmlAttribute(name = "JOBINBR")
+    protected String jobinbr;
 
-  @XmlAttribute(name = "JOBITITLE")
-  protected String jobititle;
+    @XmlAttribute(name = "JOBITITLE")
+    protected String jobititle;
 
-  @XmlAttribute(name = "LANGUAGE")
-  protected String language;
+    @XmlAttribute(name = "LANGUAGE")
+    protected String language;
 
-  @XmlAttribute(name = "ZONE")
-  protected String zone;
+    @XmlAttribute(name = "ZONE")
+    protected String zone;
 
-  @XmlAttribute(name = "INTERVAL")
-  protected String interval;
+    @XmlAttribute(name = "INTERVAL")
+    protected String interval;
 
-  @XmlAttribute(name = "HARDTIME")
-  protected String hardtime;
+    @XmlAttribute(name = "HARDTIME")
+    protected String hardtime;
 
-  @XmlAttribute(name = "DIMENSION")
-  protected String dimension;
+    @XmlAttribute(name = "DIMENSION")
+    protected String dimension;
 
-  /**
-   * Gets the value of the panel property.
-   *
-   * <p>This accessor method returns a reference to the live list, not a snapshot. Therefore any
-   * modification you make to the returned list will be present inside the JAXB object. This is why
-   * there is not a <CODE>set</CODE> method for the panel property.
-   *
-   * <p>For example, to add a new item, do as follows:
-   *
-   * <pre>
-   *    getPANEL().add(newItem);
-   * </pre>
-   *
-   * <p>Objects of the following type(s) are allowed in the list {@link PANEL }
-   */
-  public List<PANEL> getPANEL() {
-    if (panel == null) {
-      panel = new ArrayList<PANEL>();
+    /**
+     * Gets the value of the panel property.
+     *
+     * <p>This accessor method returns a reference to the live list, not a snapshot. Therefore any
+     * modification you make to the returned list will be present inside the JAXB object. This is why
+     * there is not a <CODE>set</CODE> method for the panel property.
+     *
+     * <p>For example, to add a new item, do as follows:
+     *
+     * <pre>
+     *    getPANEL().add(newItem);
+     * </pre>
+     *
+     * <p>Objects of the following type(s) are allowed in the list {@link PANEL }
+     */
+    public List<PANEL> getPANEL() {
+        if (panel == null) {
+            panel = new ArrayList<PANEL>();
+        }
+        return this.panel;
     }
-    return this.panel;
-  }
 
-  /**
-   * Gets the value of the pli property.
-   *
-   * @return possible object is {@link PLI }
-   */
-  public PLI getPLI() {
-    return pli;
-  }
+    /**
+     * Gets the value of the pli property.
+     *
+     * @return possible object is {@link PLI }
+     */
+    public PLI getPLI() {
+        return pli;
+    }
 
-  /**
-   * Sets the value of the pli property.
-   *
-   * @param value allowed object is {@link PLI }
-   */
-  public void setPLI(PLI value) {
-    this.pli = value;
-  }
+    /**
+     * Sets the value of the pli property.
+     *
+     * @param value allowed object is {@link PLI }
+     */
+    public void setPLI(PLI value) {
+        this.pli = value;
+    }
 
-  /**
-   * Gets the value of the jobinbr property.
-   *
-   * @return possible object is {@link String }
-   */
-  public String getJOBINBR() {
-    return jobinbr;
-  }
+    /**
+     * Gets the value of the jobinbr property.
+     *
+     * @return possible object is {@link String }
+     */
+    public String getJOBINBR() {
+        return jobinbr;
+    }
 
-  /**
-   * Sets the value of the jobinbr property.
-   *
-   * @param value allowed object is {@link String }
-   */
-  public void setJOBINBR(String value) {
-    this.jobinbr = value;
-  }
+    /**
+     * Sets the value of the jobinbr property.
+     *
+     * @param value allowed object is {@link String }
+     */
+    public void setJOBINBR(String value) {
+        this.jobinbr = value;
+    }
 
-  /**
-   * Gets the value of the jobititle property.
-   *
-   * @return possible object is {@link String }
-   */
-  public String getJOBITITLE() {
-    return jobititle;
-  }
+    /**
+     * Gets the value of the jobititle property.
+     *
+     * @return possible object is {@link String }
+     */
+    public String getJOBITITLE() {
+        return jobititle;
+    }
 
-  /**
-   * Sets the value of the jobititle property.
-   *
-   * @param value allowed object is {@link String }
-   */
-  public void setJOBITITLE(String value) {
-    this.jobititle = value;
-  }
+    /**
+     * Sets the value of the jobititle property.
+     *
+     * @param value allowed object is {@link String }
+     */
+    public void setJOBITITLE(String value) {
+        this.jobititle = value;
+    }
 
-  /**
-   * Gets the value of the language property.
-   *
-   * @return possible object is {@link String }
-   */
-  public String getLANGUAGE() {
-    return language;
-  }
+    /**
+     * Gets the value of the language property.
+     *
+     * @return possible object is {@link String }
+     */
+    public String getLANGUAGE() {
+        return language;
+    }
 
-  /**
-   * Sets the value of the language property.
-   *
-   * @param value allowed object is {@link String }
-   */
-  public void setLANGUAGE(String value) {
-    this.language = value;
-  }
+    /**
+     * Sets the value of the language property.
+     *
+     * @param value allowed object is {@link String }
+     */
+    public void setLANGUAGE(String value) {
+        this.language = value;
+    }
 
-  /**
-   * Gets the value of the zone property.
-   *
-   * @return possible object is {@link String }
-   */
-  public String getZONE() {
-    return zone;
-  }
+    /**
+     * Gets the value of the zone property.
+     *
+     * @return possible object is {@link String }
+     */
+    public String getZONE() {
+        return zone;
+    }
 
-  /**
-   * Sets the value of the zone property.
-   *
-   * @param value allowed object is {@link String }
-   */
-  public void setZONE(String value) {
-    this.zone = value;
-  }
+    /**
+     * Sets the value of the zone property.
+     *
+     * @param value allowed object is {@link String }
+     */
+    public void setZONE(String value) {
+        this.zone = value;
+    }
 
-  /**
-   * Gets the value of the interval property.
-   *
-   * @return possible object is {@link String }
-   */
-  public String getINTERVAL() {
-    return interval;
-  }
+    /**
+     * Gets the value of the interval property.
+     *
+     * @return possible object is {@link String }
+     */
+    public String getINTERVAL() {
+        return interval;
+    }
 
-  /**
-   * Sets the value of the interval property.
-   *
-   * @param value allowed object is {@link String }
-   */
-  public void setINTERVAL(String value) {
-    this.interval = value;
-  }
+    /**
+     * Sets the value of the interval property.
+     *
+     * @param value allowed object is {@link String }
+     */
+    public void setINTERVAL(String value) {
+        this.interval = value;
+    }
 
-  /**
-   * Gets the value of the hardtime property.
-   *
-   * @return possible object is {@link String }
-   */
-  public String getHARDTIME() {
-    return hardtime;
-  }
+    /**
+     * Gets the value of the hardtime property.
+     *
+     * @return possible object is {@link String }
+     */
+    public String getHARDTIME() {
+        return hardtime;
+    }
 
-  /**
-   * Sets the value of the hardtime property.
-   *
-   * @param value allowed object is {@link String }
-   */
-  public void setHARDTIME(String value) {
-    this.hardtime = value;
-  }
+    /**
+     * Sets the value of the hardtime property.
+     *
+     * @param value allowed object is {@link String }
+     */
+    public void setHARDTIME(String value) {
+        this.hardtime = value;
+    }
 
-  /**
-   * Gets the value of the dimension property.
-   *
-   * @return possible object is {@link String }
-   */
-  public String getDIMENSION() {
-    return dimension;
-  }
+    /**
+     * Gets the value of the dimension property.
+     *
+     * @return possible object is {@link String }
+     */
+    public String getDIMENSION() {
+        return dimension;
+    }
 
-  /**
-   * Sets the value of the dimension property.
-   *
-   * @param value allowed object is {@link String }
-   */
-  public void setDIMENSION(String value) {
-    this.dimension = value;
-  }
+    /**
+     * Sets the value of the dimension property.
+     *
+     * @param value allowed object is {@link String }
+     */
+    public void setDIMENSION(String value) {
+        this.dimension = value;
+    }
 }
