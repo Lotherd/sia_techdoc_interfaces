@@ -88,7 +88,7 @@ public class ModelData implements IModelData {
         String company = "SIA", ac, location, site, type;
         String printer = "", date, time, revision, error = "";
         ArrayList<PrintAck> ack = null;
-        ac = input.getEFFECTIVITY().getREGNBR();
+        ac = removeHypenString(input.getEFFECTIVITY().getREGNBR());
         location = "SIN";
         site = input.getEFFECTIVITY().getJOBCARD().getCENTER();
         type = input.getEFFECTIVITY().getJOBCARD().getTYPE();
@@ -992,7 +992,7 @@ public class ModelData implements IModelData {
                 cstmt.setInt(1, Long.valueOf(w.getWo()).intValue());
                 cstmt.setString(2, tc);
 
-                String ac = input.getEFFECTIVITY().getREGNBR();
+                String ac = removeHypenString(input.getEFFECTIVITY().getREGNBR());
                 if (ac == null || ac.isEmpty()) {
                     cstmt.setString(3, "          ");
                 } else {
@@ -2292,6 +2292,11 @@ public class ModelData implements IModelData {
         // Logger.info("lock " + lock.getLocked());
         if (lock.getLocked().intValue() == 1) {
             LocalDateTime today = LocalDateTime.now();
+            if(lock.getLockedDate() == null) {
+            	 lock.setLockedDate(
+                         Date.from(LocalDateTime.now().atZone(ZoneId.systemDefault()).toInstant()));
+            	 insertData(lock);
+            }
             LocalDateTime locked = LocalDateTime.ofInstant(lock.getLockedDate().toInstant(), ZoneId.systemDefault());
             Duration diff = Duration.between(locked, today);
             if (diff.getSeconds() >= lock.getMaxLock().longValue()) {
@@ -2410,7 +2415,8 @@ public class ModelData implements IModelData {
 
         try {
 
-            AcMaster acMaster = em.find(AcMaster.class, input.getEFFECTIVITY().getREGNBR());
+            AcMaster acMaster = em.find(
+                    AcMaster.class, removeHypenString(input.getEFFECTIVITY().getREGNBR()));
             String type = "", series = "";
             if (acMaster != null) {
                 type = acMaster.getAcTypeSeriesMaster().getId().getAcType();
@@ -2437,6 +2443,14 @@ public class ModelData implements IModelData {
             return null;
         } else {
             return inputString.substring(0, Math.min(inputString.length(), 8));
+        }
+    }
+
+    private String removeHypenString(String inputString) {
+        if (inputString == null) {
+            return null;
+        } else {
+            return inputString.replaceAll("-", "");
         }
     }
 }
