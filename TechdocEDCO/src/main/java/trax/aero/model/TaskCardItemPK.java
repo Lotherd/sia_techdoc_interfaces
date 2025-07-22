@@ -46,7 +46,8 @@ public class TaskCardItemPK implements Serializable {
             return false;
         }
         TaskCardItemPK castOther = (TaskCardItemPK) other;
-        return this.taskCard.equals(castOther.taskCard) && (this.taskCardItem == castOther.taskCardItem);
+        return this.taskCard.equals(castOther.taskCard)
+                && (this.taskCardItem == castOther.taskCardItem);
     }
 
     public int hashCode() {

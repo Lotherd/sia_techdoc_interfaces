@@ -16,8 +16,7 @@ import javax.persistence.*;
 public class AcMaster implements Serializable {
     private static final long serialVersionUID = 1L;
 
-    @Id
-    private String ac;
+    @Id private String ac;
 
     @Column(name = "AC_BLOCK_HOURS")
     private BigDecimal acBlockHours;

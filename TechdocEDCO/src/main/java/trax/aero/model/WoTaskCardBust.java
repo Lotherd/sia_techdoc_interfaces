@@ -16,8 +16,7 @@ import javax.persistence.*;
 public class WoTaskCardBust implements Serializable {
     private static final long serialVersionUID = 1L;
 
-    @EmbeddedId
-    private WoTaskCardBustPK id;
+    @EmbeddedId private WoTaskCardBustPK id;
 
     @Column(name = "\"AUTHORIZATION\"")
     private String authorization;
@@ -59,9 +58,21 @@ public class WoTaskCardBust implements Serializable {
     @ManyToOne
     @JoinColumns({
         @JoinColumn(name = "AC", referencedColumnName = "AC", insertable = false, updatable = false),
-        @JoinColumn(name = "TASK_CARD", referencedColumnName = "TASK_CARD", insertable = false, updatable = false),
-        @JoinColumn(name = "TASK_CARD_PN", referencedColumnName = "PN", insertable = false, updatable = false),
-        @JoinColumn(name = "TASK_CARD_PN_SN", referencedColumnName = "PN_SN", insertable = false, updatable = false),
+        @JoinColumn(
+                name = "TASK_CARD",
+                referencedColumnName = "TASK_CARD",
+                insertable = false,
+                updatable = false),
+        @JoinColumn(
+                name = "TASK_CARD_PN",
+                referencedColumnName = "PN",
+                insertable = false,
+                updatable = false),
+        @JoinColumn(
+                name = "TASK_CARD_PN_SN",
+                referencedColumnName = "PN_SN",
+                insertable = false,
+                updatable = false),
         @JoinColumn(name = "WO", referencedColumnName = "WO", insertable = false, updatable = false)
     })
     private WoTaskCard woTaskCard;

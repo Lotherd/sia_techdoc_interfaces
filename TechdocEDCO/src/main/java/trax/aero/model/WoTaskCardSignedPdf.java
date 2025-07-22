@@ -16,8 +16,7 @@ import javax.persistence.*;
 public class WoTaskCardSignedPdf implements Serializable {
     private static final long serialVersionUID = 1L;
 
-    @EmbeddedId
-    private WoTaskCardSignedPdfPK id;
+    @EmbeddedId private WoTaskCardSignedPdfPK id;
 
     @Column(name = "CREATED_BY")
     private String createdBy;
@@ -33,8 +32,7 @@ public class WoTaskCardSignedPdf implements Serializable {
 
     private BigDecimal notes;
 
-    @Lob
-    private byte[] pdf;
+    @Lob private byte[] pdf;
 
     @Column(name = "PRINT_COUNT")
     private BigDecimal printCount;
@@ -43,9 +41,21 @@ public class WoTaskCardSignedPdf implements Serializable {
     @ManyToOne
     @JoinColumns({
         @JoinColumn(name = "AC", referencedColumnName = "AC", insertable = false, updatable = false),
-        @JoinColumn(name = "TASK_CARD", referencedColumnName = "TASK_CARD", insertable = false, updatable = false),
-        @JoinColumn(name = "TASK_CARD_PN", referencedColumnName = "PN", insertable = false, updatable = false),
-        @JoinColumn(name = "TASK_CARD_PN_SN", referencedColumnName = "PN_SN", insertable = false, updatable = false),
+        @JoinColumn(
+                name = "TASK_CARD",
+                referencedColumnName = "TASK_CARD",
+                insertable = false,
+                updatable = false),
+        @JoinColumn(
+                name = "TASK_CARD_PN",
+                referencedColumnName = "PN",
+                insertable = false,
+                updatable = false),
+        @JoinColumn(
+                name = "TASK_CARD_PN_SN",
+                referencedColumnName = "PN_SN",
+                insertable = false,
+                updatable = false),
         @JoinColumn(name = "WO", referencedColumnName = "WO", insertable = false, updatable = false)
     })
     private WoTaskCard woTaskCard;

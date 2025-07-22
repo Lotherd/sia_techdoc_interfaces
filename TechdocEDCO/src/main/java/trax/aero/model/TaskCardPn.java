@@ -16,8 +16,7 @@ import javax.persistence.*;
 public class TaskCardPn implements Serializable {
     private static final long serialVersionUID = 1L;
 
-    @EmbeddedId
-    private TaskCardPnPK id;
+    @EmbeddedId private TaskCardPnPK id;
 
     private String authority;
 

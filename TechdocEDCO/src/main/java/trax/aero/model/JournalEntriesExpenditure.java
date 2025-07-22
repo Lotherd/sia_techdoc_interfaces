@@ -12,12 +12,13 @@ import javax.persistence.*;
 /** The persistent class for the JOURNAL_ENTRIES_EXPENDITURE database table. */
 @Entity
 @Table(name = "JOURNAL_ENTRIES_EXPENDITURE")
-@NamedQuery(name = "JournalEntriesExpenditure.findAll", query = "SELECT j FROM JournalEntriesExpenditure j")
+@NamedQuery(
+        name = "JournalEntriesExpenditure.findAll",
+        query = "SELECT j FROM JournalEntriesExpenditure j")
 public class JournalEntriesExpenditure implements Serializable {
     private static final long serialVersionUID = 1L;
 
-    @EmbeddedId
-    private JournalEntriesExpenditurePK id;
+    @EmbeddedId private JournalEntriesExpenditurePK id;
 
     @Column(name = "AC_SERIES")
     private String acSeries;

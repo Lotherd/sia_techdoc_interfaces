@@ -12,12 +12,13 @@ import javax.persistence.*;
 /** The persistent class for the TASK_CARD_EFFECTIVITY_HEAD database table. */
 @Entity
 @Table(name = "TASK_CARD_EFFECTIVITY_HEAD")
-@NamedQuery(name = "TaskCardEffectivityHead.findAll", query = "SELECT t FROM TaskCardEffectivityHead t")
+@NamedQuery(
+        name = "TaskCardEffectivityHead.findAll",
+        query = "SELECT t FROM TaskCardEffectivityHead t")
 public class TaskCardEffectivityHead implements Serializable {
     private static final long serialVersionUID = 1L;
 
-    @EmbeddedId
-    private TaskCardEffectivityHeadPK id;
+    @EmbeddedId private TaskCardEffectivityHeadPK id;
 
     @Column(name = "BLOB_NO")
     private BigDecimal blobNo;

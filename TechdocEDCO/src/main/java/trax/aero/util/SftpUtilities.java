@@ -14,7 +14,8 @@ public class SftpUtilities {
 
     // ---------------------------------------------------------------------------- Send File
 
-    public void sendSftpFile(InputStream inputStream, String fileName) throws JSchException, SftpException {
+    public void sendSftpFile(InputStream inputStream, String fileName)
+            throws JSchException, SftpException {
 
         String sftpUsername = System.getProperty("Techdoc_sftpUsername");
         String sftpPassword = System.getProperty("Techdoc_sftpPassword");
@@ -48,14 +49,16 @@ public class SftpUtilities {
         }
 
         sftpDestination = String.format("%s/%s", sftpDestination, fileName);
-        message = String.format("Putting the SFTP file in the following directory [%s].", sftpDestination);
+        message =
+                String.format("Putting the SFTP file in the following directory [%s].", sftpDestination);
         Logger.info(message);
 
         channelSftp.put(inputStream, sftpDestination);
         channelSftp.exit();
     }
 
-    private ChannelSftp setupJsch(String sftpUsername, String sftpPassword, String sftpRemoteHost, String knownHost)
+    private ChannelSftp setupJsch(
+            String sftpUsername, String sftpPassword, String sftpRemoteHost, String knownHost)
             throws JSchException {
 
         JSch jsch = new JSch();

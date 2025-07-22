@@ -16,8 +16,7 @@ import javax.persistence.*;
 public class TaskCardControlMaster implements Serializable {
     private static final long serialVersionUID = 1L;
 
-    @EmbeddedId
-    private TaskCardControlMasterPK id;
+    @EmbeddedId private TaskCardControlMasterPK id;
 
     @Column(name = "AREA_ASSOCIATED")
     private String areaAssociated;

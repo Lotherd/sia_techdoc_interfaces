@@ -16,8 +16,7 @@ import javax.persistence.*;
 public class BlobTable implements Serializable {
     private static final long serialVersionUID = 1L;
 
-    @EmbeddedId
-    private BlobTablePK id;
+    @EmbeddedId private BlobTablePK id;
 
     @Column(name = "BLOB_DESCRIPTION")
     private String blobDescription;

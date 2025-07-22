@@ -16,8 +16,7 @@ import javax.persistence.*;
 public class Wo implements Serializable {
     private static final long serialVersionUID = 1L;
 
-    @Id
-    private long wo;
+    @Id private long wo;
 
     private String ac;
 

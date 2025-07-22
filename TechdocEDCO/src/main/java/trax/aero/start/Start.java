@@ -21,8 +21,7 @@ public class Start {
 
     RunAble timer = null;
 
-    @EJB
-    IModelData data;
+    @EJB IModelData data;
 
     private ScheduledExecutorService scheduledServ;
 

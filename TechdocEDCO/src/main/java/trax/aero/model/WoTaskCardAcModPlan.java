@@ -15,8 +15,7 @@ import javax.persistence.*;
 public class WoTaskCardAcModPlan implements Serializable {
     private static final long serialVersionUID = 1L;
 
-    @EmbeddedId
-    private WoTaskCardAcModPlanPK id;
+    @EmbeddedId private WoTaskCardAcModPlanPK id;
 
     @Column(name = "CREATED_BY")
     private String createdBy;
@@ -35,8 +34,16 @@ public class WoTaskCardAcModPlan implements Serializable {
     @JoinColumns({
         @JoinColumn(name = "AC", referencedColumnName = "AC", insertable = false, updatable = false),
         @JoinColumn(name = "PN", referencedColumnName = "PN", insertable = false, updatable = false),
-        @JoinColumn(name = "PN_SN", referencedColumnName = "PN_SN", insertable = false, updatable = false),
-        @JoinColumn(name = "TASK_CARD", referencedColumnName = "TASK_CARD", insertable = false, updatable = false),
+        @JoinColumn(
+                name = "PN_SN",
+                referencedColumnName = "PN_SN",
+                insertable = false,
+                updatable = false),
+        @JoinColumn(
+                name = "TASK_CARD",
+                referencedColumnName = "TASK_CARD",
+                insertable = false,
+                updatable = false),
         @JoinColumn(name = "WO", referencedColumnName = "WO", insertable = false, updatable = false)
     })
     private WoTaskCard woTaskCard;

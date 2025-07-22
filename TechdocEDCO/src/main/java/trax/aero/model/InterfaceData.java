@@ -14,8 +14,7 @@ import javax.persistence.*;
 public class InterfaceData implements Serializable {
     private static final long serialVersionUID = 1L;
 
-    @EmbeddedId
-    private InterfaceDataPK id;
+    @EmbeddedId private InterfaceDataPK id;
 
     @Lob
     @Column(name = "CLOB_DOCUMENT")

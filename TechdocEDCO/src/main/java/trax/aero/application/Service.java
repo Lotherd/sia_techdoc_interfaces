@@ -28,8 +28,7 @@ import trax.aero.util.MqUtilities;
 @Path("/Service")
 public class Service {
 
-    @EJB
-    IModelData data;
+    @EJB IModelData data;
 
     @POST
     @Path("/sendMqText")
@@ -81,53 +80,56 @@ public class Service {
 
             root = (ROOT) unmarshaller.unmarshal(sr);
             // create parent WO
-            BigDecimal COUNT = new BigDecimal(data.filterADDATTR(
-                    root.getMODELS()
-                            .get(0)
-                            .getEFFECTIVITY()
-                            .getJOBCARD()
-                            .getJOBI()
-                            .getPLI()
-                            .getADDATTR(),
-                    "COUNT"));
+            BigDecimal COUNT =
+                    new BigDecimal(
+                            data.filterADDATTR(
+                                    root.getMODELS()
+                                            .get(0)
+                                            .getEFFECTIVITY()
+                                            .getJOBCARD()
+                                            .getJOBI()
+                                            .getPLI()
+                                            .getADDATTR(),
+                                    "COUNT"));
             // SAVE TRAX WO NUMBER
             // AS ISSUE TO TRAX IS SEPARATE REQUESTS
-            String idocID = data.filterADDATTR(
-                            root.getMODELS()
-                                    .get(0)
-                                    .getEFFECTIVITY()
-                                    .getJOBCARD()
-                                    .getJOBI()
-                                    .getPLI()
-                                    .getADDATTR(),
-                            "USER-NAME")
-                    + data.filterADDATTR(
-                            root.getMODELS()
-                                    .get(0)
-                                    .getEFFECTIVITY()
-                                    .getJOBCARD()
-                                    .getJOBI()
-                                    .getPLI()
-                                    .getADDATTR(),
-                            "IDOC-DATE")
-                    + data.filterADDATTR(
-                            root.getMODELS()
-                                    .get(0)
-                                    .getEFFECTIVITY()
-                                    .getJOBCARD()
-                                    .getJOBI()
-                                    .getPLI()
-                                    .getADDATTR(),
-                            "IDOC-TIME")
-                    + data.filterADDATTR(
-                            root.getMODELS()
-                                    .get(0)
-                                    .getEFFECTIVITY()
-                                    .getJOBCARD()
-                                    .getJOBI()
-                                    .getPLI()
-                                    .getADDATTR(),
-                            "PRINTER-NAME");
+            String idocID =
+                    data.filterADDATTR(
+                                    root.getMODELS()
+                                            .get(0)
+                                            .getEFFECTIVITY()
+                                            .getJOBCARD()
+                                            .getJOBI()
+                                            .getPLI()
+                                            .getADDATTR(),
+                                    "USER-NAME")
+                            + data.filterADDATTR(
+                                    root.getMODELS()
+                                            .get(0)
+                                            .getEFFECTIVITY()
+                                            .getJOBCARD()
+                                            .getJOBI()
+                                            .getPLI()
+                                            .getADDATTR(),
+                                    "IDOC-DATE")
+                            + data.filterADDATTR(
+                                    root.getMODELS()
+                                            .get(0)
+                                            .getEFFECTIVITY()
+                                            .getJOBCARD()
+                                            .getJOBI()
+                                            .getPLI()
+                                            .getADDATTR(),
+                                    "IDOC-TIME")
+                            + data.filterADDATTR(
+                                    root.getMODELS()
+                                            .get(0)
+                                            .getEFFECTIVITY()
+                                            .getJOBCARD()
+                                            .getJOBI()
+                                            .getPLI()
+                                            .getADDATTR(),
+                                    "PRINTER-NAME");
             Wo parent = data.createParentWo(COUNT, idocID);
             Logger.info("Size: " + parent.getDocumentNo().intValue());
             for (MODEL model : root.getMODELS()) {
@@ -145,14 +147,11 @@ public class Service {
                 xml = xml.replaceAll("&amp;re;", "&#xA;");
                 Wo w = data.issueToTechDocRequest(model, xml);
                 data.linkWoToParent(
-                        w,
-                        parent,
-                        new BigDecimal(model.getEFFECTIVITY().getJOBCARD().getSEQNBR()));
+                        w, parent, new BigDecimal(model.getEFFECTIVITY().getJOBCARD().getSEQNBR()));
                 data.setCountWoToParent(w, parent);
                 data.sendRequestToPrintServer(model, xml, w);
                 try {
-                    if (data.getCon() != null && !data.getCon().isClosed())
-                        data.getCon().close();
+                    if (data.getCon() != null && !data.getCon().isClosed()) data.getCon().close();
                 } catch (Exception e) {
                     Logger.error(e);
                 }
@@ -161,8 +160,7 @@ public class Service {
             Logger.error(e);
         } finally {
             try {
-                if (data.getCon() != null && !data.getCon().isClosed())
-                    data.getCon().close();
+                if (data.getCon() != null && !data.getCon().isClosed()) data.getCon().close();
             } catch (Exception e) {
                 Logger.error(e);
             }

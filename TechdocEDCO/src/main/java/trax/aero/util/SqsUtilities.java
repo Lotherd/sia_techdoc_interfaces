@@ -28,17 +28,19 @@ public class SqsUtilities {
             json = gson.toJson(resend);
 
             Logger.info("Request Body: " + json);
-            AmazonSQS sqs = AmazonSQSClientBuilder.standard()
-                    .withRegion(Regions.AP_SOUTHEAST_1) // Specify the region here
-                    .build();
+            AmazonSQS sqs =
+                    AmazonSQSClientBuilder.standard()
+                            .withRegion(Regions.AP_SOUTHEAST_1) // Specify the region here
+                            .build();
 
             String queueUrl = sqs.getQueueUrl(queueUrlTo).getQueueUrl();
 
-            SendMessageRequest send_msg_request = new SendMessageRequest()
-                    .withQueueUrl(queueUrl)
-                    .withMessageBody(json)
-                    .withMessageGroupId(UUID.randomUUID().toString())
-                    .withMessageDeduplicationId(UUID.randomUUID().toString());
+            SendMessageRequest send_msg_request =
+                    new SendMessageRequest()
+                            .withQueueUrl(queueUrl)
+                            .withMessageBody(json)
+                            .withMessageGroupId(UUID.randomUUID().toString())
+                            .withMessageDeduplicationId(UUID.randomUUID().toString());
             SendMessageResult result = sqs.sendMessage(send_msg_request);
             Logger.info("after sending a message we get message id " + result.getMessageId());
 

@@ -16,8 +16,7 @@ import javax.persistence.*;
 public class PicklistDistribution implements Serializable {
     private static final long serialVersionUID = 1L;
 
-    @EmbeddedId
-    private PicklistDistributionPK id;
+    @EmbeddedId private PicklistDistributionPK id;
 
     @Column(name = "AUTOMATED_WAREHOUSE_ISSUED")
     private String automatedWarehouseIssued;

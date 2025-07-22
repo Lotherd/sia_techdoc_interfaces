@@ -55,11 +55,13 @@ public class ResourceLinkPoolBean {
 
     @XmlElement(name = "DigitalPrintingParamsLink")
     public DigitalPrintingParamsLinkBean getDigitalPrintingParamsLinkBean() {
-        if (digitalPrintingParamsLinkBean == null) digitalPrintingParamsLinkBean = new DigitalPrintingParamsLinkBean();
+        if (digitalPrintingParamsLinkBean == null)
+            digitalPrintingParamsLinkBean = new DigitalPrintingParamsLinkBean();
         return digitalPrintingParamsLinkBean;
     }
 
-    public void setDigitalPrintingParamsLinkBean(DigitalPrintingParamsLinkBean digitalPrintingParamsLinkBean) {
+    public void setDigitalPrintingParamsLinkBean(
+            DigitalPrintingParamsLinkBean digitalPrintingParamsLinkBean) {
         this.digitalPrintingParamsLinkBean = digitalPrintingParamsLinkBean;
     }
 
@@ -85,7 +87,8 @@ public class ResourceLinkPoolBean {
 
     @XmlElement(name = "InterpretingParamsLink")
     public InterpretingParamsLinkBean getInterpretingParamsLinkBean() {
-        if (interpretingParamsLinkBean == null) interpretingParamsLinkBean = new InterpretingParamsLinkBean();
+        if (interpretingParamsLinkBean == null)
+            interpretingParamsLinkBean = new InterpretingParamsLinkBean();
         return interpretingParamsLinkBean;
     }
 
@@ -100,7 +103,8 @@ public class ResourceLinkPoolBean {
         return layoutPreparationParamsLinkBean;
     }
 
-    public void setLayoutPreparationParamsLinkBean(LayoutPreparationParamsLinkBean layoutPreparationParamsLinkBean) {
+    public void setLayoutPreparationParamsLinkBean(
+            LayoutPreparationParamsLinkBean layoutPreparationParamsLinkBean) {
         this.layoutPreparationParamsLinkBean = layoutPreparationParamsLinkBean;
     }
 

@@ -16,8 +16,7 @@ import javax.persistence.*;
 public class PnInventoryDetail implements Serializable {
     private static final long serialVersionUID = 1L;
 
-    @Id
-    private long batch;
+    @Id private long batch;
 
     @Column(name = "ACCOUNTING_DOCUMENT")
     private String accountingDocument;

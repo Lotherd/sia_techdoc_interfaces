@@ -15,8 +15,7 @@ import javax.persistence.*;
 public class TaskCardKeyword implements Serializable {
     private static final long serialVersionUID = 1L;
 
-    @EmbeddedId
-    private TaskCardKeywordPK id;
+    @EmbeddedId private TaskCardKeywordPK id;
 
     @Column(name = "CREATED_BY")
     private String createdBy;

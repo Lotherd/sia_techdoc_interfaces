@@ -638,7 +638,8 @@ public class Row {
 
     public void setTask_card_check_list_landscape_sort_categories(
             String task_card_check_list_landscape_sort_categories) {
-        this.task_card_check_list_landscape_sort_categories = task_card_check_list_landscape_sort_categories;
+        this.task_card_check_list_landscape_sort_categories =
+                task_card_check_list_landscape_sort_categories;
     }
 
     public String getSsid() {
@@ -661,8 +662,10 @@ public class Row {
         return task_card_check_list_portrait_sort_categories;
     }
 
-    public void setTask_card_check_list_portrait_sort_categories(String task_card_check_list_portrait_sort_categories) {
-        this.task_card_check_list_portrait_sort_categories = task_card_check_list_portrait_sort_categories;
+    public void setTask_card_check_list_portrait_sort_categories(
+            String task_card_check_list_portrait_sort_categories) {
+        this.task_card_check_list_portrait_sort_categories =
+                task_card_check_list_portrait_sort_categories;
     }
 
     public String getSchedule_start_hour() {

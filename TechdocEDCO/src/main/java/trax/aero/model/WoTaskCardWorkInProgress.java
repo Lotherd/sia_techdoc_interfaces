@@ -12,12 +12,13 @@ import javax.persistence.*;
 /** The persistent class for the WO_TASK_CARD_WORK_IN_PROGRESS database table. */
 @Entity
 @Table(name = "WO_TASK_CARD_WORK_IN_PROGRESS")
-@NamedQuery(name = "WoTaskCardWorkInProgress.findAll", query = "SELECT w FROM WoTaskCardWorkInProgress w")
+@NamedQuery(
+        name = "WoTaskCardWorkInProgress.findAll",
+        query = "SELECT w FROM WoTaskCardWorkInProgress w")
 public class WoTaskCardWorkInProgress implements Serializable {
     private static final long serialVersionUID = 1L;
 
-    @EmbeddedId
-    private WoTaskCardWorkInProgressPK id;
+    @EmbeddedId private WoTaskCardWorkInProgressPK id;
 
     private String category;
 
@@ -61,9 +62,21 @@ public class WoTaskCardWorkInProgress implements Serializable {
     @ManyToOne
     @JoinColumns({
         @JoinColumn(name = "AC", referencedColumnName = "AC", insertable = false, updatable = false),
-        @JoinColumn(name = "TASK_CARD", referencedColumnName = "TASK_CARD", insertable = false, updatable = false),
-        @JoinColumn(name = "TASK_CARD_PN", referencedColumnName = "PN", insertable = false, updatable = false),
-        @JoinColumn(name = "TASK_CARD_PN_SN", referencedColumnName = "PN_SN", insertable = false, updatable = false),
+        @JoinColumn(
+                name = "TASK_CARD",
+                referencedColumnName = "TASK_CARD",
+                insertable = false,
+                updatable = false),
+        @JoinColumn(
+                name = "TASK_CARD_PN",
+                referencedColumnName = "PN",
+                insertable = false,
+                updatable = false),
+        @JoinColumn(
+                name = "TASK_CARD_PN_SN",
+                referencedColumnName = "PN_SN",
+                insertable = false,
+                updatable = false),
         @JoinColumn(name = "WO", referencedColumnName = "WO", insertable = false, updatable = false)
     })
     private WoTaskCard woTaskCard;

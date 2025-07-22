@@ -29,7 +29,8 @@ public class PrinterUtilities {
     static ArrayList<String> heavyPrintersOcepdf =
             new ArrayList<>(Arrays.asList("EC61", "EC62", "EC63", "SINW", "SIO1"));
 
-    public static int sendWorkPackPrintJob(String printWindow, Dw_Wo_Pack_Print dwSel) throws Exception {
+    public static int sendWorkPackPrintJob(String printWindow, Dw_Wo_Pack_Print dwSel)
+            throws Exception {
         int job = 0;
         String s_wo_print;
 
@@ -53,7 +54,8 @@ public class PrinterUtilities {
 
         addJobToJMSQueue(propJob);
 
-        Logger.info("Print Job " + dwSel.getRow().getWo() + " Has been successfuly sent to the print queue");
+        Logger.info(
+                "Print Job " + dwSel.getRow().getWo() + " Has been successfuly sent to the print queue");
 
         return job;
     }
@@ -61,9 +63,10 @@ public class PrinterUtilities {
     private static void addJobToJMSQueue(PrintQueueJob propJob) {
         propJob.setIsWPP("Y");
 
-        String url = "Y".equals("Y")
-                ? System.getProperty("Trax_Print_WPP_URL") + "rest/print/printwpp"
-                : System.getProperty("Trax_Print_URL") + "rest/print/print";
+        String url =
+                "Y".equals("Y")
+                        ? System.getProperty("Trax_Print_WPP_URL") + "rest/print/printwpp"
+                        : System.getProperty("Trax_Print_URL") + "rest/print/print";
         Client client = null;
 
         try {
@@ -80,10 +83,12 @@ public class PrinterUtilities {
         }
     }
 
-    public static void sendToPrinterHeavyLP(String printService, File file, String side, String tray) throws Exception {
+    public static void sendToPrinterHeavyLP(String printService, File file, String side, String tray)
+            throws Exception {
 
         if (file != null && printService != null && file.exists() && file.isFile()) {
-            Logger.info("Job received for printer: " + printService + " tray: " + tray + " side: " + side);
+            Logger.info(
+                    "Job received for printer: " + printService + " tray: " + tray + " side: " + side);
             try {
                 String ricohCommands = "";
                 String oceCommands = "";
@@ -109,10 +114,11 @@ public class PrinterUtilities {
                     } else {
                         side = "None";
                     }
-                    oceCommands = " -o StapleWhen=EndOfSet -o OCStaple=TopLeftPortrait -o InputSlot="
-                            + tray
-                            + " -o Duplex="
-                            + side;
+                    oceCommands =
+                            " -o StapleWhen=EndOfSet -o OCStaple=TopLeftPortrait -o InputSlot="
+                                    + tray
+                                    + " -o Duplex="
+                                    + side;
                 } else if (heavyPrintersRicoh.contains(printService)) {
                     // InputSlot=1Tray  2Tray 3Tray RICHO
                     switch (tray) {
@@ -136,10 +142,14 @@ public class PrinterUtilities {
                         side = "None";
                     }
                     ricohCommands =
-                            " -o StapleLocation=UpperLeft -o InputSlot=" + tray + " -o PageRegion=A4 -o Duplex=" + side;
+                            " -o StapleLocation=UpperLeft -o InputSlot="
+                                    + tray
+                                    + " -o PageRegion=A4 -o Duplex="
+                                    + side;
                 }
                 // Command to print the document with duplex and tray options using lp on Linux
-                String command = "lp -d " + printService + oceCommands + ricohCommands + " " + file.getAbsolutePath();
+                String command =
+                        "lp -d " + printService + oceCommands + ricohCommands + " " + file.getAbsolutePath();
                 Logger.info("Command: " + command);
                 // Create the process builder
                 ProcessBuilder processBuilder = new ProcessBuilder(command.split(" "));
@@ -161,7 +171,8 @@ public class PrinterUtilities {
         }
     }
 
-    public static void sendPrint(String printer, String path, String side, String tray) throws Exception {
+    public static void sendPrint(String printer, String path, String side, String tray)
+            throws Exception {
 
         // ArrayList<File> pdfs = new ArrayList<File>();
         String fileLocOut = System.getProperty("TECH_fileLocOut");
@@ -170,34 +181,39 @@ public class PrinterUtilities {
             // PDF
             File print = new File(path);
 
-            File theDir = new File(fileLocOut + File.separator + FilenameUtils.removeExtension(print.getName()));
+            File theDir =
+                    new File(fileLocOut + File.separator + FilenameUtils.removeExtension(print.getName()));
             if (!theDir.exists()) {
                 Logger.info(theDir.mkdirs());
             }
-            Logger.info(String.format(
-                    "MOVE %s TO %s%s%s%s%s",
-                    print.toPath(),
-                    fileLocOut,
-                    File.separator,
-                    FilenameUtils.removeExtension(print.getName()),
-                    File.separator,
-                    print.getName()));
+            Logger.info(
+                    String.format(
+                            "MOVE %s TO %s%s%s%s%s",
+                            print.toPath(),
+                            fileLocOut,
+                            File.separator,
+                            FilenameUtils.removeExtension(print.getName()),
+                            File.separator,
+                            print.getName()));
             Files.move(
                     print.toPath(),
-                    new File(fileLocOut
-                                    + File.separator
-                                    + FilenameUtils.removeExtension(print.getName())
-                                    + File.separator
-                                    + print.getName())
+                    new File(
+                                    fileLocOut
+                                            + File.separator
+                                            + FilenameUtils.removeExtension(print.getName())
+                                            + File.separator
+                                            + print.getName())
                             .toPath(),
                     StandardCopyOption.REPLACE_EXISTING);
 
             // Print server folder logic
-            File localPrint = new File(fileLocOut
-                    + File.separator
-                    + FilenameUtils.removeExtension(print.getName())
-                    + File.separator
-                    + print.getName());
+            File localPrint =
+                    new File(
+                            fileLocOut
+                                    + File.separator
+                                    + FilenameUtils.removeExtension(print.getName())
+                                    + File.separator
+                                    + print.getName());
             // sendToPrinter(printer, print);
             if (heavyPrinters.contains(printer)) {
                 sendToPrinterHeavyLP(printer, localPrint, side, tray);

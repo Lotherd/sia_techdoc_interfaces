@@ -48,7 +48,8 @@ public class XMLUtil {
         return getChildElement(element, tagName, true);
     }
 
-    public static Element getChildElement(Element element, String tagName, boolean create) throws Exception {
+    public static Element getChildElement(Element element, String tagName, boolean create)
+            throws Exception {
         Node node = null;
         NodeList nodeList = element.getChildNodes();
         Element childElm = null;

@@ -47,7 +47,13 @@ public class ModelController {
 
     // MOD 19
     public static void sendEmailTrax(
-            String wo, String revision, String date, String time, String pAcks, String printer, String stringHeader) {
+            String wo,
+            String revision,
+            String date,
+            String time,
+            String pAcks,
+            String printer,
+            String stringHeader) {
         try {
             String[] headers;
             if (stringHeader.equalsIgnoreCase("Attachment Missing")) {
@@ -67,11 +73,12 @@ public class ModelController {
             email.setHostName(host);
             email.setSmtpPort(Integer.parseInt(port));
             email.setFrom(fromEmail);
-            email.setSubject("TECHDOC 2 - TRAX - PRINT FAILURE ["
-                    + printer
-                    + "] - PDF attachment not printed["
-                    + wo
-                    + "] - ALERT");
+            email.setSubject(
+                    "TECHDOC 2 - TRAX - PRINT FAILURE ["
+                            + printer
+                            + "] - PDF attachment not printed["
+                            + wo
+                            + "] - ALERT");
             for (String emails : emailsList) {
                 email.addTo(emails);
             }
@@ -104,7 +111,8 @@ public class ModelController {
 
             htmlContent.append("</table>");
             htmlContent.append("<br><br>");
-            htmlContent.append("<p>Note: This is a system generated mail. Please do NOT reply to this mail.</p>");
+            htmlContent.append(
+                    "<p>Note: This is a system generated mail. Please do NOT reply to this mail.</p>");
 
             String print = htmlContent.toString();
 
@@ -123,7 +131,13 @@ public class ModelController {
 
     // MOD 19
     public static void sendEmailEDCO(
-            String wo, String revision, String date, String time, String pAcks, String printer, String stringHeader) {
+            String wo,
+            String revision,
+            String date,
+            String time,
+            String pAcks,
+            String printer,
+            String stringHeader) {
         try {
             String[] headers;
             if (stringHeader.equalsIgnoreCase("Attachment Missing")) {
@@ -143,11 +157,12 @@ public class ModelController {
             email.setHostName(host);
             email.setSmtpPort(Integer.parseInt(port));
             email.setFrom(fromEmail);
-            email.setSubject("TECHDOC 2 - EDCO - PRINT FAILURE ["
-                    + printer
-                    + "] - EDCO attachment not printed["
-                    + wo
-                    + "] - ALERT");
+            email.setSubject(
+                    "TECHDOC 2 - EDCO - PRINT FAILURE ["
+                            + printer
+                            + "] - EDCO attachment not printed["
+                            + wo
+                            + "] - ALERT");
             for (String emails : emailsList) {
                 email.addTo(emails);
             }
@@ -180,7 +195,8 @@ public class ModelController {
 
             htmlContent.append("</table>");
             htmlContent.append("<br><br>");
-            htmlContent.append("<p>Note: This is a system generated mail. Please do NOT reply to this mail.</p>");
+            htmlContent.append(
+                    "<p>Note: This is a system generated mail. Please do NOT reply to this mail.</p>");
 
             String print = htmlContent.toString();
 
@@ -230,7 +246,13 @@ public class ModelController {
     }
 
     public static void sendEmailPrint(
-            String wo, String revision, String date, String time, String pAcks, String printer, String stringHeader) {
+            String wo,
+            String revision,
+            String date,
+            String time,
+            String pAcks,
+            String printer,
+            String stringHeader) {
         try {
             String[] headers;
             if (stringHeader.equalsIgnoreCase("Attachment Missing")) {
@@ -251,7 +273,11 @@ public class ModelController {
             email.setSmtpPort(Integer.parseInt(port));
             email.setFrom(fromEmail);
             email.setSubject(
-                    "TECHDOC 2 - PRINT - PRINT FAILURE [" + printer + "] - attachment not printed[" + wo + "] - ALERT");
+                    "TECHDOC 2 - PRINT - PRINT FAILURE ["
+                            + printer
+                            + "] - attachment not printed["
+                            + wo
+                            + "] - ALERT");
             for (String emails : emailsList) {
                 email.addTo(emails);
             }
@@ -285,7 +311,8 @@ public class ModelController {
 
             htmlContent.append("</table>");
             htmlContent.append("<br><br>");
-            htmlContent.append("<p>Note: This is a system generated mail. Please do NOT reply to this mail.</p>");
+            htmlContent.append(
+                    "<p>Note: This is a system generated mail. Please do NOT reply to this mail.</p>");
 
             String print = htmlContent.toString();
 
@@ -330,7 +357,8 @@ public class ModelController {
             email.setHostName(host);
             email.setSmtpPort(Integer.parseInt(port));
             email.setFrom(fromEmail);
-            email.setSubject("New " + fleet + " Attachments Loaded in CDM. Requires Follow-up action. Techdoc 2");
+            email.setSubject(
+                    "New " + fleet + " Attachments Loaded in CDM. Requires Follow-up action. Techdoc 2");
             for (String emails : emailsList) {
                 email.addTo(emails);
             }
@@ -352,23 +380,24 @@ public class ModelController {
                 emails = new StringBuilder(emails.substring(0, emails.length() - 1));
             }
 
-            String message = "**********************************************************\r\n"
-                    + "* This is an system generated email.                     *\r\n"
-                    + "*                                                        *\r\n"
-                    + "* Please send your email to opn_csb@singaporeair.com.sg. *\r\n"
-                    + "**********************************************************\r\n"
-                    + System.lineSeparator()
-                    + System.lineSeparator()
-                    + "TO: "
-                    + emails
-                    + System.lineSeparator()
-                    + System.lineSeparator()
-                    + "The latest copy of attachment has been loaded into CDM."
-                    + System.lineSeparator()
-                    + "Attached are the new tasks, deleted tasks and current tasks generated as attachment for your review and necessary action."
-                    + System.lineSeparator()
-                    + "*****\r\n"
-                    + "The list of attachment for new tasks will be transferred to SAP for your further action.";
+            String message =
+                    "**********************************************************\r\n"
+                            + "* This is an system generated email.                     *\r\n"
+                            + "*                                                        *\r\n"
+                            + "* Please send your email to opn_csb@singaporeair.com.sg. *\r\n"
+                            + "**********************************************************\r\n"
+                            + System.lineSeparator()
+                            + System.lineSeparator()
+                            + "TO: "
+                            + emails
+                            + System.lineSeparator()
+                            + System.lineSeparator()
+                            + "The latest copy of attachment has been loaded into CDM."
+                            + System.lineSeparator()
+                            + "Attached are the new tasks, deleted tasks and current tasks generated as attachment for your review and necessary action."
+                            + System.lineSeparator()
+                            + "*****\r\n"
+                            + "The list of attachment for new tasks will be transferred to SAP for your further action.";
 
             email.setMsg(message);
 

@@ -16,8 +16,7 @@ import javax.persistence.*;
 public class WoTaskCardControl implements Serializable {
     private static final long serialVersionUID = 1L;
 
-    @EmbeddedId
-    private WoTaskCardControlPK id;
+    @EmbeddedId private WoTaskCardControlPK id;
 
     @Column(name = "CODE_DESCRIPTION")
     private String codeDescription;

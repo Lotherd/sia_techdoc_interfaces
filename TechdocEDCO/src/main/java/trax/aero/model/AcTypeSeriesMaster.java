@@ -17,8 +17,7 @@ import javax.persistence.*;
 public class AcTypeSeriesMaster implements Serializable {
     private static final long serialVersionUID = 1L;
 
-    @EmbeddedId
-    private AcTypeSeriesMasterPK id;
+    @EmbeddedId private AcTypeSeriesMasterPK id;
 
     @Column(name = "AC_TYPE_SERIES_DESCRIPTION")
     private String acTypeSeriesDescription;
@@ -124,8 +123,7 @@ public class AcTypeSeriesMaster implements Serializable {
 
     private BigDecimal height;
 
-    @Lob
-    private byte[] image;
+    @Lob private byte[] image;
 
     @Column(name = "JOURNEY_CHECKS")
     private String journeyChecks;

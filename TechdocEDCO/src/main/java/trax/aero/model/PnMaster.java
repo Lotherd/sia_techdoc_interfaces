@@ -16,8 +16,7 @@ import javax.persistence.*;
 public class PnMaster implements Serializable {
     private static final long serialVersionUID = 1L;
 
-    @Id
-    private String pn;
+    @Id private String pn;
 
     @Column(name = "ADDITIONAL_INFORMATION")
     private String additionalInformation;
@@ -153,8 +152,7 @@ public class PnMaster implements Serializable {
     @Column(name = "EFFECTIVITY_PN_INTERCHANGEABLE")
     private String effectivityPnInterchangeable;
 
-    @Lob
-    private String efftext;
+    @Lob private String efftext;
 
     private String engine;
 

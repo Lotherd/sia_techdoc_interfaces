@@ -19,7 +19,8 @@ public class DataSourceClient {
 
             DataSource ds = null; // (DataSource)ctx.lookup("ManHoursScheduleTraxDS");
 
-            if (System.getProperty("jboss.server.config.dir") != null) ds = (DataSource) ctx.lookup("java:/TechdocDS");
+            if (System.getProperty("jboss.server.config.dir") != null)
+                ds = (DataSource) ctx.lookup("java:/TechdocDS");
             else ds = (DataSource) ctx.lookup("TechdocDS");
             connection = ds.getConnection();
         } catch (Exception e) {

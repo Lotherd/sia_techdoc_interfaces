@@ -46,7 +46,8 @@ public class InterfaceDataPK implements Serializable {
             return false;
         }
         InterfaceDataPK castOther = (InterfaceDataPK) other;
-        return (this.transaction == castOther.transaction) && (this.transactionItem == castOther.transactionItem);
+        return (this.transaction == castOther.transaction)
+                && (this.transactionItem == castOther.transactionItem);
     }
 
     public int hashCode() {

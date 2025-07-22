@@ -68,7 +68,8 @@ public class ResourcePoolBean {
 
     @XmlElement(name = "DigitalPrintingParams")
     public DigitalPrintingParamsBean getDigitalPrintingParamsBean() {
-        if (digitalPrintingParamsBean == null) digitalPrintingParamsBean = new DigitalPrintingParamsBean();
+        if (digitalPrintingParamsBean == null)
+            digitalPrintingParamsBean = new DigitalPrintingParamsBean();
         return digitalPrintingParamsBean;
     }
 
@@ -118,11 +119,13 @@ public class ResourcePoolBean {
 
     @XmlElement(name = "LayoutPreparationParams")
     public LayoutPreparationParamsBean getLayoutPreparationParamsBean() {
-        if (layoutPreparationParamsBean == null) layoutPreparationParamsBean = new LayoutPreparationParamsBean();
+        if (layoutPreparationParamsBean == null)
+            layoutPreparationParamsBean = new LayoutPreparationParamsBean();
         return layoutPreparationParamsBean;
     }
 
-    public void setLayoutPreparationParamsBean(LayoutPreparationParamsBean layoutPreparationParamsBean) {
+    public void setLayoutPreparationParamsBean(
+            LayoutPreparationParamsBean layoutPreparationParamsBean) {
         this.layoutPreparationParamsBean = layoutPreparationParamsBean;
     }
 

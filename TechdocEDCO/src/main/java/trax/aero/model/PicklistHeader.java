@@ -17,8 +17,7 @@ import javax.persistence.*;
 public class PicklistHeader implements Serializable {
     private static final long serialVersionUID = 1L;
 
-    @Id
-    private long picklist;
+    @Id private long picklist;
 
     private String ac;
 
@@ -545,7 +544,8 @@ public class PicklistHeader implements Serializable {
         return picklistDistribution;
     }
 
-    public PicklistDistribution removePicklistDistribution(PicklistDistribution picklistDistribution) {
+    public PicklistDistribution removePicklistDistribution(
+            PicklistDistribution picklistDistribution) {
         getPicklistDistributions().remove(picklistDistribution);
         picklistDistribution.setPicklistHeader(null);
 

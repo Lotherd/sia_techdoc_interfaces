@@ -37,11 +37,14 @@ public class S3Utilities {
 
     private static final String bucketNameEDCO = System.getProperty("Techdoc_EDCObucket");
 
-    private static final String pathS3Trax = System.getProperty("Techdoc_pathS3Trax") + File.separator;
+    private static final String pathS3Trax =
+            System.getProperty("Techdoc_pathS3Trax") + File.separator;
 
-    private static final String pathS3Print = System.getProperty("Techdoc_pathS3Print") + File.separator;
+    private static final String pathS3Print =
+            System.getProperty("Techdoc_pathS3Print") + File.separator;
 
-    private static final String pathS3EDCO = System.getProperty("Techdoc_pathS3EDCO") + File.separator;
+    private static final String pathS3EDCO =
+            System.getProperty("Techdoc_pathS3EDCO") + File.separator;
 
     private static final String fileLocOut = System.getProperty("TECH_fileLocOut");
 
@@ -57,10 +60,8 @@ public class S3Utilities {
             // Files.move(file.toPath(), new File(key+File.separator+file.getName()).toPath(),
             // StandardCopyOption.REPLACE_EXISTING);
             if (file.getName().contains("index") || file.getName().contains("footer")) {
-                HeadObjectRequest headObjectRequest = HeadObjectRequest.builder()
-                        .bucket(bucketName)
-                        .key(key + file.getName())
-                        .build();
+                HeadObjectRequest headObjectRequest =
+                        HeadObjectRequest.builder().bucket(bucketName).key(key + file.getName()).build();
 
                 try {
                     @SuppressWarnings("unused")
@@ -72,10 +73,8 @@ public class S3Utilities {
                 }
             }
 
-            PutObjectRequest request = PutObjectRequest.builder()
-                    .bucket(bucketName)
-                    .key(key + file.getName())
-                    .build();
+            PutObjectRequest request =
+                    PutObjectRequest.builder().bucket(bucketName).key(key + file.getName()).build();
             s3.putObject(request, RequestBody.fromFile(file));
 
             Logger.info("Successfully placed " + key + file.getName() + " into bucket " + bucketName);
@@ -104,22 +103,25 @@ public class S3Utilities {
         try {
             File print = new File(path);
 
-            File theDir = new File(fileLocOut + File.separator + FilenameUtils.removeExtension(print.getName()));
+            File theDir =
+                    new File(fileLocOut + File.separator + FilenameUtils.removeExtension(print.getName()));
             if (!theDir.exists()) {
                 theDir.mkdirs();
             }
 
             Files.move(
                     print.toPath(),
-                    new File(fileLocOut
-                                    + File.separator
-                                    + FilenameUtils.removeExtension(print.getName())
-                                    + File.separator
-                                    + pdfName)
+                    new File(
+                                    fileLocOut
+                                            + File.separator
+                                            + FilenameUtils.removeExtension(print.getName())
+                                            + File.separator
+                                            + pdfName)
                             .toPath(),
                     StandardCopyOption.REPLACE_EXISTING);
 
-            File folderPrint = new File(fileLocOut + File.separator + FilenameUtils.removeExtension(print.getName()));
+            File folderPrint =
+                    new File(fileLocOut + File.separator + FilenameUtils.removeExtension(print.getName()));
 
             File[] prints = folderPrint.listFiles();
 
@@ -163,45 +165,52 @@ public class S3Utilities {
             // PDF
             File print = new File(path);
 
-            File theDir = new File(fileLocOut + File.separator + FilenameUtils.removeExtension(print.getName()));
+            File theDir =
+                    new File(fileLocOut + File.separator + FilenameUtils.removeExtension(print.getName()));
             if (!theDir.exists()) {
                 theDir.mkdirs();
             }
-            Logger.info("MOVE "
-                    + print.toPath()
-                    + " TO "
-                    + fileLocOut
-                    + File.separator
-                    + FilenameUtils.removeExtension(print.getName())
-                    + File.separator
-                    + pdfName);
+            Logger.info(
+                    "MOVE "
+                            + print.toPath()
+                            + " TO "
+                            + fileLocOut
+                            + File.separator
+                            + FilenameUtils.removeExtension(print.getName())
+                            + File.separator
+                            + pdfName);
             Files.move(
                     print.toPath(),
-                    new File(fileLocOut
-                                    + File.separator
-                                    + FilenameUtils.removeExtension(print.getName())
-                                    + File.separator
-                                    + pdfName)
+                    new File(
+                                    fileLocOut
+                                            + File.separator
+                                            + FilenameUtils.removeExtension(print.getName())
+                                            + File.separator
+                                            + pdfName)
                             .toPath(),
                     StandardCopyOption.REPLACE_EXISTING);
 
             // xml
-            File output = new File(fileLocOut
-                    + File.separator
-                    + FilenameUtils.removeExtension(print.getName())
-                    + File.separator
-                    + "wo_"
-                    + RandomStringUtils.random(19, false, true)
-                    + ".xml");
+            File output =
+                    new File(
+                            fileLocOut
+                                    + File.separator
+                                    + FilenameUtils.removeExtension(print.getName())
+                                    + File.separator
+                                    + "wo_"
+                                    + RandomStringUtils.random(19, false, true)
+                                    + ".xml");
 
             // txt
             if (sendFinal) {
-                Path text = Paths.get(fileLocOut
-                        + File.separator
-                        + FilenameUtils.removeExtension(print.getName())
-                        + File.separator
-                        + txtName
-                        + ".txt");
+                Path text =
+                        Paths.get(
+                                fileLocOut
+                                        + File.separator
+                                        + FilenameUtils.removeExtension(print.getName())
+                                        + File.separator
+                                        + txtName
+                                        + ".txt");
                 List<String> lines = txt;
                 Files.write(text, lines, StandardCharsets.UTF_8);
 
@@ -209,7 +218,8 @@ public class S3Utilities {
                 PDDocument documentHeader = new PDDocument();
                 PDPage pageHeader = new PDPage();
                 documentHeader.addPage(pageHeader);
-                PDPageContentStream contentStreamHeader = new PDPageContentStream(documentHeader, pageHeader);
+                PDPageContentStream contentStreamHeader =
+                        new PDPageContentStream(documentHeader, pageHeader);
 
                 contentStreamHeader.beginText();
                 contentStreamHeader.setLeading(14.5f);
@@ -224,11 +234,12 @@ public class S3Utilities {
                 }
                 contentStreamHeader.endText();
                 contentStreamHeader.close();
-                documentHeader.save(fileLocOut
-                        + File.separator
-                        + FilenameUtils.removeExtension(print.getName())
-                        + File.separator
-                        + header);
+                documentHeader.save(
+                        fileLocOut
+                                + File.separator
+                                + FilenameUtils.removeExtension(print.getName())
+                                + File.separator
+                                + header);
                 documentHeader.close();
 
                 // footer
@@ -236,7 +247,8 @@ public class S3Utilities {
                 PDPage pageFooter = new PDPage();
                 documentFooter.addPage(pageFooter);
 
-                PDPageContentStream contentStreamFooter = new PDPageContentStream(documentFooter, pageFooter);
+                PDPageContentStream contentStreamFooter =
+                        new PDPageContentStream(documentFooter, pageFooter);
 
                 contentStreamFooter.beginText();
                 contentStreamFooter.setLeading(14.5f);
@@ -253,11 +265,12 @@ public class S3Utilities {
                 contentStreamFooter.endText();
 
                 contentStreamFooter.close();
-                documentFooter.save(fileLocOut
-                        + File.separator
-                        + FilenameUtils.removeExtension(print.getName())
-                        + File.separator
-                        + footer);
+                documentFooter.save(
+                        fileLocOut
+                                + File.separator
+                                + FilenameUtils.removeExtension(print.getName())
+                                + File.separator
+                                + footer);
                 documentFooter.close();
             }
 
@@ -266,15 +279,18 @@ public class S3Utilities {
             marshall.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, Boolean.TRUE);
             marshall.marshal(xml, output);
 
-            File folderPrint = new File(fileLocOut + File.separator + FilenameUtils.removeExtension(print.getName()));
+            File folderPrint =
+                    new File(fileLocOut + File.separator + FilenameUtils.removeExtension(print.getName()));
 
             File[] prints = folderPrint.listFiles();
 
-            Arrays.sort(prints, (f1, f2) -> {
-                if (f1.getName().endsWith(".txt")) return 1;
-                if (f2.getName().endsWith(".txt")) return -1;
-                return 0;
-            });
+            Arrays.sort(
+                    prints,
+                    (f1, f2) -> {
+                        if (f1.getName().endsWith(".txt")) return 1;
+                        if (f2.getName().endsWith(".txt")) return -1;
+                        return 0;
+                    });
 
             // Print server folder logic
             if (prints != null) {
@@ -313,36 +329,41 @@ public class S3Utilities {
 
         try {
             File print = new File(path);
-            File theDir = new File(fileLocOut + File.separator + FilenameUtils.removeExtension(print.getName()));
+            File theDir =
+                    new File(fileLocOut + File.separator + FilenameUtils.removeExtension(print.getName()));
             if (!theDir.exists()) {
                 theDir.mkdirs();
             }
-            Logger.info("MOVE "
-                    + print.toPath()
-                    + " TO "
-                    + fileLocOut
-                    + File.separator
-                    + FilenameUtils.removeExtension(print.getName())
-                    + File.separator
-                    + pdfName);
+            Logger.info(
+                    "MOVE "
+                            + print.toPath()
+                            + " TO "
+                            + fileLocOut
+                            + File.separator
+                            + FilenameUtils.removeExtension(print.getName())
+                            + File.separator
+                            + pdfName);
             Files.move(
                     print.toPath(),
-                    new File(fileLocOut
-                                    + File.separator
-                                    + FilenameUtils.removeExtension(print.getName())
-                                    + File.separator
-                                    + pdfName)
+                    new File(
+                                    fileLocOut
+                                            + File.separator
+                                            + FilenameUtils.removeExtension(print.getName())
+                                            + File.separator
+                                            + pdfName)
                             .toPath(),
                     StandardCopyOption.REPLACE_EXISTING);
 
             if (sendFinal) {
 
-                Path text = Paths.get(fileLocOut
-                        + File.separator
-                        + FilenameUtils.removeExtension(print.getName())
-                        + File.separator
-                        + txtName
-                        + ".txt");
+                Path text =
+                        Paths.get(
+                                fileLocOut
+                                        + File.separator
+                                        + FilenameUtils.removeExtension(print.getName())
+                                        + File.separator
+                                        + txtName
+                                        + ".txt");
                 List<String> lines = txt;
                 Files.write(text, lines, StandardCharsets.UTF_8);
 
@@ -350,7 +371,8 @@ public class S3Utilities {
                 PDDocument documentHeader = new PDDocument();
                 PDPage pageHeader = new PDPage();
                 documentHeader.addPage(pageHeader);
-                PDPageContentStream contentStreamHeader = new PDPageContentStream(documentHeader, pageHeader);
+                PDPageContentStream contentStreamHeader =
+                        new PDPageContentStream(documentHeader, pageHeader);
 
                 contentStreamHeader.beginText();
                 contentStreamHeader.setLeading(14.5f);
@@ -365,11 +387,12 @@ public class S3Utilities {
                 }
                 contentStreamHeader.endText();
                 contentStreamHeader.close();
-                documentHeader.save(fileLocOut
-                        + File.separator
-                        + FilenameUtils.removeExtension(print.getName())
-                        + File.separator
-                        + header);
+                documentHeader.save(
+                        fileLocOut
+                                + File.separator
+                                + FilenameUtils.removeExtension(print.getName())
+                                + File.separator
+                                + header);
                 documentHeader.close();
 
                 // footer
@@ -377,7 +400,8 @@ public class S3Utilities {
                 PDPage pageFooter = new PDPage();
                 documentFooter.addPage(pageFooter);
 
-                PDPageContentStream contentStreamFooter = new PDPageContentStream(documentFooter, pageFooter);
+                PDPageContentStream contentStreamFooter =
+                        new PDPageContentStream(documentFooter, pageFooter);
 
                 contentStreamFooter.beginText();
                 contentStreamFooter.setLeading(14.5f);
@@ -394,25 +418,29 @@ public class S3Utilities {
                 contentStreamFooter.endText();
 
                 contentStreamFooter.close();
-                documentFooter.save(fileLocOut
-                        + File.separator
-                        + FilenameUtils.removeExtension(print.getName())
-                        + File.separator
-                        + footer);
+                documentFooter.save(
+                        fileLocOut
+                                + File.separator
+                                + FilenameUtils.removeExtension(print.getName())
+                                + File.separator
+                                + footer);
                 documentFooter.close();
             }
 
             // putS3Object(pathS3Print +folder +File.separator,bucketNamePrint);
             // putS3Object(print,pathS3Print +folder +File.separator,bucketNamePrint);
-            File folderPrint = new File(fileLocOut + File.separator + FilenameUtils.removeExtension(print.getName()));
+            File folderPrint =
+                    new File(fileLocOut + File.separator + FilenameUtils.removeExtension(print.getName()));
 
             File[] prints = folderPrint.listFiles();
 
-            Arrays.sort(prints, (f1, f2) -> {
-                if (f1.getName().endsWith(footer)) return 1;
-                if (f2.getName().endsWith(footer)) return -1;
-                return 0;
-            });
+            Arrays.sort(
+                    prints,
+                    (f1, f2) -> {
+                        if (f1.getName().endsWith(footer)) return 1;
+                        if (f2.getName().endsWith(footer)) return -1;
+                        return 0;
+                    });
 
             // Print server folder logic
             if (prints != null) {
@@ -436,16 +464,19 @@ public class S3Utilities {
         }
     }
 
-    public static void setDatFile(String document, String fileName, String transaction) throws Exception {
+    public static void setDatFile(String document, String fileName, String transaction)
+            throws Exception {
         File theDir = new File(fileLocOut + File.separator + (transaction));
         if (!theDir.exists()) {
             theDir.mkdirs();
         }
 
-        Path dat = Paths.get(fileLocOut + File.separator + (transaction) + File.separator + fileName + ".dat");
+        Path dat =
+                Paths.get(fileLocOut + File.separator + (transaction) + File.separator + fileName + ".dat");
         Files.write(dat, document.getBytes());
 
-        File datFile = new File(fileLocOut + File.separator + (transaction) + File.separator + fileName + ".dat");
+        File datFile =
+                new File(fileLocOut + File.separator + (transaction) + File.separator + fileName + ".dat");
         // TODO
         SftpUtilities sftp = new SftpUtilities();
 

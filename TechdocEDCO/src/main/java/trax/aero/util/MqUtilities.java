@@ -30,16 +30,21 @@ public class MqUtilities {
     private static final String APP_PASSWORD =
             System.getProperty("Techdoc_password"); // Password that the application uses to connect to MQ
     private static final String QUEUE_NAME_SENDER =
-            System.getProperty("Techdoc_send"); // Queue that the application uses to put and get messages to and from
-    private static final String QUEUE_NAME_RECEIVE = System.getProperty(
-            "Techdoc_receive"); // Queue that the application uses to put and get messages to and from
+            System.getProperty(
+                    "Techdoc_send"); // Queue that the application uses to put and get messages to and from
+    private static final String QUEUE_NAME_RECEIVE =
+            System.getProperty(
+                    "Techdoc_receive"); // Queue that the application uses to put and get messages to and from
 
     private static final String JKS_LOCATION =
-            System.getProperty("JKS_LOCATION"); // Queue that the application uses to put and get messages to and from
+            System.getProperty(
+                    "JKS_LOCATION"); // Queue that the application uses to put and get messages to and from
     private static final String JKS_PWD =
-            System.getProperty("JKS_PWD"); // Queue that the application uses to put and get messages to and from
+            System.getProperty(
+                    "JKS_PWD"); // Queue that the application uses to put and get messages to and from
     private static final String CIPHER =
-            System.getProperty("CIPHER"); // Queue that the application uses to put and get messages to and from
+            System.getProperty(
+                    "CIPHER"); // Queue that the application uses to put and get messages to and from
 
     public static MQQueueConnectionFactory createMQQueueConnectionFactory() throws Exception {
         /*MQ Configuration*/
@@ -71,7 +76,8 @@ public class MqUtilities {
         ks.load(Files.newInputStream(Paths.get(JKS_LOCATION)), KSPW);
         // Logger.info("Number of keys on JKS: "  + Integer.toString(ks.size()));
 
-        KeyManagerFactory keyManagerFactory = KeyManagerFactory.getInstance(KeyManagerFactory.getDefaultAlgorithm());
+        KeyManagerFactory keyManagerFactory =
+                KeyManagerFactory.getInstance(KeyManagerFactory.getDefaultAlgorithm());
 
         // Initialise the managers
         keyManagerFactory.init(ks, KSPW);
@@ -102,7 +108,8 @@ public class MqUtilities {
 
         try {
             /*MQ Configuration*/
-            MQQueueConnectionFactory mqQueueConnectionFactory = MqUtilities.createMQQueueConnectionFactory();
+            MQQueueConnectionFactory mqQueueConnectionFactory =
+                    MqUtilities.createMQQueueConnectionFactory();
             /*Create Connection */
             queueConnection = mqQueueConnectionFactory.createQueueConnection();
             queueConnection.start();
@@ -138,7 +145,8 @@ public class MqUtilities {
 
         try {
             /*MQ Configuration*/
-            MQQueueConnectionFactory mqQueueConnectionFactory = MqUtilities.createMQQueueConnectionFactory();
+            MQQueueConnectionFactory mqQueueConnectionFactory =
+                    MqUtilities.createMQQueueConnectionFactory();
             /*Create Connection */
             queueConnection = mqQueueConnectionFactory.createQueueConnection();
             queueConnection.start();

@@ -16,8 +16,7 @@ import javax.persistence.*;
 public class WoTaskCardExecution implements Serializable {
     private static final long serialVersionUID = 1L;
 
-    @EmbeddedId
-    private WoTaskCardExecutionPK id;
+    @EmbeddedId private WoTaskCardExecutionPK id;
 
     @Column(name = "CREATED_BY")
     private String createdBy;
