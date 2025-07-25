@@ -2,7 +2,7 @@
 * This source code file is the intellectual property of TRAX USA Corp.
 * Copyright (c) 2025 TRAX USA Corp. All rights reserved.
 */
-package trax.aero.util;
+package trax.aero.messaging.mq;
 
 import com.ibm.mq.jms.MQQueueConnectionFactory;
 import com.ibm.msg.client.wmq.WMQConstants;
@@ -16,7 +16,7 @@ import javax.net.ssl.SSLContext;
 import javax.net.ssl.SSLSocketFactory;
 import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.tinylog.Logger;
-import trax.aero.controller.ModelController;
+import trax.aero.notification.EmailNotificationManager;
 
 public class MqUtilities {
 
@@ -171,7 +171,7 @@ public class MqUtilities {
 
         } catch (Exception e) {
             if (sendEmail) {
-                ModelController.sendEmailMQ(ExceptionUtils.getStackTrace(e));
+                EmailNotificationManager.sendEmailMQ(ExceptionUtils.getStackTrace(e));
             }
             Logger.error(e);
         } finally {

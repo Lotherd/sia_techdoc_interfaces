@@ -2,7 +2,7 @@
 * This source code file is the intellectual property of TRAX USA Corp.
 * Copyright (c) 2025 TRAX USA Corp. All rights reserved.
 */
-package trax.aero.util;
+package trax.aero.data.client;
 
 import java.sql.Connection;
 import javax.naming.Context;

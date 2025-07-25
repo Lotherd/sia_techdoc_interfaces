@@ -35,8 +35,12 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.text.PDFTextStripper;
 import org.tinylog.Logger;
-import trax.aero.controller.ModelController;
+
+import trax.aero.data.client.DataSourceClient;
+import trax.aero.messaging.mq.MqUtilities;
+import trax.aero.messaging.sqs.SqsUtilities;
 import trax.aero.model.*;
+import trax.aero.notification.EmailNotificationManager;
 import trax.aero.pojo.Dw_Wo_Pack_Print;
 import trax.aero.pojo.Print;
 import trax.aero.pojo.Row;
@@ -51,13 +55,11 @@ import trax.aero.pojo.xml.ATTACHMENT;
 import trax.aero.pojo.xml.JOBCARD;
 import trax.aero.pojo.xml.MODEL;
 import trax.aero.pojo.xml.OUTPUT;
-import trax.aero.util.MqUtilities;
-import trax.aero.util.PrinterUtilities;
-import trax.aero.util.S3Utilities;
-import trax.aero.util.SqsUtilities;
+import trax.aero.print.PrinterUtilities;
+import trax.aero.storage.s3.S3Utilities;
 
-@Stateless(name = "ModelData", mappedName = "ModelData")
-public class ModelData implements IModelData {
+@Stateless(name = "TechDocData", mappedName = "TechDocData")
+public class TechDocData implements ITechDocData {
 
     ArrayList<String> scoot = new ArrayList<>(Arrays.asList("300275", "300276", "101821"));
     ArrayList<String> siaec = new ArrayList<>(Arrays.asList("319", "320"));
@@ -205,7 +207,7 @@ public class ModelData implements IModelData {
             switch (printer) {
                 case "ECXX":
                 case "ECXY":
-                    ModelController.sendEmailEDCO(
+                    EmailNotificationManager.sendEmailEDCO(
                             input.getEFFECTIVITY().getJOBCARD().getWPNBR(),
                             revision,
                             date,
@@ -215,7 +217,7 @@ public class ModelData implements IModelData {
                             "Cover Page Missing");
                     break;
                 case "TRAX":
-                    ModelController.sendEmailTrax(
+                    EmailNotificationManager.sendEmailTrax(
                             input.getEFFECTIVITY().getJOBCARD().getWPNBR(),
                             revision,
                             date,
@@ -227,7 +229,7 @@ public class ModelData implements IModelData {
 
                 case "EDXX":
                 case "ECXZ":
-                    ModelController.sendEmailPrint(
+                    EmailNotificationManager.sendEmailPrint(
                             input.getEFFECTIVITY().getJOBCARD().getWPNBR(),
                             revision,
                             date,
@@ -237,7 +239,7 @@ public class ModelData implements IModelData {
                             "Cover Page Missing");
                     break;
                 default:
-                    ModelController.sendEmailPrint(
+                    EmailNotificationManager.sendEmailPrint(
                             input.getEFFECTIVITY().getJOBCARD().getWPNBR(),
                             revision,
                             date,
@@ -492,7 +494,7 @@ public class ModelData implements IModelData {
                 switch (printer) {
                     case "ECXX":
                     case "ECXY":
-                        ModelController.sendEmailEDCO(
+                        EmailNotificationManager.sendEmailEDCO(
                                 input.getEFFECTIVITY().getJOBCARD().getWPNBR(),
                                 revision,
                                 date,
@@ -502,7 +504,7 @@ public class ModelData implements IModelData {
                                 "Attachment Missing");
                         break;
                     case "TRAX":
-                        ModelController.sendEmailTrax(
+                        EmailNotificationManager.sendEmailTrax(
                                 input.getEFFECTIVITY().getJOBCARD().getWPNBR(),
                                 revision,
                                 date,
@@ -514,7 +516,7 @@ public class ModelData implements IModelData {
 
                     case "EDXX":
                     case "ECXZ":
-                        ModelController.sendEmailPrint(
+                        EmailNotificationManager.sendEmailPrint(
                                 input.getEFFECTIVITY().getJOBCARD().getWPNBR(),
                                 revision,
                                 date,
@@ -524,7 +526,7 @@ public class ModelData implements IModelData {
                                 "Attachment Missing");
                         break;
                     default:
-                        ModelController.sendEmailPrint(
+                        EmailNotificationManager.sendEmailPrint(
                                 input.getEFFECTIVITY().getJOBCARD().getWPNBR(),
                                 revision,
                                 date,
@@ -711,7 +713,7 @@ public class ModelData implements IModelData {
                 switch (printer) {
                     case "ECXX":
                     case "ECXY":
-                        ModelController.sendEmailEDCO(
+                        EmailNotificationManager.sendEmailEDCO(
                                 input.getEFFECTIVITY().getJOBCARD().getWPNBR(),
                                 revision,
                                 date,
@@ -721,7 +723,7 @@ public class ModelData implements IModelData {
                                 "Cover Page Missing");
                         break;
                     case "TRAX":
-                        ModelController.sendEmailTrax(
+                        EmailNotificationManager.sendEmailTrax(
                                 input.getEFFECTIVITY().getJOBCARD().getWPNBR(),
                                 revision,
                                 date,
@@ -733,7 +735,7 @@ public class ModelData implements IModelData {
 
                     case "EDXX":
                     case "ECXZ":
-                        ModelController.sendEmailPrint(
+                        EmailNotificationManager.sendEmailPrint(
                                 input.getEFFECTIVITY().getJOBCARD().getWPNBR(),
                                 revision,
                                 date,
@@ -743,7 +745,7 @@ public class ModelData implements IModelData {
                                 "Cover Page Missing");
                         break;
                     default:
-                        ModelController.sendEmailPrint(
+                        EmailNotificationManager.sendEmailPrint(
                                 input.getEFFECTIVITY().getJOBCARD().getWPNBR(),
                                 revision,
                                 date,
@@ -788,7 +790,7 @@ public class ModelData implements IModelData {
                         }
                         try {
                             if (i.getInterfaceData() != null && !i.getInterfaceData().isEmpty()) {
-                                ModelController.sendEmailDat(i.getInterfaceData());
+                                EmailNotificationManager.sendEmailDat(i.getInterfaceData());
                             }
                         } catch (Exception e) {
                             Logger.error(e);
@@ -980,7 +982,7 @@ public class ModelData implements IModelData {
         Logger.info("ENG TASK CARD size: " + taskCards.size());
 
         if (this.con == null || this.con.isClosed()) {
-            this.con = trax.aero.util.DataSourceClient.getConnection();
+            this.con = DataSourceClient.getConnection();
             Logger.info(
                     "The connection was stablished successfully with status: " + !this.con.isClosed());
         }
@@ -2445,14 +2447,10 @@ public class ModelData implements IModelData {
 
     private String getCdmRevision(MODEL input) {
         String sql =
-                "SELECT tctr.TRAXDOC_REVISION || '-' ||  TO_CHAR(tctr.MODIFIED_DATE, 'YYYYMMDD') \r\n"
-                        + "FROM TASK_CARD tc  \r\n"
-                        + "JOIN TASK_CARD_EFFECTIVITY_HEAD tceh ON tc.TASK_CARD = tceh.TASK_CARD\r\n"
-                        + "JOIN TASK_CARD_TRAXDOC_REFERENCES tctr ON tc.TASK_CARD = tctr.TASK_CARD\r\n"
-                        + "WHERE tc.TASK_CARD_CATEGORY = ? \r\n"
-                        + "  AND tceh.AC_TYPE = ? \r\n"
-                        + "  AND tceh.AC_SERIES = ? \r\n"
-                        + "  AND ROWNUM = 1 order by tctr.MODIFIED_DATE desc";
+                "SELECT t.revision || '-' || TO_CHAR(t.MODIFIED_DATE, 'YYYYMMDD') "
+                        + "FROM TRAXDOC t JOIN TRAXDOC_EFFECTIVITY_HEADER teh ON t.TRAXDOC_NO = teh.TRAXDOC_NO "
+                        + "WHERE t.DOCUMENT_CATEGORY = ? AND teh.AC_TYPE = ? AND teh.AC_SERIES = ? "
+                        + "ORDER BY t.MODIFIED_DATE DESC FETCH FIRST 1 ROWS ONLY";
 
         try {
 
@@ -2465,15 +2463,12 @@ public class ModelData implements IModelData {
             }
             String cardType = input.getEFFECTIVITY().getJOBCARD().getTYPE();
 
-            String rev =
-                    (String)
-                            em.createNativeQuery(sql)
-                                    .setParameter(1, cardType)
-                                    .setParameter(2, type)
-                                    .setParameter(3, series)
-                                    .getSingleResult();
-
-            return rev;
+            return (String)
+                    em.createNativeQuery(sql)
+                            .setParameter(1, cardType)
+                            .setParameter(2, type)
+                            .setParameter(3, series)
+                            .getSingleResult();
 
         } catch (Exception e) {
             Logger.error("Cdm Revision Not Found");

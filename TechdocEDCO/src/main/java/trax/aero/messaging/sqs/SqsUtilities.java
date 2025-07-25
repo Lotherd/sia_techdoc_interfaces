@@ -2,7 +2,7 @@
 * This source code file is the intellectual property of TRAX USA Corp.
 * Copyright (c) 2025 TRAX USA Corp. All rights reserved.
 */
-package trax.aero.util;
+package trax.aero.messaging.sqs;
 
 import com.amazonaws.regions.Regions;
 import com.amazonaws.services.sqs.AmazonSQS;

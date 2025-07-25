@@ -2,7 +2,7 @@
 * This source code file is the intellectual property of TRAX USA Corp.
 * Copyright (c) 2025 TRAX USA Corp. All rights reserved.
 */
-package trax.aero.util;
+package trax.aero.core.scheduler;
 
 import java.io.StringReader;
 import java.io.StringWriter;
@@ -12,20 +12,21 @@ import javax.xml.bind.JAXBContext;
 import javax.xml.bind.Marshaller;
 import javax.xml.bind.Unmarshaller;
 import org.tinylog.Logger;
-import trax.aero.data.IModelData;
+import trax.aero.data.ITechDocData;
+import trax.aero.messaging.mq.MqUtilities;
 import trax.aero.model.Wo;
 import trax.aero.pojo.xml.MODEL;
 import trax.aero.pojo.xml.ROOT;
 
-public class RunAble implements Runnable {
+public class TechDocProcessor implements Runnable {
 
     // Variables
-    @EJB IModelData data;
+    @EJB ITechDocData data;
 
     int minuteCounter = 0;
     boolean sendEmail = false;
 
-    public RunAble(IModelData data) {
+    public TechDocProcessor(ITechDocData data) {
         this.data = data;
     }
 

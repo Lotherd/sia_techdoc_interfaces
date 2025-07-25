@@ -2,7 +2,7 @@
 * This source code file is the intellectual property of TRAX USA Corp.
 * Copyright (c) 2025 TRAX USA Corp. All rights reserved.
 */
-package trax.aero.application;
+package trax.aero.api.controller;
 
 import java.io.StringReader;
 import java.io.StringWriter;
@@ -18,17 +18,17 @@ import javax.xml.bind.JAXBContext;
 import javax.xml.bind.Marshaller;
 import javax.xml.bind.Unmarshaller;
 import org.tinylog.Logger;
-import trax.aero.data.IModelData;
+import trax.aero.data.ITechDocData;
+import trax.aero.messaging.mq.MqUtilities;
 import trax.aero.model.Wo;
 import trax.aero.pojo.Print;
 import trax.aero.pojo.xml.MODEL;
 import trax.aero.pojo.xml.ROOT;
-import trax.aero.util.MqUtilities;
 
 @Path("/Service")
-public class Service {
+public class TechDocController {
 
-    @EJB IModelData data;
+    @EJB ITechDocData data;
 
     @POST
     @Path("/sendMqText")

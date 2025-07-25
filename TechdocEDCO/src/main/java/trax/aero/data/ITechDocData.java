@@ -12,7 +12,7 @@ import trax.aero.pojo.Print;
 import trax.aero.pojo.xml.ADDATTR;
 import trax.aero.pojo.xml.MODEL;
 
-public interface IModelData {
+public interface ITechDocData {
 
     Wo issueToTechDocRequest(MODEL input, String xml) throws Exception;
 

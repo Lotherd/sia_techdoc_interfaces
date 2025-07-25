@@ -2,7 +2,7 @@
 * This source code file is the intellectual property of TRAX USA Corp.
 * Copyright (c) 2025 TRAX USA Corp. All rights reserved.
 */
-package trax.aero.controller;
+package trax.aero.notification;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -15,7 +15,7 @@ import org.apache.commons.mail.SimpleEmail;
 import org.tinylog.Logger;
 import trax.aero.model.InterfaceData;
 
-public class ModelController {
+public class EmailNotificationManager {
 
     private static final String[] headersPDF = {
         "Name of PDF Attachment",
@@ -43,7 +43,7 @@ public class ModelController {
     };
     static String errors = "";
 
-    public ModelController() {}
+    public EmailNotificationManager() {}
 
     // MOD 19
     public static void sendEmailTrax(

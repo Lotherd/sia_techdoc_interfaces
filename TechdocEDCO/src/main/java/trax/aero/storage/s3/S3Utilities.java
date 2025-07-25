@@ -2,7 +2,7 @@
 * This source code file is the intellectual property of TRAX USA Corp.
 * Copyright (c) 2025 TRAX USA Corp. All rights reserved.
 */
-package trax.aero.util;
+package trax.aero.storage.s3;
 
 import java.io.File;
 import java.nio.charset.StandardCharsets;
@@ -28,6 +28,7 @@ import software.amazon.awssdk.services.s3.model.HeadObjectRequest;
 import software.amazon.awssdk.services.s3.model.HeadObjectResponse;
 import software.amazon.awssdk.services.s3.model.PutObjectRequest;
 import trax.aero.pojo.json.OUTPUT;
+import trax.aero.storage.sftp.SftpUtilities;
 
 public class S3Utilities {
 

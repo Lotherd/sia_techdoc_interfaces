@@ -2,7 +2,7 @@
 * This source code file is the intellectual property of TRAX USA Corp.
 * Copyright (c) 2025 TRAX USA Corp. All rights reserved.
 */
-package trax.aero.start;
+package trax.aero.core.startup;
 
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
@@ -12,29 +12,29 @@ import javax.annotation.PreDestroy;
 import javax.ejb.EJB;
 import javax.ejb.Singleton;
 import javax.ejb.Startup;
-import trax.aero.data.IModelData;
-import trax.aero.util.RunAble;
+import trax.aero.core.scheduler.TechDocProcessor;
+import trax.aero.data.ITechDocData;
 
 @Startup
 @Singleton
-public class Start {
+public class ApplicationInitializer {
 
-    RunAble timer = null;
+    TechDocProcessor processor = null;
 
-    @EJB IModelData data;
+    @EJB ITechDocData data;
 
     private ScheduledExecutorService scheduledServ;
 
     @PostConstruct
     public void start() {
-        timer = new RunAble(data);
+        processor = new TechDocProcessor(data);
 
         if (scheduledServ == null) {
             int scheduledPoolSize = 1;
             this.scheduledServ = Executors.newScheduledThreadPool(scheduledPoolSize);
         }
         scheduledServ.scheduleAtFixedRate(
-                timer, 30, Long.parseLong(System.getProperty("Techdoc_interval")), TimeUnit.SECONDS);
+                processor, 30, Long.parseLong(System.getProperty("Techdoc_interval")), TimeUnit.SECONDS);
     }
 
     @PreDestroy
