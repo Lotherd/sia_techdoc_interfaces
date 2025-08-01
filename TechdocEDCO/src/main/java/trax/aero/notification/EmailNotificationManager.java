@@ -51,7 +51,7 @@ public class EmailNotificationManager {
             String revision,
             String date,
             String time,
-            String pAcks,
+            String packs,
             String printer,
             String stringHeader) {
         try {
@@ -115,7 +115,7 @@ public class EmailNotificationManager {
             htmlContent.append("</tr>");
 
             // Add table rows
-            htmlContent.append(pAcks);
+            htmlContent.append(packs);
 
             htmlContent.append("</table>");
             htmlContent.append("<br><br>");
@@ -143,7 +143,7 @@ public class EmailNotificationManager {
             String revision,
             String date,
             String time,
-            String pAcks,
+            String packs,
             String printer,
             String stringHeader) {
         try {
@@ -207,7 +207,7 @@ public class EmailNotificationManager {
             htmlContent.append("</tr>");
 
             // Add table rows
-            htmlContent.append(pAcks);
+            htmlContent.append(packs);
 
             htmlContent.append("</table>");
             htmlContent.append("<br><br>");
@@ -266,7 +266,7 @@ public class EmailNotificationManager {
             String revision,
             String date,
             String time,
-            String pAcks,
+            String packs,
             String printer,
             String stringHeader) {
         try {
@@ -331,7 +331,7 @@ public class EmailNotificationManager {
             htmlContent.append("</tr>");
 
             // Add table rows
-            htmlContent.append(pAcks);
+            htmlContent.append(packs);
 
             htmlContent.append("</table>");
             htmlContent.append("<br><br>");

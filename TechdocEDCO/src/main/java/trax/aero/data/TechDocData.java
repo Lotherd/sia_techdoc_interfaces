@@ -12,7 +12,6 @@ import java.math.BigDecimal;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.nio.charset.StandardCharsets;
-import java.security.SecureRandom;
 import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.Types;
@@ -56,13 +55,13 @@ import trax.aero.pojo.xml.MODEL;
 import trax.aero.pojo.xml.OUTPUT;
 import trax.aero.print.PrinterUtilities;
 import trax.aero.storage.s3.S3Utilities;
+import trax.aero.utilities.StringUtilities;
 
 @Stateless(name = "TechDocData", mappedName = "TechDocData")
 public class TechDocData implements ITechDocData {
 
     ArrayList<String> scoot = new ArrayList<>(Arrays.asList("300275", "300276", "101821"));
     ArrayList<String> siaec = new ArrayList<>(Arrays.asList("319", "320"));
-    private static final SecureRandom random = new SecureRandom();
 
     @PersistenceContext(unitName = "TechdocDS")
     private EntityManager em;
@@ -85,7 +84,7 @@ public class TechDocData implements ITechDocData {
     }
 
     // MOD 16 //MOD 22
-    public Wo issueToTechDocRequest(MODEL input, String xml) {
+    public Wo issueToTechDocRequest(MODEL input, String xml) throws Exception {
 
         // creates temp wo with attached xml
         String company = "SIA", ac, location = "SIN", site, type, printer, date, time, revision, error;
@@ -139,63 +138,23 @@ public class TechDocData implements ITechDocData {
             PrintAck a = new PrintAck();
             a.setAttachment(att.getATTTYPE());
             a.setAttachmentID(att.getID());
-            a.setJcTitle(input.getEFFECTIVITY().getJOBCARD().getJCTITLE());
-            a.setJobcardNumber(
-                    filterADDATTR(
-                            input.getEFFECTIVITY().getJOBCARD().getJOBI().getPLI().getADDATTR(), "TASK-NBR"));
-            a.setSapGroupNumber(input.getEFFECTIVITY().getJOBCARD().getJCNBR());
-            a.setSapServiceOrder(input.getEFFECTIVITY().getJOBCARD().getWONBR());
-            a.setTaskType(input.getEFFECTIVITY().getJOBCARD().getTYPE());
-            a.setTraxWoNumber(input.getEFFECTIVITY().getJOBCARD().getWPTITLE());
-            ack.add(a);
+            setPrintAck(input, ack, a);
         }
         if (ack.isEmpty()) {
             PrintAck a = new PrintAck();
-            a.setJcTitle(input.getEFFECTIVITY().getJOBCARD().getJCTITLE());
-            a.setJobcardNumber(
-                    filterADDATTR(
-                            input.getEFFECTIVITY().getJOBCARD().getJOBI().getPLI().getADDATTR(), "TASK-NBR"));
-            a.setSapGroupNumber(input.getEFFECTIVITY().getJOBCARD().getJCNBR());
-            a.setSapServiceOrder(input.getEFFECTIVITY().getJOBCARD().getWONBR());
-            a.setTaskType(input.getEFFECTIVITY().getJOBCARD().getTYPE());
-            a.setTraxWoNumber(input.getEFFECTIVITY().getJOBCARD().getWPTITLE());
-            ack.add(a);
+            setPrintAck(input, ack, a);
         }
         // save ack to parent from child
         StringBuilder htmlContent = new StringBuilder();
         for (PrintAck data : ack) {
-            htmlContent
-                    .append("<tr>")
-                    .append("<td style='border: 1px solid black; padding: 8px;'>")
-                    .append(printer)
-                    .append("</td>") // Assuming the name of the PDF attachment is constant
-                    .append("<td style='border: 1px solid black; padding: 8px;'>")
-                    .append(data.getSapServiceOrder())
-                    .append("</td>")
-                    .append("<td style='border: 1px solid black; padding: 8px;'>")
-                    .append(data.getJobcardNumber())
-                    .append("</td>")
-                    .append("<td style='border: 1px solid black; padding: 8px;'>")
-                    .append(data.getJcTitle())
-                    .append("</td>")
-                    .append("<td style='border: 1px solid black; padding: 8px;'>")
-                    .append(data.getSapGroupNumber())
-                    .append("</td>")
-                    .append("<td style='border: 1px solid black; padding: 8px;'>")
-                    .append(data.getTaskType())
-                    .append("</td>")
-                    .append("<td style='border: 1px solid black; padding: 8px;'>")
-                    .append(data.getTraxWoNumber())
-                    .append("</td>")
-                    .append("<td style='border: 1px solid black; padding: 8px;'>")
-                    .append(data.getAttachment())
-                    .append("</td>")
-                    .append("<td style='border: 1px solid black; padding: 8px;'>")
-                    .append(data.getAttachmentID())
-                    .append("</td>")
-                    .append("</tr>");
+            setHtmlContent(printer, htmlContent, data);
         }
 
+        sendFinalPrintEmail(input, printer, date, time, revision, htmlContent);
+        throw new Exception("Wo creation failed");
+    }
+
+    private void sendFinalPrintEmail(MODEL input, String printer, String date, String time, String revision, StringBuilder htmlContent) {
         switch (printer) {
             case "ECXX":
             case "ECXY":
@@ -229,7 +188,51 @@ public class TechDocData implements ITechDocData {
                         "Cover Page Missing");
                 break;
         }
-        return null;
+    }
+
+    private void setHtmlContent(String printer, StringBuilder htmlContent, PrintAck data) {
+        htmlContent
+                .append("<tr>")
+                .append("<td style='border: 1px solid black; padding: 8px;'>")
+                .append(printer)
+                .append("</td>") // Assuming the name of the PDF attachment is constant
+                .append("<td style='border: 1px solid black; padding: 8px;'>")
+                .append(data.getSapServiceOrder())
+                .append("</td>")
+                .append("<td style='border: 1px solid black; padding: 8px;'>")
+                .append(data.getJobcardNumber())
+                .append("</td>")
+                .append("<td style='border: 1px solid black; padding: 8px;'>")
+                .append(data.getJcTitle())
+                .append("</td>")
+                .append("<td style='border: 1px solid black; padding: 8px;'>")
+                .append(data.getSapGroupNumber())
+                .append("</td>")
+                .append("<td style='border: 1px solid black; padding: 8px;'>")
+                .append(data.getTaskType())
+                .append("</td>")
+                .append("<td style='border: 1px solid black; padding: 8px;'>")
+                .append(data.getTraxWoNumber())
+                .append("</td>")
+                .append("<td style='border: 1px solid black; padding: 8px;'>")
+                .append(data.getAttachment())
+                .append("</td>")
+                .append("<td style='border: 1px solid black; padding: 8px;'>")
+                .append(data.getAttachmentID())
+                .append("</td>")
+                .append("</tr>");
+    }
+
+    private void setPrintAck(MODEL input, ArrayList<PrintAck> ack, PrintAck a) {
+        a.setJcTitle(input.getEFFECTIVITY().getJOBCARD().getJCTITLE());
+        a.setJobcardNumber(
+                filterADDATTR(
+                        input.getEFFECTIVITY().getJOBCARD().getJOBI().getPLI().getADDATTR(), "TASK-NBR"));
+        a.setSapGroupNumber(input.getEFFECTIVITY().getJOBCARD().getJCNBR());
+        a.setSapServiceOrder(input.getEFFECTIVITY().getJOBCARD().getWONBR());
+        a.setTaskType(input.getEFFECTIVITY().getJOBCARD().getTYPE());
+        a.setTraxWoNumber(input.getEFFECTIVITY().getJOBCARD().getWPTITLE());
+        ack.add(a);
     }
 
     @Override
@@ -305,51 +308,13 @@ public class TechDocData implements ITechDocData {
                         PrintAck a = new PrintAck();
                         a.setAttachment(att.getATTTYPE());
                         a.setAttachmentID(att.getID());
-                        a.setJcTitle(input.getEFFECTIVITY().getJOBCARD().getJCTITLE());
-                        a.setJobcardNumber(
-                                filterADDATTR(
-                                        input.getEFFECTIVITY().getJOBCARD().getJOBI().getPLI().getADDATTR(),
-                                        "TASK-NBR"));
-                        a.setSapGroupNumber(input.getEFFECTIVITY().getJOBCARD().getJCNBR());
-                        a.setSapServiceOrder(input.getEFFECTIVITY().getJOBCARD().getWONBR());
-                        a.setTaskType(input.getEFFECTIVITY().getJOBCARD().getTYPE());
-                        a.setTraxWoNumber(input.getEFFECTIVITY().getJOBCARD().getWPTITLE());
-                        ack.add(a);
+                        setPrintAck(input, ack, a);
                         // save ack to parent from child
                         StringBuilder htmlContent = new StringBuilder();
                         if (emailBlob.getBlobItem() != null) {
                             htmlContent.append(new String(emailBlob.getBlobItem()));
                         }
-                        htmlContent
-                                .append("<tr>")
-                                .append("<td style='border: 1px solid black; padding: 8px;'>")
-                                .append(pdfName)
-                                .append("</td>") // Assuming the name of the PDF attachment is constant
-                                .append("<td style='border: 1px solid black; padding: 8px;'>")
-                                .append(a.getSapServiceOrder())
-                                .append("</td>")
-                                .append("<td style='border: 1px solid black; padding: 8px;'>")
-                                .append(a.getJobcardNumber())
-                                .append("</td>")
-                                .append("<td style='border: 1px solid black; padding: 8px;'>")
-                                .append(a.getJcTitle())
-                                .append("</td>")
-                                .append("<td style='border: 1px solid black; padding: 8px;'>")
-                                .append(a.getSapGroupNumber())
-                                .append("</td>")
-                                .append("<td style='border: 1px solid black; padding: 8px;'>")
-                                .append(a.getTaskType())
-                                .append("</td>")
-                                .append("<td style='border: 1px solid black; padding: 8px;'>")
-                                .append(a.getTraxWoNumber())
-                                .append("</td>")
-                                .append("<td style='border: 1px solid black; padding: 8px;'>")
-                                .append(a.getAttachment())
-                                .append("</td>")
-                                .append("<td style='border: 1px solid black; padding: 8px;'>")
-                                .append(a.getAttachmentID())
-                                .append("</td>")
-                                .append("</tr>");
+                        setHtmlContent(pdfName, htmlContent, a);
                         emailBlob.setBlobItem(htmlContent.toString().getBytes());
                     }
                 }
@@ -612,30 +577,14 @@ public class TechDocData implements ITechDocData {
                 PrintAck a = new PrintAck();
                 a.setAttachment(att.getATTTYPE());
                 a.setAttachmentID(att.getID());
-                a.setJcTitle(input.getEFFECTIVITY().getJOBCARD().getJCTITLE());
-                a.setJobcardNumber(
-                        filterADDATTR(
-                                input.getEFFECTIVITY().getJOBCARD().getJOBI().getPLI().getADDATTR(), "TASK-NBR"));
-                a.setSapGroupNumber(input.getEFFECTIVITY().getJOBCARD().getJCNBR());
-                a.setSapServiceOrder(input.getEFFECTIVITY().getJOBCARD().getWONBR());
-                a.setTaskType(input.getEFFECTIVITY().getJOBCARD().getTYPE());
-                a.setTraxWoNumber(input.getEFFECTIVITY().getJOBCARD().getWPTITLE());
-                ack.add(a);
+                setPrintAck(input, ack, a);
             }
             // ARRAY EMPTY == COVER PAGE EMAIL
             if (ack.isEmpty()) {
                 PrintAck a = new PrintAck();
                 a.setAttachment("");
                 a.setAttachmentID("");
-                a.setJcTitle(input.getEFFECTIVITY().getJOBCARD().getJCTITLE());
-                a.setJobcardNumber(
-                        filterADDATTR(
-                                input.getEFFECTIVITY().getJOBCARD().getJOBI().getPLI().getADDATTR(), "TASK-NBR"));
-                a.setSapGroupNumber(input.getEFFECTIVITY().getJOBCARD().getJCNBR());
-                a.setSapServiceOrder(input.getEFFECTIVITY().getJOBCARD().getWONBR());
-                a.setTaskType(input.getEFFECTIVITY().getJOBCARD().getTYPE());
-                a.setTraxWoNumber(input.getEFFECTIVITY().getJOBCARD().getWPTITLE());
-                ack.add(a);
+                setPrintAck(input, ack, a);
             }
 
             // save ack to parent from child
@@ -677,40 +626,7 @@ public class TechDocData implements ITechDocData {
             em.flush();
 
             if (sendFinal) {
-                switch (printer) {
-                    case "ECXX":
-                    case "ECXY":
-                        EmailNotificationManager.sendEmailEDCO(
-                                input.getEFFECTIVITY().getJOBCARD().getWPNBR(),
-                                revision,
-                                date,
-                                time,
-                                htmlContent.toString(),
-                                printer,
-                                "Cover Page Missing");
-                        break;
-                    case "TRAX":
-                        EmailNotificationManager.sendEmailTrax(
-                                input.getEFFECTIVITY().getJOBCARD().getWPNBR(),
-                                revision,
-                                date,
-                                time,
-                                htmlContent.toString(),
-                                printer,
-                                "Cover Page Missing");
-                        break;
-
-                    default:
-                        EmailNotificationManager.sendEmailPrint(
-                                input.getEFFECTIVITY().getJOBCARD().getWPNBR(),
-                                revision,
-                                date,
-                                time,
-                                htmlContent.toString(),
-                                printer,
-                                "Cover Page Missing");
-                        break;
-                }
+                sendFinalPrintEmail(input, printer, date, time, revision, htmlContent);
             }
             // deletes wo and wo task card
             if (System.getProperty("Techdoc_DELETE") != null
@@ -823,7 +739,7 @@ public class TechDocData implements ITechDocData {
     private String generateFooterName(MODEL input) {
         JOBCARD card = input.getEFFECTIVITY().getJOBCARD();
 
-        String random = generateNumericString(19);
+        String random = StringUtilities.generateNumericString(19);
 
         return "footer_" + card.getWPNBR() + "_" + random + ".pdf";
     }
@@ -831,7 +747,7 @@ public class TechDocData implements ITechDocData {
     private String generateHeaderName(MODEL input) {
         JOBCARD card = input.getEFFECTIVITY().getJOBCARD();
 
-        String random = generateNumericString(19);
+        String random = StringUtilities.generateNumericString(19);
 
         return "index_" + card.getWPNBR() + "_" + random + ".pdf";
     }
@@ -962,7 +878,7 @@ public class TechDocData implements ITechDocData {
     private ArrayList<String> getTaskCards(List<ATTACHMENT> list, String ac) {
         try {
 
-            AcMaster acMaster = em.find(AcMaster.class, removeHypenString(ac));
+            AcMaster acMaster = em.find(AcMaster.class, StringUtilities.removeHypenString(ac));
             String type = "", series = "";
             if (acMaster != null) {
                 type = acMaster.getAcTypeSeriesMaster().getId().getAcType();
@@ -1107,6 +1023,22 @@ public class TechDocData implements ITechDocData {
         wo.setFlight(jc.getMANHRS().substring(0, 9));
         wo.setAmpMs(filterADDATTR(jc.getJOBI().getPLI().getADDATTR(), "BUSR12"));
         wo.setAuthorizationDate(convertStringToDate(jc.getWPDATE()));
+        setDefaultWoFields(wo);
+
+        // TD ENGINE-POS
+        wo.setTdEnginePos(input.getEFFECTIVITY().getJOBCARD().getENGINEPOS());
+
+        // TD BUSR06
+        wo.setTdApuSn(filterADDATTR(jc.getJOBI().getPLI().getADDATTR(), "BUSR06"));
+
+        Logger.info("INSERTING TEMP WO: " + wo.getWo());
+
+        insertData(wo);
+
+        return wo;
+    }
+
+    private void setDefaultWoFields(Wo wo) {
         wo.setStatus("TECHDOC");
         wo.setOrderType("W/O");
         wo.setModule("PRODUCTION");
@@ -1140,18 +1072,6 @@ public class TechDocData implements ITechDocData {
         wo.setActualStartMinute(BigDecimal.ZERO);
         wo.setScheduleOrgCompletionHour(BigDecimal.ZERO);
         wo.setScheduleOrgCompletionMinute(BigDecimal.ZERO);
-
-        // TD ENGINE-POS
-        wo.setTdEnginePos(input.getEFFECTIVITY().getJOBCARD().getENGINEPOS());
-
-        // TD BUSR06
-        wo.setTdApuSn(filterADDATTR(jc.getJOBI().getPLI().getADDATTR(), "BUSR06"));
-
-        Logger.info("INSERTING TEMP WO: " + wo.getWo());
-
-        insertData(wo);
-
-        return wo;
     }
 
     private trax.aero.pojo.json.OUTPUT convertXmlToJson(MODEL input) {
@@ -1707,7 +1627,7 @@ public class TechDocData implements ITechDocData {
         String pdfName;
 
         JOBCARD card = input.getEFFECTIVITY().getJOBCARD();
-        String random = generateNumericString(19);
+        String random = StringUtilities.generateNumericString(19);
 
         pdfName =
                 "wo_"
@@ -2068,39 +1988,7 @@ public class TechDocData implements ITechDocData {
             wo.setExpenditure(setExpenditure());
             wo.setPriority("NORMAL");
 
-            wo.setStatus("TECHDOC");
-            wo.setOrderType("W/O");
-            wo.setModule("PRODUCTION");
-            wo.setPaperChecked("NO");
-            wo.setAuthorization("Y");
-            wo.setNrReqItem("N");
-            wo.setRestrictActual("N");
-            wo.setNrAllow("YES");
-            wo.setExcludeMhPlanner("N");
-            wo.setThirdPartyWo("Y");
-            wo.setModifiedBy("IFACE-SIA");
-            wo.setLongTermEvent("YES");
-            wo.setModifiedDate(new Date());
-            wo.setExpenditure(("General"));
-            wo.setWo(getTransactionNo("WOSEQ").longValue());
-
-            wo.setExpenditure(setExpenditure());
-            wo.setPriority("NORMAL");
-
-            wo.setScheduleStartHour(BigDecimal.ZERO);
-            wo.setScheduleStartMinute(BigDecimal.ZERO);
-            wo.setScheduleCompletionHour(BigDecimal.ZERO);
-            wo.setScheduleCompletionMinute(BigDecimal.ZERO);
-
-            wo.setScheduleStartDate(new Date());
-            wo.setScheduleCompletionDate(new Date());
-            wo.setActualStartDate(new Date());
-            wo.setScheduleOrgCompletionDate(new Date());
-
-            wo.setActualStartHour(BigDecimal.ZERO);
-            wo.setActualStartMinute(BigDecimal.ZERO);
-            wo.setScheduleOrgCompletionHour(BigDecimal.ZERO);
-            wo.setScheduleOrgCompletionMinute(BigDecimal.ZERO);
+            setDefaultWoFields(wo);
             wo.setFormNo(BigDecimal.ZERO);
         }
         wo.setWoDescription(wpTitle);
@@ -2134,7 +2022,7 @@ public class TechDocData implements ITechDocData {
             l_count = l_count.add(BigDecimal.ONE);
             parent.setFormNo(l_count);
             Logger.info(
-                    "PARENT TEMP WO: " + parent.getWo() + " COUNT F:" + parent.getFormNo().intValue());
+                    "PARENT TEMP WO: " + parent.getWo() + " COUNT F: " + parent.getFormNo().intValue());
             insertData(parent);
             if (w.getDocumentNo().intValue() != l_count.intValue()) {
                 w.setDocumentNo(l_count);
@@ -2238,7 +2126,7 @@ public class TechDocData implements ITechDocData {
                             input.getEFFECTIVITY().getJOBCARD().getJOBI().getPLI().getADDATTR(), "TASK-NBR"));
             insertData(card);
             for (WoTaskCardItem item : card.getWoTaskCardItems()) {
-                item.setPhase(tirmString(input.getEFFECTIVITY().getJOBCARD().getTRADE()));
+                item.setPhase(StringUtilities.tirmString(input.getEFFECTIVITY().getJOBCARD().getTRADE()));
                 insertData(item);
             }
         }
@@ -2378,7 +2266,7 @@ public class TechDocData implements ITechDocData {
         try {
 
             AcMaster acMaster =
-                    em.find(AcMaster.class, removeHypenString(input.getEFFECTIVITY().getREGNBR()));
+                    em.find(AcMaster.class, StringUtilities.removeHypenString(input.getEFFECTIVITY().getREGNBR()));
             String type = "", series = "";
             if (acMaster != null) {
                 type = acMaster.getAcTypeSeriesMaster().getId().getAcType();
@@ -2398,30 +2286,4 @@ public class TechDocData implements ITechDocData {
             return "";
         }
     }
-
-    private String tirmString(String inputString) {
-        if (inputString == null) {
-            return null;
-        } else {
-            return inputString.substring(0, Math.min(inputString.length(), 8));
-        }
-    }
-
-    private String removeHypenString(String inputString) {
-        if (inputString == null) {
-            return null;
-        } else {
-            return inputString.replaceAll("-", "");
-        }
-    }
-
-
-    public String generateNumericString(int length) {
-        StringBuilder sb = new StringBuilder(length);
-        for (int i = 0; i < length; i++) {
-            sb.append(random.nextInt(10)); // digits 0–9
-        }
-        return sb.toString();
-    }
-
 }

@@ -24,6 +24,7 @@ import trax.aero.model.Wo;
 import trax.aero.pojo.Print;
 import trax.aero.pojo.xml.MODEL;
 import trax.aero.pojo.xml.ROOT;
+import trax.aero.utilities.StringUtilities;
 
 @Path("/Service")
 public class TechDocController {
@@ -139,12 +140,7 @@ public class TechDocController {
                 StringWriter sw = new StringWriter();
                 marshaller.marshal(model, sw);
 
-                String xml = sw.toString();
-                xml = xml.replaceAll("&amp;apos;", "&apos;");
-                xml = xml.replaceAll("&amp;gt;", "&gt;");
-                xml = xml.replaceAll("&amp;lt;", "&lt;");
-                xml = xml.replaceAll("&amp;quot;", "&quot;");
-                xml = xml.replaceAll("&amp;re;", "&#xA;");
+                String xml = StringUtilities.xmlCleaning(sw.toString());
                 Wo w = data.issueToTechDocRequest(model, xml);
                 data.linkWoToParent(
                         w, parent, new BigDecimal(model.getEFFECTIVITY().getJOBCARD().getSEQNBR()));

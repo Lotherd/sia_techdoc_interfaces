@@ -5,6 +5,7 @@
 package trax.aero.storage.s3;
 
 import java.io.File;
+import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -12,10 +13,10 @@ import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.Marshaller;
 import org.apache.commons.io.FilenameUtils;
-import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.pdmodel.PDPage;
 import org.apache.pdfbox.pdmodel.PDPageContentStream;
@@ -28,6 +29,7 @@ import software.amazon.awssdk.services.s3.model.HeadObjectResponse;
 import software.amazon.awssdk.services.s3.model.PutObjectRequest;
 import trax.aero.pojo.json.OUTPUT;
 import trax.aero.storage.sftp.SftpUtilities;
+import trax.aero.utilities.StringUtilities;
 
 public class S3Utilities {
 
@@ -47,8 +49,6 @@ public class S3Utilities {
             System.getProperty("Techdoc_pathS3EDCO") + File.separator;
 
     private static final String fileLocOut = System.getProperty("TECH_fileLocOut");
-
-    // ---------------------------------------------------------------------------- Send File
 
     protected static void putS3Object(File file, String key, String bucketName) {
 
@@ -145,32 +145,7 @@ public class S3Utilities {
 
         try {
             // PDF
-            File print = new File(path);
-
-            File theDir =
-                    new File(fileLocOut + File.separator + FilenameUtils.removeExtension(print.getName()));
-            if (!theDir.exists()) {
-                Logger.info(theDir.mkdirs());
-            }
-            Logger.info(
-                    "MOVE "
-                            + print.toPath()
-                            + " TO "
-                            + fileLocOut
-                            + File.separator
-                            + FilenameUtils.removeExtension(print.getName())
-                            + File.separator
-                            + pdfName);
-            Files.move(
-                    print.toPath(),
-                    new File(
-                                    fileLocOut
-                                            + File.separator
-                                            + FilenameUtils.removeExtension(print.getName())
-                                            + File.separator
-                                            + pdfName)
-                            .toPath(),
-                    StandardCopyOption.REPLACE_EXISTING);
+            File print = moveFileToOutputDir(pdfName, path);
 
             // xml
             File output =
@@ -180,80 +155,11 @@ public class S3Utilities {
                                     + FilenameUtils.removeExtension(print.getName())
                                     + File.separator
                                     + "wo_"
-                                    + RandomStringUtils.random(19, false, true)
+                                    + StringUtilities.generateNumericString(19)
                                     + ".xml");
 
             // txt
-            if (sendFinal) {
-                Path text =
-                        Paths.get(
-                                fileLocOut
-                                        + File.separator
-                                        + FilenameUtils.removeExtension(print.getName())
-                                        + File.separator
-                                        + txtName
-                                        + ".txt");
-                Files.write(text, txt, StandardCharsets.UTF_8);
-
-                // header
-                PDDocument documentHeader = new PDDocument();
-                PDPage pageHeader = new PDPage();
-                documentHeader.addPage(pageHeader);
-                PDPageContentStream contentStreamHeader =
-                        new PDPageContentStream(documentHeader, pageHeader);
-
-                contentStreamHeader.beginText();
-                contentStreamHeader.setLeading(14.5f);
-
-                contentStreamHeader.newLineAtOffset(25, 700);
-                contentStreamHeader.setFont(PDType1Font.HELVETICA_BOLD, 9);
-
-                for (String linesHeader : headerTxt) {
-                    Logger.info(linesHeader);
-                    contentStreamHeader.showText(linesHeader);
-                    contentStreamHeader.newLine();
-                }
-                contentStreamHeader.endText();
-                contentStreamHeader.close();
-                documentHeader.save(
-                        fileLocOut
-                                + File.separator
-                                + FilenameUtils.removeExtension(print.getName())
-                                + File.separator
-                                + header);
-                documentHeader.close();
-
-                // footer
-                PDDocument documentFooter = new PDDocument();
-                PDPage pageFooter = new PDPage();
-                documentFooter.addPage(pageFooter);
-
-                PDPageContentStream contentStreamFooter =
-                        new PDPageContentStream(documentFooter, pageFooter);
-
-                contentStreamFooter.beginText();
-                contentStreamFooter.setLeading(14.5f);
-
-                contentStreamFooter.newLineAtOffset(25, 700);
-                contentStreamFooter.setFont(PDType1Font.HELVETICA_BOLD, 9);
-
-                for (String linesFooter : footerTxt) {
-                    Logger.info(linesFooter);
-
-                    contentStreamFooter.showText(linesFooter);
-                    contentStreamFooter.newLine();
-                }
-                contentStreamFooter.endText();
-
-                contentStreamFooter.close();
-                documentFooter.save(
-                        fileLocOut
-                                + File.separator
-                                + FilenameUtils.removeExtension(print.getName())
-                                + File.separator
-                                + footer);
-                documentFooter.close();
-            }
+            createFinalFiles(txt, txtName, header, footer, headerTxt, footerTxt, sendFinal, print);
 
             JAXBContext jc = JAXBContext.newInstance(trax.aero.pojo.xml.OUTPUT.class);
             Marshaller marshall = jc.createMarshaller();
@@ -292,6 +198,92 @@ public class S3Utilities {
         }
     }
 
+    private static File moveFileToOutputDir(String pdfName, String path) throws IOException {
+        File print = new File(path);
+
+        File theDir =
+                new File(fileLocOut + File.separator + FilenameUtils.removeExtension(print.getName()));
+        if (!theDir.exists()) {
+            Logger.info(theDir.mkdirs());
+        }
+        Logger.info(
+                "MOVE "
+                        + print.toPath()
+                        + " TO "
+                        + fileLocOut
+                        + File.separator
+                        + FilenameUtils.removeExtension(print.getName())
+                        + File.separator
+                        + pdfName);
+        Files.move(
+                print.toPath(),
+                new File(
+                                fileLocOut
+                                        + File.separator
+                                        + FilenameUtils.removeExtension(print.getName())
+                                        + File.separator
+                                        + pdfName)
+                        .toPath(),
+                StandardCopyOption.REPLACE_EXISTING);
+        return print;
+    }
+
+    private static void createFinalFiles(
+            ArrayList<String> txt,
+            String txtName,
+            String header,
+            String footer,
+            ArrayList<String> headerTxt,
+            ArrayList<String> footerTxt,
+            boolean sendFinal,
+            File print)
+            throws IOException {
+        if (sendFinal) {
+            Path text =
+                    Paths.get(
+                            fileLocOut
+                                    + File.separator
+                                    + FilenameUtils.removeExtension(print.getName())
+                                    + File.separator
+                                    + txtName
+                                    + ".txt");
+            Files.write(text, txt, StandardCharsets.UTF_8);
+
+            // header
+            createPdf(header, headerTxt, print);
+
+            // footer
+            createPdf(footer, footerTxt, print);
+        }
+    }
+
+    private static void createPdf(String fileName, List<String> lines, File print)
+            throws IOException {
+        Path outputPath =
+                Paths.get(fileLocOut, FilenameUtils.removeExtension(print.getName()), fileName);
+        Files.createDirectories(outputPath.getParent());
+
+        try (PDDocument document = new PDDocument()) {
+            PDPage page = new PDPage();
+            document.addPage(page);
+
+            try (PDPageContentStream contentStream = new PDPageContentStream(document, page)) {
+                contentStream.beginText();
+                contentStream.setLeading(14.5f);
+                contentStream.newLineAtOffset(25, 700);
+                contentStream.setFont(PDType1Font.HELVETICA_BOLD, 9);
+
+                for (String line : lines) {
+                    Logger.info(line);
+                    contentStream.showText(line);
+                    contentStream.newLine();
+                }
+                contentStream.endText();
+            }
+            document.save(outputPath.toFile());
+        }
+    }
+
     public static void sendVirtualPrint(
             String path,
             String folder,
@@ -306,103 +298,9 @@ public class S3Utilities {
             throws Exception {
 
         try {
-            File print = new File(path);
-            File theDir =
-                    new File(fileLocOut + File.separator + FilenameUtils.removeExtension(print.getName()));
-            if (!theDir.exists()) {
-                Logger.info(theDir.mkdirs());
-            }
-            Logger.info(
-                    "MOVE "
-                            + print.toPath()
-                            + " TO "
-                            + fileLocOut
-                            + File.separator
-                            + FilenameUtils.removeExtension(print.getName())
-                            + File.separator
-                            + pdfName);
-            Files.move(
-                    print.toPath(),
-                    new File(
-                                    fileLocOut
-                                            + File.separator
-                                            + FilenameUtils.removeExtension(print.getName())
-                                            + File.separator
-                                            + pdfName)
-                            .toPath(),
-                    StandardCopyOption.REPLACE_EXISTING);
+            File print = moveFileToOutputDir(pdfName, path);
 
-            if (sendFinal) {
-
-                Path text =
-                        Paths.get(
-                                fileLocOut
-                                        + File.separator
-                                        + FilenameUtils.removeExtension(print.getName())
-                                        + File.separator
-                                        + txtName
-                                        + ".txt");
-                Files.write(text, txt, StandardCharsets.UTF_8);
-
-                // header
-                PDDocument documentHeader = new PDDocument();
-                PDPage pageHeader = new PDPage();
-                documentHeader.addPage(pageHeader);
-                PDPageContentStream contentStreamHeader =
-                        new PDPageContentStream(documentHeader, pageHeader);
-
-                contentStreamHeader.beginText();
-                contentStreamHeader.setLeading(14.5f);
-
-                contentStreamHeader.newLineAtOffset(25, 700);
-                contentStreamHeader.setFont(PDType1Font.HELVETICA_BOLD, 9);
-
-                for (String linesHeader : headerTxt) {
-                    Logger.info(linesHeader);
-                    contentStreamHeader.showText(linesHeader);
-                    contentStreamHeader.newLine();
-                }
-                contentStreamHeader.endText();
-                contentStreamHeader.close();
-                documentHeader.save(
-                        fileLocOut
-                                + File.separator
-                                + FilenameUtils.removeExtension(print.getName())
-                                + File.separator
-                                + header);
-                documentHeader.close();
-
-                // footer
-                PDDocument documentFooter = new PDDocument();
-                PDPage pageFooter = new PDPage();
-                documentFooter.addPage(pageFooter);
-
-                PDPageContentStream contentStreamFooter =
-                        new PDPageContentStream(documentFooter, pageFooter);
-
-                contentStreamFooter.beginText();
-                contentStreamFooter.setLeading(14.5f);
-
-                contentStreamFooter.newLineAtOffset(25, 700);
-                contentStreamFooter.setFont(PDType1Font.HELVETICA_BOLD, 9);
-
-                for (String linesFooter : footerTxt) {
-                    Logger.info(linesFooter);
-
-                    contentStreamFooter.showText(linesFooter);
-                    contentStreamFooter.newLine();
-                }
-                contentStreamFooter.endText();
-
-                contentStreamFooter.close();
-                documentFooter.save(
-                        fileLocOut
-                                + File.separator
-                                + FilenameUtils.removeExtension(print.getName())
-                                + File.separator
-                                + footer);
-                documentFooter.close();
-            }
+            createFinalFiles(txt, txtName, header, footer, headerTxt, footerTxt, sendFinal, print);
             File folderPrint =
                     new File(fileLocOut + File.separator + FilenameUtils.removeExtension(print.getName()));
 
