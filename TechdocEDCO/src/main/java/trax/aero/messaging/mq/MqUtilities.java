@@ -74,25 +74,24 @@ public class MqUtilities {
         KeyStore ks = KeyStore.getInstance("JKS");
 
         ks.load(Files.newInputStream(Paths.get(JKS_LOCATION)), KSPW);
-        // Logger.info("Number of keys on JKS: "  + Integer.toString(ks.size()));
 
         KeyManagerFactory keyManagerFactory =
                 KeyManagerFactory.getInstance(KeyManagerFactory.getDefaultAlgorithm());
 
-        // Initialise the managers
+        // Initialize the managers
         keyManagerFactory.init(ks, KSPW);
 
-        // Accessing available algorithm/protocol in the SunJSSE provider
+        // Accessing available algorithm/protocol in the SunJSSE provider,
         // see http://java.sun.com/javase/6/docs/technotes/guides/security/SunProviders.html
         SSLContext sslContext = SSLContext.getInstance("SSLv3");
 
-        // Acessing available algorithm/protocol in the IBMJSSE2 provider
+        // Accessing available algorithm/protocol in the IBM JSSE2 provider,
         // see
         // http://www.ibm.com/developerworks/java/jdk/security/142/secguides/jsse2docs/JSSE2RefGuide.html
-        // SSLContext sslContext = SSLContext.getInstance("SSL_TLS");
-        //   Logger.info("SSLContext provider: " +       sslContext.getProvider().toString());
+        // SSLContext = SSLContext.getInstance("SSL_TLS");
+        //   Logger.info("SSLContext provider:" + sslContext.getProvider().toString());
 
-        // Initialise our SSL context from the key/trust managers
+        // Initialize our SSL context from the key/trust managers
         sslContext.init(keyManagerFactory.getKeyManagers(), null, null);
 
         // Get an SSLSocketFactory to pass to WMQ
@@ -100,7 +99,7 @@ public class MqUtilities {
         return sslContext.getSocketFactory();
     }
 
-    public static Boolean sendMqText(String text) throws JMSException {
+    public static void sendMqText(String text) throws JMSException {
 
         QueueSender queueSender = null;
         QueueConnection queueConnection = null;
@@ -117,7 +116,7 @@ public class MqUtilities {
             /*Create session */
             queueSession = queueConnection.createQueueSession(false, Session.AUTO_ACKNOWLEDGE);
 
-            /*Create text message */
+            /*Create a text message */
             TextMessage textMessage = queueSession.createTextMessage(text);
             // textMessage.setJMSReplyTo(queue);
             textMessage.setJMSType("mcd://xmlns"); // message type
@@ -127,7 +126,6 @@ public class MqUtilities {
             queueSender = queueSession.createSender(queueSession.createQueue(QUEUE_NAME_SENDER));
             queueSender.send(textMessage);
 
-            return true;
         } catch (Exception e) {
             Logger.error(e);
         } finally {
@@ -135,10 +133,9 @@ public class MqUtilities {
             if (queueSession != null) queueSession.close();
             if (queueConnection != null) queueConnection.close();
         }
-        return false;
     }
 
-    public static String receiveMqText(boolean sendEmail) throws JMSException {
+    public static String receiveMqText(boolean sendEmail) {
         QueueReceiver queueReceiver = null;
         QueueConnection queueConnection = null;
         QueueSession queueSession = null;
@@ -157,14 +154,12 @@ public class MqUtilities {
             /*Create response queue */
             Queue queue = queueSession.createQueue(QUEUE_NAME_RECEIVE);
 
-            /*Within the session we have to create queue reciver */
+            /*Within the session we have to create a queue receiver */
             queueReceiver = queueSession.createReceiver(queue);
 
             /*Receive the message from*/
             Message message = queueReceiver.receive(60 * 1000);
             if (message != null) {
-                // Logger.info("JMSCorrelationID: "+ message.getJMSCorrelationID() + " JMSMessageID: " +
-                // message.getJMSMessageID()  );
 
                 return ((TextMessage) message).getText();
             }

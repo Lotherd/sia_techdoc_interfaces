@@ -88,12 +88,20 @@ public class EmailNotificationManager {
             htmlContent
                     .append("<p>Hi All,</p>")
                     .append("<p>Please find below PDF attachment details for not printed:-</p>")
-                    .append("<p>1. SAP Revision: " + revision + "</p>")
-                    .append("<p>2. iDOC Date: " + date + "</p>")
-                    .append("<p>3. iDOC Time: " + time + "</p>")
+                    .append("<p>1. SAP Revision: ")
+                    .append(revision)
+                    .append("</p>")
+                    .append("<p>2. iDOC Date: ")
+                    .append(date)
+                    .append("</p>")
+                    .append("<p>3. iDOC Time: ")
+                    .append(time)
+                    .append("</p>")
                     .append("<br><br>");
             htmlContent
-                    .append("<h1 style='text-align: center;'>" + stringHeader + "</h1>")
+                    .append("<h1 style='text-align: center;'>")
+                    .append(stringHeader)
+                    .append("</h1>")
                     .append("<table style='border-collapse: collapse; width: 100%;'>")
                     .append("<tr>");
 
@@ -172,12 +180,20 @@ public class EmailNotificationManager {
             htmlContent
                     .append("<p>Hi All,</p>")
                     .append("<p>Please find below PDF attachment details for not printed:-</p>")
-                    .append("<p>1. SAP Revision: " + revision + "</p>")
-                    .append("<p>2. iDOC Date: " + date + "</p>")
-                    .append("<p>3. iDOC Time: " + time + "</p>")
+                    .append("<p>1. SAP Revision: ")
+                    .append(revision)
+                    .append("</p>")
+                    .append("<p>2. iDOC Date: ")
+                    .append(date)
+                    .append("</p>")
+                    .append("<p>3. iDOC Time: ")
+                    .append(time)
+                    .append("</p>")
                     .append("<br><br>");
             htmlContent
-                    .append("<h1 style='text-align: center;'>" + stringHeader + "</h1>")
+                    .append("<h1 style='text-align: center;'>")
+                    .append(stringHeader)
+                    .append("</h1>")
                     .append("<table style='border-collapse: collapse; width: 100%;'>")
                     .append("<tr>");
 
@@ -288,12 +304,20 @@ public class EmailNotificationManager {
             htmlContent
                     .append("<p>Hi All,</p>")
                     .append("<p>Please find below PDF attachment details for not printed:-</p>")
-                    .append("<p>1. SAP Revision: " + revision + "</p>")
-                    .append("<p>2. iDOC Date: " + date + "</p>")
-                    .append("<p>3. iDOC Time: " + time + "</p>")
+                    .append("<p>1. SAP Revision: ")
+                    .append(revision)
+                    .append("</p>")
+                    .append("<p>2. iDOC Date: ")
+                    .append(date)
+                    .append("</p>")
+                    .append("<p>3. iDOC Time: ")
+                    .append(time)
+                    .append("</p>")
                     .append("<br><br>");
             htmlContent
-                    .append("<h1 style='text-align: center;'>" + stringHeader + "</h1>")
+                    .append("<h1 style='text-align: center;'>")
+                    .append(stringHeader)
+                    .append("</h1>")
                     .append("<table style='border-collapse: collapse; width: 100%;'>")
                     .append("<tr>");
 

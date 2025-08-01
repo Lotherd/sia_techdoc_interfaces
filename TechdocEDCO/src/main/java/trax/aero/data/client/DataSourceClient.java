@@ -17,7 +17,7 @@ public class DataSourceClient {
         try {
             ctx = new InitialContext();
 
-            DataSource ds = null; // (DataSource)ctx.lookup("ManHoursScheduleTraxDS");
+            DataSource ds; // (DataSource)ctx.lookup("ManHoursScheduleTraxDS");
 
             if (System.getProperty("jboss.server.config.dir") != null)
                 ds = (DataSource) ctx.lookup("java:/TechdocDS");

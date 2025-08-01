@@ -12,6 +12,7 @@ import java.math.BigDecimal;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.nio.charset.StandardCharsets;
+import java.security.SecureRandom;
 import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.Types;
@@ -30,12 +31,10 @@ import javax.persistence.PersistenceContext;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.Marshaller;
 import javax.xml.bind.Unmarshaller;
-import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.text.PDFTextStripper;
 import org.tinylog.Logger;
-
 import trax.aero.data.client.DataSourceClient;
 import trax.aero.messaging.mq.MqUtilities;
 import trax.aero.messaging.sqs.SqsUtilities;
@@ -63,6 +62,7 @@ public class TechDocData implements ITechDocData {
 
     ArrayList<String> scoot = new ArrayList<>(Arrays.asList("300275", "300276", "101821"));
     ArrayList<String> siaec = new ArrayList<>(Arrays.asList("319", "320"));
+    private static final SecureRandom random = new SecureRandom();
 
     @PersistenceContext(unitName = "TechdocDS")
     private EntityManager em;
@@ -85,14 +85,12 @@ public class TechDocData implements ITechDocData {
     }
 
     // MOD 16 //MOD 22
-    public Wo issueToTechDocRequest(MODEL input, String xml) throws Exception {
+    public Wo issueToTechDocRequest(MODEL input, String xml) {
 
         // creates temp wo with attached xml
-        String company = "SIA", ac, location, site, type;
-        String printer = "", date, time, revision, error = "";
-        ArrayList<PrintAck> ack = null;
+        String company = "SIA", ac, location = "SIN", site, type, printer, date, time, revision, error;
+        ArrayList<PrintAck> ack;
         ac = input.getEFFECTIVITY().getREGNBR();
-        location = "SIN";
         site = input.getEFFECTIVITY().getJOBCARD().getCENTER();
         type = input.getEFFECTIVITY().getJOBCARD().getTYPE();
         if (siaec.contains(input.getMODELNBR())) {
@@ -103,11 +101,9 @@ public class TechDocData implements ITechDocData {
             company = "SCOOT";
         }
 
-        int status = 0;
-        Wo w = null;
         // creates temp wo task card
         try {
-            w =
+            Wo w =
                     createTempWo(
                             type,
                             company,
@@ -125,130 +121,113 @@ public class TechDocData implements ITechDocData {
             return w;
         } catch (Exception e) {
             Logger.error(e);
-            status = 1;
             error = e.getMessage();
         }
-
-        if (status == 1) {
-            sendPrintStatusAcknowledgement(input, "E", "ERROR: " + error);
-            date =
+        sendPrintStatusAcknowledgement(input, "E", "ERROR: " + error);
+        date =
+                filterADDATTR(
+                        input.getEFFECTIVITY().getJOBCARD().getJOBI().getPLI().getADDATTR(), "IDOC-DATE");
+        revision = input.getEFFECTIVITY().getJOBCARD().getWPNBR();
+        time =
+                filterADDATTR(
+                        input.getEFFECTIVITY().getJOBCARD().getJOBI().getPLI().getADDATTR(), "IDOC-TIME");
+        printer =
+                (filterADDATTR(
+                        input.getEFFECTIVITY().getJOBCARD().getJOBI().getPLI().getADDATTR(), "PRINTER-NAME"));
+        ack = new ArrayList<>();
+        for (ATTACHMENT att : input.getEFFECTIVITY().getJOBCARD().getJOBI().getPLI().getATTACHMENT()) {
+            PrintAck a = new PrintAck();
+            a.setAttachment(att.getATTTYPE());
+            a.setAttachmentID(att.getID());
+            a.setJcTitle(input.getEFFECTIVITY().getJOBCARD().getJCTITLE());
+            a.setJobcardNumber(
                     filterADDATTR(
-                            input.getEFFECTIVITY().getJOBCARD().getJOBI().getPLI().getADDATTR(), "IDOC-DATE");
-            revision = input.getEFFECTIVITY().getJOBCARD().getWPNBR();
-            time =
+                            input.getEFFECTIVITY().getJOBCARD().getJOBI().getPLI().getADDATTR(), "TASK-NBR"));
+            a.setSapGroupNumber(input.getEFFECTIVITY().getJOBCARD().getJCNBR());
+            a.setSapServiceOrder(input.getEFFECTIVITY().getJOBCARD().getWONBR());
+            a.setTaskType(input.getEFFECTIVITY().getJOBCARD().getTYPE());
+            a.setTraxWoNumber(input.getEFFECTIVITY().getJOBCARD().getWPTITLE());
+            ack.add(a);
+        }
+        if (ack.isEmpty()) {
+            PrintAck a = new PrintAck();
+            a.setJcTitle(input.getEFFECTIVITY().getJOBCARD().getJCTITLE());
+            a.setJobcardNumber(
                     filterADDATTR(
-                            input.getEFFECTIVITY().getJOBCARD().getJOBI().getPLI().getADDATTR(), "IDOC-TIME");
-            printer =
-                    (filterADDATTR(
-                            input.getEFFECTIVITY().getJOBCARD().getJOBI().getPLI().getADDATTR(), "PRINTER-NAME"));
-            ack = new ArrayList<PrintAck>();
-            for (ATTACHMENT att :
-                    input.getEFFECTIVITY().getJOBCARD().getJOBI().getPLI().getATTACHMENT()) {
-                PrintAck a = new PrintAck();
-                a.setAttachment(att.getATTTYPE());
-                a.setAttachmentID(att.getID());
-                a.setJcTitle(input.getEFFECTIVITY().getJOBCARD().getJCTITLE());
-                a.setJobcardNumber(
-                        filterADDATTR(
-                                input.getEFFECTIVITY().getJOBCARD().getJOBI().getPLI().getADDATTR(), "TASK-NBR"));
-                a.setSapGroupNumber(input.getEFFECTIVITY().getJOBCARD().getJCNBR());
-                a.setSapServiceOrder(input.getEFFECTIVITY().getJOBCARD().getWONBR());
-                a.setTaskType(input.getEFFECTIVITY().getJOBCARD().getTYPE());
-                a.setTraxWoNumber(input.getEFFECTIVITY().getJOBCARD().getWPTITLE());
-                ack.add(a);
-            }
-            if (ack.isEmpty()) {
-                PrintAck a = new PrintAck();
-                a.setJcTitle(input.getEFFECTIVITY().getJOBCARD().getJCTITLE());
-                a.setJobcardNumber(
-                        filterADDATTR(
-                                input.getEFFECTIVITY().getJOBCARD().getJOBI().getPLI().getADDATTR(), "TASK-NBR"));
-                a.setSapGroupNumber(input.getEFFECTIVITY().getJOBCARD().getJCNBR());
-                a.setSapServiceOrder(input.getEFFECTIVITY().getJOBCARD().getWONBR());
-                a.setTaskType(input.getEFFECTIVITY().getJOBCARD().getTYPE());
-                a.setTraxWoNumber(input.getEFFECTIVITY().getJOBCARD().getWPTITLE());
-                ack.add(a);
-            }
-            // save ack to parent from child
-            StringBuilder htmlContent = new StringBuilder();
-            for (PrintAck data : ack) {
-                htmlContent
-                        .append("<tr>")
-                        .append("<td style='border: 1px solid black; padding: 8px;'>")
-                        .append(printer)
-                        .append("</td>") // Assuming the name of PDF attachment is constant
-                        .append("<td style='border: 1px solid black; padding: 8px;'>")
-                        .append(data.getSapServiceOrder())
-                        .append("</td>")
-                        .append("<td style='border: 1px solid black; padding: 8px;'>")
-                        .append(data.getJobcardNumber())
-                        .append("</td>")
-                        .append("<td style='border: 1px solid black; padding: 8px;'>")
-                        .append(data.getJcTitle())
-                        .append("</td>")
-                        .append("<td style='border: 1px solid black; padding: 8px;'>")
-                        .append(data.getSapGroupNumber())
-                        .append("</td>")
-                        .append("<td style='border: 1px solid black; padding: 8px;'>")
-                        .append(data.getTaskType())
-                        .append("</td>")
-                        .append("<td style='border: 1px solid black; padding: 8px;'>")
-                        .append(data.getTraxWoNumber())
-                        .append("</td>")
-                        .append("<td style='border: 1px solid black; padding: 8px;'>")
-                        .append(data.getAttachment())
-                        .append("</td>")
-                        .append("<td style='border: 1px solid black; padding: 8px;'>")
-                        .append(data.getAttachmentID())
-                        .append("</td>")
-                        .append("</tr>");
-            }
+                            input.getEFFECTIVITY().getJOBCARD().getJOBI().getPLI().getADDATTR(), "TASK-NBR"));
+            a.setSapGroupNumber(input.getEFFECTIVITY().getJOBCARD().getJCNBR());
+            a.setSapServiceOrder(input.getEFFECTIVITY().getJOBCARD().getWONBR());
+            a.setTaskType(input.getEFFECTIVITY().getJOBCARD().getTYPE());
+            a.setTraxWoNumber(input.getEFFECTIVITY().getJOBCARD().getWPTITLE());
+            ack.add(a);
+        }
+        // save ack to parent from child
+        StringBuilder htmlContent = new StringBuilder();
+        for (PrintAck data : ack) {
+            htmlContent
+                    .append("<tr>")
+                    .append("<td style='border: 1px solid black; padding: 8px;'>")
+                    .append(printer)
+                    .append("</td>") // Assuming the name of the PDF attachment is constant
+                    .append("<td style='border: 1px solid black; padding: 8px;'>")
+                    .append(data.getSapServiceOrder())
+                    .append("</td>")
+                    .append("<td style='border: 1px solid black; padding: 8px;'>")
+                    .append(data.getJobcardNumber())
+                    .append("</td>")
+                    .append("<td style='border: 1px solid black; padding: 8px;'>")
+                    .append(data.getJcTitle())
+                    .append("</td>")
+                    .append("<td style='border: 1px solid black; padding: 8px;'>")
+                    .append(data.getSapGroupNumber())
+                    .append("</td>")
+                    .append("<td style='border: 1px solid black; padding: 8px;'>")
+                    .append(data.getTaskType())
+                    .append("</td>")
+                    .append("<td style='border: 1px solid black; padding: 8px;'>")
+                    .append(data.getTraxWoNumber())
+                    .append("</td>")
+                    .append("<td style='border: 1px solid black; padding: 8px;'>")
+                    .append(data.getAttachment())
+                    .append("</td>")
+                    .append("<td style='border: 1px solid black; padding: 8px;'>")
+                    .append(data.getAttachmentID())
+                    .append("</td>")
+                    .append("</tr>");
+        }
 
-            switch (printer) {
-                case "ECXX":
-                case "ECXY":
-                    EmailNotificationManager.sendEmailEDCO(
-                            input.getEFFECTIVITY().getJOBCARD().getWPNBR(),
-                            revision,
-                            date,
-                            time,
-                            htmlContent.toString(),
-                            printer,
-                            "Cover Page Missing");
-                    break;
-                case "TRAX":
-                    EmailNotificationManager.sendEmailTrax(
-                            input.getEFFECTIVITY().getJOBCARD().getWPNBR(),
-                            revision,
-                            date,
-                            time,
-                            htmlContent.toString(),
-                            printer,
-                            "Cover Page Missing");
-                    break;
-
-                case "EDXX":
-                case "ECXZ":
-                    EmailNotificationManager.sendEmailPrint(
-                            input.getEFFECTIVITY().getJOBCARD().getWPNBR(),
-                            revision,
-                            date,
-                            time,
-                            htmlContent.toString(),
-                            printer,
-                            "Cover Page Missing");
-                    break;
-                default:
-                    EmailNotificationManager.sendEmailPrint(
-                            input.getEFFECTIVITY().getJOBCARD().getWPNBR(),
-                            revision,
-                            date,
-                            time,
-                            htmlContent.toString(),
-                            printer,
-                            "Cover Page Missing");
-                    break;
-            }
+        switch (printer) {
+            case "ECXX":
+            case "ECXY":
+                EmailNotificationManager.sendEmailEDCO(
+                        input.getEFFECTIVITY().getJOBCARD().getWPNBR(),
+                        revision,
+                        date,
+                        time,
+                        htmlContent.toString(),
+                        printer,
+                        "Cover Page Missing");
+                break;
+            case "TRAX":
+                EmailNotificationManager.sendEmailTrax(
+                        input.getEFFECTIVITY().getJOBCARD().getWPNBR(),
+                        revision,
+                        date,
+                        time,
+                        htmlContent.toString(),
+                        printer,
+                        "Cover Page Missing");
+                break;
+            default:
+                EmailNotificationManager.sendEmailPrint(
+                        input.getEFFECTIVITY().getJOBCARD().getWPNBR(),
+                        revision,
+                        date,
+                        time,
+                        htmlContent.toString(),
+                        printer,
+                        "Cover Page Missing");
+                break;
         }
         return null;
     }
@@ -256,21 +235,28 @@ public class TechDocData implements ITechDocData {
     @Override
     public void sendPrintToOutBound(Print print) throws Exception {
 
-        String printer = "", date, time, revision, folder = "";
-        ArrayList<PrintAck> ack = new ArrayList<PrintAck>();
+        String printer = "", date, time, revision, folder, pdfName;
+        ArrayList<PrintAck> ack = new ArrayList<>();
         MODEL input = null;
-        String pdfName = "";
-        Wo child = null, parent = null;
+        Wo child, parent;
         BlobTable emailBlob = null;
 
         boolean sendFinal = false;
         try {
             child = em.find(Wo.class, Long.parseLong(print.getWo()));
+            if (child == null) {
+                throw new Exception("Child WO not found");
+            }
             parent = em.find(Wo.class, child.getNhWo().longValue());
+            if (parent == null) {
+                throw new Exception("Parent WO not found");
+            }
             em.refresh(parent);
 
             emailBlob = getTempBlobText(parent.getBlobNo(), "EMAIL");
-
+            if (emailBlob == null) {
+                throw new Exception("Email Blob not found");
+            }
             Logger.info(
                     "Sub Wo"
                             + child.getDocumentNo().intValue()
@@ -282,26 +268,25 @@ public class TechDocData implements ITechDocData {
             }
 
             input = getXml(print.getWo());
-
-            // save print report from child to parent
-            String txtBlob = savePrintReport(parent, child, input);
-
-            // creates zip file with pdf and txt file
-
             if (input == null) {
                 return;
             }
-            pdfName = genratePdfName(input);
-            ArrayList<String> txt = genrateTxt(input, txtBlob);
-            String txtName = genrateTxtName(input);
+            // save a print report from child to parent
+            String txtBlob = savePrintReport(parent, child, input);
+
+            // creates a zip file with PDF and txt file
+
+            pdfName = generatePdfName(input);
+            ArrayList<String> txt = generateTxt(input, txtBlob);
+            String txtName = generateTxtName(input);
             printer =
                     (filterADDATTR(
                             input.getEFFECTIVITY().getJOBCARD().getJOBI().getPLI().getADDATTR(), "PRINTER-NAME"));
-            String header = genrateHeaderName(input);
-            String footer = genrateFooterName(input);
-            ArrayList<String> headerTxt = genrateHeaderTxt(input);
+            String header = generateHeaderName(input);
+            String footer = generateFooterName(input);
+            ArrayList<String> headerTxt = generateHeaderTxt(input);
             ArrayList<String> footerTxt =
-                    genrateFooterTxt(input, StringUtils.countMatches(txtBlob, "OK"));
+                    generateFooterTxt(input, StringUtils.countMatches(txtBlob, "OK"));
 
             folder =
                     input.getEFFECTIVITY().getJOBCARD().getWPNBR()
@@ -339,7 +324,7 @@ public class TechDocData implements ITechDocData {
                                 .append("<tr>")
                                 .append("<td style='border: 1px solid black; padding: 8px;'>")
                                 .append(pdfName)
-                                .append("</td>") // Assuming the name of PDF attachment is constant
+                                .append("</td>") // Assuming the name of the PDF attachment is constant
                                 .append("<td style='border: 1px solid black; padding: 8px;'>")
                                 .append(a.getSapServiceOrder())
                                 .append("</td>")
@@ -376,23 +361,11 @@ public class TechDocData implements ITechDocData {
                 trax.aero.pojo.json.OUTPUT json = convertXmlToJson(input);
 
                 // gets pdfs path with wo id
-                json =
-                        S3Utilities.sendEDCO(
-                                json,
-                                pdfName,
-                                txt,
-                                txtName,
-                                print.getPath(),
-                                printer,
-                                header,
-                                footer,
-                                headerTxt,
-                                footerTxt,
-                                folder);
+                S3Utilities.sendEDCO(json, pdfName, print.getPath());
 
                 SqsUtilities.sendResend(json);
 
-                // send to physical printer
+                // send it to a physical printer
 
             } else if (printer.equalsIgnoreCase("TRAX")) {
                 OUTPUT xml = new OUTPUT();
@@ -400,19 +373,18 @@ public class TechDocData implements ITechDocData {
                 xml.setFILENAME(pdfName);
 
                 // gets pdfs path with wo id
-                xml =
-                        S3Utilities.sendTrax(
-                                xml,
-                                pdfName,
-                                txt,
-                                txtName,
-                                print.getPath(),
-                                folder,
-                                header,
-                                footer,
-                                headerTxt,
-                                footerTxt,
-                                sendFinal);
+                S3Utilities.sendTrax(
+                        xml,
+                        pdfName,
+                        txt,
+                        txtName,
+                        print.getPath(),
+                        folder,
+                        header,
+                        footer,
+                        headerTxt,
+                        footerTxt,
+                        sendFinal);
 
             } else if (printer.equalsIgnoreCase("EDXX") || printer.equalsIgnoreCase("ECXZ")) {
 
@@ -474,70 +446,60 @@ public class TechDocData implements ITechDocData {
                 PrinterUtilities.sendPrint(printer, print.getPath(), side, tray);
             }
             sendPrintStatusAcknowledgement(input, "P", "SUCCESSFULLY PRINTED");
-            if (ack != null && !ack.isEmpty()) {
+            if (!ack.isEmpty()) {
                 throw new Exception("Missing Attachment found");
             }
 
         } catch (Exception e) {
             Logger.error(e);
-            if (!"Missing Attachment found".contains(e.getMessage())) {
-                sendPrintStatusAcknowledgement(input, "E", "ERROR " + e.getMessage());
-            }
-            date =
-                    filterADDATTR(
-                            input.getEFFECTIVITY().getJOBCARD().getJOBI().getPLI().getADDATTR(), "IDOC-DATE");
-            revision = input.getEFFECTIVITY().getJOBCARD().getWPNBR();
-            time =
-                    filterADDATTR(
-                            input.getEFFECTIVITY().getJOBCARD().getJOBI().getPLI().getADDATTR(), "IDOC-TIME");
-            if (sendFinal) {
-                switch (printer) {
-                    case "ECXX":
-                    case "ECXY":
-                        EmailNotificationManager.sendEmailEDCO(
-                                input.getEFFECTIVITY().getJOBCARD().getWPNBR(),
-                                revision,
-                                date,
-                                time,
-                                new String(emailBlob.getBlobItem()),
-                                printer,
-                                "Attachment Missing");
-                        break;
-                    case "TRAX":
-                        EmailNotificationManager.sendEmailTrax(
-                                input.getEFFECTIVITY().getJOBCARD().getWPNBR(),
-                                revision,
-                                date,
-                                time,
-                                new String(emailBlob.getBlobItem()),
-                                printer,
-                                "Attachment Missing");
-                        break;
+            if (input != null) {
+                if (!"Missing Attachment found".contains(e.getMessage())) {
+                    sendPrintStatusAcknowledgement(input, "E", "ERROR " + e.getMessage());
+                }
+                date =
+                        filterADDATTR(
+                                input.getEFFECTIVITY().getJOBCARD().getJOBI().getPLI().getADDATTR(), "IDOC-DATE");
+                revision = input.getEFFECTIVITY().getJOBCARD().getWPNBR();
+                time =
+                        filterADDATTR(
+                                input.getEFFECTIVITY().getJOBCARD().getJOBI().getPLI().getADDATTR(), "IDOC-TIME");
+                if (sendFinal) {
+                    switch (printer) {
+                        case "ECXX":
+                        case "ECXY":
+                            EmailNotificationManager.sendEmailEDCO(
+                                    input.getEFFECTIVITY().getJOBCARD().getWPNBR(),
+                                    revision,
+                                    date,
+                                    time,
+                                    new String(emailBlob.getBlobItem()),
+                                    printer,
+                                    "Attachment Missing");
+                            break;
+                        case "TRAX":
+                            EmailNotificationManager.sendEmailTrax(
+                                    input.getEFFECTIVITY().getJOBCARD().getWPNBR(),
+                                    revision,
+                                    date,
+                                    time,
+                                    new String(emailBlob.getBlobItem()),
+                                    printer,
+                                    "Attachment Missing");
+                            break;
 
-                    case "EDXX":
-                    case "ECXZ":
-                        EmailNotificationManager.sendEmailPrint(
-                                input.getEFFECTIVITY().getJOBCARD().getWPNBR(),
-                                revision,
-                                date,
-                                time,
-                                new String(emailBlob.getBlobItem()),
-                                printer,
-                                "Attachment Missing");
-                        break;
-                    default:
-                        EmailNotificationManager.sendEmailPrint(
-                                input.getEFFECTIVITY().getJOBCARD().getWPNBR(),
-                                revision,
-                                date,
-                                time,
-                                new String(emailBlob.getBlobItem()),
-                                printer,
-                                "Attachment Missing");
-                        break;
+                        default:
+                            EmailNotificationManager.sendEmailPrint(
+                                    input.getEFFECTIVITY().getJOBCARD().getWPNBR(),
+                                    revision,
+                                    date,
+                                    time,
+                                    new String(emailBlob.getBlobItem()),
+                                    printer,
+                                    "Attachment Missing");
+                            break;
+                    }
                 }
             }
-
         } finally {
             // deletes wo and wo task card
             if (System.getProperty("Techdoc_DELETE") != null
@@ -548,43 +510,43 @@ public class TechDocData implements ITechDocData {
         }
     }
 
-    private void deleteWoTaskCardItem(String wo) throws Exception {
+    private void deleteWoTaskCardItem(String wo) {
         String query = "DELETE WO_TASK_CARD_ITEM where WO = ?";
 
         em.createNativeQuery(query).setParameter(1, wo).executeUpdate();
     }
 
-    private void deleteWoTaskCardTraxDocRef(String wo) throws Exception {
+    private void deleteWoTaskCardTraxDocRef(String wo) {
         String query = "DELETE WO_TASK_CARD_TRAXDOC_REF where WO = ?";
 
         em.createNativeQuery(query).setParameter(1, wo).executeUpdate();
     }
 
-    private void deleteTraceWoTaskCard(String wo) throws Exception {
+    private void deleteTraceWoTaskCard(String wo) {
         String query = "DELETE TRACE_WO_TASK_CARD where WO = ?";
 
         em.createNativeQuery(query).setParameter(1, wo).executeUpdate();
     }
 
-    private void deleteEngineeringPendingRelease(String wo) throws Exception {
+    private void deleteEngineeringPendingRelease(String wo) {
         String query = "DELETE engineering_pending_release where WO = ?";
 
         em.createNativeQuery(query).setParameter(1, wo).executeUpdate();
     }
 
-    private void deleteWoTaskCardControl(String wo) throws Exception {
+    private void deleteWoTaskCardControl(String wo) {
         String query = "DELETE wo_task_card_control where WO = ?";
 
         em.createNativeQuery(query).setParameter(1, wo).executeUpdate();
     }
 
-    private void deleteTaskCardItemForm(String wo) throws Exception {
+    private void deleteTaskCardItemForm(String wo) {
         String query = "DELETE task_card_item_form where WO = ?";
 
         em.createNativeQuery(query).setParameter(1, wo).executeUpdate();
     }
 
-    public void deleteWoTaskCardPn(String wo) throws Exception {
+    public void deleteWoTaskCardPn(String wo) {
         String query = "DELETE WO_TASK_CARD_PN where WO = ?";
 
         em.createNativeQuery(query).setParameter(1, wo).executeUpdate();
@@ -593,14 +555,20 @@ public class TechDocData implements ITechDocData {
     @Override
     public void sendRequestToPrintServer(MODEL input, String xml, Wo w) throws Exception {
         // creates temp wo with attached xml
-        String printer = "", date, time, revision, error = "";
-        ArrayList<PrintAck> ack = null;
-        int status = 0;
+        String printer, date, time, revision, error = "";
+        ArrayList<PrintAck> ack;
+        int status;
         boolean sendFinal = false;
         Wo parent = em.find(Wo.class, w.getNhWo().longValue());
-        em.refresh(parent);
-
+        if (parent == null) {
+            throw new Exception("Parent WO not found");
+        } else {
+            em.refresh(parent);
+        }
         BlobTable emailBlob = getTempBlobText(parent.getBlobNo(), "EMAIL");
+        if (emailBlob == null) {
+            throw new Exception("Email Blob not found");
+        }
 
         if (parent.getDocumentNo().intValue() == w.getDocumentNo().intValue()) {
             Logger.info("Final print found " + w.getDocumentNo().intValue());
@@ -616,7 +584,6 @@ public class TechDocData implements ITechDocData {
 
         } catch (Exception e) {
             Logger.error(e);
-            status = 1;
             error = e.getMessage();
         }
         try {
@@ -639,7 +606,7 @@ public class TechDocData implements ITechDocData {
             printer =
                     (filterADDATTR(
                             input.getEFFECTIVITY().getJOBCARD().getJOBI().getPLI().getADDATTR(), "PRINTER-NAME"));
-            ack = new ArrayList<PrintAck>();
+            ack = new ArrayList<>();
             for (ATTACHMENT att :
                     input.getEFFECTIVITY().getJOBCARD().getJOBI().getPLI().getATTACHMENT()) {
                 PrintAck a = new PrintAck();
@@ -733,17 +700,6 @@ public class TechDocData implements ITechDocData {
                                 "Cover Page Missing");
                         break;
 
-                    case "EDXX":
-                    case "ECXZ":
-                        EmailNotificationManager.sendEmailPrint(
-                                input.getEFFECTIVITY().getJOBCARD().getWPNBR(),
-                                revision,
-                                date,
-                                time,
-                                htmlContent.toString(),
-                                printer,
-                                "Cover Page Missing");
-                        break;
                     default:
                         EmailNotificationManager.sendEmailPrint(
                                 input.getEFFECTIVITY().getJOBCARD().getWPNBR(),
@@ -785,7 +741,7 @@ public class TechDocData implements ITechDocData {
                                 S3Utilities.setDatFile(
                                         id.getClobDocument(), id.getFileName(), String.valueOf(i.getTransaction()));
                             }
-                        } catch (Exception e) {
+                        } catch (Exception ignored) {
 
                         }
                         try {
@@ -810,27 +766,19 @@ public class TechDocData implements ITechDocData {
 
     private boolean checkMissingAttachment(Print print, String searchString) throws IOException {
         String filePath = print.getPath();
-
         try (PDDocument document = PDDocument.load(new File(filePath))) {
             PDFTextStripper pdfStripper = new PDFTextStripper();
             String text = pdfStripper.getText(document);
-
-            if (text.contains(searchString)) {
-
-            } else {
+            if (!text.contains(searchString)) {
                 Logger.info("String " + searchString + " not found in the PDF!");
                 return false;
             }
-            document.close();
-        } catch (IOException e) {
-            throw e;
         }
-
         return true;
     }
 
-    private ArrayList<String> genrateFooterTxt(MODEL input, int printed) {
-        ArrayList<String> txt = new ArrayList<String>();
+    private ArrayList<String> generateFooterTxt(MODEL input, int printed) {
+        ArrayList<String> txt = new ArrayList<>();
         JOBCARD card = input.getEFFECTIVITY().getJOBCARD();
         String count =
                 (filterADDATTR(
@@ -848,8 +796,8 @@ public class TechDocData implements ITechDocData {
         return txt;
     }
 
-    private ArrayList<String> genrateHeaderTxt(MODEL input) {
-        ArrayList<String> txt = new ArrayList<String>();
+    private ArrayList<String> generateHeaderTxt(MODEL input) {
+        ArrayList<String> txt = new ArrayList<>();
         JOBCARD card = input.getEFFECTIVITY().getJOBCARD();
 
         String count =
@@ -872,24 +820,20 @@ public class TechDocData implements ITechDocData {
         return txt;
     }
 
-    private String genrateFooterName(MODEL input) {
+    private String generateFooterName(MODEL input) {
         JOBCARD card = input.getEFFECTIVITY().getJOBCARD();
 
-        String random = RandomStringUtils.random(19, false, true);
+        String random = generateNumericString(19);
 
-        String txt = "footer_" + card.getWPNBR() + "_" + random + ".pdf";
-
-        return txt;
+        return "footer_" + card.getWPNBR() + "_" + random + ".pdf";
     }
 
-    private String genrateHeaderName(MODEL input) {
+    private String generateHeaderName(MODEL input) {
         JOBCARD card = input.getEFFECTIVITY().getJOBCARD();
 
-        String random = RandomStringUtils.random(19, false, true);
+        String random = generateNumericString(19);
 
-        String txt = "index_" + card.getWPNBR() + "_" + random + ".pdf";
-
-        return txt;
+        return "index_" + card.getWPNBR() + "_" + random + ".pdf";
     }
 
     private int sendWorkPackPrintJob(Wo w) throws Exception {
@@ -967,8 +911,6 @@ public class TechDocData implements ITechDocData {
 
     private void createTempWoTaskCard(MODEL input, Wo w) throws Exception {
 
-        CallableStatement cstmt = null;
-
         final String sql =
                 "{ call pkg_wo_task_card_functions.add_wo_task_card(?, ?, ?, ?, ?, ?, ?, ?)}";
 
@@ -984,30 +926,29 @@ public class TechDocData implements ITechDocData {
         if (this.con == null || this.con.isClosed()) {
             this.con = DataSourceClient.getConnection();
             Logger.info(
-                    "The connection was stablished successfully with status: " + !this.con.isClosed());
+                    "The connection was established successfully with status: " + !this.con.isClosed());
         }
 
-        try {
-            cstmt = con.prepareCall(sql);
+        try (CallableStatement stmt = con.prepareCall(sql)) {
 
             for (String tc : taskCards) {
-                cstmt.setInt(1, Long.valueOf(w.getWo()).intValue());
-                cstmt.setString(2, tc);
+                stmt.setInt(1, Long.valueOf(w.getWo()).intValue());
+                stmt.setString(2, tc);
 
                 String ac = (input.getEFFECTIVITY().getREGNBR());
                 if (ac == null || ac.isEmpty()) {
-                    cstmt.setString(3, "          ");
+                    stmt.setString(3, "          ");
                 } else {
-                    cstmt.setString(3, input.getEFFECTIVITY().getREGNBR());
+                    stmt.setString(3, input.getEFFECTIVITY().getREGNBR());
                 }
 
-                cstmt.setString(4, "                                   ");
-                cstmt.setString(5, "                                   ");
-                cstmt.setString(6, "IFACE-SIA");
-                cstmt.setNull(7, Types.VARCHAR);
-                cstmt.setString(8, "N");
+                stmt.setString(4, "                                   ");
+                stmt.setString(5, "                                   ");
+                stmt.setString(6, "IFACE-SIA");
+                stmt.setNull(7, Types.VARCHAR);
+                stmt.setString(8, "N");
 
-                cstmt.execute();
+                stmt.execute();
             }
         } catch (Exception e) {
 
@@ -1015,10 +956,6 @@ public class TechDocData implements ITechDocData {
                 con.rollback();
             }
             throw e;
-        } finally {
-            if (cstmt != null && !cstmt.isClosed()) {
-                cstmt.close();
-            }
         }
     }
 
@@ -1032,10 +969,10 @@ public class TechDocData implements ITechDocData {
                 series = acMaster.getAcTypeSeriesMaster().getId().getAcSeries();
             }
 
-            ArrayList<String> taskCardStrings = new ArrayList<String>();
+            ArrayList<String> taskCardStrings = new ArrayList<>();
             for (ATTACHMENT subTaskId : list) {
                 Logger.info("SUB TASK CARD: " + subTaskId.getID() + " TYPE: " + subTaskId.getATTTYPE());
-                // get all tcs from tc sub fields
+                // get all tcs from tc subfields
                 try {
                     List<TaskCard> cards =
                             em.createQuery(
@@ -1068,8 +1005,8 @@ public class TechDocData implements ITechDocData {
         }
     }
 
-    private BlobTable createTempBlob(String xml, Wo w) {
-        BlobTable blob = null;
+    private void createTempBlob(String xml, Wo w) {
+        BlobTable blob;
 
         BlobTablePK pk = new BlobTablePK();
         blob = new BlobTable();
@@ -1094,12 +1031,10 @@ public class TechDocData implements ITechDocData {
 
         insertData(blob);
         insertData(w);
-
-        return blob;
     }
 
-    private void createTempBlobString(String text, Wo w, long line, String Description) {
-        BlobTable blob = null;
+    private void createTempBlobString(Wo w, long line, String Description) {
+        BlobTable blob;
 
         BlobTablePK pk = new BlobTablePK();
         pk.setBlobLine(line);
@@ -1132,7 +1067,7 @@ public class TechDocData implements ITechDocData {
 
     private Wo createTempWo(
             String type,
-            String comapny,
+            String company,
             String location,
             String site,
             String ac,
@@ -1141,18 +1076,18 @@ public class TechDocData implements ITechDocData {
             MODEL input) {
 
         JOBCARD jc = input.getEFFECTIVITY().getJOBCARD();
-        Wo wo = null;
+        Wo wo;
 
         wo = new Wo();
         wo.setCreatedDate(new Date());
         wo.setCreatedBy("IFACE-SIA");
 
-        // EMRO fields to create basic object
+        // EMRO fields to create a basic object
         wo.setManufactureOrder("N");
         wo.setAuthorization("Y");
         wo.setAuthorizationBy("TRAX_IFACE");
         wo.setGlCompany("SIAEC");
-        wo.setExpenditure(setExpenditure("General"));
+        wo.setExpenditure(setExpenditure());
         wo.setPriority("NORMAL");
 
         wo.setWoDescription(print);
@@ -1161,7 +1096,7 @@ public class TechDocData implements ITechDocData {
         wo.setSite(site);
         wo.setAc(ac);
         wo.setAcSn(acType);
-        wo.setGlCompany(comapny);
+        wo.setGlCompany(company);
 
         wo.setPnDescription(input.getEFFECTIVITY().getJOBCARD().getWPTITLE());
         wo.setTaskCardNumberingSystem(BigDecimal.ZERO);
@@ -1188,7 +1123,7 @@ public class TechDocData implements ITechDocData {
         wo.setExpenditure(("General"));
         wo.setWo(getTransactionNo("WOSEQ").longValue());
 
-        wo.setExpenditure(setExpenditure("General"));
+        wo.setExpenditure(setExpenditure());
         wo.setPriority("NORMAL");
 
         wo.setScheduleStartHour(BigDecimal.ZERO);
@@ -1219,7 +1154,7 @@ public class TechDocData implements ITechDocData {
         return wo;
     }
 
-    private trax.aero.pojo.json.OUTPUT convertXmlToJson(MODEL input) throws Exception {
+    private trax.aero.pojo.json.OUTPUT convertXmlToJson(MODEL input) {
         Logger.info("Converting XML to JSON");
 
         trax.aero.pojo.json.OUTPUT json = new trax.aero.pojo.json.OUTPUT();
@@ -1373,7 +1308,7 @@ public class TechDocData implements ITechDocData {
                 .getPLI()
                 .setPLITEXT(xmlJc.getJOBI().getPLI().getPLITEXT());
 
-        // SIMPLEREFERENCE
+        // SIMPLE REFERENCE
         json.getMODEL()
                 .getEFFECTIVITY()
                 .getJOBCARD()
@@ -1395,13 +1330,8 @@ public class TechDocData implements ITechDocData {
                 .getSIMPLEREFERENCE()
                 .setREFTEXT(xmlJc.getJOBI().getPLI().getSIMPLEREFERENCE().get(0).getREFTEXT());
 
-        // ADDATTR
-        json.getMODEL()
-                .getEFFECTIVITY()
-                .getJOBCARD()
-                .getJOBI()
-                .getPLI()
-                .setADDATTR(new ArrayList<trax.aero.pojo.json.ADDATTR>());
+        // ADD ATTR
+        json.getMODEL().getEFFECTIVITY().getJOBCARD().getJOBI().getPLI().setADDATTR(new ArrayList<>());
 
         json.getMODEL()
                 .getEFFECTIVITY()
@@ -1773,11 +1703,11 @@ public class TechDocData implements ITechDocData {
         return addattr;
     }
 
-    private String genratePdfName(MODEL input) {
-        String pdfName = "wo_";
+    private String generatePdfName(MODEL input) {
+        String pdfName;
 
         JOBCARD card = input.getEFFECTIVITY().getJOBCARD();
-        String random = RandomStringUtils.random(19, false, true);
+        String random = generateNumericString(19);
 
         pdfName =
                 "wo_"
@@ -1793,12 +1723,12 @@ public class TechDocData implements ITechDocData {
         return pdfName;
     }
 
-    private String genrateTxtName(MODEL input) {
-        String txtNmae = "";
+    private String generateTxtName(MODEL input) {
+        String txtName;
 
         JOBCARD card = input.getEFFECTIVITY().getJOBCARD();
 
-        txtNmae =
+        txtName =
                 card.getWPNBR()
                         + "_"
                         + card.getWPNBR()
@@ -1807,12 +1737,12 @@ public class TechDocData implements ITechDocData {
                                 input.getEFFECTIVITY().getJOBCARD().getJOBI().getPLI().getADDATTR(),
                                 "PRINTER-NAME");
 
-        return txtNmae;
+        return txtName;
     }
 
-    private ArrayList<String> genrateTxt(MODEL input, String print) {
+    private ArrayList<String> generateTxt(MODEL input, String print) {
 
-        ArrayList<String> txt = new ArrayList<String>();
+        ArrayList<String> txt = new ArrayList<>();
         SimpleDateFormat dateFormatter = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
 
         txt.add("CDM Revision: " + getCdmRevision(input) + System.lineSeparator());
@@ -1850,7 +1780,7 @@ public class TechDocData implements ITechDocData {
     }
 
     // MOD 18
-    private Boolean sendPrintStatusAcknowledgement(MODEL input, String status, String remarks) {
+    private void sendPrintStatusAcknowledgement(MODEL input, String status, String remarks) {
 
         try {
             trax.aero.pojo.acknowledgement.JOBCARD ack = new trax.aero.pojo.acknowledgement.JOBCARD();
@@ -1875,11 +1805,10 @@ public class TechDocData implements ITechDocData {
             Logger.info("Input: " + sw);
             String text = sw.toString();
 
-            return MqUtilities.sendMqText(text);
+            MqUtilities.sendMqText(text);
 
         } catch (Exception e) {
             Logger.error(e);
-            return false;
         }
     }
 
@@ -1926,33 +1855,31 @@ public class TechDocData implements ITechDocData {
                         i++;
                     }
                 } catch (Exception e) {
-                    Logger.error("Error getting WO.");
-                    Logger.error(e.toString());
+                    Logger.error("Error getting WO.", e);
                     throw e;
                 }
             } else {
-                BigDecimal acctBal =
-                        (BigDecimal)
-                                em.createNativeQuery(
-                                                "SELECT pkg_application_function.config_number ( ? ) " + " FROM DUAL ")
-                                        .setParameter(1, code)
-                                        .getSingleResult();
-
-                return acctBal;
+                return (BigDecimal)
+                        em.createNativeQuery(
+                                        "SELECT pkg_application_function.config_number ( ? ) " + " FROM DUAL ")
+                                .setParameter(1, code)
+                                .getSingleResult();
             }
         } catch (Exception e) {
-            Logger.error("An unexpected error occurred getting the sequence. " + "\nmessage: " + e);
+            Logger.error("An unexpected error occurred getting the sequence. ", e);
+            throw e;
         }
-
-        return null;
     }
 
     private void deleteTemp(String wo) throws Exception {
 
         Wo w = getTempWo(wo);
+        if (w == null) {
+            throw new Exception("No temp wo found for " + wo);
+        }
         BlobTable blob = getTempBlob(w.getBlobNo());
         // creates temp wo task card
-        ArrayList<WoTaskCard> taskCards = new ArrayList<WoTaskCard>(w.getWoTaskCards());
+        ArrayList<WoTaskCard> taskCards = new ArrayList<>(w.getWoTaskCards());
 
         Wo parent = em.find(Wo.class, w.getNhWo().longValue());
 
@@ -1981,9 +1908,10 @@ public class TechDocData implements ITechDocData {
         Logger.info("DELETING TEMP Task Card Item Form: " + w.getWo());
         deleteTaskCardItemForm(String.valueOf(w.getWo()));
 
-        Logger.info("DELETING TEMP BLOB: " + blob.getId().getBlobNo());
-        deleteData(em.find(BlobTable.class, blob.getId()));
-
+        if (blob != null) {
+            Logger.info("DELETING TEMP BLOB: " + blob.getId().getBlobNo());
+            deleteData(em.find(BlobTable.class, blob.getId()));
+        }
         Logger.info("DELETING TEMP WO: " + w.getWo());
         deleteData(em.find(Wo.class, w.getWo()));
 
@@ -1993,22 +1921,22 @@ public class TechDocData implements ITechDocData {
 
             Logger.info("DELETING TEMP WO PARENT: " + parent.getWo());
             deleteData(em.find(Wo.class, parent.getWo()));
-
-            Logger.info("DELETING TEMP BLOB EMAIL: " + email.getId().getBlobNo());
-            deleteData(em.find(BlobTable.class, email.getId()));
-
-            Logger.info("DELETING TEMP BLOB REPORT: " + report.getId().getBlobNo());
-            deleteData(em.find(BlobTable.class, report.getId()));
+            if (email != null) {
+                Logger.info("DELETING TEMP BLOB EMAIL: " + email.getId().getBlobNo());
+                deleteData(em.find(BlobTable.class, email.getId()));
+            }
+            if (report != null) {
+                Logger.info("DELETING TEMP BLOB REPORT: " + report.getId().getBlobNo());
+                deleteData(em.find(BlobTable.class, report.getId()));
+            }
         }
     }
 
     private Wo getTempWo(String wo) {
         try {
-            Wo w =
-                    em.createQuery("Select w From Wo w where w.id.wo =:work", Wo.class)
-                            .setParameter("work", Long.parseLong(wo))
-                            .getSingleResult();
-            return w;
+            return em.createQuery("Select w From Wo w where w.wo =:work", Wo.class)
+                    .setParameter("work", Long.parseLong(wo))
+                    .getSingleResult();
         } catch (Exception e) {
             Logger.error(e);
             return null;
@@ -2017,14 +1945,12 @@ public class TechDocData implements ITechDocData {
 
     private BlobTable getTempBlob(BigDecimal blobNo) {
         try {
-            BlobTable blob =
-                    em.createQuery(
-                                    "SELECT b FROM BlobTable b where b.id.blobNo = :bl and b.blobDescription = :des",
-                                    BlobTable.class)
-                            .setParameter("bl", blobNo.longValue())
-                            .setParameter("des", "JOBCARD")
-                            .getSingleResult();
-            return blob;
+            return em.createQuery(
+                            "SELECT b FROM BlobTable b where b.id.blobNo = :bl and b.blobDescription = :des",
+                            BlobTable.class)
+                    .setParameter("bl", blobNo.longValue())
+                    .setParameter("des", "JOBCARD")
+                    .getSingleResult();
         } catch (Exception e) {
             Logger.error(e);
             return null;
@@ -2033,14 +1959,12 @@ public class TechDocData implements ITechDocData {
 
     private BlobTable getTempBlobText(BigDecimal blobNo, String description) {
         try {
-            BlobTable blob =
-                    em.createQuery(
-                                    "SELECT b FROM BlobTable b where b.id.blobNo = :bl and b.blobDescription = :des",
-                                    BlobTable.class)
-                            .setParameter("bl", blobNo.longValue())
-                            .setParameter("des", description)
-                            .getSingleResult();
-            return blob;
+            return em.createQuery(
+                            "SELECT b FROM BlobTable b where b.id.blobNo = :bl and b.blobDescription = :des",
+                            BlobTable.class)
+                    .setParameter("bl", blobNo.longValue())
+                    .setParameter("des", description)
+                    .getSingleResult();
         } catch (Exception e) {
             Logger.error(e);
             return null;
@@ -2050,7 +1974,7 @@ public class TechDocData implements ITechDocData {
     private MODEL getXml(String wo) {
         try {
             Wo w =
-                    em.createQuery("Select w From Wo w where w.id.wo =:work", Wo.class)
+                    em.createQuery("Select w From Wo w where w.wo =:work", Wo.class)
                             .setParameter("work", Long.parseLong(wo))
                             .getSingleResult();
             BlobTable blob =
@@ -2084,14 +2008,14 @@ public class TechDocData implements ITechDocData {
         }
     }
 
-    private String setExpenditure(String string) {
-        JournalEntriesExpenditure journalEntriesExpenditure = null;
+    private String setExpenditure() {
+        JournalEntriesExpenditure journalEntriesExpenditure;
         try {
             journalEntriesExpenditure =
                     em.createQuery(
                                     "SELECT j FROM JournalEntriesExpenditure j WHERE j.id.categoryCode = :code AND  j.id.transaction = :tra AND j.id.category = :cat",
                                     JournalEntriesExpenditure.class)
-                            .setParameter("code", string)
+                            .setParameter("code", "General")
                             .setParameter("tra", "WIP")
                             .setParameter("cat", "EXPENDITURE")
                             .getSingleResult();
@@ -2124,7 +2048,7 @@ public class TechDocData implements ITechDocData {
     @Override
     public Wo createParentWo(BigDecimal COUNT, String wpTitle) {
 
-        Wo wo = null;
+        Wo wo;
         try {
             wo =
                     em.createQuery("SELECT w FROM Wo w WHERE w.woDescription = :wp ", Wo.class)
@@ -2136,12 +2060,12 @@ public class TechDocData implements ITechDocData {
             wo.setCreatedBy("IFACE-SIA");
 
             wo.setDocumentNo((COUNT));
-            // EMRO fields to create basic object
+            // EMRO fields to create a basic object
             wo.setManufactureOrder("N");
             wo.setAuthorization("Y");
             wo.setAuthorizationBy("TRAX_IFACE");
             wo.setGlCompany("SIAEC");
-            wo.setExpenditure(setExpenditure("General"));
+            wo.setExpenditure(setExpenditure());
             wo.setPriority("NORMAL");
 
             wo.setStatus("TECHDOC");
@@ -2160,7 +2084,7 @@ public class TechDocData implements ITechDocData {
             wo.setExpenditure(("General"));
             wo.setWo(getTransactionNo("WOSEQ").longValue());
 
-            wo.setExpenditure(setExpenditure("General"));
+            wo.setExpenditure(setExpenditure());
             wo.setPriority("NORMAL");
 
             wo.setScheduleStartHour(BigDecimal.ZERO);
@@ -2184,8 +2108,8 @@ public class TechDocData implements ITechDocData {
 
         insertData(wo);
 
-        createTempBlobString(null, wo, 1, "EMAIL");
-        createTempBlobString(null, wo, 2, "REPORT");
+        createTempBlobString(wo, 1, "EMAIL");
+        createTempBlobString(wo, 2, "REPORT");
 
         return wo;
     }
@@ -2230,10 +2154,12 @@ public class TechDocData implements ITechDocData {
         }
     }
 
-    private String savePrintReport(Wo parent, Wo child, MODEL input) {
+    private String savePrintReport(Wo parent, Wo child, MODEL input) throws Exception {
         String printReport = "";
         BlobTable txtBlob = getTempBlobText(parent.getBlobNo(), "REPORT");
-
+        if (txtBlob == null) {
+            throw new Exception("txtBlob is null");
+        }
         if (txtBlob.getBlobItem() != null) {
             printReport = new String(txtBlob.getBlobItem());
         }
@@ -2285,7 +2211,7 @@ public class TechDocData implements ITechDocData {
                                     input.getEFFECTIVITY().getJOBCARD().getJOBI().getPLI().getADDATTR(),
                                     "LATEST-REVISION-DATE")));
 
-            // Date of task
+            // Date of a task
             card.setInspectedDate(convertStringToDate(input.getEFFECTIVITY().getJOBCARD().getWPDATE()));
 
             // TITLE
@@ -2360,16 +2286,13 @@ public class TechDocData implements ITechDocData {
                         .setParameter("type", notificationType)
                         .getSingleResult();
         lock.setLocked(new BigDecimal(1));
-
         lock.setLockedDate(Date.from(LocalDateTime.now().atZone(ZoneId.systemDefault()).toInstant()));
-        InetAddress address = null;
         try {
-            address = InetAddress.getLocalHost();
+            InetAddress address = InetAddress.getLocalHost();
+            lock.setCurrentServer(address.getHostName());
         } catch (UnknownHostException e) {
-
             Logger.error(e);
         }
-        lock.setCurrentServer(address.getHostName());
         insertData(lock);
     }
 
@@ -2491,4 +2414,14 @@ public class TechDocData implements ITechDocData {
             return inputString.replaceAll("-", "");
         }
     }
+
+
+    public String generateNumericString(int length) {
+        StringBuilder sb = new StringBuilder(length);
+        for (int i = 0; i < length; i++) {
+            sb.append(random.nextInt(10)); // digits 0–9
+        }
+        return sb.toString();
+    }
+
 }

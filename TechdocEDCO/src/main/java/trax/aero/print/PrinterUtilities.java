@@ -55,7 +55,7 @@ public class PrinterUtilities {
         addJobToJMSQueue(propJob);
 
         Logger.info(
-                "Print Job " + dwSel.getRow().getWo() + " Has been successfuly sent to the print queue");
+                "Print Job " + dwSel.getRow().getWo() + " Has been successfully sent to the print queue");
 
         return job;
     }
@@ -63,10 +63,8 @@ public class PrinterUtilities {
     private static void addJobToJMSQueue(PrintQueueJob propJob) {
         propJob.setIsWPP("Y");
 
-        String url =
-                "Y".equals("Y")
-                        ? System.getProperty("Trax_Print_WPP_URL") + "rest/print/printwpp"
-                        : System.getProperty("Trax_Print_URL") + "rest/print/print";
+        String url = System.getProperty("Trax_Print_WPP_URL") + "rest/print/printwpp";
+
         Client client = null;
 
         try {
@@ -174,7 +172,6 @@ public class PrinterUtilities {
     public static void sendPrint(String printer, String path, String side, String tray)
             throws Exception {
 
-        // ArrayList<File> pdfs = new ArrayList<File>();
         String fileLocOut = System.getProperty("TECH_fileLocOut");
         try {
 

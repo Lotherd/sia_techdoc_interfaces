@@ -12,7 +12,6 @@ import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.Marshaller;
 import org.apache.commons.io.FilenameUtils;
@@ -51,10 +50,10 @@ public class S3Utilities {
 
     // ---------------------------------------------------------------------------- Send File
 
-    protected static void putS3Object(File file, String key, String bucketName) throws Exception {
+    protected static void putS3Object(File file, String key, String bucketName) {
 
         try (S3Client s3 = S3Client.builder().build()) {
-            // Path targetPath  = Paths.get(key+File.separator+file.getName());
+            // Path targetPath = Paths.get(key+File.separator+file.getName());
             // if (Files.notExists(targetPath )) {
             //    Files.createDirectories(targetPath.getParent());
             // }
@@ -85,21 +84,7 @@ public class S3Utilities {
         }
     }
 
-    public static OUTPUT sendEDCO(
-            OUTPUT json,
-            String pdfName,
-            ArrayList<String> txt,
-            String txtName,
-            String path,
-            String printer,
-            String header,
-            String footer,
-            ArrayList<String> headerTxt,
-            ArrayList<String> footerTxt,
-            String folder)
-            throws Exception {
-
-        // ArrayList<File> pdfs = new ArrayList<File>();
+    public static void sendEDCO(OUTPUT json, String pdfName, String path) throws Exception {
 
         try {
             File print = new File(path);
@@ -107,7 +92,7 @@ public class S3Utilities {
             File theDir =
                     new File(fileLocOut + File.separator + FilenameUtils.removeExtension(print.getName()));
             if (!theDir.exists()) {
-                theDir.mkdirs();
+                Logger.info(theDir.mkdirs());
             }
 
             Files.move(
@@ -142,11 +127,9 @@ public class S3Utilities {
             Logger.error(e);
             throw e;
         }
-
-        return json;
     }
 
-    public static trax.aero.pojo.xml.OUTPUT sendTrax(
+    public static void sendTrax(
             trax.aero.pojo.xml.OUTPUT xml,
             String pdfName,
             ArrayList<String> txt,
@@ -160,8 +143,6 @@ public class S3Utilities {
             boolean sendFinal)
             throws Exception {
 
-        // ArrayList<File> pdfs = new ArrayList<File>();
-
         try {
             // PDF
             File print = new File(path);
@@ -169,7 +150,7 @@ public class S3Utilities {
             File theDir =
                     new File(fileLocOut + File.separator + FilenameUtils.removeExtension(print.getName()));
             if (!theDir.exists()) {
-                theDir.mkdirs();
+                Logger.info(theDir.mkdirs());
             }
             Logger.info(
                     "MOVE "
@@ -212,8 +193,7 @@ public class S3Utilities {
                                         + File.separator
                                         + txtName
                                         + ".txt");
-                List<String> lines = txt;
-                Files.write(text, lines, StandardCharsets.UTF_8);
+                Files.write(text, txt, StandardCharsets.UTF_8);
 
                 // header
                 PDDocument documentHeader = new PDDocument();
@@ -228,9 +208,9 @@ public class S3Utilities {
                 contentStreamHeader.newLineAtOffset(25, 700);
                 contentStreamHeader.setFont(PDType1Font.HELVETICA_BOLD, 9);
 
-                for (String linesheader : headerTxt) {
-                    Logger.info(linesheader);
-                    contentStreamHeader.showText(linesheader);
+                for (String linesHeader : headerTxt) {
+                    Logger.info(linesHeader);
+                    contentStreamHeader.showText(linesHeader);
                     contentStreamHeader.newLine();
                 }
                 contentStreamHeader.endText();
@@ -285,17 +265,15 @@ public class S3Utilities {
 
             File[] prints = folderPrint.listFiles();
 
-            Arrays.sort(
-                    prints,
-                    (f1, f2) -> {
-                        if (f1.getName().endsWith(".txt")) return 1;
-                        if (f2.getName().endsWith(".txt")) return -1;
-                        return 0;
-                    });
-
             // Print server folder logic
             if (prints != null) {
-                // putS3Object(pathS3Trax+folder+ File.separator, bucketNameTrax);
+                Arrays.sort(
+                        prints,
+                        (f1, f2) -> {
+                            if (f1.getName().endsWith(".txt")) return 1;
+                            if (f2.getName().endsWith(".txt")) return -1;
+                            return 0;
+                        });
                 // FOUND PDFS
                 for (File p : prints) {
                     if (p.getName().endsWith(".txt")) {
@@ -312,7 +290,6 @@ public class S3Utilities {
             Logger.error(e);
             throw e;
         }
-        return xml;
     }
 
     public static void sendVirtualPrint(
@@ -333,7 +310,7 @@ public class S3Utilities {
             File theDir =
                     new File(fileLocOut + File.separator + FilenameUtils.removeExtension(print.getName()));
             if (!theDir.exists()) {
-                theDir.mkdirs();
+                Logger.info(theDir.mkdirs());
             }
             Logger.info(
                     "MOVE "
@@ -365,8 +342,7 @@ public class S3Utilities {
                                         + File.separator
                                         + txtName
                                         + ".txt");
-                List<String> lines = txt;
-                Files.write(text, lines, StandardCharsets.UTF_8);
+                Files.write(text, txt, StandardCharsets.UTF_8);
 
                 // header
                 PDDocument documentHeader = new PDDocument();
@@ -381,9 +357,9 @@ public class S3Utilities {
                 contentStreamHeader.newLineAtOffset(25, 700);
                 contentStreamHeader.setFont(PDType1Font.HELVETICA_BOLD, 9);
 
-                for (String linesheader : headerTxt) {
-                    Logger.info(linesheader);
-                    contentStreamHeader.showText(linesheader);
+                for (String linesHeader : headerTxt) {
+                    Logger.info(linesHeader);
+                    contentStreamHeader.showText(linesHeader);
                     contentStreamHeader.newLine();
                 }
                 contentStreamHeader.endText();
@@ -427,25 +403,20 @@ public class S3Utilities {
                                 + footer);
                 documentFooter.close();
             }
-
-            // putS3Object(pathS3Print +folder +File.separator,bucketNamePrint);
-            // putS3Object(print,pathS3Print +folder +File.separator,bucketNamePrint);
             File folderPrint =
                     new File(fileLocOut + File.separator + FilenameUtils.removeExtension(print.getName()));
 
             File[] prints = folderPrint.listFiles();
 
-            Arrays.sort(
-                    prints,
-                    (f1, f2) -> {
-                        if (f1.getName().endsWith(footer)) return 1;
-                        if (f2.getName().endsWith(footer)) return -1;
-                        return 0;
-                    });
-
             // Print server folder logic
             if (prints != null) {
-                // putS3Object(pathS3Trax+folder+ File.separator, bucketNameTrax);
+                Arrays.sort(
+                        prints,
+                        (f1, f2) -> {
+                            if (f1.getName().endsWith(footer)) return 1;
+                            if (f2.getName().endsWith(footer)) return -1;
+                            return 0;
+                        });
                 // FOUND PDFS
                 for (File p : prints) {
                     if (p.getName().endsWith(footer)) {
@@ -469,7 +440,7 @@ public class S3Utilities {
             throws Exception {
         File theDir = new File(fileLocOut + File.separator + (transaction));
         if (!theDir.exists()) {
-            theDir.mkdirs();
+            Logger.info(theDir.mkdirs());
         }
 
         Path dat =
