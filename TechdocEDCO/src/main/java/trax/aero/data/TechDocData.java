@@ -13,7 +13,6 @@ import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.nio.charset.StandardCharsets;
 import java.sql.CallableStatement;
-import java.sql.Connection;
 import java.sql.Types;
 import java.text.SimpleDateFormat;
 import java.time.Duration;
@@ -23,10 +22,12 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
+import javax.annotation.Resource;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
+import javax.sql.DataSource;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.Marshaller;
 import javax.xml.bind.Unmarshaller;
@@ -34,7 +35,6 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.text.PDFTextStripper;
 import org.tinylog.Logger;
-import trax.aero.data.client.DataSourceClient;
 import trax.aero.messaging.mq.MqUtilities;
 import trax.aero.messaging.sqs.SqsUtilities;
 import trax.aero.model.*;
@@ -66,11 +66,8 @@ public class TechDocData implements ITechDocData {
     @PersistenceContext(unitName = "TechdocDS")
     private EntityManager em;
 
-    private Connection con;
-
-    public Connection getCon() {
-        return con;
-    }
+    @Resource(lookup = "java:/TechdocDS")
+    private DataSource dataSource;
 
     public String filterADDATTR(List<ADDATTR> attributes, String filter) {
         ADDATTR temp =
@@ -154,7 +151,13 @@ public class TechDocData implements ITechDocData {
         throw new Exception("Wo creation failed");
     }
 
-    private void sendFinalPrintEmail(MODEL input, String printer, String date, String time, String revision, StringBuilder htmlContent) {
+    private void sendFinalPrintEmail(
+            MODEL input,
+            String printer,
+            String date,
+            String time,
+            String revision,
+            StringBuilder htmlContent) {
         switch (printer) {
             case "ECXX":
             case "ECXY":
@@ -839,13 +842,7 @@ public class TechDocData implements ITechDocData {
         }
         Logger.info("ENG TASK CARD size: " + taskCards.size());
 
-        if (this.con == null || this.con.isClosed()) {
-            this.con = DataSourceClient.getConnection();
-            Logger.info(
-                    "The connection was established successfully with status: " + !this.con.isClosed());
-        }
-
-        try (CallableStatement stmt = con.prepareCall(sql)) {
+        try (CallableStatement stmt = dataSource.getConnection().prepareCall(sql)) {
 
             for (String tc : taskCards) {
                 stmt.setInt(1, Long.valueOf(w.getWo()).intValue());
@@ -866,12 +863,6 @@ public class TechDocData implements ITechDocData {
 
                 stmt.execute();
             }
-        } catch (Exception e) {
-
-            if (con != null && !con.isClosed()) {
-                con.rollback();
-            }
-            throw e;
         }
     }
 
@@ -2266,7 +2257,9 @@ public class TechDocData implements ITechDocData {
         try {
 
             AcMaster acMaster =
-                    em.find(AcMaster.class, StringUtilities.removeHypenString(input.getEFFECTIVITY().getREGNBR()));
+                    em.find(
+                            AcMaster.class,
+                            StringUtilities.removeHypenString(input.getEFFECTIVITY().getREGNBR()));
             String type = "", series = "";
             if (acMaster != null) {
                 type = acMaster.getAcTypeSeriesMaster().getId().getAcType();
@@ -2285,5 +2278,10 @@ public class TechDocData implements ITechDocData {
             Logger.error("Cdm Revision Not Found");
             return "";
         }
+    }
+
+    public String health() {
+        em.createNativeQuery("SELECT 1 FROM DUAL").getSingleResult();
+        return "TechdocEDCO is healthy";
     }
 }
