@@ -5,6 +5,9 @@
 package trax.aero.utilities;
 
 import java.security.SecureRandom;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import org.tinylog.Logger;
 
 public class StringUtilities {
 
@@ -41,5 +44,14 @@ public class StringUtilities {
         xml = xml.replaceAll("&amp;quot;", "&quot;");
         xml = xml.replaceAll("&amp;re;", "&#xA;");
         return xml;
+    }
+    
+    public static Date convertStringToDate(String string) {
+        try {
+            return new SimpleDateFormat("yyyyMMdd").parse(string);
+        } catch (Exception e) {
+            Logger.error(e);
+            return null;
+        }
     }
 }

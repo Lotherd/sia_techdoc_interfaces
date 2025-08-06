@@ -13,7 +13,6 @@ import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.nio.charset.StandardCharsets;
 import java.sql.CallableStatement;
-import java.sql.Connection;
 import java.sql.Types;
 import java.text.SimpleDateFormat;
 import java.time.Duration;
@@ -23,10 +22,12 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
+import javax.annotation.Resource;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
+import javax.sql.DataSource;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.Marshaller;
 import javax.xml.bind.Unmarshaller;
@@ -34,7 +35,6 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.text.PDFTextStripper;
 import org.tinylog.Logger;
-import trax.aero.data.client.DataSourceClient;
 import trax.aero.messaging.mq.MqUtilities;
 import trax.aero.messaging.sqs.SqsUtilities;
 import trax.aero.model.*;
@@ -66,11 +66,8 @@ public class TechDocData implements ITechDocData {
     @PersistenceContext(unitName = "TechdocDS")
     private EntityManager em;
 
-    private Connection con;
-
-    public Connection getCon() {
-        return con;
-    }
+    @Resource(lookup = "java:/TechdocDS")
+    private DataSource dataSource;
 
     public String filterADDATTR(List<ADDATTR> attributes, String filter) {
         ADDATTR temp =
@@ -154,7 +151,13 @@ public class TechDocData implements ITechDocData {
         throw new Exception("Wo creation failed");
     }
 
-    private void sendFinalPrintEmail(MODEL input, String printer, String date, String time, String revision, StringBuilder htmlContent) {
+    private void sendFinalPrintEmail(
+            MODEL input,
+            String printer,
+            String date,
+            String time,
+            String revision,
+            StringBuilder htmlContent) {
         switch (printer) {
             case "ECXX":
             case "ECXY":
@@ -839,13 +842,7 @@ public class TechDocData implements ITechDocData {
         }
         Logger.info("ENG TASK CARD size: " + taskCards.size());
 
-        if (this.con == null || this.con.isClosed()) {
-            this.con = DataSourceClient.getConnection();
-            Logger.info(
-                    "The connection was established successfully with status: " + !this.con.isClosed());
-        }
-
-        try (CallableStatement stmt = con.prepareCall(sql)) {
+        try (CallableStatement stmt = dataSource.getConnection().prepareCall(sql)) {
 
             for (String tc : taskCards) {
                 stmt.setInt(1, Long.valueOf(w.getWo()).intValue());
@@ -866,12 +863,6 @@ public class TechDocData implements ITechDocData {
 
                 stmt.execute();
             }
-        } catch (Exception e) {
-
-            if (con != null && !con.isClosed()) {
-                con.rollback();
-            }
-            throw e;
         }
     }
 
@@ -1022,7 +1013,7 @@ public class TechDocData implements ITechDocData {
         wo.setCosl(jc.getJCNBR());
         wo.setFlight(jc.getMANHRS().substring(0, 9));
         wo.setAmpMs(filterADDATTR(jc.getJOBI().getPLI().getADDATTR(), "BUSR12"));
-        wo.setAuthorizationDate(convertStringToDate(jc.getWPDATE()));
+        wo.setAuthorizationDate(StringUtilities.convertStringToDate(jc.getWPDATE()));
         setDefaultWoFields(wo);
 
         // TD ENGINE-POS
@@ -1919,15 +1910,6 @@ public class TechDocData implements ITechDocData {
         }
     }
 
-    private Date convertStringToDate(String string) {
-        try {
-            return new SimpleDateFormat("yyyyMMdd").parse(string);
-        } catch (Exception e) {
-            Logger.error(e);
-            return null;
-        }
-    }
-
     private String setExpenditure() {
         JournalEntriesExpenditure journalEntriesExpenditure;
         try {
@@ -2094,13 +2076,13 @@ public class TechDocData implements ITechDocData {
 
             // REV Date
             card.setRiiDate(
-                    convertStringToDate(
+                    StringUtilities.convertStringToDate(
                             filterADDATTR(
                                     input.getEFFECTIVITY().getJOBCARD().getJOBI().getPLI().getADDATTR(),
                                     "LATEST-REVISION-DATE")));
 
             // Date of a task
-            card.setInspectedDate(convertStringToDate(input.getEFFECTIVITY().getJOBCARD().getWPDATE()));
+            card.setInspectedDate(StringUtilities.convertStringToDate(input.getEFFECTIVITY().getJOBCARD().getWPDATE()));
 
             // TITLE
             card.setTaskCardDescription(input.getEFFECTIVITY().getJOBCARD().getJCTITLE());
@@ -2154,13 +2136,13 @@ public class TechDocData implements ITechDocData {
                     LocalDateTime.ofInstant(lock.getLockedDate().toInstant(), ZoneId.systemDefault());
             Duration diff = Duration.between(locked, today);
             if (diff.getSeconds() >= lock.getMaxLock().longValue()) {
-                lock.setLocked(new BigDecimal(1));
+                lock.setLocked(BigDecimal.ONE);
                 insertData(lock);
                 return true;
             }
             return false;
         } else {
-            lock.setLocked(new BigDecimal(1));
+            lock.setLocked(BigDecimal.ONE);
             insertData(lock);
             return true;
         }
@@ -2173,7 +2155,7 @@ public class TechDocData implements ITechDocData {
                                 InterfaceLockMaster.class)
                         .setParameter("type", notificationType)
                         .getSingleResult();
-        lock.setLocked(new BigDecimal(1));
+        lock.setLocked(BigDecimal.ONE);
         lock.setLockedDate(Date.from(LocalDateTime.now().atZone(ZoneId.systemDefault()).toInstant()));
         try {
             InetAddress address = InetAddress.getLocalHost();
@@ -2266,7 +2248,9 @@ public class TechDocData implements ITechDocData {
         try {
 
             AcMaster acMaster =
-                    em.find(AcMaster.class, StringUtilities.removeHypenString(input.getEFFECTIVITY().getREGNBR()));
+                    em.find(
+                            AcMaster.class,
+                            StringUtilities.removeHypenString(input.getEFFECTIVITY().getREGNBR()));
             String type = "", series = "";
             if (acMaster != null) {
                 type = acMaster.getAcTypeSeriesMaster().getId().getAcType();
@@ -2285,5 +2269,10 @@ public class TechDocData implements ITechDocData {
             Logger.error("Cdm Revision Not Found");
             return "";
         }
+    }
+
+    public String health() {
+        em.createNativeQuery("SELECT 1 FROM DUAL").getSingleResult();
+        return "TechdocEDCO is healthy";
     }
 }

@@ -9,11 +9,13 @@ import java.io.StringWriter;
 import java.math.BigDecimal;
 import javax.ejb.EJB;
 import javax.ws.rs.Consumes;
+import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import javax.ws.rs.core.Response.Status;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.Marshaller;
 import javax.xml.bind.Unmarshaller;
@@ -30,6 +32,20 @@ import trax.aero.utilities.StringUtilities;
 public class TechDocController {
 
     @EJB ITechDocData data;
+
+    @GET
+    @Path("/health")
+    @Produces(MediaType.TEXT_PLAIN)
+    public Response health(String input) {
+        try {
+            return Response.ok(data.health()).build();
+        } catch (Exception e) {
+            return Response.status(Status.BAD_REQUEST)
+                    .type(MediaType.TEXT_PLAIN)
+                    .entity(e.getMessage())
+                    .build();
+        }
+    }
 
     @POST
     @Path("/sendMqText")
@@ -54,13 +70,6 @@ public class TechDocController {
             data.sendPrintToOutBound(input);
         } catch (Exception e) {
             Logger.error(e);
-        } finally {
-            try {
-                if (data.getCon() != null && !data.getCon().isClosed()) {
-                    data.getCon().close();
-                }
-            } catch (Exception ignored) {
-            }
         }
         return Response.ok().build();
     }
@@ -146,20 +155,9 @@ public class TechDocController {
                         w, parent, new BigDecimal(model.getEFFECTIVITY().getJOBCARD().getSEQNBR()));
                 data.setCountWoToParent(w, parent);
                 data.sendRequestToPrintServer(model, xml, w);
-                try {
-                    if (data.getCon() != null && !data.getCon().isClosed()) data.getCon().close();
-                } catch (Exception e) {
-                    Logger.error(e);
-                }
             }
         } catch (Exception e) {
             Logger.error(e);
-        } finally {
-            try {
-                if (data.getCon() != null && !data.getCon().isClosed()) data.getCon().close();
-            } catch (Exception e) {
-                Logger.error(e);
-            }
         }
         return Response.ok().build();
     }

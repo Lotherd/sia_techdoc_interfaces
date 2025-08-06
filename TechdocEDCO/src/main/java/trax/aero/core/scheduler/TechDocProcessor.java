@@ -123,11 +123,6 @@ public class TechDocProcessor implements Runnable {
                                 w, parent, new BigDecimal(model.getEFFECTIVITY().getJOBCARD().getSEQNBR()));
                         data.setCountWoToParent(w, parent);
                         data.sendRequestToPrintServer(model, xml, w);
-                        try {
-                            if (data.getCon() != null && !data.getCon().isClosed()) data.getCon().close();
-                        } catch (Exception e) {
-                            Logger.error(e);
-                        }
                     }
                 } catch (Exception e) {
                     Logger.error(e);

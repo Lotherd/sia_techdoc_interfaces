@@ -5,7 +5,6 @@
 package trax.aero.data;
 
 import java.math.BigDecimal;
-import java.sql.Connection;
 import java.util.List;
 import trax.aero.model.Wo;
 import trax.aero.pojo.Print;
@@ -19,8 +18,6 @@ public interface ITechDocData {
     String filterADDATTR(List<ADDATTR> attributes, String filter);
 
     void sendPrintToOutBound(Print input) throws Exception;
-
-    Connection getCon();
 
     void sendRequestToPrintServer(MODEL model, String xml, Wo w) throws Exception;
 
@@ -39,4 +36,6 @@ public interface ITechDocData {
     void cleanUpTemp();
 
     void setCountWoToParent(Wo w, Wo parent);
+
+    String health();
 }
