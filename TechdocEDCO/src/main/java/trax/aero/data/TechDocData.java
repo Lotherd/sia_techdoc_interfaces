@@ -1013,7 +1013,7 @@ public class TechDocData implements ITechDocData {
         wo.setCosl(jc.getJCNBR());
         wo.setFlight(jc.getMANHRS().substring(0, 9));
         wo.setAmpMs(filterADDATTR(jc.getJOBI().getPLI().getADDATTR(), "BUSR12"));
-        wo.setAuthorizationDate(convertStringToDate(jc.getWPDATE()));
+        wo.setAuthorizationDate(StringUtilities.convertStringToDate(jc.getWPDATE()));
         setDefaultWoFields(wo);
 
         // TD ENGINE-POS
@@ -1910,15 +1910,6 @@ public class TechDocData implements ITechDocData {
         }
     }
 
-    private Date convertStringToDate(String string) {
-        try {
-            return new SimpleDateFormat("yyyyMMdd").parse(string);
-        } catch (Exception e) {
-            Logger.error(e);
-            return null;
-        }
-    }
-
     private String setExpenditure() {
         JournalEntriesExpenditure journalEntriesExpenditure;
         try {
@@ -2085,13 +2076,13 @@ public class TechDocData implements ITechDocData {
 
             // REV Date
             card.setRiiDate(
-                    convertStringToDate(
+                    StringUtilities.convertStringToDate(
                             filterADDATTR(
                                     input.getEFFECTIVITY().getJOBCARD().getJOBI().getPLI().getADDATTR(),
                                     "LATEST-REVISION-DATE")));
 
             // Date of a task
-            card.setInspectedDate(convertStringToDate(input.getEFFECTIVITY().getJOBCARD().getWPDATE()));
+            card.setInspectedDate(StringUtilities.convertStringToDate(input.getEFFECTIVITY().getJOBCARD().getWPDATE()));
 
             // TITLE
             card.setTaskCardDescription(input.getEFFECTIVITY().getJOBCARD().getJCTITLE());
@@ -2145,13 +2136,13 @@ public class TechDocData implements ITechDocData {
                     LocalDateTime.ofInstant(lock.getLockedDate().toInstant(), ZoneId.systemDefault());
             Duration diff = Duration.between(locked, today);
             if (diff.getSeconds() >= lock.getMaxLock().longValue()) {
-                lock.setLocked(new BigDecimal(1));
+                lock.setLocked(BigDecimal.ONE);
                 insertData(lock);
                 return true;
             }
             return false;
         } else {
-            lock.setLocked(new BigDecimal(1));
+            lock.setLocked(BigDecimal.ONE);
             insertData(lock);
             return true;
         }
@@ -2164,7 +2155,7 @@ public class TechDocData implements ITechDocData {
                                 InterfaceLockMaster.class)
                         .setParameter("type", notificationType)
                         .getSingleResult();
-        lock.setLocked(new BigDecimal(1));
+        lock.setLocked(BigDecimal.ONE);
         lock.setLockedDate(Date.from(LocalDateTime.now().atZone(ZoneId.systemDefault()).toInstant()));
         try {
             InetAddress address = InetAddress.getLocalHost();
