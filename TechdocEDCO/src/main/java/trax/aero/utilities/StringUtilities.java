@@ -45,7 +45,7 @@ public class StringUtilities {
         xml = xml.replaceAll("&amp;re;", "&#xA;");
         return xml;
     }
-    
+
     public static Date convertStringToDate(String string) {
         try {
             return new SimpleDateFormat("yyyyMMdd").parse(string);
