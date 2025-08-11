@@ -2082,7 +2082,8 @@ public class TechDocData implements ITechDocData {
                                     "LATEST-REVISION-DATE")));
 
             // Date of a task
-            card.setInspectedDate(StringUtilities.convertStringToDate(input.getEFFECTIVITY().getJOBCARD().getWPDATE()));
+            card.setInspectedDate(
+                    StringUtilities.convertStringToDate(input.getEFFECTIVITY().getJOBCARD().getWPDATE()));
 
             // TITLE
             card.setTaskCardDescription(input.getEFFECTIVITY().getJOBCARD().getJCTITLE());
@@ -2240,31 +2241,9 @@ public class TechDocData implements ITechDocData {
 
     private String getCdmRevision(MODEL input) {
         String sql =
-                "SELECT t.revision || '-' || TO_CHAR(t.MODIFIED_DATE, 'YYYYMMDD') "
-                        + "FROM TRAXDOC t JOIN TRAXDOC_EFFECTIVITY_HEADER teh ON t.TRAXDOC_NO = teh.TRAXDOC_NO "
-                        + "WHERE t.DOCUMENT_CATEGORY = ? AND teh.AC_TYPE = ? AND teh.AC_SERIES = ? "
-                        + "ORDER BY t.MODIFIED_DATE DESC FETCH FIRST 1 ROWS ONLY";
-
+                "SELECT t.revision || '-' || TO_CHAR(t.MODIFIED_DATE, 'YYYYMMDD') FROM TRAXDOC t WHERE t.DOCUMENT_CATEGORY = 'AMM' ORDER BY t.MODIFIED_DATE DESC FETCH FIRST 1 ROWS ONLY";
         try {
-
-            AcMaster acMaster =
-                    em.find(
-                            AcMaster.class,
-                            StringUtilities.removeHypenString(input.getEFFECTIVITY().getREGNBR()));
-            String type = "", series = "";
-            if (acMaster != null) {
-                type = acMaster.getAcTypeSeriesMaster().getId().getAcType();
-                series = acMaster.getAcTypeSeriesMaster().getId().getAcSeries();
-            }
-            String cardType = input.getEFFECTIVITY().getJOBCARD().getTYPE();
-
-            return (String)
-                    em.createNativeQuery(sql)
-                            .setParameter(1, cardType)
-                            .setParameter(2, type)
-                            .setParameter(3, series)
-                            .getSingleResult();
-
+            return (String) em.createNativeQuery(sql).getSingleResult();
         } catch (Exception e) {
             Logger.error("Cdm Revision Not Found");
             return "";
