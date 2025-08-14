@@ -1686,9 +1686,6 @@ public class TechDocData implements ITechDocData {
         txt.add(print);
 
         txt.add("- END OF REPORT -");
-        for (String s : txt) {
-            Logger.info(s);
-        }
         return txt;
     }
 
