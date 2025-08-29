@@ -226,7 +226,8 @@ public class PrinterUtilities {
     private static void sendToPrinterLP(String printer, File print) throws Exception {
         try {
             // Create a ProcessBuilder to run the 'lp' command
-            ProcessBuilder processBuilder = new ProcessBuilder("lp", "-d", printer, print.getPath());
+            ProcessBuilder processBuilder =
+                    new ProcessBuilder("lp", "-o", "Duplex=DuplexNoTumble", "-d", printer, print.getPath());
 
             // Start the process
             Process process = processBuilder.start();
