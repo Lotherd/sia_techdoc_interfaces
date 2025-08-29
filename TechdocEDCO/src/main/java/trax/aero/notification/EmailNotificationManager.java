@@ -29,6 +29,7 @@ public class EmailNotificationManager {
         "Attachment ID"
     };
     private static final String[] headersCOVER = {
+        "Printer Name",
         "SAP Service Order",
         "Jobcard Number",
         "JC Title",
