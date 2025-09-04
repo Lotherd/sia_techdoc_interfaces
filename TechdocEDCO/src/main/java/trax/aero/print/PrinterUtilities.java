@@ -227,7 +227,7 @@ public class PrinterUtilities {
         try {
             // Create a ProcessBuilder to run the 'lp' command
             ProcessBuilder processBuilder =
-                    new ProcessBuilder("lp", "-o", "Duplex=DuplexNoTumble", "-d", printer, print.getPath());
+            		new ProcessBuilder("lp", "-o", "Duplexer=True", "-o", "PageSize=A4", "-o", "Duplex=DuplexNoTumble", "-d", printer, print.getAbsolutePath());
 
             // Start the process
             Process process = processBuilder.start();
