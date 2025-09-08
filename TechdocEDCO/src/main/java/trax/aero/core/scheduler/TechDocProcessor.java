@@ -142,6 +142,7 @@ public class TechDocProcessor implements Runnable {
                 Logger.info("Start process");
                 data.processBatFile();
                 data.cleanUpTemp();
+                Thread.sleep(1000);
                 process();
                 Logger.info("End process");
                 data.unlockTable("TD2");
