@@ -2258,7 +2258,7 @@ public class TechDocData implements ITechDocData {
             return (String)
                     em.createNativeQuery(sql).setParameter(1, type).setParameter(2, series).getSingleResult();
         } catch (Exception e) {
-            Logger.error("Cdm Revision Not Found");
+            Logger.warn("Cdm Revision Not Found");
             return "";
         }
     }
