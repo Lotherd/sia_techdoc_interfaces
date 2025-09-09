@@ -7,7 +7,6 @@ package trax.aero.data;
 import java.math.BigDecimal;
 import java.util.List;
 import java.util.TreeMap;
-
 import trax.aero.model.Wo;
 import trax.aero.pojo.GroupBuffer;
 import trax.aero.pojo.Print;
@@ -41,5 +40,6 @@ public interface ITechDocData {
     String health();
 
     TreeMap<String, GroupBuffer> getGroup();
+
     void setGroup(TreeMap<String, GroupBuffer> group);
 }

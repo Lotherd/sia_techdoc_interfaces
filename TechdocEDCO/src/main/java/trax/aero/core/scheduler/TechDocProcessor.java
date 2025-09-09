@@ -112,18 +112,18 @@ public class TechDocProcessor implements Runnable {
                     data.getGroup().computeIfAbsent(idocID, k -> new GroupBuffer());
                     GroupBuffer buffer = data.getGroup().get(idocID);
                     buffer.setTotalCount(totalCount);
-                    Logger.info("nextExpectedSeq start" +buffer.getNextExpectedSeq());
+                    Logger.info("nextExpectedSeq start" + buffer.getNextExpectedSeq());
                     if (seqNbr.longValue() == buffer.getNextExpectedSeq()) {
                         try {
                             Logger.info("deliver");
                             // deliver
                             processXmlMessage(root);
-                        } catch (Exception e){
+                        } catch (Exception e) {
                             Logger.error(e);
-                        }finally {
-                            buffer.setNextExpectedSeq(buffer.getNextExpectedSeq()+1);
-                            Logger.info("nextExpectedSeq deliver" +buffer.getNextExpectedSeq());
-                            data.getGroup().put(idocID,buffer);
+                        } finally {
+                            buffer.setNextExpectedSeq(buffer.getNextExpectedSeq() + 1);
+                            Logger.info("nextExpectedSeq deliver" + buffer.getNextExpectedSeq());
+                            data.getGroup().put(idocID, buffer);
                             // flush
                             flushContiguous(idocID);
                         }
@@ -131,17 +131,17 @@ public class TechDocProcessor implements Runnable {
                         Logger.info("save");
                         // save
                         buffer.getBuffer().put(seqNbr.longValue(), root);
-                        data.getGroup().put(idocID,buffer);
+                        data.getGroup().put(idocID, buffer);
                         // flush
                         flushContiguous(idocID);
                     }
                     // reset
-                    Logger.info("Size  " +data.getGroup().get(idocID).getBuffer());
-                    Logger.info("NextExpectedSeq end" +data.getGroup().get(idocID).getNextExpectedSeq());
+                    Logger.info("Size  " + data.getGroup().get(idocID).getBuffer());
+                    Logger.info("NextExpectedSeq end" + data.getGroup().get(idocID).getNextExpectedSeq());
                     if (data.getGroup().get(idocID).getNextExpectedSeq() > totalCount
                             && data.getGroup().get(idocID).getBuffer().isEmpty()) {
                         Logger.info("reset " + data.getGroup().get(idocID).getBuffer().size());
-                        Logger.info("nextExpectedSeq reset" +data.getGroup().get(idocID).getNextExpectedSeq());
+                        Logger.info("nextExpectedSeq reset" + data.getGroup().get(idocID).getNextExpectedSeq());
                         data.getGroup().remove(idocID);
                     }
                 } catch (Exception e) {
@@ -157,18 +157,22 @@ public class TechDocProcessor implements Runnable {
 
     private void flushContiguous(String idocID) {
         while (!data.getGroup().get(idocID).getBuffer().isEmpty()) {
-            ROOT root = data.getGroup().get(idocID).getBuffer().get(data.getGroup().get(idocID).getNextExpectedSeq());
+            ROOT root =
+                    data.getGroup()
+                            .get(idocID)
+                            .getBuffer()
+                            .get(data.getGroup().get(idocID).getNextExpectedSeq());
             if (root == null) break;
             try {
                 Logger.info("deliver flush");
                 processXmlMessage(root);
-            } catch (Exception e){
+            } catch (Exception e) {
                 Logger.error(e);
             } finally {
                 GroupBuffer buffer = data.getGroup().get(idocID);
                 buffer.getBuffer().remove(data.getGroup().get(idocID).getNextExpectedSeq());
                 buffer.setNextExpectedSeq(data.getGroup().get(idocID).getNextExpectedSeq() + 1);
-                data.getGroup().put(idocID,buffer);
+                data.getGroup().put(idocID, buffer);
             }
         }
     }
@@ -191,41 +195,41 @@ public class TechDocProcessor implements Runnable {
         // AS ISSUE TO TRAX IS SEPARATE REQUESTS
         String idocID =
                 data.filterADDATTR(
-                        root.getMODELS()
-                                .get(0)
-                                .getEFFECTIVITY()
-                                .getJOBCARD()
-                                .getJOBI()
-                                .getPLI()
-                                .getADDATTR(),
-                        "USER-NAME")
+                                root.getMODELS()
+                                        .get(0)
+                                        .getEFFECTIVITY()
+                                        .getJOBCARD()
+                                        .getJOBI()
+                                        .getPLI()
+                                        .getADDATTR(),
+                                "USER-NAME")
                         + data.filterADDATTR(
-                        root.getMODELS()
-                                .get(0)
-                                .getEFFECTIVITY()
-                                .getJOBCARD()
-                                .getJOBI()
-                                .getPLI()
-                                .getADDATTR(),
-                        "IDOC-DATE")
+                                root.getMODELS()
+                                        .get(0)
+                                        .getEFFECTIVITY()
+                                        .getJOBCARD()
+                                        .getJOBI()
+                                        .getPLI()
+                                        .getADDATTR(),
+                                "IDOC-DATE")
                         + data.filterADDATTR(
-                        root.getMODELS()
-                                .get(0)
-                                .getEFFECTIVITY()
-                                .getJOBCARD()
-                                .getJOBI()
-                                .getPLI()
-                                .getADDATTR(),
-                        "IDOC-TIME")
+                                root.getMODELS()
+                                        .get(0)
+                                        .getEFFECTIVITY()
+                                        .getJOBCARD()
+                                        .getJOBI()
+                                        .getPLI()
+                                        .getADDATTR(),
+                                "IDOC-TIME")
                         + data.filterADDATTR(
-                        root.getMODELS()
-                                .get(0)
-                                .getEFFECTIVITY()
-                                .getJOBCARD()
-                                .getJOBI()
-                                .getPLI()
-                                .getADDATTR(),
-                        "PRINTER-NAME");
+                                root.getMODELS()
+                                        .get(0)
+                                        .getEFFECTIVITY()
+                                        .getJOBCARD()
+                                        .getJOBI()
+                                        .getPLI()
+                                        .getADDATTR(),
+                                "PRINTER-NAME");
         Wo parent = data.createParentWo(COUNT, idocID);
         Logger.info("Size: " + parent.getDocumentNo().intValue());
 
