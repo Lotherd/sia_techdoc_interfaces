@@ -144,18 +144,18 @@ public class TechDocController {
             data.getGroup().computeIfAbsent(idocID, k -> new GroupBuffer());
             GroupBuffer buffer = data.getGroup().get(idocID);
             buffer.setTotalCount(totalCount);
-            Logger.info("nextExpectedSeq start" +buffer.getNextExpectedSeq());
+            Logger.info("nextExpectedSeq start" + buffer.getNextExpectedSeq());
             if (seqNbr.longValue() == buffer.getNextExpectedSeq()) {
                 try {
                     Logger.info("deliver");
                     // deliver
                     processXmlMessage(root);
-                } catch (Exception e){
+                } catch (Exception e) {
                     Logger.error(e);
-                }finally {
-                    buffer.setNextExpectedSeq(buffer.getNextExpectedSeq()+1);
-                    Logger.info("nextExpectedSeq deliver" +buffer.getNextExpectedSeq());
-                    data.getGroup().put(idocID,buffer);
+                } finally {
+                    buffer.setNextExpectedSeq(buffer.getNextExpectedSeq() + 1);
+                    Logger.info("nextExpectedSeq deliver" + buffer.getNextExpectedSeq());
+                    data.getGroup().put(idocID, buffer);
                     // flush
                     flushContiguous(idocID);
                 }
@@ -163,17 +163,17 @@ public class TechDocController {
                 Logger.info("save");
                 // save
                 buffer.getBuffer().put(seqNbr.longValue(), root);
-                data.getGroup().put(idocID,buffer);
+                data.getGroup().put(idocID, buffer);
                 // flush
                 flushContiguous(idocID);
             }
             // reset
-            Logger.info("Size  " +data.getGroup().get(idocID).getBuffer());
-            Logger.info("NextExpectedSeq end" +data.getGroup().get(idocID).getNextExpectedSeq());
+            Logger.info("Size  " + data.getGroup().get(idocID).getBuffer());
+            Logger.info("NextExpectedSeq end" + data.getGroup().get(idocID).getNextExpectedSeq());
             if (data.getGroup().get(idocID).getNextExpectedSeq() > totalCount
                     && data.getGroup().get(idocID).getBuffer().isEmpty()) {
                 Logger.info("reset " + data.getGroup().get(idocID).getBuffer().size());
-                Logger.info("nextExpectedSeq reset" +data.getGroup().get(idocID).getNextExpectedSeq());
+                Logger.info("nextExpectedSeq reset" + data.getGroup().get(idocID).getNextExpectedSeq());
                 data.getGroup().remove(idocID);
             }
         } catch (Exception e) {
@@ -184,18 +184,22 @@ public class TechDocController {
 
     private void flushContiguous(String idocID) {
         while (!data.getGroup().get(idocID).getBuffer().isEmpty()) {
-            ROOT root = data.getGroup().get(idocID).getBuffer().get(data.getGroup().get(idocID).getNextExpectedSeq());
+            ROOT root =
+                    data.getGroup()
+                            .get(idocID)
+                            .getBuffer()
+                            .get(data.getGroup().get(idocID).getNextExpectedSeq());
             if (root == null) break;
             try {
                 Logger.info("deliver flush");
                 processXmlMessage(root);
-            } catch (Exception e){
+            } catch (Exception e) {
                 Logger.error(e);
             } finally {
                 GroupBuffer buffer = data.getGroup().get(idocID);
                 buffer.getBuffer().remove(data.getGroup().get(idocID).getNextExpectedSeq());
                 buffer.setNextExpectedSeq(data.getGroup().get(idocID).getNextExpectedSeq() + 1);
-                data.getGroup().put(idocID,buffer);
+                data.getGroup().put(idocID, buffer);
             }
         }
     }

@@ -598,6 +598,9 @@ public class TechDocData implements ITechDocData {
                 htmlContent
                         .append("<tr>")
                         .append("<td style='border: 1px solid black; padding: 8px;'>")
+                        .append(printer)
+                        .append("<tr>")
+                        .append("<td style='border: 1px solid black; padding: 8px;'>")
                         .append(data.getSapServiceOrder())
                         .append("</td>")
                         .append("<td style='border: 1px solid black; padding: 8px;'>")
@@ -2116,15 +2119,16 @@ public class TechDocData implements ITechDocData {
             return false;
         } else {
             try {
-                if(lock.getCurrentServer() == null || lock.getCurrentServer().isEmpty()){
+                if (lock.getCurrentServer() == null || lock.getCurrentServer().isEmpty()) {
                     lock.setLocked(BigDecimal.ONE);
                     insertData(lock);
                     return true;
-                }else if(lock.getCurrentServer().equalsIgnoreCase(InetAddress.getLocalHost().getHostName())){
+                } else if (lock.getCurrentServer()
+                        .equalsIgnoreCase(InetAddress.getLocalHost().getHostName())) {
                     lock.setLocked(BigDecimal.ONE);
                     insertData(lock);
                     return true;
-                }else{
+                } else {
                     LocalDateTime locked =
                             LocalDateTime.ofInstant(lock.getLockedDate().toInstant(), ZoneId.systemDefault());
                     Duration diff = Duration.between(locked, today);
