@@ -18,10 +18,7 @@ import java.text.SimpleDateFormat;
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 import javax.annotation.Resource;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
@@ -40,6 +37,7 @@ import trax.aero.messaging.sqs.SqsUtilities;
 import trax.aero.model.*;
 import trax.aero.notification.EmailNotificationManager;
 import trax.aero.pojo.Dw_Wo_Pack_Print;
+import trax.aero.pojo.GroupBuffer;
 import trax.aero.pojo.Print;
 import trax.aero.pojo.Row;
 import trax.aero.pojo.acknowledgement.PrintAck;
@@ -62,6 +60,7 @@ public class TechDocData implements ITechDocData {
 
     ArrayList<String> scoot = new ArrayList<>(Arrays.asList("300275", "300276", "101821"));
     ArrayList<String> siaec = new ArrayList<>(Arrays.asList("319", "320"));
+    private TreeMap<String, GroupBuffer> group = new TreeMap<>();
 
     @PersistenceContext(unitName = "TechdocDS")
     private EntityManager em;
@@ -597,6 +596,9 @@ public class TechDocData implements ITechDocData {
             }
             for (PrintAck data : ack) {
                 htmlContent
+                        .append("<tr>")
+                        .append("<td style='border: 1px solid black; padding: 8px;'>")
+                        .append(printer)
                         .append("<tr>")
                         .append("<td style='border: 1px solid black; padding: 8px;'>")
                         .append(data.getSapServiceOrder())
@@ -1997,32 +1999,6 @@ public class TechDocData implements ITechDocData {
         insertData(w);
     }
 
-    public void setCountWoToParent(Wo w, Wo parent) {
-        try {
-            BigDecimal l_count = parent.getFormNo();
-            l_count = l_count.add(BigDecimal.ONE);
-            parent.setFormNo(l_count);
-            Logger.info(
-                    "PARENT TEMP WO: " + parent.getWo() + " COUNT F: " + parent.getFormNo().intValue());
-            insertData(parent);
-            if (w.getDocumentNo().intValue() != l_count.intValue()) {
-                w.setDocumentNo(l_count);
-            } else {
-                return;
-            }
-            Logger.info(
-                    "TEMP WO: "
-                            + w.getWo()
-                            + " TO PARENT TEMP WO: "
-                            + parent.getWo()
-                            + " COUNT: "
-                            + w.getDocumentNo().intValue());
-            insertData(w);
-        } catch (Exception e) {
-            Logger.error(e);
-        }
-    }
-
     private String savePrintReport(Wo parent, Wo child, MODEL input) throws Exception {
         String printReport = "";
         BlobTable txtBlob = getTempBlobText(parent.getBlobNo(), "REPORT");
@@ -2125,8 +2101,8 @@ public class TechDocData implements ITechDocData {
                         .getSingleResult();
         em.refresh(lock);
         // Logger.info("lock " + lock.getLocked());
+        LocalDateTime today = LocalDateTime.now();
         if (lock.getLocked().intValue() == 1) {
-            LocalDateTime today = LocalDateTime.now();
             if (lock.getLockedDate() == null) {
                 lock.setLockedDate(
                         Date.from(LocalDateTime.now().atZone(ZoneId.systemDefault()).toInstant()));
@@ -2142,9 +2118,34 @@ public class TechDocData implements ITechDocData {
             }
             return false;
         } else {
-            lock.setLocked(BigDecimal.ONE);
-            insertData(lock);
-            return true;
+            try {
+                if (lock.getCurrentServer() == null || lock.getCurrentServer().isEmpty()) {
+                    lock.setLocked(BigDecimal.ONE);
+                    insertData(lock);
+                    return true;
+                } else if (lock.getCurrentServer()
+                        .equalsIgnoreCase(InetAddress.getLocalHost().getHostName())) {
+                    lock.setLocked(BigDecimal.ONE);
+                    insertData(lock);
+                    return true;
+                } else {
+                    LocalDateTime locked =
+                            LocalDateTime.ofInstant(lock.getLockedDate().toInstant(), ZoneId.systemDefault());
+                    Duration diff = Duration.between(locked, today);
+                    if (diff.getSeconds() >= lock.getMaxLock().longValue()) {
+                        lock.setLocked(BigDecimal.ONE);
+                        insertData(lock);
+                        return true;
+                    } else {
+                        return false;
+                    }
+                }
+            } catch (UnknownHostException e) {
+                Logger.error(e);
+                lock.setLocked(BigDecimal.ONE);
+                insertData(lock);
+                return true;
+            }
         }
     }
 
@@ -2258,7 +2259,7 @@ public class TechDocData implements ITechDocData {
             return (String)
                     em.createNativeQuery(sql).setParameter(1, type).setParameter(2, series).getSingleResult();
         } catch (Exception e) {
-            Logger.error("Cdm Revision Not Found");
+            Logger.warn("Cdm Revision Not Found");
             return "";
         }
     }
@@ -2266,5 +2267,13 @@ public class TechDocData implements ITechDocData {
     public String health() {
         em.createNativeQuery("SELECT 1 FROM DUAL").getSingleResult();
         return "TechdocEDCO is healthy";
+    }
+
+    public TreeMap<String, GroupBuffer> getGroup() {
+        return group;
+    }
+
+    public void setGroup(TreeMap<String, GroupBuffer> group) {
+        this.group = group;
     }
 }

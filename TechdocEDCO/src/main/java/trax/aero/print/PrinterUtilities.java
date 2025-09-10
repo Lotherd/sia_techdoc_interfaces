@@ -16,6 +16,8 @@ import javax.ws.rs.client.Entity;
 import javax.ws.rs.core.MediaType;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.Marshaller;
+import org.apache.commons.exec.CommandLine;
+import org.apache.commons.exec.DefaultExecutor;
 import org.apache.commons.io.FilenameUtils;
 import org.tinylog.Logger;
 import trax.aero.pojo.Dw_Wo_Pack_Print;
@@ -28,6 +30,7 @@ public class PrinterUtilities {
     static ArrayList<String> heavyPrintersRicoh = new ArrayList<>(Arrays.asList("EC1O", "SIOP"));
     static ArrayList<String> heavyPrintersOcepdf =
             new ArrayList<>(Arrays.asList("EC61", "EC62", "EC63", "SINW", "SIO1"));
+    private static final String SIO1 = "SIO1", SINW = "SINW";
 
     public static int sendWorkPackPrintJob(String printWindow, Dw_Wo_Pack_Print dwSel)
             throws Exception {
@@ -91,20 +94,54 @@ public class PrinterUtilities {
                 String ricohCommands = "";
                 String oceCommands = "";
                 if (heavyPrintersOcepdf.contains(printService)) {
-                    // InputSlot=1Tray  2Tray 3Tray OCE
-                    switch (tray) {
-                        case "1":
-                            tray = "1Tray";
-                            break;
-                        case "2":
-                            tray = "TabInsert";
-                            break;
-                        case "3":
-                            tray = "Tab";
-                            break;
-                        default:
-                            tray = "PrePunched";
-                            break;
+                    if (printService.equalsIgnoreCase(SIO1)) {
+                        switch (tray) {
+                            case "1":
+                                tray = "1Tray";
+                                break;
+                            case "2":
+                                tray = "TabInsert";
+                                break;
+                            case "3":
+                                tray = "PrePunched";
+                                break;
+                            default:
+                                tray = "Tab";
+                                break;
+                        }
+                        side = "DUPLEX";
+                    } else if (printService.equalsIgnoreCase(SINW)) {
+                        switch (tray) {
+                            case "1":
+                                tray = "TabInsert";
+                                break;
+                            case "2":
+                                tray = "1Tray";
+                                break;
+                            case "3":
+                                tray = "PrePunched";
+                                break;
+                            default:
+                                tray = "Tab";
+                                break;
+                        }
+                        side = "DUPLEX";
+                    } else {
+                        // InputSlot=1Tray  2Tray 3Tray OCE
+                        switch (tray) {
+                            case "1":
+                                tray = "1Tray";
+                                break;
+                            case "2":
+                                tray = "TabInsert";
+                                break;
+                            case "3":
+                                tray = "Tab";
+                                break;
+                            default:
+                                tray = "PrePunched";
+                                break;
+                        }
                     }
                     // Duplex=DuplexNoTumble OCE
                     if (side.equalsIgnoreCase("DUPLEX")) {
@@ -226,14 +263,35 @@ public class PrinterUtilities {
     private static void sendToPrinterLP(String printer, File print) throws Exception {
         try {
             // Create a ProcessBuilder to run the 'lp' command
-            ProcessBuilder processBuilder =
-            		new ProcessBuilder("lp", "-o", "Duplexer=True", "-o", "PageSize=A4", "-o", "Duplex=DuplexNoTumble", "-d", printer, print.getAbsolutePath());
-
+            String command =
+                    "lp -o Duplexer=True -o PageSize=A4 -o Duplex=DuplexNoTumble -d "
+                            + printer
+                            + " "
+                            + print.getAbsolutePath();
+            Logger.info(command);
+            CommandLine cmdLine = new CommandLine("lp");
+            cmdLine.addArguments(
+                    new String[] {
+                        "-o",
+                        "Duplexer=True",
+                        "-o",
+                        "PageSize=A4",
+                        "-o",
+                        "Duplex=DuplexNoTumble",
+                        "-d",
+                        printer,
+                        print.getAbsolutePath()
+                    });
+            DefaultExecutor executor = DefaultExecutor.builder().get();
+            int exitCode = executor.execute(cmdLine);
+            /*
+            ProcessBuilder processBuilder = new ProcessBuilder(command.split(" "));
             // Start the process
             Process process = processBuilder.start();
 
             // Wait for the process to complete
             int exitCode = process.waitFor();
+             */
             if (exitCode == 0) {
                 Logger.info("Printing completed successfully!");
             } else {

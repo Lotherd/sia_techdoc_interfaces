@@ -7,7 +7,6 @@ package trax.aero.utilities;
 import java.security.SecureRandom;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import org.tinylog.Logger;
 
 public class StringUtilities {
 
@@ -50,7 +49,6 @@ public class StringUtilities {
         try {
             return new SimpleDateFormat("yyyyMMdd").parse(string);
         } catch (Exception e) {
-            Logger.error(e);
             return null;
         }
     }
