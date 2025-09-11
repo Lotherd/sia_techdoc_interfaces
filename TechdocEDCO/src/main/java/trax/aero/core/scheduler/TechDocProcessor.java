@@ -109,9 +109,12 @@ public class TechDocProcessor implements Runnable {
                                                     .getPLI()
                                                     .getADDATTR(),
                                             "PRINTER-NAME");
-                    data.getGroup().computeIfAbsent(idocID, k -> new GroupBuffer());
                     GroupBuffer buffer = data.getGroup().get(idocID);
+                    if (buffer == null) {
+                        data.getGroup().put(idocID, buffer = new GroupBuffer());
+                    }
                     buffer.setTotalCount(totalCount);
+                    Logger.info("Total count is " + totalCount);
                     Logger.info("nextExpectedSeq start" + buffer.getNextExpectedSeq());
                     if (seqNbr.longValue() == buffer.getNextExpectedSeq()) {
                         try {
