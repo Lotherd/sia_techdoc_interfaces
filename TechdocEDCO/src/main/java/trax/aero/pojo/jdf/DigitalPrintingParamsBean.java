@@ -11,6 +11,16 @@ public class DigitalPrintingParamsBean {
     String runIndex = "";
     String textContent;
     MediaRefBean mediaRefBean;
+    String outputBin;
+
+    @XmlAttribute(name = "OutputBin")
+    public String getOutputBin() {
+        return outputBin;
+    }
+
+    public void setOutputBin(String outputBin) {
+        this.outputBin = runIndex;
+    }
 
     @XmlAttribute(name = "RunIndex")
     public String getRunIndex() {
