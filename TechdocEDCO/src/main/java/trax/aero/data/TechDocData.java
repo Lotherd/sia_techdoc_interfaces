@@ -37,7 +37,6 @@ import trax.aero.messaging.sqs.SqsUtilities;
 import trax.aero.model.*;
 import trax.aero.notification.EmailNotificationManager;
 import trax.aero.pojo.Dw_Wo_Pack_Print;
-import trax.aero.pojo.GroupBuffer;
 import trax.aero.pojo.Print;
 import trax.aero.pojo.Row;
 import trax.aero.pojo.acknowledgement.PrintAck;
@@ -60,7 +59,6 @@ public class TechDocData implements ITechDocData {
 
     ArrayList<String> scoot = new ArrayList<>(Arrays.asList("300275", "300276", "101821"));
     ArrayList<String> siaec = new ArrayList<>(Arrays.asList("319", "320"));
-    private TreeMap<String, GroupBuffer> group = new TreeMap<>();
 
     @PersistenceContext(unitName = "TechdocDS")
     private EntityManager em;
@@ -599,7 +597,7 @@ public class TechDocData implements ITechDocData {
                         .append("<tr>")
                         .append("<td style='border: 1px solid black; padding: 8px;'>")
                         .append(printer)
-                        .append("<tr>")
+                        .append("</td>")
                         .append("<td style='border: 1px solid black; padding: 8px;'>")
                         .append(data.getSapServiceOrder())
                         .append("</td>")
@@ -2267,13 +2265,5 @@ public class TechDocData implements ITechDocData {
     public String health() {
         em.createNativeQuery("SELECT 1 FROM DUAL").getSingleResult();
         return "TechdocEDCO is healthy";
-    }
-
-    public TreeMap<String, GroupBuffer> getGroup() {
-        return group;
-    }
-
-    public void setGroup(TreeMap<String, GroupBuffer> group) {
-        this.group = group;
     }
 }

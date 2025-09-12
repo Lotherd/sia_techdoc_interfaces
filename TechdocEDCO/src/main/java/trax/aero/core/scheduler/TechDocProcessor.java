@@ -18,6 +18,7 @@ import trax.aero.model.Wo;
 import trax.aero.pojo.GroupBuffer;
 import trax.aero.pojo.xml.MODEL;
 import trax.aero.pojo.xml.ROOT;
+import trax.aero.utilities.GroupBufferManager;
 import trax.aero.utilities.StringUtilities;
 
 public class TechDocProcessor implements Runnable {
@@ -109,12 +110,13 @@ public class TechDocProcessor implements Runnable {
                                                     .getPLI()
                                                     .getADDATTR(),
                                             "PRINTER-NAME");
-                    GroupBuffer buffer = data.getGroup().get(idocID);
+                    GroupBuffer buffer = GroupBufferManager.get(idocID);
                     if (buffer == null) {
-                        data.getGroup().put(idocID, buffer = new GroupBuffer());
+                        GroupBufferManager.put(idocID, buffer = new GroupBuffer());
                     }
                     buffer.setTotalCount(totalCount);
                     Logger.info("Total count is " + totalCount);
+                    Logger.info("idocID " + idocID);
                     Logger.info("nextExpectedSeq start" + buffer.getNextExpectedSeq());
                     if (seqNbr.longValue() == buffer.getNextExpectedSeq()) {
                         try {
@@ -126,7 +128,7 @@ public class TechDocProcessor implements Runnable {
                         } finally {
                             buffer.setNextExpectedSeq(buffer.getNextExpectedSeq() + 1);
                             Logger.info("nextExpectedSeq deliver" + buffer.getNextExpectedSeq());
-                            data.getGroup().put(idocID, buffer);
+                            GroupBufferManager.put(idocID, buffer);
                             // flush
                             flushContiguous(idocID);
                         }
@@ -134,18 +136,19 @@ public class TechDocProcessor implements Runnable {
                         Logger.info("save");
                         // save
                         buffer.getBuffer().put(seqNbr.longValue(), root);
-                        data.getGroup().put(idocID, buffer);
+                        GroupBufferManager.put(idocID, buffer);
                         // flush
                         flushContiguous(idocID);
                     }
                     // reset
-                    Logger.info("Size  " + data.getGroup().get(idocID).getBuffer());
-                    Logger.info("NextExpectedSeq end" + data.getGroup().get(idocID).getNextExpectedSeq());
-                    if (data.getGroup().get(idocID).getNextExpectedSeq() > totalCount
-                            && data.getGroup().get(idocID).getBuffer().isEmpty()) {
-                        Logger.info("reset " + data.getGroup().get(idocID).getBuffer().size());
-                        Logger.info("nextExpectedSeq reset" + data.getGroup().get(idocID).getNextExpectedSeq());
-                        data.getGroup().remove(idocID);
+                    Logger.info("Size  " + GroupBufferManager.get(idocID).getBuffer());
+                    Logger.info("NextExpectedSeq end" + GroupBufferManager.get(idocID).getNextExpectedSeq());
+                    if (GroupBufferManager.get(idocID).getNextExpectedSeq() > totalCount
+                            && GroupBufferManager.get(idocID).getBuffer().isEmpty()) {
+                        Logger.info("reset " + GroupBufferManager.get(idocID).getBuffer().size());
+                        Logger.info(
+                                "nextExpectedSeq reset" + GroupBufferManager.get(idocID).getNextExpectedSeq());
+                        GroupBufferManager.remove(idocID);
                     }
                 } catch (Exception e) {
                     Logger.error(e);
@@ -159,12 +162,11 @@ public class TechDocProcessor implements Runnable {
     }
 
     private void flushContiguous(String idocID) {
-        while (!data.getGroup().get(idocID).getBuffer().isEmpty()) {
+        while (!GroupBufferManager.get(idocID).getBuffer().isEmpty()) {
             ROOT root =
-                    data.getGroup()
-                            .get(idocID)
+                    GroupBufferManager.get(idocID)
                             .getBuffer()
-                            .get(data.getGroup().get(idocID).getNextExpectedSeq());
+                            .get(GroupBufferManager.get(idocID).getNextExpectedSeq());
             if (root == null) break;
             try {
                 Logger.info("deliver flush");
@@ -172,10 +174,10 @@ public class TechDocProcessor implements Runnable {
             } catch (Exception e) {
                 Logger.error(e);
             } finally {
-                GroupBuffer buffer = data.getGroup().get(idocID);
-                buffer.getBuffer().remove(data.getGroup().get(idocID).getNextExpectedSeq());
-                buffer.setNextExpectedSeq(data.getGroup().get(idocID).getNextExpectedSeq() + 1);
-                data.getGroup().put(idocID, buffer);
+                GroupBuffer buffer = GroupBufferManager.get(idocID);
+                buffer.getBuffer().remove(GroupBufferManager.get(idocID).getNextExpectedSeq());
+                buffer.setNextExpectedSeq(GroupBufferManager.get(idocID).getNextExpectedSeq() + 1);
+                GroupBufferManager.put(idocID, buffer);
             }
         }
     }
