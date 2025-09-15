@@ -72,7 +72,7 @@ public class TechDocProcessor implements Runnable {
                                                     "COUNT"))
                                     .longValue();
                     BigDecimal seqNbr =
-                            new BigDecimal(root.getMODELS().get(0).getEFFECTIVITY().getJOBCARD().getSEQNBR());
+                            new BigDecimal(data.filterADDATTR(root.getMODELS().get(0).getEFFECTIVITY().getJOBCARD().getJOBI().getPLI().getADDATTR(), "BUSR12"));
                     String idocID =
                             data.filterADDATTR(
                                             root.getMODELS()
@@ -117,39 +117,24 @@ public class TechDocProcessor implements Runnable {
                     buffer.setTotalCount(totalCount);
                     Logger.info("Total count is " + totalCount);
                     Logger.info("idocID " + idocID);
-                    Logger.info("nextExpectedSeq start" + buffer.getNextExpectedSeq());
-                    if (seqNbr.longValue() == buffer.getNextExpectedSeq()) {
-                        try {
-                            Logger.info("deliver");
-                            // deliver
-                            processXmlMessage(root);
-                        } catch (Exception e) {
-                            Logger.error(e);
-                        } finally {
-                            buffer.setNextExpectedSeq(buffer.getNextExpectedSeq() + 1);
-                            Logger.info("nextExpectedSeq deliver" + buffer.getNextExpectedSeq());
-                            GroupBufferManager.put(idocID, buffer);
-                            // flush
-                            flushContiguous(idocID);
-                        }
-                    } else {
-                        Logger.info("save");
-                        // save
-                        buffer.getBuffer().put(seqNbr.longValue(), root);
-                        GroupBufferManager.put(idocID, buffer);
-                        // flush
+                    Logger.info("Counter start" + buffer.getCounter());
+                    
+                    Logger.info("save - sequence " + seqNbr.longValue());
+                    buffer.getBuffer().put(seqNbr.longValue(), root);
+                    buffer.incrementCounter(); 
+                    GroupBufferManager.put(idocID, buffer);
+                    
+                    Logger.info("Buffer size: " + buffer.getBuffer().size());
+                    Logger.info("Counter end: " + buffer.getCounter());
+                    
+                    
+                    if (buffer.isComplete()) {
+                        Logger.info("All documents received! Starting ordered processing...");
                         flushContiguous(idocID);
+                    } else {
+                        Logger.info("Waiting for more documents (" + buffer.getCounter() + "/" + buffer.getTotalCount() + ")");
                     }
-                    // reset
-                    Logger.info("Size  " + GroupBufferManager.get(idocID).getBuffer());
-                    Logger.info("NextExpectedSeq end" + GroupBufferManager.get(idocID).getNextExpectedSeq());
-                    if (GroupBufferManager.get(idocID).getNextExpectedSeq() > totalCount
-                            && GroupBufferManager.get(idocID).getBuffer().isEmpty()) {
-                        Logger.info("reset " + GroupBufferManager.get(idocID).getBuffer().size());
-                        Logger.info(
-                                "nextExpectedSeq reset" + GroupBufferManager.get(idocID).getNextExpectedSeq());
-                        GroupBufferManager.remove(idocID);
-                    }
+                    
                 } catch (Exception e) {
                     Logger.error(e);
                 }
@@ -160,29 +145,42 @@ public class TechDocProcessor implements Runnable {
             sendEmail = false;
         }
     }
+    
 
     private void flushContiguous(String idocID) {
-        while (!GroupBufferManager.get(idocID).getBuffer().isEmpty()) {
-            ROOT root =
-                    GroupBufferManager.get(idocID)
-                            .getBuffer()
-                            .get(GroupBufferManager.get(idocID).getNextExpectedSeq());
+    	GroupBuffer buffer = GroupBufferManager.get(idocID);
+        
+        if (!buffer.isComplete()) {
+            Logger.info("Group not complete yet, skipping flush");
+            return;
+        }
+        
+        Logger.info("Processing all documents in order");
+        
+        long counter = 1;
+        while (!buffer.getBuffer().isEmpty()) {
+            
+            Long firstKey = buffer.getBuffer().firstKey();
+            ROOT root = buffer.getBuffer().get(firstKey);
+            
             if (root == null) break;
+            
             try {
-                Logger.info("deliver flush");
-                processXmlMessage(root);
+                Logger.info("deliver flush with key " + firstKey);
+                processXmlMessage(root, counter);
             } catch (Exception e) {
                 Logger.error(e);
             } finally {
-                GroupBuffer buffer = GroupBufferManager.get(idocID);
-                buffer.getBuffer().remove(GroupBufferManager.get(idocID).getNextExpectedSeq());
-                buffer.setNextExpectedSeq(GroupBufferManager.get(idocID).getNextExpectedSeq() + 1);
+               
+                buffer.getBuffer().remove(firstKey);
+                counter ++;
                 GroupBufferManager.put(idocID, buffer);
             }
         }
+        GroupBufferManager.remove(idocID);
     }
 
-    private void processXmlMessage(ROOT root) throws Exception {
+    private void processXmlMessage(ROOT root, Long counter) throws Exception {
         Thread.sleep(1000);
         JAXBContext jc;
         BigDecimal COUNT =
@@ -248,7 +246,7 @@ public class TechDocProcessor implements Runnable {
             String xml = StringUtilities.xmlCleaning(sw.toString());
             Wo w = data.issueToTechDocRequest(model, xml);
             data.linkWoToParent(
-                    w, parent, new BigDecimal(model.getEFFECTIVITY().getJOBCARD().getSEQNBR()));
+                    w, parent, new BigDecimal(counter));
             data.sendRequestToPrintServer(model, xml, w);
         }
     }
