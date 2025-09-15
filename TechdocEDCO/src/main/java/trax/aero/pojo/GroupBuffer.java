@@ -11,7 +11,8 @@ public class GroupBuffer {
 
     private ConcurrentSkipListMap<Long, ROOT> buffer = new ConcurrentSkipListMap<>();
     private long totalCount = 0;
-    private long nextExpectedSeq = 1L;
+    private long counter = 0L;
+    
 
     public ConcurrentSkipListMap<Long, ROOT> getBuffer() {
         return buffer;
@@ -29,11 +30,19 @@ public class GroupBuffer {
         this.totalCount = totalCount;
     }
 
-    public long getNextExpectedSeq() {
-        return nextExpectedSeq;
+    public long getCounter() {
+        return counter;
     }
 
-    public void setNextExpectedSeq(long nextExpectedSeq) {
-        this.nextExpectedSeq = nextExpectedSeq;
+    public void setCounter(long counter) {
+        this.counter = counter;
+    }
+    
+    public long incrementCounter() {
+        return ++this.counter;
+    }
+    
+    public boolean isComplete() {
+        return this.counter == this.totalCount;
     }
 }
