@@ -72,7 +72,7 @@ public class TechDocProcessor implements Runnable {
                                                     "COUNT"))
                                     .longValue();
                     BigDecimal seqNbr =
-                            new BigDecimal(root.getMODELS().get(0).getEFFECTIVITY().getJOBCARD().getSEQNBR());
+                            new BigDecimal(data.filterADDATTR(root.getMODELS().get(0).getEFFECTIVITY().getJOBCARD().getJOBI().getPLI().getADDATTR(), "BUSR12"));
                     String idocID =
                             data.filterADDATTR(
                                             root.getMODELS()
