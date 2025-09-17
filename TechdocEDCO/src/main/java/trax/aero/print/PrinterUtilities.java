@@ -26,7 +26,7 @@ import trax.types.PrintQueueJob;
 public class PrinterUtilities {
 
     static ArrayList<String> heavyPrinters =
-            new ArrayList<>(Arrays.asList("EC61", "EC62", "EC63", "SINW", "SIO1", "EC1O", "SIOP"));
+            new ArrayList<>(Arrays.asList("EC61", "EC62", "EC63", "SINW", "SIO1 zero 0 word O", "EC1O", "SIOP"));
     static ArrayList<String> heavyPrintersRicoh = new ArrayList<>(Arrays.asList("EC1O", "SIOP"));
     static ArrayList<String> heavyPrintersOcepdf =
             new ArrayList<>(Arrays.asList("EC61", "EC62", "EC63", "SINW", "SIO1"));
@@ -88,13 +88,22 @@ public class PrinterUtilities {
             throws Exception {
 
         if (file != null && printService != null && file.exists() && file.isFile()) {
-            Logger.info(
-                    "Job received for printer: " + printService + " tray: " + tray + " side: " + side);
+            Logger.info("Job received for printer: " + printService);
             try {
                 String ricohCommands = "";
                 String oceCommands = "";
                 if (heavyPrintersOcepdf.contains(printService)) {
+                    String tempTray = tray;
                     if (printService.equalsIgnoreCase(SIO1)) {
+                        switch (tempTray) {
+                            case "2":
+                                tempTray = "4";
+                            case "3":
+                                tempTray = "2";
+                            case "4":
+                                tempTray = "3";
+                        }
+                        Logger.info("Oce tray: " + tempTray + " side: " + side);
                         switch (tray) {
                             case "1":
                                 tray = "1Tray";
@@ -111,6 +120,15 @@ public class PrinterUtilities {
                         }
                         side = "DUPLEX";
                     } else if (printService.equalsIgnoreCase(SINW)) {
+                        switch (tempTray) {
+                            case "1":
+                                tempTray = "3";
+                            case "2":
+                                tempTray = "1";
+                            case "3":
+                                tempTray = "4";
+                        }
+                        Logger.info("Oce tray: " + tempTray + " side: " + side);
                         switch (tray) {
                             case "1":
                                 tray = "TabInsert";
@@ -127,6 +145,17 @@ public class PrinterUtilities {
                         }
                         side = "DUPLEX";
                     } else {
+                        switch (tempTray) {
+                            case "1":
+                                tempTray = "2";
+                            case "2":
+                                tempTray = "4";
+                            case "3":
+                                tempTray = "1";
+                            case "4":
+                                tempTray = "3";
+                        }
+                        Logger.info("OCE tray: " + tempTray + " side: " + side);
                         // InputSlot=1Tray  2Tray 3Tray OCE
                         switch (tray) {
                             case "1":
@@ -155,6 +184,7 @@ public class PrinterUtilities {
                                     + " -o Duplex="
                                     + side;
                 } else if (heavyPrintersRicoh.contains(printService)) {
+                    Logger.info("Ricoh tray: " + tray + " side: " + side);
                     // InputSlot=1Tray  2Tray 3Tray RICHO
                     switch (tray) {
                         case "1":
