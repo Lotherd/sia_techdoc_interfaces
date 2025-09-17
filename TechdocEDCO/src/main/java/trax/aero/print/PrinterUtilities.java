@@ -26,7 +26,7 @@ import trax.types.PrintQueueJob;
 public class PrinterUtilities {
 
     static ArrayList<String> heavyPrinters =
-            new ArrayList<>(Arrays.asList("EC61", "EC62", "EC63", "SINW", "SIO1 zero 0 word O", "EC1O", "SIOP"));
+            new ArrayList<>(Arrays.asList("EC61", "EC62", "EC63", "SINW", "SIO1", "EC1O", "SIOP"));
     static ArrayList<String> heavyPrintersRicoh = new ArrayList<>(Arrays.asList("EC1O", "SIOP"));
     static ArrayList<String> heavyPrintersOcepdf =
             new ArrayList<>(Arrays.asList("EC61", "EC62", "EC63", "SINW", "SIO1"));
