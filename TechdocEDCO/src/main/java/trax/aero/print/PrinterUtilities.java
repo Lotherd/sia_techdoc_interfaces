@@ -100,8 +100,10 @@ public class PrinterUtilities {
                         switch (tempTray) {
                             case "2":
                                 tempTray = "3";
+                                break;
                             case "3":
                                 tempTray = "2";
+                                break;
                         }
                         Logger.info("Oce tray: " + tempTray + " side: " + side);
                         switch (tray) {
@@ -123,10 +125,13 @@ public class PrinterUtilities {
                         switch (tempTray) {
                             case "1":
                                 tempTray = "2";
+                                break;
                             case "2":
                                 tempTray = "3";
+                                break;
                             case "3":
                                 tempTray = "1";
+                                break;
                         }
                         Logger.info("Oce tray: " + tempTray + " side: " + side);
                         switch (tray) {
@@ -148,8 +153,10 @@ public class PrinterUtilities {
                         switch (tempTray) {
                             case "2":
                                 tempTray = "4";
+                                break;
                             case "3":
                                 tempTray = "2";
+                                break;
                         }
                         Logger.info("OCE tray: " + tempTray + " side: " + side);
                         // InputSlot=1Tray  2Tray 3Tray OCE
