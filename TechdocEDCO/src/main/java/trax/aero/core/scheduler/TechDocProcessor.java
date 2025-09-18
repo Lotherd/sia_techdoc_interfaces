@@ -72,7 +72,16 @@ public class TechDocProcessor implements Runnable {
                                                     "COUNT"))
                                     .longValue();
                     BigDecimal seqNbr =
-                            new BigDecimal(data.filterADDATTR(root.getMODELS().get(0).getEFFECTIVITY().getJOBCARD().getJOBI().getPLI().getADDATTR(), "BUSR12"));
+                            new BigDecimal(
+                                    data.filterADDATTR(
+                                            root.getMODELS()
+                                                    .get(0)
+                                                    .getEFFECTIVITY()
+                                                    .getJOBCARD()
+                                                    .getJOBI()
+                                                    .getPLI()
+                                                    .getADDATTR(),
+                                            "BUSR12"));
                     String idocID =
                             data.filterADDATTR(
                                             root.getMODELS()
@@ -118,23 +127,27 @@ public class TechDocProcessor implements Runnable {
                     Logger.info("Total count is " + totalCount);
                     Logger.info("idocID " + idocID);
                     Logger.info("Counter start" + buffer.getCounter());
-                    
+
                     Logger.info("save - sequence " + seqNbr.longValue());
                     buffer.getBuffer().put(seqNbr.longValue(), root);
-                    buffer.incrementCounter(); 
+                    buffer.incrementCounter();
                     GroupBufferManager.put(idocID, buffer);
-                    
+
                     Logger.info("Buffer size: " + buffer.getBuffer().size());
                     Logger.info("Counter end: " + buffer.getCounter());
-                    
-                    
+
                     if (buffer.isComplete()) {
                         Logger.info("All documents received! Starting ordered processing...");
                         flushContiguous(idocID);
                     } else {
-                        Logger.info("Waiting for more documents (" + buffer.getCounter() + "/" + buffer.getTotalCount() + ")");
+                        Logger.info(
+                                "Waiting for more documents ("
+                                        + buffer.getCounter()
+                                        + "/"
+                                        + buffer.getTotalCount()
+                                        + ")");
                     }
-                    
+
                 } catch (Exception e) {
                     Logger.error(e);
                 }
@@ -145,35 +158,34 @@ public class TechDocProcessor implements Runnable {
             sendEmail = false;
         }
     }
-    
 
     private void flushContiguous(String idocID) {
-    	GroupBuffer buffer = GroupBufferManager.get(idocID);
-        
+        GroupBuffer buffer = GroupBufferManager.get(idocID);
+
         if (!buffer.isComplete()) {
             Logger.info("Group not complete yet, skipping flush");
             return;
         }
-        
+
         Logger.info("Processing all documents in order");
-        
+
         long counter = 1;
         while (!buffer.getBuffer().isEmpty()) {
-            
+
             Long firstKey = buffer.getBuffer().firstKey();
             ROOT root = buffer.getBuffer().get(firstKey);
-            
+
             if (root == null) break;
-            
+
             try {
                 Logger.info("deliver flush with key " + firstKey);
                 processXmlMessage(root, counter);
             } catch (Exception e) {
                 Logger.error(e);
             } finally {
-               
+
                 buffer.getBuffer().remove(firstKey);
-                counter ++;
+                counter++;
                 GroupBufferManager.put(idocID, buffer);
             }
         }
@@ -245,8 +257,7 @@ public class TechDocProcessor implements Runnable {
 
             String xml = StringUtilities.xmlCleaning(sw.toString());
             Wo w = data.issueToTechDocRequest(model, xml);
-            data.linkWoToParent(
-                    w, parent, new BigDecimal(counter));
+            data.linkWoToParent(w, parent, new BigDecimal(counter));
             data.sendRequestToPrintServer(model, xml, w);
         }
     }
