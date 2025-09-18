@@ -26,8 +26,10 @@ import trax.types.PrintQueueJob;
 public class PrinterUtilities {
 
     static ArrayList<String> heavyPrinters =
-            new ArrayList<>(Arrays.asList("EC61", "EC62", "EC63", "SINW", "SIO1", "EC1O", "SIOP"));
-    static ArrayList<String> heavyPrintersRicoh = new ArrayList<>(Arrays.asList("EC1O", "SIOP"));
+            new ArrayList<>(
+                    Arrays.asList("EC61", "EC62", "EC63", "SINW", "SIO1", "EC1O", "SIOP", "NQP1"));
+    static ArrayList<String> heavyPrintersRicoh =
+            new ArrayList<>(Arrays.asList("EC1O", "SIOP", "NQP1"));
     static ArrayList<String> heavyPrintersOcepdf =
             new ArrayList<>(Arrays.asList("EC61", "EC62", "EC63", "SINW", "SIO1"));
     private static final String SIO1 = "SIO1", SINW = "SINW";
@@ -97,11 +99,9 @@ public class PrinterUtilities {
                     if (printService.equalsIgnoreCase(SIO1)) {
                         switch (tempTray) {
                             case "2":
-                                tempTray = "4";
+                                tempTray = "3";
                             case "3":
                                 tempTray = "2";
-                            case "4":
-                                tempTray = "3";
                         }
                         Logger.info("Oce tray: " + tempTray + " side: " + side);
                         switch (tray) {
@@ -112,48 +112,44 @@ public class PrinterUtilities {
                                 tray = "TabInsert";
                                 break;
                             case "3":
-                                tray = "PrePunched";
+                                tray = "Tab";
                                 break;
                             default:
-                                tray = "Tab";
+                                tray = "PrePunched";
                                 break;
                         }
                         side = "DUPLEX";
                     } else if (printService.equalsIgnoreCase(SINW)) {
                         switch (tempTray) {
                             case "1":
-                                tempTray = "3";
+                                tempTray = "2";
                             case "2":
-                                tempTray = "1";
+                                tempTray = "3";
                             case "3":
-                                tempTray = "4";
+                                tempTray = "1";
                         }
                         Logger.info("Oce tray: " + tempTray + " side: " + side);
                         switch (tray) {
                             case "1":
-                                tray = "TabInsert";
+                                tray = "Tab";
                                 break;
                             case "2":
-                                tray = "1Tray";
+                                tray = "TabInsert";
                                 break;
                             case "3":
-                                tray = "PrePunched";
+                                tray = "1Tray";
                                 break;
                             default:
-                                tray = "Tab";
+                                tray = "PrePunched";
                                 break;
                         }
                         side = "DUPLEX";
                     } else {
                         switch (tempTray) {
-                            case "1":
-                                tempTray = "2";
                             case "2":
                                 tempTray = "4";
                             case "3":
-                                tempTray = "1";
-                            case "4":
-                                tempTray = "3";
+                                tempTray = "2";
                         }
                         Logger.info("OCE tray: " + tempTray + " side: " + side);
                         // InputSlot=1Tray  2Tray 3Tray OCE
