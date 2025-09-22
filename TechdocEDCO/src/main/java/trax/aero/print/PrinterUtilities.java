@@ -295,7 +295,7 @@ public class PrinterUtilities {
         try {
             // Create a ProcessBuilder to run the 'lp' command
             String command =
-                    "lp -o Duplexer=True -o PageSize=A4 -o Duplex=DuplexNoTumble -d "
+                    "lp -o fit-to-page -o scaling=100 -o Duplexer=True -o PageSize=A4 -o Duplex=DuplexNoTumble -d "
                             + printer
                             + " "
                             + print.getAbsolutePath();
