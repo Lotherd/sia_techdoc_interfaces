@@ -105,7 +105,6 @@ public class PrinterUtilities {
                                 tempTray = "2";
                                 break;
                         }
-                        Logger.info("Oce tray: " + tempTray + " side: " + side);
                         switch (tray) {
                             case "1":
                                 tray = "1Tray";
@@ -133,7 +132,6 @@ public class PrinterUtilities {
                                 tempTray = "1";
                                 break;
                         }
-                        Logger.info("Oce tray: " + tempTray + " side: " + side);
                         switch (tray) {
                             case "1":
                                 tray = "Tab";
@@ -158,7 +156,6 @@ public class PrinterUtilities {
                                 tempTray = "2";
                                 break;
                         }
-                        Logger.info("OCE tray: " + tempTray + " side: " + side);
                         // InputSlot=1Tray  2Tray 3Tray OCE
                         switch (tray) {
                             case "1":
@@ -181,13 +178,13 @@ public class PrinterUtilities {
                     } else {
                         side = "None";
                     }
+                    Logger.info("OCE tray: " + tempTray + " side: " + side);
                     oceCommands =
                             " -o StapleWhen=EndOfSet -o OCStaple=TopLeftPortrait -o InputSlot="
                                     + tray
                                     + " -o Duplex="
                                     + side;
                 } else if (heavyPrintersRicoh.contains(printService)) {
-                    Logger.info("Ricoh tray: " + tray + " side: " + side);
                     // InputSlot=1Tray  2Tray 3Tray RICHO
                     switch (tray) {
                         case "1":
@@ -209,6 +206,7 @@ public class PrinterUtilities {
                     } else {
                         side = "None";
                     }
+                    Logger.info("Ricoh tray: " + tray + " side: " + side);
                     ricohCommands =
                             " -o StapleLocation=UpperLeft -o InputSlot="
                                     + tray
@@ -297,7 +295,7 @@ public class PrinterUtilities {
         try {
             // Create a ProcessBuilder to run the 'lp' command
             String command =
-                    "lp -o Duplexer=True -o PageSize=A4 -o Duplex=DuplexNoTumble -d "
+                    "lp -o fit-to-page -o scaling=100 -o Duplexer=True -o PageSize=A4 -o Duplex=DuplexNoTumble -d "
                             + printer
                             + " "
                             + print.getAbsolutePath();
@@ -305,6 +303,10 @@ public class PrinterUtilities {
             CommandLine cmdLine = new CommandLine("lp");
             cmdLine.addArguments(
                     new String[] {
+                        "-o",
+                        "fit-to-page",
+                        "-o",
+                        "scaling=100",
                         "-o",
                         "Duplexer=True",
                         "-o",
