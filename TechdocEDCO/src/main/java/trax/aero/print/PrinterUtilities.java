@@ -107,16 +107,16 @@ public class PrinterUtilities {
                         }
                         switch (tray) {
                             case "1":
-                                tray = "White";
+                                tray = "";
                                 break;
                             case "2":
-                                tray = "ROSE";
+                                tray = " -o MediaType=ROSE";
                                 break;
                             case "3":
-                                tray = "BLUE";
+                                tray = " -o MediaType=BLUE";
                                 break;
                             default:
-                                tray = "ORANGE";
+                                tray = " -o MediaType=ORANGE";
                                 break;
                         }
                         side = "DUPLEX";
@@ -134,16 +134,16 @@ public class PrinterUtilities {
                         }
                         switch (tray) {
                             case "1":
-                                tray = "White";
+                                tray = "";
                                 break;
                             case "2":
-                                tray = "ROSE";
+                                tray = " -o MediaType=ROSE";
                                 break;
                             case "3":
-                                tray = "BLUE";
+                                tray = " -o MediaType=BLUE";
                                 break;
                             default:
-                                tray = "ORANGE";
+                                tray = " -o MediaType=ORANGE";
                                 break;
                         }
                         side = "DUPLEX";
@@ -159,16 +159,16 @@ public class PrinterUtilities {
                         // InputSlot=1Tray  2Tray 3Tray OCE
                         switch (tray) {
                             case "1":
-                                tray = "White";
+                                tray = "";
                                 break;
                             case "2":
-                                tray = "ROSE";
+                                tray = " -o MediaType=ROSE";
                                 break;
                             case "3":
-                                tray = "BLUE";
+                                tray = " -o MediaType=BLUE";
                                 break;
                             default:
-                                tray = "ORANGE";
+                                tray = " -o MediaType=ORANGE";
                                 break;
                         }
                     }
@@ -180,7 +180,7 @@ public class PrinterUtilities {
                     }
                     Logger.info("OCE tray: " + tempTray + " side: " + side);
                     oceCommands =
-                            " -o StapleWhen=EndOfSet -o OCStaple=TopLeftPortrait -o PaperDimension=A4 -o MediaType="
+                            " -o StapleWhen=EndOfSet -o OCStaple=TopLeftPortrait -o PaperDimension=A4"
                                     + tray
                                     + side;
                 } else if (heavyPrintersRicoh.contains(printService)) {
