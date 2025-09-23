@@ -107,16 +107,16 @@ public class PrinterUtilities {
                         }
                         switch (tray) {
                             case "1":
-                                tray = "1Tray";
+                                tray = "White";
                                 break;
                             case "2":
-                                tray = "TabInsert";
+                                tray = "ROSE";
                                 break;
                             case "3":
-                                tray = "Tab";
+                                tray = "BLUE";
                                 break;
                             default:
-                                tray = "PrePunched";
+                                tray = "ORANGE";
                                 break;
                         }
                         side = "DUPLEX";
@@ -134,16 +134,16 @@ public class PrinterUtilities {
                         }
                         switch (tray) {
                             case "1":
-                                tray = "Tab";
+                                tray = "White";
                                 break;
                             case "2":
-                                tray = "TabInsert";
+                                tray = "ROSE";
                                 break;
                             case "3":
-                                tray = "1Tray";
+                                tray = "BLUE";
                                 break;
                             default:
-                                tray = "PrePunched";
+                                tray = "ORANGE";
                                 break;
                         }
                         side = "DUPLEX";
@@ -159,30 +159,29 @@ public class PrinterUtilities {
                         // InputSlot=1Tray  2Tray 3Tray OCE
                         switch (tray) {
                             case "1":
-                                tray = "1Tray";
+                                tray = "White";
                                 break;
                             case "2":
-                                tray = "TabInsert";
+                                tray = "ROSE";
                                 break;
                             case "3":
-                                tray = "Tab";
+                                tray = "BLUE";
                                 break;
                             default:
-                                tray = "PrePunched";
+                                tray = "ORANGE";
                                 break;
                         }
                     }
                     // Duplex=DuplexNoTumble OCE
                     if (side.equalsIgnoreCase("DUPLEX")) {
-                        side = "DuplexNoTumble";
+                        side = " -o Duplex=True -o Tumble=False";
                     } else {
-                        side = "None";
+                        side = " -o Duplex=False";
                     }
                     Logger.info("OCE tray: " + tempTray + " side: " + side);
                     oceCommands =
-                            " -o StapleWhen=EndOfSet -o OCStaple=TopLeftPortrait -o InputSlot="
+                            " -o StapleWhen=EndOfSet -o OCStaple=TopLeftPortrait -o PaperDimension=A4 -o MediaType="
                                     + tray
-                                    + " -o Duplex="
                                     + side;
                 } else if (heavyPrintersRicoh.contains(printService)) {
                     // InputSlot=1Tray  2Tray 3Tray RICHO
