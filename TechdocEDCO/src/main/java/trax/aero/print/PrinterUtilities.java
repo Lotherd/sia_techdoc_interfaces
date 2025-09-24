@@ -178,7 +178,15 @@ public class PrinterUtilities {
                     } else {
                         side = " -o Duplex=False";
                     }
-                    Logger.info("OCE tray: " + tempTray + " side: " + side);
+
+                    String trayValue =
+                            (tray != null && !tray.isEmpty() && tray.contains("="))
+                                    ? tray.substring(tray.indexOf("=") + 1)
+                                    : "WHITE";
+
+                    String sideValue = (side != null) ? side.replaceAll("-o ", "") : "";
+
+                    Logger.info("OCE tray: " + trayValue + " side: " + sideValue);
                     oceCommands =
                             " -o StapleWhen=EndOfSet -o OCStaple=TopLeftPortrait -o PaperDimension=A4"
                                     + tray
