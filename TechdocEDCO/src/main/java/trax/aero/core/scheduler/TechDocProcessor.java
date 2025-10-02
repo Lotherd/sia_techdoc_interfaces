@@ -71,17 +71,25 @@ public class TechDocProcessor implements Runnable {
                                                             .getADDATTR(),
                                                     "COUNT"))
                                     .longValue();
-                    BigDecimal seqNbr =
-                            new BigDecimal(
-                                    data.filterADDATTR(
-                                            root.getMODELS()
-                                                    .get(0)
-                                                    .getEFFECTIVITY()
-                                                    .getJOBCARD()
-                                                    .getJOBI()
-                                                    .getPLI()
-                                                    .getADDATTR(),
-                                            "BUSR12"));
+                    BigDecimal seqNbr;
+                    try {
+                        seqNbr = new BigDecimal(
+                                data.filterADDATTR(
+                                        root.getMODELS()
+                                                .get(0)
+                                                .getEFFECTIVITY()
+                                                .getJOBCARD()
+                                                .getJOBI()
+                                                .getPLI()
+                                                .getADDATTR(),
+                                        "BUSR12"));
+                        Logger.info("Using BUSR12 for sequence number: " + seqNbr);
+                    } catch (Exception e) {
+                        Logger.warn("BUSR12 not found or invalid, falling back to SEQNBR", e);
+                        seqNbr = new BigDecimal(root.getMODELS().get(0).getEFFECTIVITY().getJOBCARD().getSEQNBR());
+                        Logger.info("Using SEQNBR for sequence number: " + seqNbr);
+                    }
+                    
                     String idocID =
                             data.filterADDATTR(
                                             root.getMODELS()
